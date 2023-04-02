@@ -1,0 +1,17 @@
+.hue-horizontal {
+	height: 1000px;
+}
+#app {
+	z-index: 2;
+	user-select: none;
+}
+
+.buttonColumn {
+	min-width: 1000px;
+}
+
+.buttonColumn button {
+	width: 50px;
+	height: 50px;
+	background-color: white;
+}
