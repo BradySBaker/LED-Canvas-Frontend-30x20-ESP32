@@ -23,11 +23,9 @@ function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefine
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
-var waiting = false;
 var MatrixButtons = function MatrixButtons(_ref) {
   var mouseDown = _ref.mouseDown,
     sendData = _ref.sendData,
-    successfulSend = _ref.successfulSend,
     color = _ref.color;
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
     _useState2 = _slicedToArray(_useState, 2),
@@ -35,28 +33,16 @@ var MatrixButtons = function MatrixButtons(_ref) {
     setButtons = _useState2[1];
   var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
     _useState4 = _slicedToArray(_useState3, 2),
-    waitingPixels = _useState4[0],
-    setWaitingPixels = _useState4[1];
-  var handleDataSend = function handleDataSend() {
-    if (successfulSend) {
-      waiting = true;
-      var value = waitingPixels.shift();
-      if (value) {
-        sendData(value);
-      } else {
-        waiting = false;
-      }
-    }
+    sendingData = _useState4[0],
+    setSendingData = _useState4[1];
+  var handleDataSend = function handleDataSend(value) {
+    sendData("P".concat(value));
   };
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(handleDataSend, [successfulSend]);
   function handleDraw(e, clicked) {
     if (mouseDown || clicked) {
       var value = e.target.id;
       document.getElementById(value).style.backgroundColor = color;
-      waitingPixels.push('POS' + value);
-      if (!waiting) {
-        handleDataSend();
-      }
+      handleDataSend(value);
     }
   }
   var createButtons = function createButtons() {
@@ -34956,6 +34942,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 var blueToothCharacteristic;
+
+//p1,1p2,2p3,3p4,4,p,4,4
 var App = function App() {
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState2 = _slicedToArray(_useState, 2),
@@ -34965,14 +34953,10 @@ var App = function App() {
     _useState4 = _slicedToArray(_useState3, 2),
     mouseDown = _useState4[0],
     setMouseDown = _useState4[1];
-  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(true),
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('#FF0000'),
     _useState6 = _slicedToArray(_useState5, 2),
-    successfulSend = _useState6[0],
-    setSuccessfulSend = _useState6[1];
-  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('#FF0000'),
-    _useState8 = _slicedToArray(_useState7, 2),
-    color = _useState8[0],
-    setColor = _useState8[1];
+    color = _useState6[0],
+    setColor = _useState6[1];
   var blueTooth = new (p5ble__WEBPACK_IMPORTED_MODULE_3___default())();
   function connectToBle() {
     blueTooth.connect('0000ffe0-0000-1000-8000-00805f9b34fb', gotCharacteristics);
@@ -34982,9 +34966,7 @@ var App = function App() {
     setIsConnected(false);
   }
   function gotValue(value) {
-    if (value === 'success') {
-      setSuccessfulSend(true);
-    }
+    console.log(value);
   }
 
   // A function that will be called once got characteristics
@@ -35012,9 +34994,6 @@ var App = function App() {
     sendData("OFF\n");
   }
   function sendData(command) {
-    if (command.includes('POS')) {
-      setSuccessfulSend(false);
-    }
     var inputValue = command;
     if (!("TextEncoder" in window)) {
       console.log("Sorry, this browser does not support TextEncoder...");
@@ -35024,9 +35003,11 @@ var App = function App() {
   }
   var handleColor = function handleColor(color) {
     setColor(color.hex);
+    sendData("COLOR".concat(color.hex.slice(1, color.hex.length))); //Send color change to arduino
   };
+
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.Fragment, {
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_color__WEBPACK_IMPORTED_MODULE_4__.SketchPicker, {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_color__WEBPACK_IMPORTED_MODULE_4__.PhotoshopPicker, {
       width: "400px",
       color: color,
       onChangeComplete: handleColor
@@ -35051,8 +35032,7 @@ var App = function App() {
       }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_matrixButtons_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
         color: color,
         mouseDown: mouseDown,
-        sendData: sendData,
-        successfulSend: successfulSend
+        sendData: sendData
       })]
     })]
   });

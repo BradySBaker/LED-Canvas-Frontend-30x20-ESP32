@@ -1,33 +1,18 @@
 import react, {useEffect, useState} from 'react';
 
-var waiting = false;
-
-const MatrixButtons = function({mouseDown, sendData, successfulSend, color}) {
+const MatrixButtons = function({mouseDown, sendData, color}) {
 	const [buttons, setButtons]= useState([]);
-	const [waitingPixels, setWaitingPixels] = useState([]);
-
-	const handleDataSend = () => {
-		if (successfulSend) {
-			waiting = true;
-			var value = waitingPixels.shift();
-			if (value) {
-				sendData(value);
-			} else {
-				waiting = false;
-			}
-		}
+	const [sendingData, setSendingData] = useState([]);
+	const handleDataSend = (value) => {
+		sendData(`P${value}`);
 	};
 
-	useEffect(handleDataSend, [successfulSend]);
 
 	function handleDraw(e, clicked) {
 		if (mouseDown || clicked) {
 			var value = e.target.id;
 			document.getElementById(value).style.backgroundColor = color;
-			waitingPixels.push('POS' + value);
-			if (!waiting) {
-				handleDataSend();
-			}
+			handleDataSend(value);
 		}
 	}
 
