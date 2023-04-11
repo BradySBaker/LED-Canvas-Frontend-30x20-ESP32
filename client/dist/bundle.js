@@ -24,24 +24,18 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 var MatrixButtons = function MatrixButtons(_ref) {
-  var mouseDown = _ref.mouseDown,
-    sendData = _ref.sendData,
-    color = _ref.color;
+  var mouseDown = _ref.mouseDown;
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
     _useState2 = _slicedToArray(_useState, 2),
     buttons = _useState2[0],
     setButtons = _useState2[1];
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
-    _useState4 = _slicedToArray(_useState3, 2),
-    sendingData = _useState4[0],
-    setSendingData = _useState4[1];
   var handleDataSend = function handleDataSend(value) {
-    sendData("P".concat(value));
+    window.sendRequests["P" + value] = true;
   };
   function handleDraw(e, clicked) {
     if (mouseDown || clicked) {
       var value = e.target.id;
-      document.getElementById(value).style.backgroundColor = color;
+      document.getElementById(value).style.backgroundColor = window.color;
       handleDataSend(value);
     }
   }
@@ -34942,6 +34936,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 var blueToothCharacteristic;
+var sending = false;
+window.sendRequests = {
+  'off': true
+};
+window.color = "#FF0000";
+window.ledConnected = false;
 
 //p1,1p2,2p3,3p4,4,p,4,4
 var App = function App() {
@@ -34953,20 +34953,57 @@ var App = function App() {
     _useState4 = _slicedToArray(_useState3, 2),
     mouseDown = _useState4[0],
     setMouseDown = _useState4[1];
-  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('#FF0000'),
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
     _useState6 = _slicedToArray(_useState5, 2),
-    color = _useState6[0],
-    setColor = _useState6[1];
+    recieved = _useState6[0],
+    setRecieved = _useState6[1];
   var blueTooth = new (p5ble__WEBPACK_IMPORTED_MODULE_3___default())();
   function connectToBle() {
     blueTooth.connect('0000ffe0-0000-1000-8000-00805f9b34fb', gotCharacteristics);
   }
+  var handleSendRequests = function handleSendRequests() {
+    //Occurs every 500ms
+    if (!sending && ledConnected) {
+      var toBeSent = '';
+      var positions = 0;
+      if (sendRequests["off"]) {
+        sendData("OFF\n");
+        window.sendRequests = {};
+      } else {
+        for (var key in sendRequests) {
+          if (key === 'color' && positions === 0) {
+            sendData(sendRequests[key]);
+            delete sendRequests['color'];
+            break;
+          } else if (key === 'color') {
+            toBeSent = '';
+            sendData(toBeSent);
+            break;
+          } else if (positions < 3) {
+            toBeSent += key;
+            positions++;
+            delete sendRequests[key];
+          } else {
+            sendData(toBeSent);
+            toBeSent = '';
+            break;
+          }
+        }
+        if (toBeSent.length > 0) {
+          sendData(toBeSent);
+        }
+      }
+    }
+    setTimeout(handleSendRequests, 500);
+  };
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(handleSendRequests, []);
   function onDisconnected() {
     console.log('Device got disconnected.');
+    ledConnected = false;
     setIsConnected(false);
   }
   function gotValue(value) {
-    console.log(value);
+    sending = false;
   }
 
   // A function that will be called once got characteristics
@@ -34978,22 +35015,25 @@ var App = function App() {
     blueToothCharacteristic = characteristics[0];
     blueTooth.startNotifications(blueToothCharacteristic, gotValue, 'string');
     blueTooth.onDisconnected(onDisconnected);
+    turnOn();
+    ledConnected = blueTooth.isConnected();
     setIsConnected(blueTooth.isConnected());
     // Add a event handler when the device is disconnected
   }
 
   function turnOn() {
-    sendData("COLOR" + ledColorPicker.value() + "\n");
+    sendData("COLORff0000");
   }
   function turnOff() {
     for (var x = 0; x < 16; x++) {
       for (var y = 0; y < 16; y++) {
-        document.getElementById("".concat(x, ",").concat(y)).style.backgroundColor = 'white';
+        document.getElementById("".concat(x, ",").concat(y)).style.backgroundColor = 'black';
       }
     }
-    sendData("OFF\n");
+    sendRequests["off"] = true;
   }
   function sendData(command) {
+    sending = true;
     var inputValue = command;
     if (!("TextEncoder" in window)) {
       console.log("Sorry, this browser does not support TextEncoder...");
@@ -35001,11 +35041,10 @@ var App = function App() {
     var enc = new TextEncoder(); // always utf-8
     blueToothCharacteristic.writeValue(enc.encode(inputValue));
   }
-  var handleColor = function handleColor(color) {
-    setColor(color.hex);
-    sendData("COLOR".concat(color.hex.slice(1, color.hex.length))); //Send color change to arduino
+  var handleColor = function handleColor(newColor) {
+    color = newColor.hex;
+    sendRequests['color'] = "COLOR".concat(newColor.hex.slice(1, newColor.hex.length));
   };
-
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.Fragment, {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_color__WEBPACK_IMPORTED_MODULE_4__.PhotoshopPicker, {
       width: "400px",
@@ -35029,11 +35068,11 @@ var App = function App() {
       }) : null, !isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
         onClick: connectToBle,
         children: "Connect"
-      }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_matrixButtons_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
-        color: color,
+      }) : null, isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_matrixButtons_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
         mouseDown: mouseDown,
-        sendData: sendData
-      })]
+        recieved: recieved,
+        sendRequests: sendRequests
+      }) : null]
     })]
   });
 };

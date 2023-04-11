@@ -1,17 +1,18 @@
 import react, {useEffect, useState} from 'react';
 
-const MatrixButtons = function({mouseDown, sendData, color}) {
+
+const MatrixButtons = function({mouseDown}) {
 	const [buttons, setButtons]= useState([]);
-	const [sendingData, setSendingData] = useState([]);
+
 	const handleDataSend = (value) => {
-		sendData(`P${value}`);
+		window.sendRequests["P" + value] = true;
 	};
 
 
 	function handleDraw(e, clicked) {
 		if (mouseDown || clicked) {
 			var value = e.target.id;
-			document.getElementById(value).style.backgroundColor = color;
+			document.getElementById(value).style.backgroundColor = window.color;
 			handleDataSend(value);
 		}
 	}
