@@ -97,7 +97,7 @@ function turnOff() {
 	}
 	sendRequests["off"] = true;
 }
-function sendData(command) {
+async function sendData(command) {
 	sending = true;
   const inputValue = command;
   if (!("TextEncoder" in window)) {
@@ -105,7 +105,8 @@ function sendData(command) {
   }
   var enc = new TextEncoder(); // always utf-8
 	try {
-		blueToothCharacteristic.writeValue(enc.encode(inputValue));
+		console.log('Sending' , command);
+		await blueToothCharacteristic.writeValue(enc.encode(inputValue));
 	} catch (error) {
 		sending = false;
 		console.log('Error sendData ', error);
