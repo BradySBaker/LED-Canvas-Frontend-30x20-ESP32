@@ -10,21 +10,25 @@ window.sendRequests = {'off': true};
 window.color = "#FF0000";
 
 window.ledConnected = false;
-
+var sendingTimer = 0;
 //p1,1p2,2p3,3p4,4,p,4,4
 const App = function() {
 	const [isConnected, setIsConnected] = useState(false);
 	const [mouseDown, setMouseDown] = useState(false);
 	const [recieved, setRecieved] = useState([]);
-
 let blueTooth = new p5ble();
 function connectToBle() {
 	blueTooth.connect('0000ffe0-0000-1000-8000-00805f9b34fb', gotCharacteristics);
 }
 
 var handleSendRequests = () => { //Occurs every 500ms
-	console.log(sending);
-	if (!sending && ledConnected) {
+	sendingTimer++;
+	console.log(sendingTimer);
+	if (sendingTimer >= 20) {
+		sending = false;
+	}
+	if ((!sending && ledConnected)) {
+		sendingTimer = 0;
 		var toBeSent = '';
 		var positions = 0;
 		if (sendRequests["off"]) {
@@ -97,7 +101,7 @@ function turnOff() {
 	}
 	sendRequests["off"] = true;
 }
-async function sendData(command) {
+function sendData(command) {
 	sending = true;
   const inputValue = command;
   if (!("TextEncoder" in window)) {
@@ -106,7 +110,7 @@ async function sendData(command) {
   var enc = new TextEncoder(); // always utf-8
 	try {
 		console.log('Sending' , command);
-		await blueToothCharacteristic.writeValue(enc.encode(inputValue));
+		blueToothCharacteristic.writeValue(enc.encode(inputValue));
 	} catch (error) {
 		sending = false;
 		console.log('Error sendData ', error);
