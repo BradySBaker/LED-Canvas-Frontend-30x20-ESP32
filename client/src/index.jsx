@@ -97,6 +97,7 @@ function turnOff() {
 	sendRequests["off"] = true;
 }
 function sendData(command) {
+	console.log(command);
 	sending = true;
   const inputValue = command;
   if (!("TextEncoder" in window)) {
