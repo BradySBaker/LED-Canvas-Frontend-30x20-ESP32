@@ -23,7 +23,7 @@ function connectToBle() {
 }
 
 var handleSendRequests = () => { //Occurs every 500ms
-	if (!sending && ledConnected) {
+	if (ledConnected) {
 		var toBeSent = '';
 		var positions = 0;
 		if (sendRequests["off"]) {

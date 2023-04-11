@@ -40277,7 +40277,7 @@ var App = function App() {
   }
   var handleSendRequests = function handleSendRequests() {
     //Occurs every 500ms
-    if (!sending && ledConnected) {
+    if (ledConnected) {
       var toBeSent = '';
       var positions = 0;
       if (sendRequests["off"]) {
