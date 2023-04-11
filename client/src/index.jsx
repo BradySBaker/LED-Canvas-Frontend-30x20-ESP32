@@ -23,7 +23,6 @@ function connectToBle() {
 
 var handleSendRequests = () => { //Occurs every 500ms
 	sendingTimer++;
-	console.log(sendingTimer);
 	if (sendingTimer >= 20) {
 		sending = false;
 	}
@@ -62,7 +61,8 @@ var handleSendRequests = () => { //Occurs every 500ms
 	setTimeout(handleSendRequests, 500);
 };
 
-useEffect(handleSendRequests, [])
+
+useEffect(handleSendRequests, []) //On start
 
 function onDisconnected() {
 	console.log('Device got disconnected.');
@@ -129,7 +129,7 @@ var handleColor = (newColor) => {
 			{isConnected ? <h1>Connected</h1> : <h1>Not connected</h1>}
 			{isConnected ? <button onClick={turnOff}>Turn Off</button> : null}
 			{!isConnected ? <button onClick={connectToBle}>Connect</button> : null}
-			{isConnected ? <MatrixButtons mouseDown={mouseDown}  recieved={recieved} sendRequests={sendRequests}/> : null}
+			<MatrixButtons mouseDown={mouseDown}  recieved={recieved} sendRequests={sendRequests}/>
 		</div>
 		</>
 	)

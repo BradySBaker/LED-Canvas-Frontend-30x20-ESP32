@@ -1,5 +1,4 @@
 import react, {useEffect, useState} from 'react';
-import { Holdable } from 'react-touch';
 
 const MatrixButtons = function({mouseDown}) {
 	const [buttons, setButtons]= useState([]);
@@ -9,9 +8,8 @@ const MatrixButtons = function({mouseDown}) {
 	};
 
 
-	function handleDraw(e, clicked) {
+	function handleDraw(e, clicked, value = e.target.id) {
 		if (mouseDown || clicked) {
-			var value = e.target.id;
 			document.getElementById(value).style.backgroundColor = window.color;
 			handleDataSend(value);
 		}
@@ -40,8 +38,27 @@ const MatrixButtons = function({mouseDown}) {
 
 	useEffect(createButtons, [mouseDown]);
 
+	function handleTouchMove(e) {
+		e.preventDefault();
+		const touch = e.touches[0];
+		const x = touch.clientX;
+		const y = touch.clientY;
+		const button = document.elementFromPoint(x, y);
+		handleDraw(null, true, button.id);
+		// update state based on the touch position
+	}
+
+	useEffect(() => {
+		const element = document.getElementById('buttons');
+		element.addEventListener('touchmove', handleTouchMove, { passive: false });
+
+		return () => {
+			element.removeEventListener('touchmove', handleTouchMove);
+		};
+	}, []);
+
 	return (
-		<div>
+		<div id='buttons'>
 			{buttons}
 		</div>
 	)
