@@ -23,6 +23,7 @@ function connectToBle() {
 }
 
 var handleSendRequests = () => { //Occurs every 500ms
+	console.log(sending);
 	if (!sending && ledConnected) {
 		var toBeSent = '';
 		var positions = 0;
