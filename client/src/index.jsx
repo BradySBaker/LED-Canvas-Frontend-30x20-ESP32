@@ -129,7 +129,7 @@ var handleColor = (newColor) => {
 			{isConnected ? <h1>Connected</h1> : <h1>Not connected</h1>}
 			{isConnected ? <button onClick={turnOff}>Turn Off</button> : null}
 			{!isConnected ? <button onClick={connectToBle}>Connect</button> : null}
-			<MatrixButtons mouseDown={mouseDown}  recieved={recieved} sendRequests={sendRequests}/>
+			{isConnected ? <MatrixButtons mouseDown={mouseDown}  recieved={recieved} sendRequests={sendRequests}/> : null}
 		</div>
 		</>
 	)
