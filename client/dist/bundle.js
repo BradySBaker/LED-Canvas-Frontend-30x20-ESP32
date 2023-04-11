@@ -40277,7 +40277,7 @@ var App = function App() {
   }
   var handleSendRequests = function handleSendRequests() {
     //Occurs every 500ms
-    if (ledConnected) {
+    if (!sending && ledConnected) {
       var toBeSent = '';
       var positions = 0;
       if (sendRequests["off"]) {
@@ -40347,14 +40347,18 @@ var App = function App() {
     sendRequests["off"] = true;
   }
   function sendData(command) {
-    console.log(command);
     sending = true;
     var inputValue = command;
     if (!("TextEncoder" in window)) {
       console.log("Sorry, this browser does not support TextEncoder...");
     }
     var enc = new TextEncoder(); // always utf-8
-    blueToothCharacteristic.writeValue(enc.encode(inputValue));
+    try {
+      blueToothCharacteristic.writeValue(enc.encode(inputValue));
+    } catch (error) {
+      sending = false;
+      console.log('Error sendData ', error);
+    }
   }
   var handleColor = function handleColor(newColor) {
     color = newColor.hex;
