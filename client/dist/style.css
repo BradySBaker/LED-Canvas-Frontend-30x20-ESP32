@@ -22,3 +22,13 @@
 	top: 10px;
 	width: 70px;
 }
+#title {
+	font-weight: bold;
+	color: brown;
+	font-size: 80px;
+	text-decoration: overline;
+	text-align: center;
+}
+#connected{
+	display: inline-block;
+}

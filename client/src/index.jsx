@@ -15,6 +15,7 @@ var sendingTimer = 0;
 const App = function() {
 	const [isConnected, setIsConnected] = useState(false);
 	const [mouseDown, setMouseDown] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
 let blueTooth = new p5ble();
 function connectToBle() {
 	blueTooth.connect('0000ffe0-0000-1000-8000-00805f9b34fb', gotCharacteristics);
@@ -24,6 +25,12 @@ var handleSendRequests = () => { //Occurs every 500ms
 	sendingTimer++;
 	if (sendingTimer >= 20) {
 		sending = false;
+	}
+	if (Object.keys(sendRequests).length === 0) {
+		setIsLoading(false);
+	} else if (!isLoading && ledConnected) {
+		setIsLoading(true);
+		console.log('Set to true')
 	}
 	if ((!sending && ledConnected)) {
 		sendingTimer = 0;
@@ -39,8 +46,8 @@ var handleSendRequests = () => { //Occurs every 500ms
 					delete sendRequests['color'];
 					break;
 				} else if (key === 'color') {
-					toBeSent = '';
 					sendData(toBeSent);
+					toBeSent = '';
 					break;
 				} else if (positions < 3){
 					toBeSent += key;
@@ -123,10 +130,11 @@ var handleColor = (newColor) => {
 
 	return (
 		<>
-			<img id='loading' src='./icons/loading.gif'></img>
+			<h1 id='title'>LED Canvas</h1>
+			{isLoading ? <img id='loading' src='./icons/loading.gif'></img> : null}
 		<PhotoshopPicker width='400px' color={color} onChangeComplete={handleColor}/>
+		{isConnected ? <h1 >Connected</h1> : <h1 >Not connected</h1>}
 			<div id='app' onMouseDown={() => {setMouseDown(true);}} onMouseUp={() => setMouseDown(false)}>
-			{isConnected ? <h1>Connected</h1> : <h1>Not connected</h1>}
 			{isConnected ? <button onClick={turnOff}>Turn Off</button> : null}
 			{!isConnected ? <button onClick={connectToBle}>Connect</button> : null}
 			{isConnected ? <MatrixButtons mouseDown={mouseDown} sendRequests={sendRequests}/> : null}

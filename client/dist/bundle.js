@@ -34972,6 +34972,10 @@ var App = function App() {
     _useState4 = _slicedToArray(_useState3, 2),
     mouseDown = _useState4[0],
     setMouseDown = _useState4[1];
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState6 = _slicedToArray(_useState5, 2),
+    isLoading = _useState6[0],
+    setIsLoading = _useState6[1];
   var blueTooth = new (p5ble__WEBPACK_IMPORTED_MODULE_3___default())();
   function connectToBle() {
     blueTooth.connect('0000ffe0-0000-1000-8000-00805f9b34fb', gotCharacteristics);
@@ -34981,6 +34985,12 @@ var App = function App() {
     sendingTimer++;
     if (sendingTimer >= 20) {
       sending = false;
+    }
+    if (Object.keys(sendRequests).length === 0) {
+      setIsLoading(false);
+    } else if (!isLoading && ledConnected) {
+      setIsLoading(true);
+      console.log('Set to true');
     }
     if (!sending && ledConnected) {
       sendingTimer = 0;
@@ -34996,8 +35006,8 @@ var App = function App() {
             delete sendRequests['color'];
             break;
           } else if (key === 'color') {
-            toBeSent = '';
             sendData(toBeSent);
+            toBeSent = '';
             break;
           } else if (positions < 3) {
             toBeSent += key;
@@ -35073,13 +35083,20 @@ var App = function App() {
     sendRequests['color'] = "COLOR".concat(newColor.hex.slice(1, newColor.hex.length));
   };
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.Fragment, {
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("img", {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h1", {
+      id: "title",
+      children: "LED Canvas"
+    }), isLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("img", {
       id: "loading",
       src: "./icons/loading.gif"
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_color__WEBPACK_IMPORTED_MODULE_4__.PhotoshopPicker, {
+    }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_color__WEBPACK_IMPORTED_MODULE_4__.PhotoshopPicker, {
       width: "400px",
       color: color,
       onChangeComplete: handleColor
+    }), isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h1", {
+      children: "Connected"
+    }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h1", {
+      children: "Not connected"
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
       id: "app",
       onMouseDown: function onMouseDown() {
@@ -35088,11 +35105,7 @@ var App = function App() {
       onMouseUp: function onMouseUp() {
         return setMouseDown(false);
       },
-      children: [isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h1", {
-        children: "Connected"
-      }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h1", {
-        children: "Not connected"
-      }), isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
+      children: [isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
         onClick: turnOff,
         children: "Turn Off"
       }) : null, !isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
