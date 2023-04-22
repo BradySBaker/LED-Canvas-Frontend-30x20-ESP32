@@ -15,3 +15,10 @@
 	height: 50px;
 	background-color: rgb(0, 0, 0);
 }
+
+#loading {
+	position: absolute;
+	right: 10px;
+	top: 10px;
+	width: 70px;
+}

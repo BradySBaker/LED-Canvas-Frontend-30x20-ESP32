@@ -11,11 +11,10 @@ window.color = "#FF0000";
 
 window.ledConnected = false;
 var sendingTimer = 0;
-//p1,1p2,2p3,3p4,4,p,4,4
+
 const App = function() {
 	const [isConnected, setIsConnected] = useState(false);
 	const [mouseDown, setMouseDown] = useState(false);
-	const [recieved, setRecieved] = useState([]);
 let blueTooth = new p5ble();
 function connectToBle() {
 	blueTooth.connect('0000ffe0-0000-1000-8000-00805f9b34fb', gotCharacteristics);
@@ -124,12 +123,13 @@ var handleColor = (newColor) => {
 
 	return (
 		<>
+			<img id='loading' src='./icons/loading.gif'></img>
 		<PhotoshopPicker width='400px' color={color} onChangeComplete={handleColor}/>
 			<div id='app' onMouseDown={() => {setMouseDown(true);}} onMouseUp={() => setMouseDown(false)}>
 			{isConnected ? <h1>Connected</h1> : <h1>Not connected</h1>}
 			{isConnected ? <button onClick={turnOff}>Turn Off</button> : null}
 			{!isConnected ? <button onClick={connectToBle}>Connect</button> : null}
-			{isConnected ? <MatrixButtons mouseDown={mouseDown}  recieved={recieved} sendRequests={sendRequests}/> : null}
+			{isConnected ? <MatrixButtons mouseDown={mouseDown} sendRequests={sendRequests}/> : null}
 		</div>
 		</>
 	)

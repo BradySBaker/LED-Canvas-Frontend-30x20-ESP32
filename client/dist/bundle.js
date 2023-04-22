@@ -34963,7 +34963,6 @@ window.sendRequests = {
 window.color = "#FF0000";
 window.ledConnected = false;
 var sendingTimer = 0;
-//p1,1p2,2p3,3p4,4,p,4,4
 var App = function App() {
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState2 = _slicedToArray(_useState, 2),
@@ -34973,10 +34972,6 @@ var App = function App() {
     _useState4 = _slicedToArray(_useState3, 2),
     mouseDown = _useState4[0],
     setMouseDown = _useState4[1];
-  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
-    _useState6 = _slicedToArray(_useState5, 2),
-    recieved = _useState6[0],
-    setRecieved = _useState6[1];
   var blueTooth = new (p5ble__WEBPACK_IMPORTED_MODULE_3___default())();
   function connectToBle() {
     blueTooth.connect('0000ffe0-0000-1000-8000-00805f9b34fb', gotCharacteristics);
@@ -35078,7 +35073,10 @@ var App = function App() {
     sendRequests['color'] = "COLOR".concat(newColor.hex.slice(1, newColor.hex.length));
   };
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.Fragment, {
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_color__WEBPACK_IMPORTED_MODULE_4__.PhotoshopPicker, {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("img", {
+      id: "loading",
+      src: "./icons/loading.gif"
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_color__WEBPACK_IMPORTED_MODULE_4__.PhotoshopPicker, {
       width: "400px",
       color: color,
       onChangeComplete: handleColor
@@ -35102,7 +35100,6 @@ var App = function App() {
         children: "Connect"
       }) : null, isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_matrixButtons_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
         mouseDown: mouseDown,
-        recieved: recieved,
         sendRequests: sendRequests
       }) : null]
     })]
