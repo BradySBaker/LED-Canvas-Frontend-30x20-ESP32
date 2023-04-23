@@ -1,6 +1,9 @@
 import React, {useState, useEffect, useRef} from "react";
+
 import { createRoot } from "react-dom/client";
 import MatrixButtons from "./matrixButtons.jsx";
+import FrameChoices from "./frameChoices.jsx";
+
 import p5ble from 'p5ble';
 import { HexColorPicker } from "react-colorful";
 let blueToothCharacteristic;
@@ -16,6 +19,9 @@ const App = function() {
 	const [isConnected, setIsConnected] = useState(false);
 	const [mouseDown, setMouseDown] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
+	const [frames, setFrames] = useState([]);
+	const [curFrame, setCurFrame] = useState([]);
+
 let blueTooth = new p5ble();
 function connectToBle() {
 	blueTooth.connect('0000ffe0-0000-1000-8000-00805f9b34fb', gotCharacteristics);
@@ -123,11 +129,26 @@ function sendData(command) {
 	}
 }
 
-var handleColor = (newColor) => {
+const handleColor = (newColor) => {
 	document.getElementById('title').style.color = newColor;
 	color = newColor;
 	sendRequests['color'] = `COLOR${newColor.slice(1, newColor.length)}`;
 }
+const handleSave = () => {
+	var columnElements = document.getElementById('buttons').children;
+	var curFrame = [];
+	for (var y = 0; y < 16; y++) {
+		curFrame.push([]);
+		var curColumn = curFrame[y];
+		for (var x = 0; x < 16; x++) {
+			var curSquare = columnElements[y].children[x];
+			var curColor = window.getComputedStyle(curSquare).getPropertyValue("background-color");
+			curColumn.push(curColor);
+		}
+	}
+	console.log(curFrame);
+	setFrames([curFrame].concat(frames));
+};
 
 	return (
 		<div id='colorApp'>
@@ -140,9 +161,10 @@ var handleColor = (newColor) => {
 			<div id='app' onMouseDown={() => {setMouseDown(true);}} onMouseUp={() => setMouseDown(false)}>
 			{isConnected ? <button onClick={turnOff}>Turn Off</button> : null}
 			{!isConnected ? <button onClick={connectToBle}>Connect</button> : null}
-			{isConnected && !isLoading ? <button onClick={() => sendData('save')}>save</button> : null}
-			{isConnected && !isLoading ? <button onClick={() => sendData('frame')}>frame</button> :  null}
-			{!isConnected ? <MatrixButtons mouseDown={mouseDown} sendRequests={sendRequests}/> : null}
+			{isConnected && !isLoading ? <button onClick={handleSave}>SAVE</button> : null}
+			<FrameChoices frames={frames}/>
+			<button onClick={handleSave}>DFJ#KEJF</button>
+			{!isConnected ? <MatrixButtons setCurFrame={setCurFrame} mouseDown={mouseDown} sendRequests={sendRequests}/> : null}
 		</div>
 		</div>
 	)
