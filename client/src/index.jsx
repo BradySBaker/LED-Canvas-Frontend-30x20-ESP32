@@ -137,6 +137,8 @@ var handleColor = (newColor) => {
 			<div id='app' onMouseDown={() => {setMouseDown(true);}} onMouseUp={() => setMouseDown(false)}>
 			{isConnected ? <button onClick={turnOff}>Turn Off</button> : null}
 			{!isConnected ? <button onClick={connectToBle}>Connect</button> : null}
+			{isConnected && !isLoading ? <button onClick={() => sendData('save')}>save</button> : null}
+			{isConnected && !isLoading ? <button onClick={() => sendData('frame')}>frame</button> :  null}
 			{isConnected ? <MatrixButtons mouseDown={mouseDown} sendRequests={sendRequests}/> : null}
 		</div>
 		</>
