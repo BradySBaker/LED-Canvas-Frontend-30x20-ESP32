@@ -31,12 +31,17 @@
 #title {
 	font-weight: bold;
 	color: brown;
-	font-size: 80px;
+	font-size: 50px;
 	text-decoration: overline;
 	text-align: center;
 }
+
 .picker-container {
 	display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.picker-container .react-colorful {
+  width: 70%;
 }
