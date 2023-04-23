@@ -132,14 +132,16 @@ var handleColor = (newColor) => {
 		<>
 			<h1 id='title'>LED Canvas</h1>
 			{isLoading ? <img id='loading' src='./icons/loading.gif'></img> : null}
-		<PhotoshopPicker width='400px' color={color} onChangeComplete={handleColor}/>
+		<div className="picker-container">
+			<PhotoshopPicker color={color} onChangeComplete={handleColor}/>
+		</div>
 		{isConnected ? <h1 >Connected</h1> : <h1 >Not connected</h1>}
 			<div id='app' onMouseDown={() => {setMouseDown(true);}} onMouseUp={() => setMouseDown(false)}>
 			{isConnected ? <button onClick={turnOff}>Turn Off</button> : null}
 			{!isConnected ? <button onClick={connectToBle}>Connect</button> : null}
 			{isConnected && !isLoading ? <button onClick={() => sendData('save')}>save</button> : null}
 			{isConnected && !isLoading ? <button onClick={() => sendData('frame')}>frame</button> :  null}
-			{isConnected ? <MatrixButtons mouseDown={mouseDown} sendRequests={sendRequests}/> : null}
+			{!isConnected ? <MatrixButtons mouseDown={mouseDown} sendRequests={sendRequests}/> : null}
 		</div>
 		</>
 	)
