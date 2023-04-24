@@ -30,16 +30,15 @@ function connectToBle() {
 	blueTooth.connect('0000ffe0-0000-1000-8000-00805f9b34fb', gotCharacteristics);
 }
 
-var handleSendRequests = () => { //Occurs every 500ms
+var handleSendRequests = () => { //Occurs every 20ms
 	sendingTimer++;
-	if (sendingTimer >= 20) {
+	if (sendingTimer >= 1000) {
 		sending = false;
 	}
 	if (Object.keys(sendRequests).length === 0) {
 		setIsLoading(false);
 	} else if (!isLoading && ledConnected) {
 		setIsLoading(true);
-		console.log('Set to true')
 	}
 	if ((!sending && ledConnected)) {
 		sendingTimer = 0;
@@ -73,7 +72,7 @@ var handleSendRequests = () => { //Occurs every 500ms
 			}
 		}
 	}
-	setTimeout(handleSendRequests, 500);
+	setTimeout(handleSendRequests, 20);
 };
 
 
@@ -120,14 +119,14 @@ function turnOff(e, save = false) {
 }
 function sendData(command) {
 	sending = true;
-  const inputValue = command;
+  const inputValue = command + '\r';
   if (!("TextEncoder" in window)) {
     console.log("Sorry, this browser does not support TextEncoder...");
   }
   var enc = new TextEncoder(); // always utf-8
 	try {
 		console.log('Sending' , command);
-		blueToothCharacteristic.writeValue(enc.encode(inputValue));
+		blueToothCharacteristic.writeValue(enc.encode(inputValue))
 	} catch (error) {
 		sending = false;
 		console.log('Error sendData ', error);

@@ -19678,16 +19678,15 @@ var App = function App() {
     blueTooth.connect('0000ffe0-0000-1000-8000-00805f9b34fb', gotCharacteristics);
   }
   var handleSendRequests = function handleSendRequests() {
-    //Occurs every 500ms
+    //Occurs every 20ms
     sendingTimer++;
-    if (sendingTimer >= 20) {
+    if (sendingTimer >= 1000) {
       sending = false;
     }
     if (Object.keys(sendRequests).length === 0) {
       setIsLoading(false);
     } else if (!isLoading && ledConnected) {
       setIsLoading(true);
-      console.log('Set to true');
     }
     if (!sending && ledConnected) {
       sendingTimer = 0;
@@ -19721,7 +19720,7 @@ var App = function App() {
         }
       }
     }
-    setTimeout(handleSendRequests, 500);
+    setTimeout(handleSendRequests, 20);
   };
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(handleSendRequests, []); //On start
 
@@ -19765,7 +19764,7 @@ var App = function App() {
   }
   function sendData(command) {
     sending = true;
-    var inputValue = command;
+    var inputValue = command + '\r';
     if (!("TextEncoder" in window)) {
       console.log("Sorry, this browser does not support TextEncoder...");
     }
