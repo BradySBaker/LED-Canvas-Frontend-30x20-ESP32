@@ -1,6 +1,9 @@
 import React, {useState, useEffect, useRef} from "react";
+
 import { createRoot } from "react-dom/client";
 import MatrixButtons from "./matrixButtons.jsx";
+import FrameChoices from "./frameChoices.jsx";
+
 import p5ble from 'p5ble';
 import { HexColorPicker } from "react-colorful";
 let blueToothCharacteristic;
@@ -16,6 +19,9 @@ const App = function() {
 	const [isConnected, setIsConnected] = useState(false);
 	const [mouseDown, setMouseDown] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
+	const [frames, setFrames] = useState([]);
+	const [curFrame, setCurFrame] = useState([]);
+
 let blueTooth = new p5ble();
 function connectToBle() {
 	blueTooth.connect('0000ffe0-0000-1000-8000-00805f9b34fb', gotCharacteristics);
@@ -99,13 +105,15 @@ setIsConnected(blueTooth.isConnected());
 function turnOn() {
   sendData("COLORff0000");
 }
-function turnOff() {
+function turnOff(e, save = false) {
 	for (var x = 0; x < 16; x++) {
 		for (var y = 0; y < 16; y++) {
 			document.getElementById(`${x},${y}`).style.backgroundColor = 'black';
 		}
 	}
-	sendRequests["off"] = true;
+	if (!save) {
+		sendRequests["off"] = true;
+	}
 }
 function sendData(command) {
 	sending = true;
@@ -123,11 +131,35 @@ function sendData(command) {
 	}
 }
 
-var handleColor = (newColor) => {
+const handleColor = (newColor) => {
 	document.getElementById('title').style.color = newColor;
 	color = newColor;
 	sendRequests['color'] = `COLOR${newColor.slice(1, newColor.length)}`;
 }
+const handleSave = () => {
+	//Retrieves all matrix colors and adds them to matrix array
+	var columnElements = document.getElementById('buttons').children;
+	var curFrame = [];
+	for (var y = 0; y < 16; y++) {
+		curFrame.push([]);
+		var curColumn = curFrame[y];
+		for (var x = 0; x < 16; x++) {
+			var curSquare = columnElements[y].children[x];
+			var curColor = window.getComputedStyle(curSquare).getPropertyValue("background-color");
+			curColumn.push(curColor);
+		}
+	}
+	var newFrames = JSON.parse(JSON.stringify(frames));
+	newFrames.push(curFrame);
+	setFrames(newFrames);
+	turnOff(null, true);
+
+	sendData('save');
+};
+
+var handleFrameChoice = (frame) => {
+	sendData(`F${frame}`);
+};
 
 	return (
 		<div id='colorApp'>
@@ -140,9 +172,9 @@ var handleColor = (newColor) => {
 			<div id='app' onMouseDown={() => {setMouseDown(true);}} onMouseUp={() => setMouseDown(false)}>
 			{isConnected ? <button onClick={turnOff}>Turn Off</button> : null}
 			{!isConnected ? <button onClick={connectToBle}>Connect</button> : null}
-			{isConnected && !isLoading ? <button onClick={() => sendData('save')}>save</button> : null}
-			{isConnected && !isLoading ? <button onClick={() => sendData('frame')}>frame</button> :  null}
-			{!isConnected ? <MatrixButtons mouseDown={mouseDown} sendRequests={sendRequests}/> : null}
+			{isConnected && !isLoading ? <button onClick={handleSave}>SAVE</button> : null}
+			<FrameChoices frames={frames} handleFrameChoice={handleFrameChoice}/>
+			{isConnected ? <MatrixButtons mouseDown={mouseDown} sendRequests={sendRequests}/> : null}
 		</div>
 		</div>
 	)
