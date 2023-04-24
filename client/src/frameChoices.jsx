@@ -6,7 +6,7 @@ const FrameChoices = ({frames, handleFrameChoice}) => {
 
 	const createFrames = () => {
 		var newFrames = [];
-		frames.forEach((curFrame) => {
+		frames.forEach((curFrame, idx) => {
 			var canvas = document.createElement('canvas');
 			canvas.width = 128;
 			canvas.height = 128;
