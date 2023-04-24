@@ -33,7 +33,7 @@ var FrameChoices = function FrameChoices(_ref) {
     setFrameElements = _useState2[1];
   var createFrames = function createFrames() {
     var newFrames = [];
-    frames.forEach(function (curFrame) {
+    frames.forEach(function (curFrame, idx) {
       var canvas = document.createElement('canvas');
       canvas.width = 128;
       canvas.height = 128;
@@ -169,6 +169,41 @@ var MatrixButtons = function MatrixButtons(_ref) {
   });
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (MatrixButtons);
+
+/***/ }),
+
+/***/ "./client/src/pongController.jsx":
+/*!***************************************!*\
+  !*** ./client/src/pongController.jsx ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
+var PongController = function PongController(_ref) {
+  var sendData = _ref.sendData;
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", {
+    id: "pong-controller",
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", {
+      onClick: function onClick() {
+        return sendData('GU');
+      },
+      children: "UP"
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", {
+      onClick: function onClick() {
+        return sendData('GD');
+      },
+      children: "DOWN"
+    })]
+  });
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (PongController);
 
 /***/ }),
 
@@ -19581,16 +19616,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_dom_client__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom/client */ "./node_modules/react-dom/client.js");
 /* harmony import */ var _matrixButtons_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./matrixButtons.jsx */ "./client/src/matrixButtons.jsx");
 /* harmony import */ var _frameChoices_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./frameChoices.jsx */ "./client/src/frameChoices.jsx");
-/* harmony import */ var p5ble__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! p5ble */ "./node_modules/p5ble/dist/p5.ble.js");
-/* harmony import */ var p5ble__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(p5ble__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var react_colorful__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-colorful */ "./node_modules/react-colorful/dist/index.mjs");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _pongController_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./pongController.jsx */ "./client/src/pongController.jsx");
+/* harmony import */ var p5ble__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! p5ble */ "./node_modules/p5ble/dist/p5.ble.js");
+/* harmony import */ var p5ble__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(p5ble__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var react_colorful__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-colorful */ "./node_modules/react-colorful/dist/index.mjs");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 
 
 
@@ -19636,7 +19673,7 @@ var App = function App() {
     _useState14 = _slicedToArray(_useState13, 2),
     gameMode = _useState14[0],
     setGameMode = _useState14[1];
-  var blueTooth = new (p5ble__WEBPACK_IMPORTED_MODULE_4___default())();
+  var blueTooth = new (p5ble__WEBPACK_IMPORTED_MODULE_5___default())();
   function connectToBle() {
     blueTooth.connect('0000ffe0-0000-1000-8000-00805f9b34fb', gotCharacteristics);
   }
@@ -19768,29 +19805,29 @@ var App = function App() {
   var handleFrameChoice = function handleFrameChoice(frame) {
     sendData("F".concat(frame));
   };
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
     id: "colorApp",
-    children: [isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h1", {
+    children: [isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("h1", {
       style: {
         'color': 'blue',
         'fontSize': '15px'
       },
       children: "Connected"
-    }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h1", {
+    }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("h1", {
       style: {
         'color': 'red',
         'fontSize': '20px'
       },
       children: "Not connected"
-    }), !isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
+    }), !isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
       onClick: connectToBle,
       children: "Connect"
-    }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("h1", {
+    }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("h1", {
       id: "title",
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
         id: "title-line"
       }), "LED Canvas"]
-    }), drawMode || gameMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
+    }), drawMode || gameMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
       style: {
         'position': 'absolute',
         'right': '10%',
@@ -19801,19 +19838,19 @@ var App = function App() {
         setGameMode(false);
       },
       children: "Back"
-    }) : null, isLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("img", {
+    }) : null, isLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("img", {
       id: "loading",
       src: "./icons/loading.gif"
-    }) : null, drawMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+    }) : null, drawMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
       className: "picker-container",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_colorful__WEBPACK_IMPORTED_MODULE_6__.HexColorPicker, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(react_colorful__WEBPACK_IMPORTED_MODULE_7__.HexColorPicker, {
         style: {
           height: 'calc(90vw * 0.5)'
         },
         color: color,
         onChange: handleColor
       })
-    }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+    }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
       id: "app",
       onMouseDown: function onMouseDown() {
         setMouseDown(true);
@@ -19821,38 +19858,41 @@ var App = function App() {
       onMouseUp: function onMouseUp() {
         return setMouseDown(false);
       },
-      children: [drawMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
+      children: [drawMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
         onClick: turnOff,
         children: "Turn Off"
-      }) : null, !drawMode && !gameMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+      }) : null, !drawMode && !gameMode && isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
         id: "modeChoices",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
           onClick: function onClick() {
             return setDrawMode(true);
           },
           children: "Draw Mode"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
           onClick: function onClick() {
-            return setGameMode(true);
+            setGameMode(true);
+            sendData('GAME');
           },
           children: "Game Mode"
         })]
-      }) : null, drawMode && !isLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
+      }) : null, drawMode && !isLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
         onClick: handleSave,
         children: "SAVE"
-      }) : null, drawMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_frameChoices_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      }) : null, drawMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_frameChoices_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
         frames: frames,
         handleFrameChoice: handleFrameChoice
-      }) : null, drawMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_matrixButtons_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
+      }) : null, drawMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_matrixButtons_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
         mouseDown: mouseDown,
         sendRequests: sendRequests
+      }) : null, gameMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_pongController_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        sendData: sendData
       }) : null]
     })]
   });
 };
 var container = document.getElementById('root');
 var root = (0,react_dom_client__WEBPACK_IMPORTED_MODULE_1__.createRoot)(container);
-root.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(App, {}));
+root.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(App, {}));
 })();
 
 /******/ })()

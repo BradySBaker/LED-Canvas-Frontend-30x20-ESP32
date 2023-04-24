@@ -3,6 +3,7 @@ import React, {useState, useEffect, useRef} from "react";
 import { createRoot } from "react-dom/client";
 import MatrixButtons from "./matrixButtons.jsx";
 import FrameChoices from "./frameChoices.jsx";
+import PongController from "./pongController.jsx";
 
 import p5ble from 'p5ble';
 import { HexColorPicker } from "react-colorful";
@@ -178,14 +179,15 @@ var handleFrameChoice = (frame) => {
 		</div> : null}
 			<div id='app' onMouseDown={() => {setMouseDown(true);}} onMouseUp={() => setMouseDown(false)}>
 			{drawMode ? <button onClick={turnOff}>Turn Off</button> : null}
-			{!drawMode && !gameMode ?
+			{!drawMode && !gameMode && isConnected ?
 			<div id='modeChoices'>
 				<button onClick={() => setDrawMode(true)}>Draw Mode</button>
-				<button onClick={() => setGameMode(true)}>Game Mode</button>
+				<button onClick={() => {setGameMode(true); sendData('GAME')}}>Game Mode</button>
 			</div> : null}
 			{drawMode && !isLoading ? <button onClick={handleSave}>SAVE</button> : null}
 			{drawMode ? <FrameChoices frames={frames} handleFrameChoice={handleFrameChoice}/> : null}
 			{drawMode ? <MatrixButtons mouseDown={mouseDown} sendRequests={sendRequests}/> : null}
+			{gameMode ? <PongController sendData={sendData}/> : null}
 		</div>
 		</div>
 	)
