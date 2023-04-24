@@ -14,9 +14,63 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
 
 var FrameChoices = function FrameChoices(_ref) {
-  var frames = _ref.frames;
+  var frames = _ref.frames,
+    handleFrameChoice = _ref.handleFrameChoice;
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+    _useState2 = _slicedToArray(_useState, 2),
+    frameElements = _useState2[0],
+    setFrameElements = _useState2[1];
+  var createFrames = function createFrames() {
+    var newFrames = [];
+    frames.forEach(function (curFrame) {
+      var canvas = document.createElement('canvas');
+      canvas.width = 128;
+      canvas.height = 128;
+      var c = canvas.getContext("2d");
+      for (var y = 0; y < 16; y++) {
+        var curColumn = curFrame[y];
+        for (var x = 0; x < 16; x++) {
+          var yPos = x * canvas.width / 16;
+          var xPos = y * canvas.height / 16;
+          var curSquare = curColumn[x];
+          c.fillStyle = curSquare;
+          c.fillRect(xPos, yPos, 16, 16);
+        }
+      }
+      newFrames.push(canvas);
+    });
+    setFrameElements(newFrames);
+  };
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(createFrames, [frames]);
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+    id: "frameChoices",
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+      children: "Saved Frames"
+    }), frameElements.map(function (curElem, idx) {
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("canvas", {
+        onClick: function onClick() {
+          handleFrameChoice(idx);
+        },
+        className: "frame",
+        ref: function ref(canvas) {
+          canvas && canvas.getContext("2d").drawImage(curElem, 0, 0);
+        },
+        width: 128,
+        height: 128
+      });
+    })]
+  });
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (FrameChoices);
 
@@ -19654,12 +19708,15 @@ var App = function App() {
     sendData("COLORff0000");
   }
   function turnOff() {
+    var save = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
     for (var x = 0; x < 16; x++) {
       for (var y = 0; y < 16; y++) {
         document.getElementById("".concat(x, ",").concat(y)).style.backgroundColor = 'black';
       }
     }
-    sendRequests["off"] = true;
+    if (!save) {
+      sendRequests["off"] = true;
+    }
   }
   function sendData(command) {
     sending = true;
@@ -19682,6 +19739,7 @@ var App = function App() {
     sendRequests['color'] = "COLOR".concat(newColor.slice(1, newColor.length));
   };
   var handleSave = function handleSave() {
+    //Retrieves all matrix colors and adds them to matrix array
     var columnElements = document.getElementById('buttons').children;
     var curFrame = [];
     for (var y = 0; y < 16; y++) {
@@ -19693,9 +19751,13 @@ var App = function App() {
         curColumn.push(curColor);
       }
     }
-    console.log(curFrame);
-    setFrames([curFrame].concat(frames));
+    var newFrames = JSON.parse(JSON.stringify(frames));
+    newFrames.push(curFrame);
+    setFrames(newFrames);
+    turnOff(true);
+    sendData('save');
   };
+  var handleFrameChoice = function handleFrameChoice(frame) {};
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
     id: "colorApp",
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h1", {
@@ -19735,12 +19797,9 @@ var App = function App() {
         onClick: handleSave,
         children: "SAVE"
       }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_frameChoices_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
-        frames: frames
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
-        onClick: handleSave,
-        children: "DFJ#KEJF"
-      }), !isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_matrixButtons_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
-        setCurFrame: setCurFrame,
+        frames: frames,
+        handleFrameChoice: handleFrameChoice
+      }), isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_matrixButtons_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
         mouseDown: mouseDown,
         sendRequests: sendRequests
       }) : null]

@@ -105,13 +105,15 @@ setIsConnected(blueTooth.isConnected());
 function turnOn() {
   sendData("COLORff0000");
 }
-function turnOff() {
+function turnOff(save = false) {
 	for (var x = 0; x < 16; x++) {
 		for (var y = 0; y < 16; y++) {
 			document.getElementById(`${x},${y}`).style.backgroundColor = 'black';
 		}
 	}
-	sendRequests["off"] = true;
+	if (!save) {
+		sendRequests["off"] = true;
+	}
 }
 function sendData(command) {
 	sending = true;
@@ -135,6 +137,7 @@ const handleColor = (newColor) => {
 	sendRequests['color'] = `COLOR${newColor.slice(1, newColor.length)}`;
 }
 const handleSave = () => {
+	//Retrieves all matrix colors and adds them to matrix array
 	var columnElements = document.getElementById('buttons').children;
 	var curFrame = [];
 	for (var y = 0; y < 16; y++) {
@@ -146,8 +149,16 @@ const handleSave = () => {
 			curColumn.push(curColor);
 		}
 	}
-	console.log(curFrame);
-	setFrames([curFrame].concat(frames));
+	var newFrames = JSON.parse(JSON.stringify(frames));
+	newFrames.push(curFrame);
+	setFrames(newFrames);
+	turnOff(true);
+
+	sendData('save');
+};
+
+var handleFrameChoice = (frame) => {
+
 };
 
 	return (
@@ -162,9 +173,8 @@ const handleSave = () => {
 			{isConnected ? <button onClick={turnOff}>Turn Off</button> : null}
 			{!isConnected ? <button onClick={connectToBle}>Connect</button> : null}
 			{isConnected && !isLoading ? <button onClick={handleSave}>SAVE</button> : null}
-			<FrameChoices frames={frames}/>
-			<button onClick={handleSave}>DFJ#KEJF</button>
-			{!isConnected ? <MatrixButtons setCurFrame={setCurFrame} mouseDown={mouseDown} sendRequests={sendRequests}/> : null}
+			<FrameChoices frames={frames} handleFrameChoice={handleFrameChoice}/>
+			{isConnected ? <MatrixButtons mouseDown={mouseDown} sendRequests={sendRequests}/> : null}
 		</div>
 		</div>
 	)
