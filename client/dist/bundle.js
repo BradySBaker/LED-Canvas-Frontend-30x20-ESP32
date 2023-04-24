@@ -19628,6 +19628,14 @@ var App = function App() {
     _useState10 = _slicedToArray(_useState9, 2),
     curFrame = _useState10[0],
     setCurFrame = _useState10[1];
+  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState12 = _slicedToArray(_useState11, 2),
+    drawMode = _useState12[0],
+    setDrawMode = _useState12[1];
+  var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState14 = _slicedToArray(_useState13, 2),
+    gameMode = _useState14[0],
+    setGameMode = _useState14[1];
   var blueTooth = new (p5ble__WEBPACK_IMPORTED_MODULE_4___default())();
   function connectToBle() {
     blueTooth.connect('0000ffe0-0000-1000-8000-00805f9b34fb', gotCharacteristics);
@@ -19762,13 +19770,41 @@ var App = function App() {
   };
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
     id: "colorApp",
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h1", {
+    children: [isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h1", {
+      style: {
+        'color': 'blue',
+        'fontSize': '15px'
+      },
+      children: "Connected"
+    }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h1", {
+      style: {
+        'color': 'red',
+        'fontSize': '20px'
+      },
+      children: "Not connected"
+    }), !isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
+      onClick: connectToBle,
+      children: "Connect"
+    }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("h1", {
       id: "title",
-      children: "LED Canvas"
-    }), isLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("img", {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+        id: "title-line"
+      }), "LED Canvas"]
+    }), drawMode || gameMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
+      style: {
+        'position': 'absolute',
+        'right': '10%',
+        'fontSize': '20px'
+      },
+      onClick: function onClick() {
+        setDrawMode(false);
+        setGameMode(false);
+      },
+      children: "Back"
+    }) : null, isLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("img", {
       id: "loading",
       src: "./icons/loading.gif"
-    }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+    }) : null, drawMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
       className: "picker-container",
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_colorful__WEBPACK_IMPORTED_MODULE_6__.HexColorPicker, {
         style: {
@@ -19777,11 +19813,7 @@ var App = function App() {
         color: color,
         onChange: handleColor
       })
-    }), isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h1", {
-      children: "Connected"
-    }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h1", {
-      children: "Not connected"
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+    }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
       id: "app",
       onMouseDown: function onMouseDown() {
         setMouseDown(true);
@@ -19789,19 +19821,29 @@ var App = function App() {
       onMouseUp: function onMouseUp() {
         return setMouseDown(false);
       },
-      children: [isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
+      children: [drawMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
         onClick: turnOff,
         children: "Turn Off"
-      }) : null, !isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
-        onClick: connectToBle,
-        children: "Connect"
-      }) : null, isConnected && !isLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
+      }) : null, !drawMode && !gameMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+        id: "modeChoices",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
+          onClick: function onClick() {
+            return setDrawMode(true);
+          },
+          children: "Draw Mode"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
+          onClick: function onClick() {
+            return setGameMode(true);
+          },
+          children: "Game Mode"
+        })]
+      }) : null, drawMode && !isLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
         onClick: handleSave,
         children: "SAVE"
-      }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_frameChoices_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      }) : null, drawMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_frameChoices_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
         frames: frames,
         handleFrameChoice: handleFrameChoice
-      }), isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_matrixButtons_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
+      }) : null, drawMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_matrixButtons_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
         mouseDown: mouseDown,
         sendRequests: sendRequests
       }) : null]

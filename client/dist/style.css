@@ -1,3 +1,7 @@
+body {
+	background-color: rgb(232, 232, 232);
+}
+
 .hue-horizontal {
 	height: 1000px;
 }
@@ -28,13 +32,37 @@
 	top: 10px;
 	width: 70px;
 }
+#title-line {
+	position: absolute;
+	width: 400px;
+	height: 5px;
+	transform: translateY(-3.5px);
+	background: linear-gradient(to right, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff);
+	background-size: 200% auto;
+	animation: rainbow 10s ease infinite;
+	border-radius: 20px;
+}
 #title {
+	display: flex;
+  justify-content: center;
+	color: black;
 	font-weight: bold;
-	color: brown;
 	font-size: 50px;
-	text-decoration: overline;
 	text-align: center;
 }
+
+@keyframes rainbow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
 
 .picker-container {
 	display: flex;
@@ -52,11 +80,44 @@
 	margin-right: 30px;
 }
 .frame:hover {
-	animation: borderShrink .1s;
-	animation-fill-mode: forwards;
+	animation: borderShrink .1s forwards;
 }
 
 @keyframes borderShrink {
   from {border-radius: 5px}
   to {border-radius: 10px}
+}
+
+
+#modeChoices {
+	margin: auto auto;
+	width: 80vw;
+	height: 30vw;
+	display: flex;
+  justify-content: center;
+	align-items: center;
+	gap: 8vw;
+	border: 2px solid black;
+	background-color: rgb(255, 255, 255);
+	border-radius: 10px;
+	box-shadow: 0px 20px 50px -10px rgba(0, 0, 0, 0.2);
+
+}
+
+
+#modeChoices button {
+	box-shadow: 0px 10px 30px 10px rgba(52, 52, 52, 0.311);
+	background-color: #55c2da;
+  width: 20vw;
+  height: 10vw;
+	font-size: 2vw;
+	font-weight: bold;
+}
+
+#modeChoices button:hover {
+	animation: button .7s forwards;
+}
+
+@keyframes button {
+	to {background-color:rgba(5, 1, 105, 0.287); border-radius: 10px;}
 }

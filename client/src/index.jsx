@@ -21,6 +21,8 @@ const App = function() {
 	const [isLoading, setIsLoading] = useState(false);
 	const [frames, setFrames] = useState([]);
 	const [curFrame, setCurFrame] = useState([]);
+	const [drawMode, setDrawMode] = useState(false);
+	const [gameMode, setGameMode] = useState(false);
 
 let blueTooth = new p5ble();
 function connectToBle() {
@@ -163,18 +165,27 @@ var handleFrameChoice = (frame) => {
 
 	return (
 		<div id='colorApp'>
-			<h1 id='title'>LED Canvas</h1>
-			{isLoading ? <img id='loading' src='./icons/loading.gif'></img> : null}
-		<div className="picker-container">
-			<HexColorPicker style={{height: 'calc(90vw * 0.5)'}} color={color} onChange={handleColor} />
-		</div>
-		{isConnected ? <h1 >Connected</h1> : <h1 >Not connected</h1>}
-			<div id='app' onMouseDown={() => {setMouseDown(true);}} onMouseUp={() => setMouseDown(false)}>
-			{isConnected ? <button onClick={turnOff}>Turn Off</button> : null}
+			{isConnected ? <h1 style={{'color': 'blue', 'fontSize': '15px'}}>Connected</h1> : <h1 style={{'color': 'red', 'fontSize': '20px'}}>Not connected</h1>}
 			{!isConnected ? <button onClick={connectToBle}>Connect</button> : null}
-			{isConnected && !isLoading ? <button onClick={handleSave}>SAVE</button> : null}
-			<FrameChoices frames={frames} handleFrameChoice={handleFrameChoice}/>
-			{isConnected ? <MatrixButtons mouseDown={mouseDown} sendRequests={sendRequests}/> : null}
+			<h1 id='title'>
+			<div id='title-line'></div>
+				LED Canvas
+			</h1>
+			{drawMode || gameMode ? <button style={{'position': 'absolute', 'right': '10%', 'fontSize': '20px'}} onClick={() => {setDrawMode(false); setGameMode(false);}}>Back</button> : null}
+			{isLoading ? <img id='loading' src='./icons/loading.gif'></img> : null}
+		{drawMode ? <div className="picker-container">
+			<HexColorPicker style={{height: 'calc(90vw * 0.5)'}} color={color} onChange={handleColor} />
+		</div> : null}
+			<div id='app' onMouseDown={() => {setMouseDown(true);}} onMouseUp={() => setMouseDown(false)}>
+			{drawMode ? <button onClick={turnOff}>Turn Off</button> : null}
+			{!drawMode && !gameMode ?
+			<div id='modeChoices'>
+				<button onClick={() => setDrawMode(true)}>Draw Mode</button>
+				<button onClick={() => setGameMode(true)}>Game Mode</button>
+			</div> : null}
+			{drawMode && !isLoading ? <button onClick={handleSave}>SAVE</button> : null}
+			{drawMode ? <FrameChoices frames={frames} handleFrameChoice={handleFrameChoice}/> : null}
+			{drawMode ? <MatrixButtons mouseDown={mouseDown} sendRequests={sendRequests}/> : null}
 		</div>
 		</div>
 	)
