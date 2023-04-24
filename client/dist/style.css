@@ -89,7 +89,8 @@ body {
 }
 
 
-#modeChoices {
+#modeChoices, #pong-controller {
+	touch-action: manipulation;
 	margin: auto auto;
 	width: 80vw;
 	height: 30vw;
@@ -105,7 +106,7 @@ body {
 }
 
 
-#modeChoices button {
+#modeChoices button, #pong-controller button {
 	box-shadow: 0px 10px 30px 10px rgba(52, 52, 52, 0.311);
 	background-color: #55c2da;
   width: 20vw;
@@ -114,7 +115,7 @@ body {
 	font-weight: bold;
 }
 
-#modeChoices button:hover {
+#modeChoices button:hover, #pong-controller button:hover {
 	animation: button .7s forwards;
 }
 
