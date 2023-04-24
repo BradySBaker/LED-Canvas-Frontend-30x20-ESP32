@@ -105,7 +105,7 @@ setIsConnected(blueTooth.isConnected());
 function turnOn() {
   sendData("COLORff0000");
 }
-function turnOff(save = false) {
+function turnOff(e, save = false) {
 	for (var x = 0; x < 16; x++) {
 		for (var y = 0; y < 16; y++) {
 			document.getElementById(`${x},${y}`).style.backgroundColor = 'black';
@@ -152,13 +152,13 @@ const handleSave = () => {
 	var newFrames = JSON.parse(JSON.stringify(frames));
 	newFrames.push(curFrame);
 	setFrames(newFrames);
-	turnOff(true);
+	turnOff(null, true);
 
 	sendData('save');
 };
 
 var handleFrameChoice = (frame) => {
-
+	sendData(`F${frame}`);
 };
 
 	return (

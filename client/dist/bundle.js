@@ -19707,8 +19707,8 @@ var App = function App() {
   function turnOn() {
     sendData("COLORff0000");
   }
-  function turnOff() {
-    var save = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+  function turnOff(e) {
+    var save = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
     for (var x = 0; x < 16; x++) {
       for (var y = 0; y < 16; y++) {
         document.getElementById("".concat(x, ",").concat(y)).style.backgroundColor = 'black';
@@ -19754,10 +19754,12 @@ var App = function App() {
     var newFrames = JSON.parse(JSON.stringify(frames));
     newFrames.push(curFrame);
     setFrames(newFrames);
-    turnOff(true);
+    turnOff(null, true);
     sendData('save');
   };
-  var handleFrameChoice = function handleFrameChoice(frame) {};
+  var handleFrameChoice = function handleFrameChoice(frame) {
+    sendData("F".concat(frame));
+  };
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
     id: "colorApp",
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h1", {
