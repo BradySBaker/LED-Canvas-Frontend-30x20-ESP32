@@ -32,7 +32,7 @@ function connectToBle() {
 
 var handleSendRequests = () => { //Occurs every 20ms
 	sendingTimer++;
-	if (sendingTimer >= 1000) {
+	if (sendingTimer >= 350) {
 		sending = false;
 	}
 	if (Object.keys(sendRequests).length === 0) {
