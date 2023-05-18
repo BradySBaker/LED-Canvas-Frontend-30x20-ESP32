@@ -26,11 +26,24 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 var FrameChoices = function FrameChoices(_ref) {
   var frames = _ref.frames,
-    handleFrameChoice = _ref.handleFrameChoice;
+    handleFrameChoice = _ref.handleFrameChoice,
+    frameCount = _ref.frameCount;
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
     _useState2 = _slicedToArray(_useState, 2),
     frameElements = _useState2[0],
     setFrameElements = _useState2[1];
+  var prevFrameElements = [];
+  var createPrevFrames = function createPrevFrames() {
+    for (var i = 0; i < frameCount; i++) {
+      prevFrameElements.push( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+        onClick: function onClick() {
+          handleFrameChoice(i);
+        },
+        className: "prevFrame",
+        children: ["Prev Frame", i]
+      }));
+    }
+  };
   var createFrames = function createFrames() {
     var newFrames = [];
     frames.forEach(function (curFrame, idx) {
@@ -52,15 +65,18 @@ var FrameChoices = function FrameChoices(_ref) {
     });
     setFrameElements(newFrames);
   };
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(createPrevFrames, []);
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(createFrames, [frames]);
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
     id: "frameChoices",
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
       children: "Saved Frames"
+    }), prevFrameElements.map(function (curElem) {
+      return curElem;
     }), frameElements.map(function (curElem, idx) {
       return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("canvas", {
         onClick: function onClick() {
-          handleFrameChoice(idx);
+          handleFrameChoice(frames[idx][16]); /* 16 contains name */
         },
         className: "frame",
         ref: function ref(canvas) {
@@ -19636,6 +19652,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
 var blueToothCharacteristic;
 var sending = false;
 window.sendRequests = {
@@ -19673,6 +19690,14 @@ var App = function App() {
     _useState14 = _slicedToArray(_useState13, 2),
     gameMode = _useState14[0],
     setGameMode = _useState14[1];
+  var _useState15 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
+    _useState16 = _slicedToArray(_useState15, 2),
+    frameCount = _useState16[0],
+    setFrameCount = _useState16[1];
+  var _useState17 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState18 = _slicedToArray(_useState17, 2),
+    inputError = _useState18[0],
+    setInputError = _useState18[1];
   var blueTooth = new (p5ble__WEBPACK_IMPORTED_MODULE_5___default())();
   function connectToBle() {
     blueTooth.connect('0000ffe0-0000-1000-8000-00805f9b34fb', gotCharacteristics);
@@ -19680,7 +19705,7 @@ var App = function App() {
   var handleSendRequests = function handleSendRequests() {
     //Occurs every 20ms
     sendingTimer++;
-    if (sendingTimer >= 1000) {
+    if (sendingTimer >= 550) {
       sending = false;
     }
     if (Object.keys(sendRequests).length === 0) {
@@ -19730,6 +19755,10 @@ var App = function App() {
     setIsConnected(false);
   }
   function gotValue(value) {
+    if (!isNaN(Number(value))) {
+      setFrameCount(Number(value));
+      sendData("COLORff0000");
+    }
     sending = false;
   }
 
@@ -19749,7 +19778,7 @@ var App = function App() {
   }
 
   function turnOn() {
-    sendData("COLORff0000");
+    sendData("count");
   }
   function turnOff(e) {
     var save = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
@@ -19783,26 +19812,34 @@ var App = function App() {
     sendRequests['color'] = "COLOR".concat(newColor.slice(1, newColor.length));
   };
   var handleSave = function handleSave() {
-    //Retrieves all matrix colors and adds them to matrix array
-    var columnElements = document.getElementById('buttons').children;
-    var curFrame = [];
-    for (var y = 0; y < 16; y++) {
-      curFrame.push([]);
-      var curColumn = curFrame[y];
-      for (var x = 0; x < 16; x++) {
-        var curSquare = columnElements[y].children[x];
-        var curColor = window.getComputedStyle(curSquare).getPropertyValue("background-color");
-        curColumn.push(curColor);
+    setInputError(false);
+    var inputElement = document.getElementById('drawName');
+    var name = inputElement.value;
+    if (name.length > 0) {
+      //Retrieves all matrix colors and adds them to matrix array
+      var columnElements = document.getElementById('buttons').children;
+      var curFrame = [];
+      for (var y = 0; y < 16; y++) {
+        curFrame.push([]);
+        var curColumn = curFrame[y];
+        for (var x = 0; x < 16; x++) {
+          var curSquare = columnElements[y].children[x];
+          var curColor = window.getComputedStyle(curSquare).getPropertyValue("background-color");
+          curColumn.push(curColor);
+        }
       }
+      curFrame[16] = name; //Set 16th column to name of frame
+      var newFrames = JSON.parse(JSON.stringify(frames));
+      newFrames.push(curFrame);
+      setFrames(newFrames);
+      turnOff(null, true);
+      sendData('S' + name);
+    } else {
+      setInputError("Please input a name for your drawing");
     }
-    var newFrames = JSON.parse(JSON.stringify(frames));
-    newFrames.push(curFrame);
-    setFrames(newFrames);
-    turnOff(null, true);
-    sendData('save');
   };
-  var handleFrameChoice = function handleFrameChoice(frame) {
-    sendData("F".concat(frame));
+  var handleFrameChoice = function handleFrameChoice(frameName) {
+    sendData("F".concat(frameName));
   };
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
     id: "colorApp",
@@ -19874,10 +19911,23 @@ var App = function App() {
           },
           children: "Game Mode"
         })]
-      }) : null, drawMode && !isLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
-        onClick: handleSave,
-        children: "SAVE"
+      }) : null, inputError ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+        style: {
+          "color": "red"
+        },
+        children: inputError
+      }) : null, drawMode && !isLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.Fragment, {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
+          onClick: handleSave,
+          children: "SAVE"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("input", {
+          id: "drawName",
+          type: "text",
+          placeholder: "drawing...",
+          maxLength: "7"
+        })]
       }) : null, drawMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_frameChoices_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        frameCount: frameCount,
         frames: frames,
         handleFrameChoice: handleFrameChoice
       }) : null, drawMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_matrixButtons_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {

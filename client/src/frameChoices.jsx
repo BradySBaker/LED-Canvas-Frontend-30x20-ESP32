@@ -1,8 +1,16 @@
 import React, {useState, useEffect, useRef} from 'react';
 
-const FrameChoices = ({frames, handleFrameChoice}) => {
+const FrameChoices = ({frames, handleFrameChoice, frameCount}) => {
 
 	const [frameElements, setFrameElements] = useState([]);
+	var prevFrameElements = [];
+
+
+	const createPrevFrames = () => {
+		for (var i = 0; i < frameCount; i++) {
+			prevFrameElements.push(<div onClick={() => {handleFrameChoice(i)}} className='prevFrame'>Prev Frame{i}</div>);
+		}
+	}
 
 	const createFrames = () => {
 		var newFrames = [];
@@ -26,14 +34,18 @@ const FrameChoices = ({frames, handleFrameChoice}) => {
 		});
 		setFrameElements(newFrames)
 	}
+	useEffect(createPrevFrames, []);
 
 	useEffect(createFrames,[frames]);
 
 	return (
 		<div id='frameChoices'>
 			<div>Saved Frames</div>
+			{prevFrameElements.map((curElem) => {
+				return curElem;
+			})}
 			{frameElements.map((curElem, idx) => {
-				return <canvas onClick={() => {handleFrameChoice(idx)}} className='frame' ref={(canvas) => {canvas && canvas.getContext("2d").drawImage(curElem, 0, 0);}} width={128} height={128}></canvas>
+				return <canvas onClick={() => {handleFrameChoice(frames[idx][16])/* 16 contains name */}} className='frame' ref={(canvas) => {canvas && canvas.getContext("2d").drawImage(curElem, 0, 0);}} width={128} height={128}></canvas>
 			})}
 		</div>
 	)

@@ -24,6 +24,8 @@ const App = function() {
 	const [curFrame, setCurFrame] = useState([]);
 	const [drawMode, setDrawMode] = useState(false);
 	const [gameMode, setGameMode] = useState(false);
+	const [frameCount, setFrameCount] = useState(null);
+	const [inputError, setInputError] = useState(false);
 
 let blueTooth = new p5ble();
 function connectToBle() {
@@ -32,7 +34,7 @@ function connectToBle() {
 
 var handleSendRequests = () => { //Occurs every 20ms
 	sendingTimer++;
-	if (sendingTimer >= 350) {
+	if (sendingTimer >= 550) {
 		sending = false;
 	}
 	if (Object.keys(sendRequests).length === 0) {
@@ -85,6 +87,11 @@ function onDisconnected() {
 }
 
 function gotValue(value) {
+	if (!isNaN(Number(value))) {
+		setFrameCount(Number(value));
+		sendData("COLORff0000");
+	}
+
 	sending = false;
 }
 
@@ -105,8 +112,9 @@ setIsConnected(blueTooth.isConnected());
 }
 
 function turnOn() {
-  sendData("COLORff0000");
+	sendData("count");
 }
+
 function turnOff(e, save = false) {
 	for (var x = 0; x < 16; x++) {
 		for (var y = 0; y < 16; y++) {
@@ -139,28 +147,36 @@ const handleColor = (newColor) => {
 	sendRequests['color'] = `COLOR${newColor.slice(1, newColor.length)}`;
 }
 const handleSave = () => {
-	//Retrieves all matrix colors and adds them to matrix array
-	var columnElements = document.getElementById('buttons').children;
-	var curFrame = [];
-	for (var y = 0; y < 16; y++) {
-		curFrame.push([]);
-		var curColumn = curFrame[y];
-		for (var x = 0; x < 16; x++) {
-			var curSquare = columnElements[y].children[x];
-			var curColor = window.getComputedStyle(curSquare).getPropertyValue("background-color");
-			curColumn.push(curColor);
+	setInputError(false);
+	var inputElement = document.getElementById('drawName');
+	var name = inputElement.value;
+	if (name.length > 0) {
+			//Retrieves all matrix colors and adds them to matrix array
+		var columnElements = document.getElementById('buttons').children;
+		var curFrame = [];
+		for (var y = 0; y < 16; y++) {
+			curFrame.push([]);
+			var curColumn = curFrame[y];
+			for (var x = 0; x < 16; x++) {
+				var curSquare = columnElements[y].children[x];
+				var curColor = window.getComputedStyle(curSquare).getPropertyValue("background-color");
+				curColumn.push(curColor);
+			}
 		}
-	}
-	var newFrames = JSON.parse(JSON.stringify(frames));
-	newFrames.push(curFrame);
-	setFrames(newFrames);
-	turnOff(null, true);
+		curFrame[16] = name; //Set 16th column to name of frame
+		var newFrames = JSON.parse(JSON.stringify(frames));
+		newFrames.push(curFrame);
+		setFrames(newFrames);
+		turnOff(null, true);
 
-	sendData('save');
+		sendData('S' + name);
+	} else {
+		setInputError("Please input a name for your drawing");
+	}
 };
 
-var handleFrameChoice = (frame) => {
-	sendData(`F${frame}`);
+var handleFrameChoice = (frameName) => {
+	sendData(`F${frameName}`);
 };
 
 	return (
@@ -183,8 +199,13 @@ var handleFrameChoice = (frame) => {
 				<button onClick={() => setDrawMode(true)}>Draw Mode</button>
 				<button onClick={() => {setGameMode(true); sendData('GAME')}}>Game Mode</button>
 			</div> : null}
-			{drawMode && !isLoading ? <button onClick={handleSave}>SAVE</button> : null}
-			{drawMode ? <FrameChoices frames={frames} handleFrameChoice={handleFrameChoice}/> : null}
+			{inputError ? <div style={{"color": "red"}}>{inputError}</div>: null}
+			{drawMode && !isLoading ?
+			<>
+			<button onClick={handleSave}>SAVE</button>
+			<input id="drawName" type="text" placeholder="drawing..." maxLength="7"></input>
+			</>: null}
+			{drawMode ? <FrameChoices frameCount={frameCount} frames={frames} handleFrameChoice={handleFrameChoice}/> : null}
 			{drawMode ? <MatrixButtons mouseDown={mouseDown} sendRequests={sendRequests}/> : null}
 			{gameMode ? <PongController sendData={sendData}/> : null}
 		</div>
