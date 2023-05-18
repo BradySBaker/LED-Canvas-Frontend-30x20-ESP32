@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
 
-const FrameChoices = ({frames, handleFrameChoice, prevFrameNames}) => {
+const FrameChoices = ({frames, handleFrameChoice, prevFrameNames, handleDelete}) => {
 
 	const [frameElements, setFrameElements] = useState([]);
 
@@ -32,11 +32,21 @@ const FrameChoices = ({frames, handleFrameChoice, prevFrameNames}) => {
 	return (
 		<div id='frameChoices'>
 			<div>Saved Frames</div>
-			{prevFrameNames.map((curName) => {
-			return <button onClick={() => {handleFrameChoice(curName)}}>{curName}</button>
+			{prevFrameNames.map((curName, idx) => {
+			return(
+			<div className='prevFrameBox'>
+				<button style={{'color': 'blue', 'fontSize': '15px'}} onClick={() => {handleFrameChoice(curName)}}>{curName}</button>
+				<button style={{'color': 'red'}} onClick={() => {handleDelete(curName, idx, 'prev');}}>delete</button>
+			</div>
+			)
 			})}
 			{frameElements.map((curElem, idx) => {
-				return <canvas onClick={() => {handleFrameChoice(frames[idx][16])/* 16 contains name */}} className='frame' ref={(canvas) => {canvas && canvas.getContext("2d").drawImage(curElem, 0, 0);}} width={128} height={128}></canvas>
+				return(
+				<div className='frameBox'>
+					<canvas onClick={() => {handleFrameChoice(frames[idx][16])/* 16 contains name */}} className='frame' ref={(canvas) => {canvas && canvas.getContext("2d").drawImage(curElem, 0, 0);}} width={128} height={128}></canvas>
+					<button style={{'color': 'red'}} onClick={() => {handleDelete(frames[idx][16]); setFrameElements(frameElements.slice(0, idx).concat(frameElements.slice(idx+1)))}}>delete</button>
+				</div>
+				)
 			})}
 		</div>
 	)

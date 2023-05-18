@@ -27,7 +27,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 var FrameChoices = function FrameChoices(_ref) {
   var frames = _ref.frames,
     handleFrameChoice = _ref.handleFrameChoice,
-    prevFrameNames = _ref.prevFrameNames;
+    prevFrameNames = _ref.prevFrameNames,
+    handleDelete = _ref.handleDelete;
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
     _useState2 = _slicedToArray(_useState, 2),
     frameElements = _useState2[0],
@@ -58,24 +59,51 @@ var FrameChoices = function FrameChoices(_ref) {
     id: "frameChoices",
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
       children: "Saved Frames"
-    }), prevFrameNames.map(function (curName) {
-      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
-        onClick: function onClick() {
-          handleFrameChoice(curName);
-        },
-        children: curName
+    }), prevFrameNames.map(function (curName, idx) {
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+        className: "prevFrameBox",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
+          style: {
+            'color': 'blue',
+            'fontSize': '15px'
+          },
+          onClick: function onClick() {
+            handleFrameChoice(curName);
+          },
+          children: curName
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
+          style: {
+            'color': 'red'
+          },
+          onClick: function onClick() {
+            handleDelete(curName, idx, 'prev');
+          },
+          children: "delete"
+        })]
       });
     }), frameElements.map(function (curElem, idx) {
-      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("canvas", {
-        onClick: function onClick() {
-          handleFrameChoice(frames[idx][16]); /* 16 contains name */
-        },
-        className: "frame",
-        ref: function ref(canvas) {
-          canvas && canvas.getContext("2d").drawImage(curElem, 0, 0);
-        },
-        width: 128,
-        height: 128
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+        className: "frameBox",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("canvas", {
+          onClick: function onClick() {
+            handleFrameChoice(frames[idx][16]); /* 16 contains name */
+          },
+          className: "frame",
+          ref: function ref(canvas) {
+            canvas && canvas.getContext("2d").drawImage(curElem, 0, 0);
+          },
+          width: 128,
+          height: 128
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
+          style: {
+            'color': 'red'
+          },
+          onClick: function onClick() {
+            handleDelete(frames[idx][16]);
+            setFrameElements(frameElements.slice(0, idx).concat(frameElements.slice(idx + 1)));
+          },
+          children: "delete"
+        })]
       });
     })]
   });
@@ -19698,9 +19726,6 @@ var App = function App() {
   }
   var handleSendRequests = function handleSendRequests() {
     //Occurs every 20ms
-    if (waitingForFrames) {
-      return;
-    }
     sendingTimer++;
     if (sendingTimer >= 550) {
       sending = false;
@@ -19710,7 +19735,7 @@ var App = function App() {
     } else if (!isLoading && ledConnected) {
       setIsLoading(true);
     }
-    if (!sending && ledConnected) {
+    if (!sending && ledConnected && !waitingForFrames) {
       sendingTimer = 0;
       var toBeSent = '';
       var positions = 0;
@@ -19823,9 +19848,8 @@ var App = function App() {
     var inputElement = document.getElementById('drawName');
     var name = inputElement.value;
     if (name.length > 0) {
-      var fileName = "myFile.txt";
       var regex = /^[a-zA-Z0-9_\-]+$/; // valid characters are letters, numbers, underscores, and dashes
-      if (!regex.test(fileName)) {
+      if (!regex.test(name)) {
         // the name is invalid
         setInputError("Invalid character");
         return;
@@ -19854,6 +19878,12 @@ var App = function App() {
   };
   var handleFrameChoice = function handleFrameChoice(frameName) {
     sendData("F".concat(frameName));
+  };
+  var handleDelete = function handleDelete(frameName, idx, type) {
+    if (type === 'prev') {
+      setPrevFrameNames(prevFrameNames.slice(0, idx).concat(prevFrameNames.slice(idx + 1)));
+    }
+    sendData("D".concat(frameName));
   };
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
     id: "colorApp",
@@ -19943,7 +19973,8 @@ var App = function App() {
       }) : null, drawMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_frameChoices_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
         prevFrameNames: prevFrameNames,
         frames: frames,
-        handleFrameChoice: handleFrameChoice
+        handleFrameChoice: handleFrameChoice,
+        handleDelete: handleDelete
       }) : null, drawMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_matrixButtons_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
         mouseDown: mouseDown,
         sendRequests: sendRequests

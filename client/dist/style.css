@@ -122,3 +122,12 @@ body {
 @keyframes button {
 	to {background-color:rgba(5, 1, 105, 0.287); border-radius: 10px;}
 }
+
+.frameBox, .prevFrameBox {
+	margin: auto auto;
+	display: inline-block;
+}
+
+.frameBox button, .prevFrameBox button{
+	display: block;
+}

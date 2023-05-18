@@ -37,9 +37,6 @@ function connectToBle() {
 }
 
 var handleSendRequests = () => { //Occurs every 20ms
-	if (waitingForFrames) {
-		return;
-	}
 	sendingTimer++;
 	if (sendingTimer >= 550) {
 		sending = false;
@@ -49,7 +46,7 @@ var handleSendRequests = () => { //Occurs every 20ms
 	} else if (!isLoading && ledConnected) {
 		setIsLoading(true);
 	}
-	if ((!sending && ledConnected)) {
+	if ((!sending && ledConnected && !waitingForFrames)) {
 		sendingTimer = 0;
 		var toBeSent = '';
 		var positions = 0;
@@ -161,14 +158,14 @@ const handleColor = (newColor) => {
 	color = newColor;
 	sendRequests['color'] = `COLOR${newColor.slice(1, newColor.length)}`;
 }
+
 const handleSave = () => {
 	setInputError(false);
 	var inputElement = document.getElementById('drawName');
 	var name = inputElement.value;
 	if (name.length > 0) {
-		const fileName = "myFile.txt";
 		const regex = /^[a-zA-Z0-9_\-]+$/; // valid characters are letters, numbers, underscores, and dashes
-		if (!regex.test(fileName)) {
+		if (!regex.test(name)) {
 			// the name is invalid
 			setInputError("Invalid character");
 			return;
@@ -197,9 +194,17 @@ const handleSave = () => {
 	}
 };
 
-var handleFrameChoice = (frameName) => {
+const handleFrameChoice = (frameName) => {
 	sendData(`F${frameName}`);
 };
+
+const handleDelete = (frameName, idx, type) => {
+	if (type === 'prev') {
+		setPrevFrameNames(prevFrameNames.slice(0, idx).concat(prevFrameNames.slice(idx+1)))
+	}
+	sendData(`D${frameName}`);
+}
+
 
 	return (
 		<div id='colorApp'>
@@ -227,7 +232,7 @@ var handleFrameChoice = (frameName) => {
 			<button onClick={handleSave}>SAVE</button>
 			<input id="drawName" type="text" placeholder="drawing..." maxLength="7"></input>
 			</>: null}
-			{drawMode ? <FrameChoices prevFrameNames={prevFrameNames} frames={frames} handleFrameChoice={handleFrameChoice}/> : null}
+			{drawMode ? <FrameChoices prevFrameNames={prevFrameNames} frames={frames} handleFrameChoice={handleFrameChoice} handleDelete={handleDelete}/> : null}
 			{drawMode ? <MatrixButtons mouseDown={mouseDown} sendRequests={sendRequests}/> : null}
 			{gameMode ? <PongController sendData={sendData}/> : null}
 		</div>
