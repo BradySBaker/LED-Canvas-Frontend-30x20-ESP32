@@ -19726,6 +19726,7 @@ var App = function App() {
   }
   var handleSendRequests = function handleSendRequests() {
     //Occurs every 20ms
+    console.log(waitingForFrames);
     sendingTimer++;
     if (sendingTimer >= 550) {
       sending = false;
@@ -19777,6 +19778,7 @@ var App = function App() {
     setIsConnected(false);
   }
   function gotValue(value) {
+    console.log(value);
     if (waitingForFrames) {
       names += value;
       if (value.includes('~')) {
@@ -19810,7 +19812,9 @@ var App = function App() {
   }
 
   function turnOn() {
-    sendData("names");
+    setTimeout(function () {
+      sendData("names");
+    }, 100);
   }
   function turnOff(e) {
     var save = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
@@ -19887,7 +19891,9 @@ var App = function App() {
   };
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
     id: "colorApp",
-    children: [isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("h1", {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+      children: "Version 2.0"
+    }), isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("h1", {
       style: {
         'color': 'blue',
         'fontSize': '15px'

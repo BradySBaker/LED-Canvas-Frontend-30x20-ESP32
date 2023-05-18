@@ -37,6 +37,7 @@ function connectToBle() {
 }
 
 var handleSendRequests = () => { //Occurs every 20ms
+	console.log(waitingForFrames);
 	sendingTimer++;
 	if (sendingTimer >= 550) {
 		sending = false;
@@ -91,6 +92,7 @@ function onDisconnected() {
 }
 
 function gotValue(value) {
+	console.log(value);
 	if (waitingForFrames) {
 		names += value;
 		if (value.includes('~')) {
@@ -124,7 +126,7 @@ setIsConnected(blueTooth.isConnected());
 }
 
 function turnOn() {
-	sendData("names");
+	setTimeout(() => {sendData("names");}, 100);
 }
 
 function turnOff(e, save = false) {
@@ -208,6 +210,7 @@ const handleDelete = (frameName, idx, type) => {
 
 	return (
 		<div id='colorApp'>
+			<div>Version 2.0</div>
 			{isConnected ? <h1 style={{'color': 'blue', 'fontSize': '15px'}}>Connected</h1> : <h1 style={{'color': 'red', 'fontSize': '20px'}}>Not connected</h1>}
 			{!isConnected ? <button onClick={connectToBle}>Connect</button> : null}
 			<h1 id='title'>
