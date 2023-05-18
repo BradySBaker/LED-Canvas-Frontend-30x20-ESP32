@@ -28,7 +28,9 @@ var FrameChoices = function FrameChoices(_ref) {
   var frames = _ref.frames,
     handleFrameChoice = _ref.handleFrameChoice,
     prevFrameNames = _ref.prevFrameNames,
-    handleDelete = _ref.handleDelete;
+    handleDelete = _ref.handleDelete,
+    anims = _ref.anims,
+    handleSave = _ref.handleSave;
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
     _useState2 = _slicedToArray(_useState, 2),
     frameElements = _useState2[0],
@@ -99,8 +101,36 @@ var FrameChoices = function FrameChoices(_ref) {
             'color': 'red'
           },
           onClick: function onClick() {
-            handleDelete(frames[idx][16]);
-            setFrameElements(frameElements.slice(0, idx).concat(frameElements.slice(idx + 1)));
+            handleDelete(frames[idx][16], idx);
+          },
+          children: "delete"
+        })]
+      });
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+      children: "Saved Animations"
+    }), anims.map(function (curName, idx) {
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+        className: "prevFrameBox",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
+          style: {
+            'color': 'blue',
+            'fontSize': '15px'
+          },
+          onClick: function onClick() {
+            handleFrameChoice(curName, true);
+          },
+          children: curName
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
+          onClick: function onClick(e) {
+            return handleSave(e, true, curName);
+          },
+          children: "Add"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
+          style: {
+            'color': 'red'
+          },
+          onClick: function onClick() {
+            handleDelete(curName, idx, 'animation');
           },
           children: "delete"
         })]
@@ -19720,13 +19750,16 @@ var App = function App() {
     _useState18 = _slicedToArray(_useState17, 2),
     inputError = _useState18[0],
     setInputError = _useState18[1];
+  var _useState19 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+    _useState20 = _slicedToArray(_useState19, 2),
+    anims = _useState20[0],
+    setAnims = _useState20[1];
   var blueTooth = new (p5ble__WEBPACK_IMPORTED_MODULE_5___default())();
   function connectToBle() {
     blueTooth.connect('0000ffe0-0000-1000-8000-00805f9b34fb', gotCharacteristics);
   }
   var handleSendRequests = function handleSendRequests() {
     //Occurs every 20ms
-    console.log(waitingForFrames);
     sendingTimer++;
     if (sendingTimer >= 550) {
       sending = false;
@@ -19786,7 +19819,7 @@ var App = function App() {
         var correctNames = [];
         names.split(',').forEach(function (curName) {
           //Cleanup weird name values
-          if (curName !== "SYST" && curName !== "~" && curName.length > 0) {
+          if (curName !== "~" && curName.length > 0) {
             correctNames.push(curName);
           }
         });
@@ -19823,9 +19856,7 @@ var App = function App() {
         document.getElementById("".concat(x, ",").concat(y)).style.backgroundColor = 'black';
       }
     }
-    if (!save) {
-      sendRequests["off"] = true;
-    }
+    sendRequests["off"] = true;
   }
   function sendData(command) {
     sending = true;
@@ -19847,15 +19878,24 @@ var App = function App() {
     color = newColor;
     sendRequests['color'] = "COLOR".concat(newColor.slice(1, newColor.length));
   };
-  var handleSave = function handleSave() {
+  var handleSave = function handleSave(e, animation) {
+    var animName = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : document.getElementById('animName').value;
     setInputError(false);
-    var inputElement = document.getElementById('drawName');
-    var name = inputElement.value;
-    if (name.length > 0) {
+    var drawName = document.getElementById('drawName').value;
+    if (drawName.length > 0 || animName.length > 0) {
       var regex = /^[a-zA-Z0-9_\-]+$/; // valid characters are letters, numbers, underscores, and dashes
-      if (!regex.test(name)) {
+      if (!regex.test(drawName) && !animation || !regex.test(animName) && animation) {
         // the name is invalid
         setInputError("Invalid character");
+        return;
+      }
+      if (animation) {
+        if (!anims.includes(animName)) {
+          var newAnims = JSON.parse(JSON.stringify(anims));
+          newAnims.push(animName);
+          setAnims(newAnims);
+        }
+        sendData('A' + animName);
         return;
       }
       //Retrieves all matrix colors and adds them to matrix array
@@ -19870,22 +19910,28 @@ var App = function App() {
           curColumn.push(curColor);
         }
       }
-      curFrame[16] = name; //Set 16th column to name of frame
+      curFrame[16] = drawName; //Set 16th column to name of frame
       var newFrames = JSON.parse(JSON.stringify(frames));
       newFrames.push(curFrame);
       setFrames(newFrames);
       turnOff(null, true);
-      sendData('S' + name);
+      sendData('S' + drawName);
     } else {
       setInputError("Please input a name for your drawing");
     }
   };
-  var handleFrameChoice = function handleFrameChoice(frameName) {
+  var handleFrameChoice = function handleFrameChoice(frameName, animation) {
+    if (animation) {
+      sendData("I".concat(frameName));
+      return;
+    }
     sendData("F".concat(frameName));
   };
   var handleDelete = function handleDelete(frameName, idx, type) {
     if (type === 'prev') {
       setPrevFrameNames(prevFrameNames.slice(0, idx).concat(prevFrameNames.slice(idx + 1)));
+    } else {
+      setFrames(frames.slice(0, idx).concat(frames.slice(idx + 1)));
     }
     sendData("D".concat(frameName));
   };
@@ -19969,14 +20015,26 @@ var App = function App() {
       }) : null, drawMode && !isLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.Fragment, {
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
           onClick: handleSave,
-          children: "SAVE"
+          children: "Save Drawing"
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("input", {
           id: "drawName",
           type: "text",
           placeholder: "drawing...",
           maxLength: "7"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
+          onClick: function onClick(e) {
+            return handleSave(e, true);
+          },
+          children: "Save Frame"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("input", {
+          id: "animName",
+          type: "text",
+          placeholder: "animation name...",
+          maxLength: "7"
         })]
       }) : null, drawMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_frameChoices_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        handleSave: handleSave,
+        anims: anims,
         prevFrameNames: prevFrameNames,
         frames: frames,
         handleFrameChoice: handleFrameChoice,

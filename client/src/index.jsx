@@ -30,6 +30,7 @@ const App = function() {
 	const [gameMode, setGameMode] = useState(false);
 	const [prevFrameNames, setPrevFrameNames] = useState(null);
 	const [inputError, setInputError] = useState(false);
+	const [anims, setAnims] = useState([]);
 
 let blueTooth = new p5ble();
 function connectToBle() {
@@ -37,7 +38,6 @@ function connectToBle() {
 }
 
 var handleSendRequests = () => { //Occurs every 20ms
-	console.log(waitingForFrames);
 	sendingTimer++;
 	if (sendingTimer >= 550) {
 		sending = false;
@@ -83,7 +83,7 @@ var handleSendRequests = () => { //Occurs every 20ms
 };
 
 
-useEffect(handleSendRequests, []) //On start
+useEffect(handleSendRequests, []); //On start
 
 function onDisconnected() {
 	console.log('Device got disconnected.');
@@ -99,7 +99,7 @@ function gotValue(value) {
 			waitingForFrames = false;
 			var correctNames = [];
 			names.split(',').forEach((curName) => { //Cleanup weird name values
-				if (curName !== "SYST" && curName !== "~" && curName.length > 0) {
+				if (curName !== "~" && curName.length > 0) {
 					correctNames.push(curName);
 				}
 			});
@@ -135,9 +135,7 @@ function turnOff(e, save = false) {
 			document.getElementById(`${x},${y}`).style.backgroundColor = 'black';
 		}
 	}
-	if (!save) {
-		sendRequests["off"] = true;
-	}
+	sendRequests["off"] = true;
 }
 function sendData(command) {
 	sending = true;
@@ -161,15 +159,24 @@ const handleColor = (newColor) => {
 	sendRequests['color'] = `COLOR${newColor.slice(1, newColor.length)}`;
 }
 
-const handleSave = () => {
+const handleSave = (e, animation, animName = document.getElementById('animName').value) => {
 	setInputError(false);
-	var inputElement = document.getElementById('drawName');
-	var name = inputElement.value;
-	if (name.length > 0) {
+	var drawName = document.getElementById('drawName').value;
+
+	if (drawName.length > 0 || animName.length > 0) {
 		const regex = /^[a-zA-Z0-9_\-]+$/; // valid characters are letters, numbers, underscores, and dashes
-		if (!regex.test(name)) {
+		if ((!regex.test(drawName) && !animation) || (!regex.test(animName) && animation)) {
 			// the name is invalid
 			setInputError("Invalid character");
+			return;
+		}
+		if (animation) {
+			if (!anims.includes(animName)) {
+				var newAnims = JSON.parse(JSON.stringify(anims));
+				newAnims.push(animName);
+				setAnims(newAnims);
+			}
+			sendData('A' + animName);
 			return;
 		}
 		//Retrieves all matrix colors and adds them to matrix array
@@ -184,25 +191,30 @@ const handleSave = () => {
 				curColumn.push(curColor);
 			}
 		}
-		curFrame[16] = name; //Set 16th column to name of frame
+		curFrame[16] = drawName; //Set 16th column to name of frame
 		var newFrames = JSON.parse(JSON.stringify(frames));
 		newFrames.push(curFrame);
 		setFrames(newFrames);
 		turnOff(null, true);
-
-		sendData('S' + name);
+		sendData('S' + drawName);
 	} else {
 		setInputError("Please input a name for your drawing");
 	}
 };
 
-const handleFrameChoice = (frameName) => {
+const handleFrameChoice = (frameName, animation) => {
+	if (animation) {
+		sendData(`I${frameName}`);
+		return;
+	}
 	sendData(`F${frameName}`);
 };
 
 const handleDelete = (frameName, idx, type) => {
 	if (type === 'prev') {
 		setPrevFrameNames(prevFrameNames.slice(0, idx).concat(prevFrameNames.slice(idx+1)))
+	} else {
+		setFrames(frames.slice(0, idx).concat(frames.slice(idx+1)));
 	}
 	sendData(`D${frameName}`);
 }
@@ -232,10 +244,12 @@ const handleDelete = (frameName, idx, type) => {
 			{inputError ? <div style={{"color": "red"}}>{inputError}</div>: null}
 			{drawMode && !isLoading ?
 			<>
-			<button onClick={handleSave}>SAVE</button>
-			<input id="drawName" type="text" placeholder="drawing..." maxLength="7"></input>
+			<button onClick={handleSave}>Save Drawing</button>
+			<input id="drawName" type="text" placeholder="drawing..." maxLength="7" />
+			<button onClick={(e) => handleSave(e, true)}>Save Frame</button>
+			<input id="animName" type="text" placeholder="animation name..." maxLength="7"/>
 			</>: null}
-			{drawMode ? <FrameChoices prevFrameNames={prevFrameNames} frames={frames} handleFrameChoice={handleFrameChoice} handleDelete={handleDelete}/> : null}
+			{drawMode ? <FrameChoices handleSave={handleSave} anims={anims} prevFrameNames={prevFrameNames} frames={frames} handleFrameChoice={handleFrameChoice} handleDelete={handleDelete}/> : null}
 			{drawMode ? <MatrixButtons mouseDown={mouseDown} sendRequests={sendRequests}/> : null}
 			{gameMode ? <PongController sendData={sendData}/> : null}
 		</div>
