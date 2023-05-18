@@ -16,6 +16,10 @@ window.color = "#FF0000";
 window.ledConnected = false;
 var sendingTimer = 0;
 
+var waitingForFrames = true;
+
+var names = "";
+
 const App = function() {
 	const [isConnected, setIsConnected] = useState(false);
 	const [mouseDown, setMouseDown] = useState(false);
@@ -24,7 +28,7 @@ const App = function() {
 	const [curFrame, setCurFrame] = useState([]);
 	const [drawMode, setDrawMode] = useState(false);
 	const [gameMode, setGameMode] = useState(false);
-	const [frameCount, setFrameCount] = useState(null);
+	const [prevFrameNames, setPrevFrameNames] = useState(null);
 	const [inputError, setInputError] = useState(false);
 
 let blueTooth = new p5ble();
@@ -33,6 +37,9 @@ function connectToBle() {
 }
 
 var handleSendRequests = () => { //Occurs every 20ms
+	if (waitingForFrames) {
+		return;
+	}
 	sendingTimer++;
 	if (sendingTimer >= 550) {
 		sending = false;
@@ -87,11 +94,19 @@ function onDisconnected() {
 }
 
 function gotValue(value) {
-	if (!isNaN(Number(value))) {
-		setFrameCount(Number(value));
-		sendData("COLORff0000");
+	if (waitingForFrames) {
+		names += value;
+		if (value.includes('~')) {
+			waitingForFrames = false;
+			var correctNames = [];
+			names.split(',').forEach((curName) => { //Cleanup weird name values
+				if (curName !== "SYST" && curName !== "~" && curName.length > 0) {
+					correctNames.push(curName);
+				}
+			});
+		setPrevFrameNames(correctNames);
+		}
 	}
-
 	sending = false;
 }
 
@@ -112,7 +127,7 @@ setIsConnected(blueTooth.isConnected());
 }
 
 function turnOn() {
-	sendData("count");
+	sendData("names");
 }
 
 function turnOff(e, save = false) {
@@ -151,7 +166,14 @@ const handleSave = () => {
 	var inputElement = document.getElementById('drawName');
 	var name = inputElement.value;
 	if (name.length > 0) {
-			//Retrieves all matrix colors and adds them to matrix array
+		const fileName = "myFile.txt";
+		const regex = /^[a-zA-Z0-9_\-]+$/; // valid characters are letters, numbers, underscores, and dashes
+		if (!regex.test(fileName)) {
+			// the name is invalid
+			setInputError("Invalid character");
+			return;
+		}
+		//Retrieves all matrix colors and adds them to matrix array
 		var columnElements = document.getElementById('buttons').children;
 		var curFrame = [];
 		for (var y = 0; y < 16; y++) {
@@ -205,7 +227,7 @@ var handleFrameChoice = (frameName) => {
 			<button onClick={handleSave}>SAVE</button>
 			<input id="drawName" type="text" placeholder="drawing..." maxLength="7"></input>
 			</>: null}
-			{drawMode ? <FrameChoices frameCount={frameCount} frames={frames} handleFrameChoice={handleFrameChoice}/> : null}
+			{drawMode ? <FrameChoices prevFrameNames={prevFrameNames} frames={frames} handleFrameChoice={handleFrameChoice}/> : null}
 			{drawMode ? <MatrixButtons mouseDown={mouseDown} sendRequests={sendRequests}/> : null}
 			{gameMode ? <PongController sendData={sendData}/> : null}
 		</div>
