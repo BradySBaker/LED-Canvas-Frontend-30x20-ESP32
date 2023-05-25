@@ -19754,6 +19754,10 @@ var App = function App() {
     _useState20 = _slicedToArray(_useState19, 2),
     anims = _useState20[0],
     setAnims = _useState20[1];
+  var _useState21 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState22 = _slicedToArray(_useState21, 2),
+    animPlaying = _useState22[0],
+    setAnimPlaying = _useState22[1];
   var blueTooth = new (p5ble__WEBPACK_IMPORTED_MODULE_5___default())();
   function connectToBle() {
     blueTooth.connect('0000ffe0-0000-1000-8000-00805f9b34fb', gotCharacteristics);
@@ -19811,19 +19815,22 @@ var App = function App() {
     setIsConnected(false);
   }
   function gotValue(value) {
-    console.log(value);
     if (waitingForFrames) {
       names += value;
       if (value.includes('~')) {
         waitingForFrames = false;
-        var correctNames = [];
+        var correctFrameNames = [];
+        var correctAnimNames = [];
         names.split(',').forEach(function (curName) {
           //Cleanup weird name values
-          if (curName !== "~" && curName.length > 0) {
-            correctNames.push(curName);
+          if (curName[0] === '.') {
+            correctAnimNames.push(curName.slice(1));
+          } else if (curName !== "~" && curName.length > 0) {
+            correctFrameNames.push(curName);
           }
         });
-        setPrevFrameNames(correctNames);
+        setAnims(correctAnimNames);
+        setPrevFrameNames(correctFrameNames);
       }
     }
     sending = false;
@@ -19922,6 +19929,7 @@ var App = function App() {
   };
   var handleFrameChoice = function handleFrameChoice(frameName, animation) {
     if (animation) {
+      setAnimPlaying(true);
       sendData("I".concat(frameName));
       return;
     }
@@ -19930,10 +19938,18 @@ var App = function App() {
   var handleDelete = function handleDelete(frameName, idx, type) {
     if (type === 'prev') {
       setPrevFrameNames(prevFrameNames.slice(0, idx).concat(prevFrameNames.slice(idx + 1)));
+    } else if (type === 'animation') {
+      setAnims(anims.slice(0, idx).concat(anims.slice(idx + 1)));
+      sendData("Z".concat(frameName));
+      return;
     } else {
       setFrames(frames.slice(0, idx).concat(frames.slice(idx + 1)));
     }
     sendData("D".concat(frameName));
+  };
+  var handleStop = function handleStop() {
+    setAnimPlaying(false);
+    sendData('STOP');
   };
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
     id: "colorApp",
@@ -20031,7 +20047,15 @@ var App = function App() {
           type: "text",
           placeholder: "animation name...",
           maxLength: "7"
-        })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
+          onClick: function onClick() {
+            return sendData("RAIN");
+          },
+          children: "rain"
+        }), animPlaying ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
+          onClick: handleStop,
+          children: "STOP"
+        }) : null]
       }) : null, drawMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_frameChoices_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
         handleSave: handleSave,
         anims: anims,

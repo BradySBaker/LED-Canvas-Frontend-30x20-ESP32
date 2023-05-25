@@ -24,6 +24,9 @@ body {
 
 #buttons {
 	display: flex;
+	width: 100%;
+	max-width: 1000px;
+	margin: auto auto;
 }
 
 #loading {
@@ -72,6 +75,9 @@ body {
 
 .picker-container .react-colorful {
   width: 70%;
+	height: 70%;
+	max-height: 700px;
+	max-width: 700px;
 }
 .frame {
 	border: solid 1px black;

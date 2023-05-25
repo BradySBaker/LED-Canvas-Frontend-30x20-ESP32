@@ -31,6 +31,7 @@ const App = function() {
 	const [prevFrameNames, setPrevFrameNames] = useState(null);
 	const [inputError, setInputError] = useState(false);
 	const [anims, setAnims] = useState([]);
+	const [animPlaying, setAnimPlaying] = useState(false);
 
 let blueTooth = new p5ble();
 function connectToBle() {
@@ -92,18 +93,21 @@ function onDisconnected() {
 }
 
 function gotValue(value) {
-	console.log(value);
 	if (waitingForFrames) {
 		names += value;
 		if (value.includes('~')) {
 			waitingForFrames = false;
-			var correctNames = [];
+			var correctFrameNames = [];
+			var correctAnimNames = [];
 			names.split(',').forEach((curName) => { //Cleanup weird name values
-				if (curName !== "~" && curName.length > 0) {
-					correctNames.push(curName);
+				if (curName[0] === '.') {
+					correctAnimNames.push(curName.slice(1));
+				} else if (curName !== "~" && curName.length > 0) {
+					correctFrameNames.push(curName);
 				}
 			});
-		setPrevFrameNames(correctNames);
+		setAnims(correctAnimNames);
+		setPrevFrameNames(correctFrameNames);
 		}
 	}
 	sending = false;
@@ -204,6 +208,7 @@ const handleSave = (e, animation, animName = document.getElementById('animName')
 
 const handleFrameChoice = (frameName, animation) => {
 	if (animation) {
+		setAnimPlaying(true);
 		sendData(`I${frameName}`);
 		return;
 	}
@@ -213,12 +218,20 @@ const handleFrameChoice = (frameName, animation) => {
 const handleDelete = (frameName, idx, type) => {
 	if (type === 'prev') {
 		setPrevFrameNames(prevFrameNames.slice(0, idx).concat(prevFrameNames.slice(idx+1)))
+	} else if (type === 'animation'){
+		setAnims(anims.slice(0, idx).concat(anims.slice(idx+1)));
+		sendData(`Z${frameName}`);
+		return;
 	} else {
 		setFrames(frames.slice(0, idx).concat(frames.slice(idx+1)));
 	}
 	sendData(`D${frameName}`);
 }
 
+const handleStop = () => {
+	setAnimPlaying(false);
+	sendData('STOP');
+}
 
 	return (
 		<div id='colorApp'>
@@ -248,6 +261,8 @@ const handleDelete = (frameName, idx, type) => {
 			<input id="drawName" type="text" placeholder="drawing..." maxLength="7" />
 			<button onClick={(e) => handleSave(e, true)}>Save Frame</button>
 			<input id="animName" type="text" placeholder="animation name..." maxLength="7"/>
+			<button onClick={() => sendData("RAIN")}>rain</button>
+			{animPlaying ? <button onClick={handleStop}>STOP</button>: null }
 			</>: null}
 			{drawMode ? <FrameChoices handleSave={handleSave} anims={anims} prevFrameNames={prevFrameNames} frames={frames} handleFrameChoice={handleFrameChoice} handleDelete={handleDelete}/> : null}
 			{drawMode ? <MatrixButtons mouseDown={mouseDown} sendRequests={sendRequests}/> : null}
