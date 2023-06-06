@@ -19713,6 +19713,8 @@ window.ledConnected = false;
 var sendingTimer = 0;
 var waitingForFrames = true;
 var names = "";
+var isRaining = false;
+var framePlayed = false;
 var App = function App() {
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState2 = _slicedToArray(_useState, 2),
@@ -19726,38 +19728,46 @@ var App = function App() {
     _useState6 = _slicedToArray(_useState5, 2),
     isLoading = _useState6[0],
     setIsLoading = _useState6[1];
-  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState8 = _slicedToArray(_useState7, 2),
-    frames = _useState8[0],
-    setFrames = _useState8[1];
+    rainLoading = _useState8[0],
+    setRainLoading = _useState8[1];
   var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
     _useState10 = _slicedToArray(_useState9, 2),
-    curFrame = _useState10[0],
-    setCurFrame = _useState10[1];
-  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    frames = _useState10[0],
+    setFrames = _useState10[1];
+  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
     _useState12 = _slicedToArray(_useState11, 2),
-    drawMode = _useState12[0],
-    setDrawMode = _useState12[1];
+    curFrame = _useState12[0],
+    setCurFrame = _useState12[1];
   var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState14 = _slicedToArray(_useState13, 2),
-    gameMode = _useState14[0],
-    setGameMode = _useState14[1];
-  var _useState15 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
+    drawMode = _useState14[0],
+    setDrawMode = _useState14[1];
+  var _useState15 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState16 = _slicedToArray(_useState15, 2),
-    prevFrameNames = _useState16[0],
-    setPrevFrameNames = _useState16[1];
+    gameMode = _useState16[0],
+    setGameMode = _useState16[1];
   var _useState17 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState18 = _slicedToArray(_useState17, 2),
-    inputError = _useState18[0],
-    setInputError = _useState18[1];
-  var _useState19 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+    rainMode = _useState18[0],
+    setRainMode = _useState18[1];
+  var _useState19 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
     _useState20 = _slicedToArray(_useState19, 2),
-    anims = _useState20[0],
-    setAnims = _useState20[1];
+    prevFrameNames = _useState20[0],
+    setPrevFrameNames = _useState20[1];
   var _useState21 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState22 = _slicedToArray(_useState21, 2),
-    animPlaying = _useState22[0],
-    setAnimPlaying = _useState22[1];
+    inputError = _useState22[0],
+    setInputError = _useState22[1];
+  var _useState23 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+    _useState24 = _slicedToArray(_useState23, 2),
+    anims = _useState24[0],
+    setAnims = _useState24[1];
+  var _useState25 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState26 = _slicedToArray(_useState25, 2),
+    animPlaying = _useState26[0],
+    setAnimPlaying = _useState26[1];
   var blueTooth = new (p5ble__WEBPACK_IMPORTED_MODULE_5___default())();
   function connectToBle() {
     blueTooth.connect('0000ffe0-0000-1000-8000-00805f9b34fb', gotCharacteristics);
@@ -19832,6 +19842,14 @@ var App = function App() {
         setAnims(correctAnimNames);
         setPrevFrameNames(correctFrameNames);
       }
+    }
+    if (value === 'sRAIN') {
+      isRaining = false;
+    } else if (value === "RAIN") {
+      isRaining = true;
+    }
+    if (value === "FRAME") {
+      framePlayed = true;
     }
     sending = false;
   }
@@ -19928,6 +19946,18 @@ var App = function App() {
     }
   };
   var handleFrameChoice = function handleFrameChoice(frameName, animation) {
+    if (isRaining && !framePlayed) {
+      setRainLoading(true);
+      sendData("F".concat(frameName));
+      setTimeout(function () {
+        handleFrameChoice(frameName);
+      }, 400);
+      return;
+    } else if (isRaining) {
+      framePlayed = false;
+      setRainLoading(false);
+      return;
+    }
     if (animation) {
       setAnimPlaying(true);
       sendData("I".concat(frameName));
@@ -19948,8 +19978,27 @@ var App = function App() {
     sendData("D".concat(frameName));
   };
   var handleStop = function handleStop() {
-    setAnimPlaying(false);
     sendData('STOP');
+    setAnimPlaying(false);
+  };
+  var handleRain = function handleRain(e, startRain) {
+    if (isRaining && !startRain) {
+      sendData("SR");
+      setTimeout(handleRain, 400);
+      setRainLoading(true);
+    } else if (e) {
+      if (!isRaining) {
+        sendData("R");
+        setTimeout(function () {
+          handleRain(true, true);
+        }, 400);
+        setRainLoading(true);
+      } else {
+        setRainLoading(false);
+      }
+    } else {
+      setRainLoading(false);
+    }
   };
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
     id: "colorApp",
@@ -19975,7 +20024,7 @@ var App = function App() {
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
         id: "title-line"
       }), "LED Canvas"]
-    }), drawMode || gameMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
+    }), drawMode || gameMode || rainMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
       style: {
         'position': 'absolute',
         'right': '10%',
@@ -19984,9 +20033,10 @@ var App = function App() {
       onClick: function onClick() {
         setDrawMode(false);
         setGameMode(false);
+        setRainMode(false);
       },
       children: "Back"
-    }) : null, isLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("img", {
+    }) : null, isLoading || rainLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("img", {
       id: "loading",
       src: "./icons/loading.gif"
     }) : null, drawMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
@@ -20009,7 +20059,7 @@ var App = function App() {
       children: [drawMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
         onClick: turnOff,
         children: "Turn Off"
-      }) : null, !drawMode && !gameMode && isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+      }) : null, !drawMode && !gameMode && !rainMode && isConnected && !isLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
         id: "modeChoices",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
           onClick: function onClick() {
@@ -20022,6 +20072,11 @@ var App = function App() {
             sendData('GAME');
           },
           children: "Game Mode"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
+          onClick: function onClick() {
+            setRainMode(true);
+          },
+          children: "Rain Mode"
         })]
       }) : null, inputError ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
         style: {
@@ -20047,22 +20102,22 @@ var App = function App() {
           type: "text",
           placeholder: "animation name...",
           maxLength: "7"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
-          onClick: function onClick() {
-            return sendData("RAIN");
-          },
-          children: "rain"
         }), animPlaying ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
           onClick: handleStop,
           children: "STOP"
         }) : null]
-      }) : null, drawMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_frameChoices_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      }) : null, drawMode || rainMode && !rainLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_frameChoices_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
         handleSave: handleSave,
         anims: anims,
         prevFrameNames: prevFrameNames,
         frames: frames,
         handleFrameChoice: handleFrameChoice,
         handleDelete: handleDelete
+      }) : null, rainMode && !rainLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
+          onClick: handleRain,
+          children: "rain"
+        })
       }) : null, drawMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_matrixButtons_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
         mouseDown: mouseDown,
         sendRequests: sendRequests
