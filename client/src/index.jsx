@@ -4,10 +4,11 @@ import { createRoot } from "react-dom/client";
 import MatrixButtons from "./matrixButtons.jsx";
 import FrameChoices from "./frameChoices.jsx";
 import PongController from "./pongController.jsx";
-
+import rainController from "./rainController.jsx";
 
 import p5ble from 'p5ble';
 import { HexColorPicker } from "react-colorful";
+import RainController from "./rainController.jsx";
 let blueToothCharacteristic;
 
 var sending = false;
@@ -175,7 +176,7 @@ function sendData(command) {
 const handleColor = (newColor) => {
 	document.getElementById('title').style.color = newColor;
 	color = newColor;
-	sendRequests['color'] = `COLOR${newColor.slice(1, newColor.length)}`;
+	sendRequests['color'] = `CR${newColor.slice(1)}`;
 }
 
 const handleSave = (e, animation, animName = document.getElementById('animName').value) => {
@@ -258,15 +259,18 @@ const handleStop = () => {
 	setAnimPlaying(false);
 }
 
-const handleRain = (e, startRain) => {
+const handleRain = (e, startRain, amount) => {
 	if (isRaining && !startRain) {
 		sendData("SR");
 		setTimeout(handleRain, 400);
 		setRainLoading(true);
 	} else if (e) {
 		if (!isRaining) {
-			sendData("R");
-			setTimeout(() => {handleRain(true, true)}, 400);
+			if (!amount) {
+				amount = document.getElementById('rainAmount').value;
+			}
+			sendData("R" + amount);
+			setTimeout(() => {handleRain(true, true, amount)}, 400);
 			setRainLoading(true);
 		} else {
 			setRainLoading(false);
@@ -288,7 +292,7 @@ const handleRain = (e, startRain) => {
 			{drawMode || gameMode || rainMode ? <button style={{'position': 'absolute', 'right': '10%', 'fontSize': '20px'}} onClick={() => {setDrawMode(false); setGameMode(false); setRainMode(false);}}>Back</button> : null}
 			{isLoading || rainLoading ? <img id='loading' src='./icons/loading.gif'></img> : null}
 		{drawMode ? <div className="picker-container">
-			<HexColorPicker style={{height: 'calc(90vw * 0.5)'}} color={color} onChange={handleColor} />
+		<HexColorPicker style={{height: 'calc(90vw * 0.5)'}} color={color} onChange={handleColor} />
 		</div> : null}
 			<div id='app' onMouseDown={() => {setMouseDown(true);}} onMouseUp={() => setMouseDown(false)}>
 			{drawMode ? <button onClick={turnOff}>Turn Off</button> : null}
@@ -308,7 +312,8 @@ const handleRain = (e, startRain) => {
 			{animPlaying ? <button onClick={handleStop}>STOP</button>: null }
 			</>: null}
 			{drawMode || rainMode && !rainLoading ? <FrameChoices handleSave={handleSave} anims={anims} prevFrameNames={prevFrameNames} frames={frames} handleFrameChoice={handleFrameChoice} handleDelete={handleDelete}/> : null}
-			{rainMode && !rainLoading ? <div><button onClick={handleRain}>rain</button></div> : null}
+			{rainMode && !rainLoading ? <RainController sendData={sendData} handleRain={handleRain}/> : null}
+			{/* <RainController sendData={sendData} handleRain={handleRain}/> */}
 			{drawMode ? <MatrixButtons mouseDown={mouseDown} sendRequests={sendRequests}/> : null}
 			{gameMode ? <PongController sendData={sendData}/> : null}
 		</div>

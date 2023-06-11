@@ -273,6 +273,92 @@ var PongController = function PongController(_ref) {
 
 /***/ }),
 
+/***/ "./client/src/rainController.jsx":
+/*!***************************************!*\
+  !*** ./client/src/rainController.jsx ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_colorful__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-colorful */ "./node_modules/react-colorful/dist/index.mjs");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+var RainController = function RainController(_ref) {
+  var handleRain = _ref.handleRain,
+    sendData = _ref.sendData;
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+    _useState2 = _slicedToArray(_useState, 2),
+    colorChoices = _useState2[0],
+    setColorChoices = _useState2[1];
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(color),
+    _useState4 = _slicedToArray(_useState3, 2),
+    curChosenColor = _useState4[0],
+    setCurChosenColor = _useState4[1];
+  var handleRainColor = function handleRainColor(newColor) {
+    setCurChosenColor(newColor);
+  };
+  var handleChooseColor = function handleChooseColor() {
+    var colors = JSON.parse(JSON.stringify(colorChoices));
+    colors.push(curChosenColor);
+    setColorChoices(colors);
+    sendData("CRR" + curChosenColor.slice(1));
+  };
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+    id: "rainController",
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+      className: "picker-container",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(react_colorful__WEBPACK_IMPORTED_MODULE_2__.HexColorPicker, {
+        style: {
+          height: 'calc(90vw * 0.5)'
+        },
+        color: color,
+        onChange: handleRainColor
+      })
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+      children: colorChoices.map(function (curChoice) {
+        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+          style: {
+            'backgroundColor': curChoice,
+            'width': '100px',
+            'height': '100px'
+          }
+        });
+      })
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
+      style: {
+        'color': curChosenColor
+      },
+      onClick: handleChooseColor,
+      children: "Choose Color"
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
+      id: "rainAmount",
+      type: "text",
+      placeholder: "1..."
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
+      onClick: handleRain,
+      children: "rain"
+    })]
+  });
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (RainController);
+
+/***/ }),
+
 /***/ "./node_modules/p5ble/dist/p5.ble.js":
 /*!*******************************************!*\
   !*** ./node_modules/p5ble/dist/p5.ble.js ***!
@@ -19683,16 +19769,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _matrixButtons_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./matrixButtons.jsx */ "./client/src/matrixButtons.jsx");
 /* harmony import */ var _frameChoices_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./frameChoices.jsx */ "./client/src/frameChoices.jsx");
 /* harmony import */ var _pongController_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./pongController.jsx */ "./client/src/pongController.jsx");
-/* harmony import */ var p5ble__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! p5ble */ "./node_modules/p5ble/dist/p5.ble.js");
-/* harmony import */ var p5ble__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(p5ble__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var react_colorful__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-colorful */ "./node_modules/react-colorful/dist/index.mjs");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _rainController_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./rainController.jsx */ "./client/src/rainController.jsx");
+/* harmony import */ var p5ble__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! p5ble */ "./node_modules/p5ble/dist/p5.ble.js");
+/* harmony import */ var p5ble__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(p5ble__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var react_colorful__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react-colorful */ "./node_modules/react-colorful/dist/index.mjs");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
 
 
 
@@ -19768,7 +19857,7 @@ var App = function App() {
     _useState26 = _slicedToArray(_useState25, 2),
     animPlaying = _useState26[0],
     setAnimPlaying = _useState26[1];
-  var blueTooth = new (p5ble__WEBPACK_IMPORTED_MODULE_5___default())();
+  var blueTooth = new (p5ble__WEBPACK_IMPORTED_MODULE_6___default())();
   function connectToBle() {
     blueTooth.connect('0000ffe0-0000-1000-8000-00805f9b34fb', gotCharacteristics);
   }
@@ -19901,7 +19990,7 @@ var App = function App() {
   var handleColor = function handleColor(newColor) {
     document.getElementById('title').style.color = newColor;
     color = newColor;
-    sendRequests['color'] = "COLOR".concat(newColor.slice(1, newColor.length));
+    sendRequests['color'] = "CR".concat(newColor.slice(1));
   };
   var handleSave = function handleSave(e, animation) {
     var animName = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : document.getElementById('animName').value;
@@ -19981,16 +20070,19 @@ var App = function App() {
     sendData('STOP');
     setAnimPlaying(false);
   };
-  var handleRain = function handleRain(e, startRain) {
+  var handleRain = function handleRain(e, startRain, amount) {
     if (isRaining && !startRain) {
       sendData("SR");
       setTimeout(handleRain, 400);
       setRainLoading(true);
     } else if (e) {
       if (!isRaining) {
-        sendData("R");
+        if (!amount) {
+          amount = document.getElementById('rainAmount').value;
+        }
+        sendData("R" + amount);
         setTimeout(function () {
-          handleRain(true, true);
+          handleRain(true, true, amount);
         }, 400);
         setRainLoading(true);
       } else {
@@ -20000,31 +20092,31 @@ var App = function App() {
       setRainLoading(false);
     }
   };
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
     id: "colorApp",
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
       children: "Version 2.0"
-    }), isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("h1", {
+    }), isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("h1", {
       style: {
         'color': 'blue',
         'fontSize': '15px'
       },
       children: "Connected"
-    }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("h1", {
+    }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("h1", {
       style: {
         'color': 'red',
         'fontSize': '20px'
       },
       children: "Not connected"
-    }), !isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
+    }), !isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
       onClick: connectToBle,
       children: "Connect"
-    }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("h1", {
+    }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("h1", {
       id: "title",
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
         id: "title-line"
       }), "LED Canvas"]
-    }), drawMode || gameMode || rainMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
+    }), drawMode || gameMode || rainMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
       style: {
         'position': 'absolute',
         'right': '10%',
@@ -20036,19 +20128,19 @@ var App = function App() {
         setRainMode(false);
       },
       children: "Back"
-    }) : null, isLoading || rainLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("img", {
+    }) : null, isLoading || rainLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("img", {
       id: "loading",
       src: "./icons/loading.gif"
-    }) : null, drawMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+    }) : null, drawMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
       className: "picker-container",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(react_colorful__WEBPACK_IMPORTED_MODULE_7__.HexColorPicker, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(react_colorful__WEBPACK_IMPORTED_MODULE_8__.HexColorPicker, {
         style: {
           height: 'calc(90vw * 0.5)'
         },
         color: color,
         onChange: handleColor
       })
-    }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+    }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
       id: "app",
       onMouseDown: function onMouseDown() {
         setMouseDown(true);
@@ -20056,72 +20148,70 @@ var App = function App() {
       onMouseUp: function onMouseUp() {
         return setMouseDown(false);
       },
-      children: [drawMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
+      children: [drawMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
         onClick: turnOff,
         children: "Turn Off"
-      }) : null, !drawMode && !gameMode && !rainMode && isConnected && !isLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+      }) : null, !drawMode && !gameMode && !rainMode && isConnected && !isLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
         id: "modeChoices",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
           onClick: function onClick() {
             return setDrawMode(true);
           },
           children: "Draw Mode"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
           onClick: function onClick() {
             setGameMode(true);
             sendData('GAME');
           },
           children: "Game Mode"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
           onClick: function onClick() {
             setRainMode(true);
           },
           children: "Rain Mode"
         })]
-      }) : null, inputError ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+      }) : null, inputError ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
         style: {
           "color": "red"
         },
         children: inputError
-      }) : null, drawMode && !isLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.Fragment, {
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
+      }) : null, drawMode && !isLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.Fragment, {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
           onClick: handleSave,
           children: "Save Drawing"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("input", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("input", {
           id: "drawName",
           type: "text",
           placeholder: "drawing...",
           maxLength: "7"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
           onClick: function onClick(e) {
             return handleSave(e, true);
           },
           children: "Save Frame"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("input", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("input", {
           id: "animName",
           type: "text",
           placeholder: "animation name...",
           maxLength: "7"
-        }), animPlaying ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
+        }), animPlaying ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
           onClick: handleStop,
           children: "STOP"
         }) : null]
-      }) : null, drawMode || rainMode && !rainLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_frameChoices_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      }) : null, drawMode || rainMode && !rainLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_frameChoices_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
         handleSave: handleSave,
         anims: anims,
         prevFrameNames: prevFrameNames,
         frames: frames,
         handleFrameChoice: handleFrameChoice,
         handleDelete: handleDelete
-      }) : null, rainMode && !rainLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
-          onClick: handleRain,
-          children: "rain"
-        })
-      }) : null, drawMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_matrixButtons_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
+      }) : null, rainMode && !rainLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_rainController_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
+        sendData: sendData,
+        handleRain: handleRain
+      }) : null, drawMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_matrixButtons_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
         mouseDown: mouseDown,
         sendRequests: sendRequests
-      }) : null, gameMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_pongController_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
+      }) : null, gameMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_pongController_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
         sendData: sendData
       }) : null]
     })]
@@ -20129,7 +20219,7 @@ var App = function App() {
 };
 var container = document.getElementById('root');
 var root = (0,react_dom_client__WEBPACK_IMPORTED_MODULE_1__.createRoot)(container);
-root.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(App, {}));
+root.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(App, {}));
 })();
 
 /******/ })()
