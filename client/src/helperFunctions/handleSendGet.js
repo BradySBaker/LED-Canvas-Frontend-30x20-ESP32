@@ -6,7 +6,7 @@ var sendingTimer = 0;
 
 var names = "";
 
-export const handleSendRequests = (setIsLoading, isLoading, sendData) => { //Occurs every 20ms
+export const handleSendRequests = (setIsLoading, isLoading) => { //Occurs every 20ms
 	sendingTimer++;
 	if (sendingTimer >= 550) {
 		sending = false;
@@ -48,7 +48,7 @@ export const handleSendRequests = (setIsLoading, isLoading, sendData) => { //Occ
 			}
 		}
 	}
-	setTimeout(() => handleSendRequests(setIsLoading, isLoading, sendData), 20);
+	setTimeout(() => handleSendRequests(setIsLoading, isLoading), 20);
 };
 
 
@@ -80,3 +80,19 @@ export function gotValue(value, setAnims, setPrevFrameNames) {
 	}
 	sending = false;
 };
+
+export function sendData(command) {
+	sending = true;
+  const inputValue = command + '\r';
+  if (!("TextEncoder" in window)) {
+    console.log("Sorry, this browser does not support TextEncoder...");
+  }
+  var enc = new TextEncoder(); // always utf-8
+	try {
+		console.log('Sending' , command);
+		blueToothCharacteristic.writeValue(enc.encode(inputValue))
+	} catch (error) {
+		sending = false;
+		console.log('Error sendData ', error);
+	}
+}

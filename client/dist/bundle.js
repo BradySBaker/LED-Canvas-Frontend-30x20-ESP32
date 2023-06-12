@@ -142,17 +142,18 @@ var FrameChoices = function FrameChoices(_ref) {
 
 /***/ }),
 
-/***/ "./client/src/handleSendGet.js":
-/*!*************************************!*\
-  !*** ./client/src/handleSendGet.js ***!
-  \*************************************/
+/***/ "./client/src/helperFunctions/handleSendGet.js":
+/*!*****************************************************!*\
+  !*** ./client/src/helperFunctions/handleSendGet.js ***!
+  \*****************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "gotValue": () => (/* binding */ gotValue),
-/* harmony export */   "handleSendRequests": () => (/* binding */ handleSendRequests)
+/* harmony export */   "handleSendRequests": () => (/* binding */ handleSendRequests),
+/* harmony export */   "sendData": () => (/* binding */ sendData)
 /* harmony export */ });
 window.sending = false;
 window.sendRequests = {
@@ -161,7 +162,7 @@ window.sendRequests = {
 window.waitingForFrames = true;
 var sendingTimer = 0;
 var names = "";
-var handleSendRequests = function handleSendRequests(setIsLoading, isLoading, sendData) {
+var handleSendRequests = function handleSendRequests(setIsLoading, isLoading) {
   //Occurs every 20ms
   sendingTimer++;
   if (sendingTimer >= 550) {
@@ -205,7 +206,7 @@ var handleSendRequests = function handleSendRequests(setIsLoading, isLoading, se
     }
   }
   setTimeout(function () {
-    return handleSendRequests(setIsLoading, isLoading, sendData);
+    return handleSendRequests(setIsLoading, isLoading);
   }, 20);
 };
 function gotValue(value, setAnims, setPrevFrameNames) {
@@ -238,6 +239,76 @@ function gotValue(value, setAnims, setPrevFrameNames) {
   sending = false;
 }
 ;
+function sendData(command) {
+  sending = true;
+  var inputValue = command + '\r';
+  if (!("TextEncoder" in window)) {
+    console.log("Sorry, this browser does not support TextEncoder...");
+  }
+  var enc = new TextEncoder(); // always utf-8
+  try {
+    console.log('Sending', command);
+    blueToothCharacteristic.writeValue(enc.encode(inputValue));
+  } catch (error) {
+    sending = false;
+    console.log('Error sendData ', error);
+  }
+}
+
+/***/ }),
+
+/***/ "./client/src/helperFunctions/setupBluetooth.js":
+/*!******************************************************!*\
+  !*** ./client/src/helperFunctions/setupBluetooth.js ***!
+  \******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ connectToBle)
+/* harmony export */ });
+/* harmony import */ var p5ble__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! p5ble */ "./node_modules/p5ble/dist/p5.ble.js");
+/* harmony import */ var p5ble__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(p5ble__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _handleSendGet__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./handleSendGet */ "./client/src/helperFunctions/handleSendGet.js");
+
+
+var blueTooth = new (p5ble__WEBPACK_IMPORTED_MODULE_0___default())();
+function connectToBle(setIsConnected, turnOn, setAnims, setPrevFrameNames) {
+  var paramFuncs = {
+    setIsConnected: setIsConnected,
+    turnOn: turnOn,
+    setAnims: setAnims,
+    setPrevFrameNames: setPrevFrameNames
+  };
+  blueTooth.connect('0000ffe0-0000-1000-8000-00805f9b34fb', function (error, characteristics) {
+    return gotCharacteristics(error, characteristics, paramFuncs);
+  });
+}
+function onDisconnected() {
+  console.log('Device got disconnected.');
+  ledConnected = false;
+  setIsConnected(false);
+}
+
+// A function that will be called once got characteristics
+function gotCharacteristics(error, characteristics, paramFuncs) {
+  if (error) {
+    console.log('error: ', error);
+    return;
+  }
+  window.blueToothCharacteristic = characteristics[0];
+  blueTooth.startNotifications(window.blueToothCharacteristic, function (value) {
+    return (0,_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.gotValue)(value, paramFuncs.setAnims, paramFuncs.setPrevFrameNames);
+  }, 'string');
+  blueTooth.onDisconnected(function () {
+    return onDisconnected(paramFuncs.setIsConnected);
+  });
+  paramFuncs.turnOn();
+  ledConnected = blueTooth.isConnected();
+  paramFuncs.setIsConnected(blueTooth.isConnected());
+  // Add a event handler when the device is disconnected
+}
 
 /***/ }),
 
@@ -19864,14 +19935,13 @@ var __webpack_exports__ = {};
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _handleSendGet__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./handleSendGet */ "./client/src/handleSendGet.js");
-/* harmony import */ var react_dom_client__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom/client */ "./node_modules/react-dom/client.js");
-/* harmony import */ var _matrixButtons_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./matrixButtons.jsx */ "./client/src/matrixButtons.jsx");
-/* harmony import */ var _frameChoices_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./frameChoices.jsx */ "./client/src/frameChoices.jsx");
-/* harmony import */ var _pongController_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./pongController.jsx */ "./client/src/pongController.jsx");
-/* harmony import */ var _rainController_jsx__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./rainController.jsx */ "./client/src/rainController.jsx");
-/* harmony import */ var p5ble__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! p5ble */ "./node_modules/p5ble/dist/p5.ble.js");
-/* harmony import */ var p5ble__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(p5ble__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./helperFunctions/handleSendGet */ "./client/src/helperFunctions/handleSendGet.js");
+/* harmony import */ var _helperFunctions_setupBluetooth__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./helperFunctions/setupBluetooth */ "./client/src/helperFunctions/setupBluetooth.js");
+/* harmony import */ var react_dom_client__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-dom/client */ "./node_modules/react-dom/client.js");
+/* harmony import */ var _matrixButtons_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./matrixButtons.jsx */ "./client/src/matrixButtons.jsx");
+/* harmony import */ var _frameChoices_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./frameChoices.jsx */ "./client/src/frameChoices.jsx");
+/* harmony import */ var _pongController_jsx__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./pongController.jsx */ "./client/src/pongController.jsx");
+/* harmony import */ var _rainController_jsx__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./rainController.jsx */ "./client/src/rainController.jsx");
 /* harmony import */ var react_colorful__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! react-colorful */ "./node_modules/react-colorful/dist/index.mjs");
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
@@ -19893,10 +19963,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-var blueToothCharacteristic;
 window.color = "#FF0000";
 window.ledConnected = false;
-var isRaining = false;
+window.isRaining = false;
 window.framePlayed = false;
 var App = function App() {
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
@@ -19951,40 +20020,13 @@ var App = function App() {
     _useState26 = _slicedToArray(_useState25, 2),
     animPlaying = _useState26[0],
     setAnimPlaying = _useState26[1];
-  var blueTooth = new (p5ble__WEBPACK_IMPORTED_MODULE_7___default())();
-  function connectToBle() {
-    blueTooth.connect('0000ffe0-0000-1000-8000-00805f9b34fb', gotCharacteristics);
-  }
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    return (0,_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.handleSendRequests)(setIsLoading, isLoading, sendData);
+    return (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.handleSendRequests)(setIsLoading, isLoading);
   }, []); //On start
-
-  function onDisconnected() {
-    console.log('Device got disconnected.');
-    ledConnected = false;
-    setIsConnected(false);
-  }
-
-  // A function that will be called once got characteristics
-  function gotCharacteristics(error, characteristics) {
-    if (error) {
-      console.log('error: ', error);
-      return;
-    }
-    blueToothCharacteristic = characteristics[0];
-    blueTooth.startNotifications(blueToothCharacteristic, function (value) {
-      return (0,_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.gotValue)(value, setAnims, setPrevFrameNames);
-    }, 'string');
-    blueTooth.onDisconnected(onDisconnected);
-    turnOn();
-    ledConnected = blueTooth.isConnected();
-    setIsConnected(blueTooth.isConnected());
-    // Add a event handler when the device is disconnected
-  }
 
   function turnOn() {
     setTimeout(function () {
-      sendData("names");
+      (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)("names");
     }, 100);
   }
   function turnOff(e) {
@@ -19995,21 +20037,6 @@ var App = function App() {
       }
     }
     sendRequests["off"] = true;
-  }
-  function sendData(command) {
-    sending = true;
-    var inputValue = command + '\r';
-    if (!("TextEncoder" in window)) {
-      console.log("Sorry, this browser does not support TextEncoder...");
-    }
-    var enc = new TextEncoder(); // always utf-8
-    try {
-      console.log('Sending', command);
-      blueToothCharacteristic.writeValue(enc.encode(inputValue));
-    } catch (error) {
-      sending = false;
-      console.log('Error sendData ', error);
-    }
   }
   var handleColor = function handleColor(newColor) {
     document.getElementById('title').style.color = newColor;
@@ -20033,7 +20060,7 @@ var App = function App() {
           newAnims.push(animName);
           setAnims(newAnims);
         }
-        sendData('A' + animName);
+        (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)('A' + animName);
         return;
       }
       //Retrieves all matrix colors and adds them to matrix array
@@ -20053,7 +20080,7 @@ var App = function App() {
       newFrames.push(curFrame);
       setFrames(newFrames);
       turnOff(null, true);
-      sendData('S' + drawName);
+      (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)('S' + drawName);
     } else {
       setInputError("Please input a name for your drawing");
     }
@@ -20061,7 +20088,7 @@ var App = function App() {
   var handleFrameChoice = function handleFrameChoice(frameName, animation) {
     if (isRaining && !framePlayed) {
       setRainLoading(true);
-      sendData("F".concat(frameName));
+      (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)("F".concat(frameName));
       setTimeout(function () {
         handleFrameChoice(frameName);
       }, 400);
@@ -20073,30 +20100,30 @@ var App = function App() {
     }
     if (animation) {
       setAnimPlaying(true);
-      sendData("I".concat(frameName));
+      (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)("I".concat(frameName));
       return;
     }
-    sendData("F".concat(frameName));
+    (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)("F".concat(frameName));
   };
   var handleDelete = function handleDelete(frameName, idx, type) {
     if (type === 'prev') {
       setPrevFrameNames(prevFrameNames.slice(0, idx).concat(prevFrameNames.slice(idx + 1)));
     } else if (type === 'animation') {
       setAnims(anims.slice(0, idx).concat(anims.slice(idx + 1)));
-      sendData("Z".concat(frameName));
+      (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)("Z".concat(frameName));
       return;
     } else {
       setFrames(frames.slice(0, idx).concat(frames.slice(idx + 1)));
     }
-    sendData("D".concat(frameName));
+    (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)("D".concat(frameName));
   };
   var handleStop = function handleStop() {
-    sendData('STOP');
+    (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)('STOP');
     setAnimPlaying(false);
   };
   var handleRain = function handleRain(e, startRain, amount) {
     if (isRaining && !startRain) {
-      sendData("SR");
+      (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)("SR");
       setTimeout(handleRain, 400);
       setRainLoading(true);
     } else if (e) {
@@ -20104,7 +20131,7 @@ var App = function App() {
         if (!amount) {
           amount = document.getElementById('rainAmount').value;
         }
-        sendData("R" + amount);
+        (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)("R" + amount);
         setTimeout(function () {
           handleRain(true, true, amount);
         }, 400);
@@ -20133,7 +20160,9 @@ var App = function App() {
       },
       children: "Not connected"
     }), !isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("button", {
-      onClick: connectToBle,
+      onClick: function onClick() {
+        return (0,_helperFunctions_setupBluetooth__WEBPACK_IMPORTED_MODULE_2__["default"])(setIsConnected, turnOn, setAnims, setPrevFrameNames);
+      },
       children: "Connect"
     }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("h1", {
       id: "title",
@@ -20185,7 +20214,7 @@ var App = function App() {
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("button", {
           onClick: function onClick() {
             setGameMode(true);
-            sendData('GAME');
+            (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)('GAME');
           },
           children: "Game Mode"
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("button", {
@@ -20222,27 +20251,27 @@ var App = function App() {
           onClick: handleStop,
           children: "STOP"
         }) : null]
-      }) : null, drawMode || rainMode && !rainLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_frameChoices_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
+      }) : null, drawMode || rainMode && !rainLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_frameChoices_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
         handleSave: handleSave,
         anims: anims,
         prevFrameNames: prevFrameNames,
         frames: frames,
         handleFrameChoice: handleFrameChoice,
         handleDelete: handleDelete
-      }) : null, rainMode && !rainLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_rainController_jsx__WEBPACK_IMPORTED_MODULE_6__["default"], {
-        sendData: sendData,
+      }) : null, rainMode && !rainLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_rainController_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], {
+        sendData: _helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData,
         handleRain: handleRain
-      }) : null, drawMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_matrixButtons_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      }) : null, drawMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_matrixButtons_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
         mouseDown: mouseDown,
         sendRequests: sendRequests
-      }) : null, gameMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_pongController_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
-        sendData: sendData
+      }) : null, gameMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_pongController_jsx__WEBPACK_IMPORTED_MODULE_6__["default"], {
+        sendData: _helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData
       }) : null]
     })]
   });
 };
 var container = document.getElementById('root');
-var root = (0,react_dom_client__WEBPACK_IMPORTED_MODULE_2__.createRoot)(container);
+var root = (0,react_dom_client__WEBPACK_IMPORTED_MODULE_3__.createRoot)(container);
 root.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(App, {}));
 })();
 

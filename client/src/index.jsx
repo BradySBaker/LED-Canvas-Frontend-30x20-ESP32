@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useRef} from "react";
 
-import {handleSendRequests, gotValue} from './handleSendGet';
+import {handleSendRequests, sendData} from './helperFunctions/handleSendGet';
+import connectToBle from './helperFunctions/setupBluetooth';
 
 import { createRoot } from "react-dom/client";
 import MatrixButtons from "./matrixButtons.jsx";
@@ -8,16 +9,14 @@ import FrameChoices from "./frameChoices.jsx";
 import PongController from "./pongController.jsx";
 import rainController from "./rainController.jsx";
 
-import p5ble from 'p5ble';
 import { HexColorPicker } from "react-colorful";
 import RainController from "./rainController.jsx";
-let blueToothCharacteristic;
 
 window.color = "#FF0000";
 
 window.ledConnected = false;
 
-var isRaining = false;
+window.isRaining = false;
 
 window.framePlayed = false;
 
@@ -36,35 +35,7 @@ const App = function() {
 	const [anims, setAnims] = useState([]);
 	const [animPlaying, setAnimPlaying] = useState(false);
 
-let blueTooth = new p5ble();
-function connectToBle() {
-	blueTooth.connect('0000ffe0-0000-1000-8000-00805f9b34fb', gotCharacteristics);
-}
-
-
-useEffect(() => handleSendRequests(setIsLoading, isLoading, sendData), []); //On start
-
-function onDisconnected() {
-	console.log('Device got disconnected.');
-	ledConnected = false;
-	setIsConnected(false);
-}
-
-// A function that will be called once got characteristics
-function gotCharacteristics(error, characteristics) {
-if (error) {
-	console.log('error: ', error);
-	return;
-}
-
-blueToothCharacteristic = characteristics[0];
-blueTooth.startNotifications(blueToothCharacteristic, (value) => gotValue(value, setAnims, setPrevFrameNames), 'string');
-blueTooth.onDisconnected(onDisconnected);
-turnOn();
-ledConnected = blueTooth.isConnected();
-setIsConnected(blueTooth.isConnected());
-// Add a event handler when the device is disconnected
-}
+useEffect(() => handleSendRequests(setIsLoading, isLoading), []); //On start
 
 function turnOn() {
 	setTimeout(() => {sendData("names");}, 100);
@@ -77,21 +48,6 @@ function turnOff(e, save = false) {
 		}
 	}
 	sendRequests["off"] = true;
-}
-function sendData(command) {
-	sending = true;
-  const inputValue = command + '\r';
-  if (!("TextEncoder" in window)) {
-    console.log("Sorry, this browser does not support TextEncoder...");
-  }
-  var enc = new TextEncoder(); // always utf-8
-	try {
-		console.log('Sending' , command);
-		blueToothCharacteristic.writeValue(enc.encode(inputValue))
-	} catch (error) {
-		sending = false;
-		console.log('Error sendData ', error);
-	}
 }
 
 const handleColor = (newColor) => {
@@ -205,7 +161,7 @@ const handleRain = (e, startRain, amount) => {
 		<div id='colorApp'>
 			<div>Version 2.0</div>
 			{isConnected ? <h1 style={{'color': 'blue', 'fontSize': '15px'}}>Connected</h1> : <h1 style={{'color': 'red', 'fontSize': '20px'}}>Not connected</h1>}
-			{!isConnected ? <button onClick={connectToBle}>Connect</button> : null}
+			{!isConnected ? <button onClick={() => connectToBle(setIsConnected, turnOn, setAnims, setPrevFrameNames)}>Connect</button> : null}
 			<h1 id='title'>
 			<div id='title-line'></div>
 				LED Canvas
