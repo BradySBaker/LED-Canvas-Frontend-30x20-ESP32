@@ -142,6 +142,74 @@ var FrameChoices = function FrameChoices(_ref) {
 
 /***/ }),
 
+/***/ "./client/src/helperFunctions/handleSaveDelete.js":
+/*!********************************************************!*\
+  !*** ./client/src/helperFunctions/handleSaveDelete.js ***!
+  \********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "handleDelete": () => (/* binding */ handleDelete),
+/* harmony export */   "handleSave": () => (/* binding */ handleSave)
+/* harmony export */ });
+var handleSave = function handleSave(sendData, setFrames, frames, setInputError, e, animation) {
+  var animName = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : document.getElementById('animName').value;
+  setInputError(false);
+  var drawName = document.getElementById('drawName').value;
+  if (drawName.length > 0 || animName.length > 0) {
+    var regex = /^[a-zA-Z0-9_\-]+$/; // valid characters are letters, numbers, underscores, and dashes
+    if (!regex.test(drawName) && !animation || !regex.test(animName) && animation) {
+      // the name is invalid
+      setInputError("Invalid character");
+      return;
+    }
+    if (animation) {
+      if (!anims.includes(animName)) {
+        var newAnims = JSON.parse(JSON.stringify(anims));
+        newAnims.push(animName);
+        setAnims(newAnims);
+      }
+      sendData('A' + animName);
+      return;
+    }
+    //Retrieves all matrix colors and adds them to matrix array
+    var columnElements = document.getElementById('buttons').children;
+    var curFrame = [];
+    for (var y = 0; y < 16; y++) {
+      curFrame.push([]);
+      var curColumn = curFrame[y];
+      for (var x = 0; x < 16; x++) {
+        var curSquare = columnElements[y].children[x];
+        var curColor = window.getComputedStyle(curSquare).getPropertyValue("background-color");
+        curColumn.push(curColor);
+      }
+    }
+    curFrame[16] = drawName; //Set 16th column to name of frame
+    var newFrames = JSON.parse(JSON.stringify(frames));
+    newFrames.push(curFrame);
+    setFrames(newFrames);
+    sendData('S' + drawName);
+  } else {
+    setInputError("Please input a name for your drawing");
+  }
+};
+var handleDelete = function handleDelete(setFrames, frames, setPrevFrameNames, sendData, frameName, idx, type) {
+  if (type === 'prev') {
+    setPrevFrameNames(prevFrameNames.slice(0, idx).concat(prevFrameNames.slice(idx + 1)));
+  } else if (type === 'animation') {
+    setAnims(anims.slice(0, idx).concat(anims.slice(idx + 1)));
+    sendData("Z".concat(frameName));
+    return;
+  } else {
+    setFrames(frames.slice(0, idx).concat(frames.slice(idx + 1)));
+  }
+  sendData("D".concat(frameName));
+};
+
+/***/ }),
+
 /***/ "./client/src/helperFunctions/handleSendGet.js":
 /*!*****************************************************!*\
   !*** ./client/src/helperFunctions/handleSendGet.js ***!
@@ -19936,20 +20004,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./helperFunctions/handleSendGet */ "./client/src/helperFunctions/handleSendGet.js");
-/* harmony import */ var _helperFunctions_setupBluetooth__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./helperFunctions/setupBluetooth */ "./client/src/helperFunctions/setupBluetooth.js");
-/* harmony import */ var react_dom_client__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-dom/client */ "./node_modules/react-dom/client.js");
-/* harmony import */ var _matrixButtons_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./matrixButtons.jsx */ "./client/src/matrixButtons.jsx");
-/* harmony import */ var _frameChoices_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./frameChoices.jsx */ "./client/src/frameChoices.jsx");
-/* harmony import */ var _pongController_jsx__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./pongController.jsx */ "./client/src/pongController.jsx");
-/* harmony import */ var _rainController_jsx__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./rainController.jsx */ "./client/src/rainController.jsx");
-/* harmony import */ var react_colorful__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! react-colorful */ "./node_modules/react-colorful/dist/index.mjs");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _helperFunctions_handleSaveDelete__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./helperFunctions/handleSaveDelete */ "./client/src/helperFunctions/handleSaveDelete.js");
+/* harmony import */ var _helperFunctions_setupBluetooth__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./helperFunctions/setupBluetooth */ "./client/src/helperFunctions/setupBluetooth.js");
+/* harmony import */ var react_dom_client__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-dom/client */ "./node_modules/react-dom/client.js");
+/* harmony import */ var _matrixButtons_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./matrixButtons.jsx */ "./client/src/matrixButtons.jsx");
+/* harmony import */ var _frameChoices_jsx__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./frameChoices.jsx */ "./client/src/frameChoices.jsx");
+/* harmony import */ var _pongController_jsx__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./pongController.jsx */ "./client/src/pongController.jsx");
+/* harmony import */ var _rainController_jsx__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./rainController.jsx */ "./client/src/rainController.jsx");
+/* harmony import */ var react_colorful__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! react-colorful */ "./node_modules/react-colorful/dist/index.mjs");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 
 
 
@@ -20043,48 +20113,6 @@ var App = function App() {
     color = newColor;
     sendRequests['color'] = "CR".concat(newColor.slice(1));
   };
-  var handleSave = function handleSave(e, animation) {
-    var animName = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : document.getElementById('animName').value;
-    setInputError(false);
-    var drawName = document.getElementById('drawName').value;
-    if (drawName.length > 0 || animName.length > 0) {
-      var regex = /^[a-zA-Z0-9_\-]+$/; // valid characters are letters, numbers, underscores, and dashes
-      if (!regex.test(drawName) && !animation || !regex.test(animName) && animation) {
-        // the name is invalid
-        setInputError("Invalid character");
-        return;
-      }
-      if (animation) {
-        if (!anims.includes(animName)) {
-          var newAnims = JSON.parse(JSON.stringify(anims));
-          newAnims.push(animName);
-          setAnims(newAnims);
-        }
-        (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)('A' + animName);
-        return;
-      }
-      //Retrieves all matrix colors and adds them to matrix array
-      var columnElements = document.getElementById('buttons').children;
-      var curFrame = [];
-      for (var y = 0; y < 16; y++) {
-        curFrame.push([]);
-        var curColumn = curFrame[y];
-        for (var x = 0; x < 16; x++) {
-          var curSquare = columnElements[y].children[x];
-          var curColor = window.getComputedStyle(curSquare).getPropertyValue("background-color");
-          curColumn.push(curColor);
-        }
-      }
-      curFrame[16] = drawName; //Set 16th column to name of frame
-      var newFrames = JSON.parse(JSON.stringify(frames));
-      newFrames.push(curFrame);
-      setFrames(newFrames);
-      turnOff(null, true);
-      (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)('S' + drawName);
-    } else {
-      setInputError("Please input a name for your drawing");
-    }
-  };
   var handleFrameChoice = function handleFrameChoice(frameName, animation) {
     if (isRaining && !framePlayed) {
       setRainLoading(true);
@@ -20104,18 +20132,6 @@ var App = function App() {
       return;
     }
     (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)("F".concat(frameName));
-  };
-  var handleDelete = function handleDelete(frameName, idx, type) {
-    if (type === 'prev') {
-      setPrevFrameNames(prevFrameNames.slice(0, idx).concat(prevFrameNames.slice(idx + 1)));
-    } else if (type === 'animation') {
-      setAnims(anims.slice(0, idx).concat(anims.slice(idx + 1)));
-      (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)("Z".concat(frameName));
-      return;
-    } else {
-      setFrames(frames.slice(0, idx).concat(frames.slice(idx + 1)));
-    }
-    (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)("D".concat(frameName));
   };
   var handleStop = function handleStop() {
     (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)('STOP');
@@ -20143,33 +20159,40 @@ var App = function App() {
       setRainLoading(false);
     }
   };
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
+  var callSave = function callSave(e, animation) {
+    var animName = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : document.getElementById('animName').value;
+    (0,_helperFunctions_handleSaveDelete__WEBPACK_IMPORTED_MODULE_2__.handleSave)(_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData, setFrames, frames, setInputError, e, animation, animName = document.getElementById('animName').value);
+  };
+  var callDelete = function callDelete(frameName, idx, type) {
+    (0,_helperFunctions_handleSaveDelete__WEBPACK_IMPORTED_MODULE_2__.handleDelete)(setFrames, frames, setPrevFrameNames, _helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData, frameName, idx, type);
+  };
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("div", {
     id: "colorApp",
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("div", {
       children: "Version 2.0"
-    }), isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("h1", {
+    }), isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("h1", {
       style: {
         'color': 'blue',
         'fontSize': '15px'
       },
       children: "Connected"
-    }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("h1", {
+    }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("h1", {
       style: {
         'color': 'red',
         'fontSize': '20px'
       },
       children: "Not connected"
-    }), !isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("button", {
+    }), !isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("button", {
       onClick: function onClick() {
-        return (0,_helperFunctions_setupBluetooth__WEBPACK_IMPORTED_MODULE_2__["default"])(setIsConnected, turnOn, setAnims, setPrevFrameNames);
+        return (0,_helperFunctions_setupBluetooth__WEBPACK_IMPORTED_MODULE_3__["default"])(setIsConnected, turnOn, setAnims, setPrevFrameNames);
       },
       children: "Connect"
-    }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("h1", {
+    }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("h1", {
       id: "title",
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("div", {
         id: "title-line"
       }), "LED Canvas"]
-    }), drawMode || gameMode || rainMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("button", {
+    }), drawMode || gameMode || rainMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("button", {
       style: {
         'position': 'absolute',
         'right': '10%',
@@ -20181,19 +20204,19 @@ var App = function App() {
         setRainMode(false);
       },
       children: "Back"
-    }) : null, isLoading || rainLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("img", {
+    }) : null, isLoading || rainLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("img", {
       id: "loading",
       src: "./icons/loading.gif"
-    }) : null, drawMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
+    }) : null, drawMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("div", {
       className: "picker-container",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(react_colorful__WEBPACK_IMPORTED_MODULE_9__.HexColorPicker, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(react_colorful__WEBPACK_IMPORTED_MODULE_10__.HexColorPicker, {
         style: {
           height: 'calc(90vw * 0.5)'
         },
         color: color,
         onChange: handleColor
       })
-    }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
+    }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("div", {
       id: "app",
       onMouseDown: function onMouseDown() {
         setMouseDown(true);
@@ -20201,78 +20224,78 @@ var App = function App() {
       onMouseUp: function onMouseUp() {
         return setMouseDown(false);
       },
-      children: [drawMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("button", {
+      children: [drawMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("button", {
         onClick: turnOff,
         children: "Turn Off"
-      }) : null, !drawMode && !gameMode && !rainMode && isConnected && !isLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
+      }) : null, !drawMode && !gameMode && !rainMode && isConnected && !isLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("div", {
         id: "modeChoices",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("button", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("button", {
           onClick: function onClick() {
             return setDrawMode(true);
           },
           children: "Draw Mode"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("button", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("button", {
           onClick: function onClick() {
             setGameMode(true);
             (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)('GAME');
           },
           children: "Game Mode"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("button", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("button", {
           onClick: function onClick() {
             setRainMode(true);
           },
           children: "Rain Mode"
         })]
-      }) : null, inputError ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
+      }) : null, inputError ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("div", {
         style: {
           "color": "red"
         },
         children: inputError
-      }) : null, drawMode && !isLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.Fragment, {
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("button", {
-          onClick: handleSave,
+      }) : null, drawMode && !isLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.Fragment, {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("button", {
+          onClick: callSave,
           children: "Save Drawing"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("input", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("input", {
           id: "drawName",
           type: "text",
           placeholder: "drawing...",
           maxLength: "7"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("button", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("button", {
           onClick: function onClick(e) {
-            return handleSave(e, true);
+            return callSave(e, true);
           },
           children: "Save Frame"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("input", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("input", {
           id: "animName",
           type: "text",
           placeholder: "animation name...",
           maxLength: "7"
-        }), animPlaying ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("button", {
+        }), animPlaying ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("button", {
           onClick: handleStop,
           children: "STOP"
         }) : null]
-      }) : null, drawMode || rainMode && !rainLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_frameChoices_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
-        handleSave: handleSave,
+      }) : null, drawMode || rainMode && !rainLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_frameChoices_jsx__WEBPACK_IMPORTED_MODULE_6__["default"], {
+        handleSave: callSave,
         anims: anims,
         prevFrameNames: prevFrameNames,
         frames: frames,
         handleFrameChoice: handleFrameChoice,
-        handleDelete: handleDelete
-      }) : null, rainMode && !rainLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_rainController_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], {
+        handleDelete: callDelete
+      }) : null, rainMode && !rainLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_rainController_jsx__WEBPACK_IMPORTED_MODULE_8__["default"], {
         sendData: _helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData,
         handleRain: handleRain
-      }) : null, drawMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_matrixButtons_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
+      }) : null, drawMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_matrixButtons_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
         mouseDown: mouseDown,
         sendRequests: sendRequests
-      }) : null, gameMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_pongController_jsx__WEBPACK_IMPORTED_MODULE_6__["default"], {
+      }) : null, gameMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_pongController_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], {
         sendData: _helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData
       }) : null]
     })]
   });
 };
 var container = document.getElementById('root');
-var root = (0,react_dom_client__WEBPACK_IMPORTED_MODULE_3__.createRoot)(container);
-root.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(App, {}));
+var root = (0,react_dom_client__WEBPACK_IMPORTED_MODULE_4__.createRoot)(container);
+root.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(App, {}));
 })();
 
 /******/ })()
