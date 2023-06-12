@@ -8,10 +8,8 @@ import { createRoot } from "react-dom/client";
 import MatrixButtons from "./matrixButtons.jsx";
 import FrameChoices from "./frameChoices.jsx";
 import PongController from "./pongController.jsx";
-import rainController from "./rainController.jsx";
-
-import { HexColorPicker } from "react-colorful";
 import RainController from "./rainController.jsx";
+import DrawMode from "./drawMode.jsx";
 
 window.color = "#FF0000";
 
@@ -49,12 +47,6 @@ function turnOff(e, save = false) {
 		}
 	}
 	sendRequests["off"] = true;
-}
-
-const handleColor = (newColor) => {
-	document.getElementById('title').style.color = newColor;
-	color = newColor;
-	sendRequests['color'] = `CR${newColor.slice(1)}`;
 }
 
 
@@ -105,11 +97,11 @@ const handleRain = (e, startRain, amount) => {
 };
 
 const callSave = (e, animation, animName = document.getElementById('animName').value) => {
-	handleSave(sendData, setFrames, frames, setInputError, e, animation, animName = document.getElementById('animName').value);
+	handleSave(sendData, setFrames, frames, anims, setAnims, setInputError, e, animation, animName);
 }
 
 const callDelete = (frameName, idx, type) => {
-	handleDelete(setFrames, frames, setPrevFrameNames, sendData, frameName, idx, type);
+	handleDelete(setFrames, frames, setPrevFrameNames, anims, setAnims, sendData, frameName, idx, type);
 }
 
 	return (
@@ -123,26 +115,15 @@ const callDelete = (frameName, idx, type) => {
 			</h1>
 			{drawMode || gameMode || rainMode ? <button style={{'position': 'absolute', 'right': '10%', 'fontSize': '20px'}} onClick={() => {setDrawMode(false); setGameMode(false); setRainMode(false);}}>Back</button> : null}
 			{isLoading || rainLoading ? <img id='loading' src='./icons/loading.gif'></img> : null}
-		{drawMode ? <div className="picker-container">
-		<HexColorPicker style={{height: 'calc(90vw * 0.5)'}} color={color} onChange={handleColor} />
-		</div> : null}
 			<div id='app' onMouseDown={() => {setMouseDown(true);}} onMouseUp={() => setMouseDown(false)}>
-			{drawMode ? <button onClick={turnOff}>Turn Off</button> : null}
 			{!drawMode && !gameMode && !rainMode && isConnected && !isLoading ?
 			<div id='modeChoices'>
 				<button onClick={() => setDrawMode(true)}>Draw Mode</button>
 				<button onClick={() => {setGameMode(true); sendData('GAME')}}>Game Mode</button>
 				<button onClick={() => {setRainMode(true);}}>Rain Mode</button>
 			</div> : null}
+			{drawMode ? <DrawMode turnOff={turnOff} callSave={callSave} handleStop={handleStop} animPlaying={animPlaying} isLoading={isLoading}/> : null}
 			{inputError ? <div style={{"color": "red"}}>{inputError}</div>: null}
-			{drawMode && !isLoading ?
-			<>
-			<button onClick={callSave}>Save Drawing</button>
-			<input id="drawName" type="text" placeholder="drawing..." maxLength="7" />
-			<button onClick={(e) => callSave(e, true)}>Save Frame</button>
-			<input id="animName" type="text" placeholder="animation name..." maxLength="7"/>
-			{animPlaying ? <button onClick={handleStop}>STOP</button>: null }
-			</>: null}
 			{drawMode || rainMode && !rainLoading ? <FrameChoices handleSave={callSave} anims={anims} prevFrameNames={prevFrameNames} frames={frames} handleFrameChoice={handleFrameChoice} handleDelete={callDelete}/> : null}
 			{rainMode && !rainLoading ? <RainController sendData={sendData} handleRain={handleRain}/> : null}
 			{/* <RainController sendData={sendData} handleRain={handleRain}/> */}

@@ -1,4 +1,4 @@
-export const handleSave = (sendData, setFrames, frames, setInputError, e, animation, animName = document.getElementById('animName').value) => {
+export const handleSave = (sendData, setFrames, frames, anims, setAnims, setInputError, e, animation, animName = document.getElementById('animName').value) => {
 	setInputError(false);
 	var drawName = document.getElementById('drawName').value;
 
@@ -40,7 +40,7 @@ export const handleSave = (sendData, setFrames, frames, setInputError, e, animat
 	}
 };
 
-export const handleDelete = (setFrames, frames, setPrevFrameNames, sendData, frameName, idx, type) => {
+export const handleDelete = (setFrames, frames, setPrevFrameNames, anims, setAnims, sendData, frameName, idx, type) => {
 	if (type === 'prev') {
 		setPrevFrameNames(prevFrameNames.slice(0, idx).concat(prevFrameNames.slice(idx+1)))
 	} else if (type === 'animation'){
