@@ -2,7 +2,7 @@ import React from 'react';
 
 import { HexColorPicker } from "react-colorful";
 
-const DrawMode = ({callSave, handleStop, animPlaying, turnOff, isLoading}) => {
+const DrawMode = ({callSave, handleStop, animPlaying, turnOff, isLoading, inputError}) => {
 
 	const handleColor = (newColor) => {
 		document.getElementById('title').style.color = newColor;
@@ -23,6 +23,7 @@ const DrawMode = ({callSave, handleStop, animPlaying, turnOff, isLoading}) => {
 				<button onClick={(e) => callSave(e, true)}>Save Frame</button>
 				<input id="animName" type="text" placeholder="animation name..." maxLength="7"/>
 				{animPlaying ? <button onClick={handleStop}>STOP</button>: null}
+				{inputError ? <div style={{"color": "red"}}>{inputError}</div>: null}
 			</>
 			: null}
 		</div>

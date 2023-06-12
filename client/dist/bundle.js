@@ -26,7 +26,8 @@ var DrawMode = function DrawMode(_ref) {
     handleStop = _ref.handleStop,
     animPlaying = _ref.animPlaying,
     turnOff = _ref.turnOff,
-    isLoading = _ref.isLoading;
+    isLoading = _ref.isLoading,
+    inputError = _ref.inputError;
   var handleColor = function handleColor(newColor) {
     document.getElementById('title').style.color = newColor;
     color = newColor;
@@ -67,6 +68,11 @@ var DrawMode = function DrawMode(_ref) {
       }), animPlaying ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
         onClick: handleStop,
         children: "STOP"
+      }) : null, inputError ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+        style: {
+          "color": "red"
+        },
+        children: inputError
       }) : null]
     }) : null]
   });
@@ -20302,16 +20308,12 @@ var App = function App() {
           children: "Rain Mode"
         })]
       }) : null, drawMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_drawMode_jsx__WEBPACK_IMPORTED_MODULE_9__["default"], {
+        inputError: inputError,
         turnOff: turnOff,
         callSave: callSave,
         handleStop: handleStop,
         animPlaying: animPlaying,
         isLoading: isLoading
-      }) : null, inputError ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
-        style: {
-          "color": "red"
-        },
-        children: inputError
       }) : null, drawMode || rainMode && !rainLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_frameChoices_jsx__WEBPACK_IMPORTED_MODULE_6__["default"], {
         handleSave: callSave,
         anims: anims,

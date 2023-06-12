@@ -122,8 +122,7 @@ const callDelete = (frameName, idx, type) => {
 				<button onClick={() => {setGameMode(true); sendData('GAME')}}>Game Mode</button>
 				<button onClick={() => {setRainMode(true);}}>Rain Mode</button>
 			</div> : null}
-			{drawMode ? <DrawMode turnOff={turnOff} callSave={callSave} handleStop={handleStop} animPlaying={animPlaying} isLoading={isLoading}/> : null}
-			{inputError ? <div style={{"color": "red"}}>{inputError}</div>: null}
+			{drawMode ? <DrawMode inputError={inputError} turnOff={turnOff} callSave={callSave} handleStop={handleStop} animPlaying={animPlaying} isLoading={isLoading}/> : null}
 			{drawMode || rainMode && !rainLoading ? <FrameChoices handleSave={callSave} anims={anims} prevFrameNames={prevFrameNames} frames={frames} handleFrameChoice={handleFrameChoice} handleDelete={callDelete}/> : null}
 			{rainMode && !rainLoading ? <RainController sendData={sendData} handleRain={handleRain}/> : null}
 			{/* <RainController sendData={sendData} handleRain={handleRain}/> */}
