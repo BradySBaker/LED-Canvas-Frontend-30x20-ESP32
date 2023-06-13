@@ -52,8 +52,7 @@ export const handleSendRequests = (setPixelSending, pixelSending) => { //Occurs 
 };
 
 
-export function gotValue(value, setAnims, setPrevFrameNames, setRainSending) {
-	console.log(value);
+export function gotValue(value, setAnims, setPrevFrameNames, setRainSending, handleRain) {
 	if (waitingForFrames) {
 		names += value;
 		if (value.includes('~')) {
@@ -71,11 +70,15 @@ export function gotValue(value, setAnims, setPrevFrameNames, setRainSending) {
 		setPrevFrameNames(correctFrameNames);
 		}
 	}
+	if (value === 'OFF') {
+		console.log(value);
+		handleRain();
+	}
 	if (value === 'sRAIN' || value === 'cRAIN') {
 		setRainSending(false);
 		isRaining = false;
 	} else if (value === "RAIN") {
-		setRainSending(true);
+		setRainSending(false);
 		isRaining = true;
 	}
 	if (value === "FRAME") {

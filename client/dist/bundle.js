@@ -357,8 +357,7 @@ var handleSendRequests = function handleSendRequests(setPixelSending, pixelSendi
     return handleSendRequests(setPixelSending, pixelSending);
   }, 20);
 };
-function gotValue(value, setAnims, setPrevFrameNames, setRainSending) {
-  console.log(value);
+function gotValue(value, setAnims, setPrevFrameNames, setRainSending, handleRain) {
   if (waitingForFrames) {
     names += value;
     if (value.includes('~')) {
@@ -377,11 +376,15 @@ function gotValue(value, setAnims, setPrevFrameNames, setRainSending) {
       setPrevFrameNames(correctFrameNames);
     }
   }
+  if (value === 'OFF') {
+    console.log(value);
+    handleRain();
+  }
   if (value === 'sRAIN' || value === 'cRAIN') {
     setRainSending(false);
     isRaining = false;
   } else if (value === "RAIN") {
-    setRainSending(true);
+    setRainSending(false);
     isRaining = true;
   }
   if (value === "FRAME") {
@@ -425,13 +428,14 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var blueTooth = new (p5ble__WEBPACK_IMPORTED_MODULE_0___default())();
-function connectToBle(setIsConnected, turnOn, setAnims, setPrevFrameNames, setRainSending) {
+function connectToBle(setIsConnected, turnOn, setAnims, setPrevFrameNames, setRainSending, handleRain) {
   var paramFuncs = {
     setIsConnected: setIsConnected,
     turnOn: turnOn,
     setAnims: setAnims,
     setPrevFrameNames: setPrevFrameNames,
-    setRainSending: setRainSending
+    setRainSending: setRainSending,
+    handleRain: handleRain
   };
   blueTooth.connect('0000ffe0-0000-1000-8000-00805f9b34fb', function (error, characteristics) {
     return gotCharacteristics(error, characteristics, paramFuncs);
@@ -451,7 +455,7 @@ function gotCharacteristics(error, characteristics, paramFuncs) {
   }
   window.blueToothCharacteristic = characteristics[0];
   blueTooth.startNotifications(window.blueToothCharacteristic, function (value) {
-    return (0,_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.gotValue)(value, paramFuncs.setAnims, paramFuncs.setPrevFrameNames, paramFuncs.setRainSending);
+    return (0,_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.gotValue)(value, paramFuncs.setAnims, paramFuncs.setPrevFrameNames, paramFuncs.setRainSending, paramFuncs.handleRain);
   }, 'string');
   blueTooth.onDisconnected(function () {
     return onDisconnected(paramFuncs.setIsConnected);
@@ -620,11 +624,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
 var RainController = function RainController(_ref) {
   var sendData = _ref.sendData,
     setRainSending = _ref.setRainSending,
     rainSending = _ref.rainSending,
-    setInputError = _ref.setInputError;
+    setInputError = _ref.setInputError,
+    handleRain = _ref.handleRain;
+  var colorsSent = 0;
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
     _useState2 = _slicedToArray(_useState, 2),
     colorChoices = _useState2[0],
@@ -642,60 +649,45 @@ var RainController = function RainController(_ref) {
     setColorChoices(colors);
     sendData("CRR" + curChosenColor.slice(1));
     setRainSending(true);
+    rainColorsSent++;
   };
-  var handleRain = function handleRain(e, startRain) {
-    var amount = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : document.getElementById('rainAmount').value;
-    if (isNaN(Number(amount))) {
-      setInputError("Please input a number value");
-      return;
-    }
-    if (isRaining && !startRain) {
-      sendData("SR");
-      setTimeout(handleRain, 400);
-    } else if (e) {
-      if (!isRaining) {
-        sendData("R" + amount);
-        setTimeout(function () {
-          handleRain(true, true, amount);
-        }, 400);
-      }
-    }
-  };
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
     id: "rainController",
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
-      className: "picker-container",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(react_colorful__WEBPACK_IMPORTED_MODULE_2__.HexColorPicker, {
-        style: {
-          height: 'calc(90vw * 0.5)'
-        },
-        color: color,
-        onChange: handleRainColor
-      })
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
-      children: colorChoices.map(function (curChoice) {
-        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+    children: !rainSending ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.Fragment, {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+        className: "picker-container",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(react_colorful__WEBPACK_IMPORTED_MODULE_2__.HexColorPicker, {
           style: {
-            'backgroundColor': curChoice,
-            'width': '100px',
-            'height': '100px'
-          }
-        });
-      })
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
-      style: {
-        'color': curChosenColor
-      },
-      onClick: handleChooseColor,
-      children: "Choose Color"
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
-      id: "rainAmount",
-      type: "text",
-      placeholder: "1..."
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
-      onClick: handleRain,
-      children: "rain"
-    })]
+            height: 'calc(90vw * 0.5)'
+          },
+          color: color,
+          onChange: handleRainColor
+        })
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+        children: colorChoices.map(function (curChoice) {
+          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+            style: {
+              'backgroundColor': curChoice,
+              'width': '100px',
+              'height': '100px'
+            }
+          });
+        })
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
+        style: {
+          'color': curChosenColor
+        },
+        onClick: handleChooseColor,
+        children: "Choose Color"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
+        id: "rainAmount",
+        type: "text",
+        placeholder: "1..."
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
+        onClick: handleRain,
+        children: "rain"
+      })]
+    }) : null
   });
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (RainController);
@@ -20136,9 +20128,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+window.rainColorsSent = 0;
 window.color = "#FF0000";
 window.ledConnected = false;
-window.isRaining = false;
+window.isRaining = true;
 window.framePlayed = false;
 var App = function App() {
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
@@ -20196,6 +20189,11 @@ var App = function App() {
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     return (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.handleSendRequests)(setPixelSending, pixelSending);
   }, []); //On start
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    if (isConnected === true) {
+      sendRequests["off"];
+    }
+  }, [isConnected]); //On connect
 
   function turnOn() {
     setTimeout(function () {
@@ -20242,6 +20240,28 @@ var App = function App() {
   var callDelete = function callDelete(frameName, idx, type) {
     (0,_helperFunctions_handleSaveDelete__WEBPACK_IMPORTED_MODULE_2__.handleDelete)(setFrames, frames, setPrevFrameNames, anims, setAnims, _helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData, frameName, idx, type);
   };
+
+  //Rain handler for off and on
+  var handleRain = function handleRain(e, startRain, amount) {
+    if (isRaining && !startRain) {
+      (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)("SR");
+      setTimeout(handleRain, 400);
+    } else if (e) {
+      if (!isRaining) {
+        if (!amount) {
+          amount = document.getElementById('rainAmount').value;
+        }
+        if (isNaN(Number(amount) || amount.length < 1 || rainColorsSent === 0)) {
+          setInputError("Please input a number value and a color");
+          return;
+        }
+        (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)("R" + amount);
+        setTimeout(function () {
+          handleRain(true, true, amount);
+        }, 400);
+      }
+    }
+  };
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("div", {
     id: "colorApp",
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
@@ -20260,7 +20280,7 @@ var App = function App() {
       children: "Not connected"
     }), !isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("button", {
       onClick: function onClick() {
-        return (0,_helperFunctions_setupBluetooth__WEBPACK_IMPORTED_MODULE_3__["default"])(setIsConnected, turnOn, setAnims, setPrevFrameNames, setRainSending);
+        return (0,_helperFunctions_setupBluetooth__WEBPACK_IMPORTED_MODULE_3__["default"])(setIsConnected, turnOn, setAnims, setPrevFrameNames, setRainSending, handleRain);
       },
       children: "Connect"
     }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("h1", {
@@ -20324,11 +20344,12 @@ var App = function App() {
         frames: frames,
         handleFrameChoice: handleFrameChoice,
         handleDelete: callDelete
-      }) : null, rainMode && !rainSending ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_rainController_jsx__WEBPACK_IMPORTED_MODULE_8__["default"], {
+      }) : null, rainMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_rainController_jsx__WEBPACK_IMPORTED_MODULE_8__["default"], {
         sendData: _helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData,
         setRainSending: setRainSending,
         rainSending: rainSending,
-        setInputError: setInputError
+        setInputError: setInputError,
+        handleRain: handleRain
       }) : null, drawMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_matrixButtons_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
         mouseDown: mouseDown,
         sendRequests: sendRequests
