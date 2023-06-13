@@ -366,6 +366,10 @@ function gotValue(value, setAnims, setPrevFrameNames, setRainSending, turnOn) {
           correctFrameNames.push(curName);
         }
       });
+      if (!window.turnedOn) {
+        window.turnedOn = true;
+        setRainSending(false);
+      }
       setAnims(correctAnimNames);
       setPrevFrameNames(correctFrameNames);
     }
@@ -374,16 +378,16 @@ function gotValue(value, setAnims, setPrevFrameNames, setRainSending, turnOn) {
     if (!window.turnedOn) {
       turnOn();
       waitingForFrames = true;
-      window.turnedOn = true;
     }
   }
   if (value === 'sRAIN' || value === 'cRAIN') {
-    setRainSending(false);
     isRaining = false;
     if (!window.turnedOn) {
       setTimeout(function () {
         return sendData("OFF\n");
       }, 100);
+    } else {
+      setRainSending(false);
     }
   } else if (value === "RAIN") {
     setRainSending(false);

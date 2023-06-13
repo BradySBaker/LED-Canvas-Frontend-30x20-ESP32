@@ -67,6 +67,10 @@ export function gotValue(value, setAnims, setPrevFrameNames, setRainSending, tur
 					correctFrameNames.push(curName);
 				}
 			});
+		if (!window.turnedOn) {
+			window.turnedOn = true;
+			setRainSending(false);
+		}
 		setAnims(correctAnimNames);
 		setPrevFrameNames(correctFrameNames);
 		}
@@ -75,14 +79,14 @@ export function gotValue(value, setAnims, setPrevFrameNames, setRainSending, tur
 		if (!window.turnedOn) {
 			turnOn();
 			waitingForFrames = true;
-			window.turnedOn = true;
 		}
 	}
 	if (value === 'sRAIN' || value === 'cRAIN') {
-		setRainSending(false);
 		isRaining = false;
 		if (!window.turnedOn) {
 			setTimeout(() => sendData("OFF\n"), 100);
+		} else {
+			setRainSending(false);
 		}
 	} else if (value === "RAIN") {
 		setRainSending(false);
