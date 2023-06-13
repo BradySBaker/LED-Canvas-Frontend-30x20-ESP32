@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { HexColorPicker } from "react-colorful";
 
-const RainController = ({handleRain, sendData}) => {
+const RainController = ({sendData, setRainSending, rainSending, setInputError}) => {
 	const [colorChoices, setColorChoices] = useState([]);
 	const [curChosenColor, setCurChosenColor] = useState(color);
 	const handleRainColor = (newColor) => {
@@ -14,6 +14,23 @@ const RainController = ({handleRain, sendData}) => {
 		colors.push(curChosenColor);
 		setColorChoices(colors);
 		sendData("CRR" + curChosenColor.slice(1));
+		setRainSending(true);
+	};
+
+	const handleRain = (e, startRain, amount = document.getElementById('rainAmount').value) => {
+		if (isNaN(Number(amount))) {
+			setInputError("Please input a number value");
+			return;
+		}
+		if (isRaining && !startRain) {
+			sendData("SR");
+			setTimeout(handleRain, 400);
+		} else if (e) {
+			if (!isRaining) {
+				sendData("R" + amount);
+				setTimeout(() => {handleRain(true, true, amount)}, 400);
+			}
+		}
 	};
 
 	return (

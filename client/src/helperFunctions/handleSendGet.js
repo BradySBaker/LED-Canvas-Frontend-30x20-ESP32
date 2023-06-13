@@ -6,15 +6,15 @@ var sendingTimer = 0;
 
 var names = "";
 
-export const handleSendRequests = (setIsLoading, isLoading) => { //Occurs every 20ms
+export const handleSendRequests = (setPixelSending, pixelSending) => { //Occurs every 20ms
 	sendingTimer++;
 	if (sendingTimer >= 550) {
 		sending = false;
 	}
 	if (Object.keys(sendRequests).length === 0) {
-		setIsLoading(false);
-	} else if (!isLoading && ledConnected) {
-		setIsLoading(true);
+		setPixelSending(false);
+	} else if (!pixelSending && ledConnected) {
+		setPixelSending(true);
 	}
 	if ((!sending && ledConnected && !waitingForFrames)) {
 		sendingTimer = 0;
@@ -48,11 +48,12 @@ export const handleSendRequests = (setIsLoading, isLoading) => { //Occurs every 
 			}
 		}
 	}
-	setTimeout(() => handleSendRequests(setIsLoading, isLoading), 20);
+	setTimeout(() => handleSendRequests(setPixelSending, pixelSending), 20);
 };
 
 
-export function gotValue(value, setAnims, setPrevFrameNames) {
+export function gotValue(value, setAnims, setPrevFrameNames, setRainSending) {
+	console.log(value);
 	if (waitingForFrames) {
 		names += value;
 		if (value.includes('~')) {
@@ -70,9 +71,11 @@ export function gotValue(value, setAnims, setPrevFrameNames) {
 		setPrevFrameNames(correctFrameNames);
 		}
 	}
-	if (value === 'sRAIN') {
+	if (value === 'sRAIN' || value === 'cRAIN') {
+		setRainSending(false);
 		isRaining = false;
 	} else if (value === "RAIN") {
+		setRainSending(true);
 		isRaining = true;
 	}
 	if (value === "FRAME") {
