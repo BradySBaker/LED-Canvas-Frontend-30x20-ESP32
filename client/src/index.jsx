@@ -21,6 +21,8 @@ window.isRaining = true;
 
 window.framePlayed = false;
 
+window.turnedOn = false;
+
 const App = function() {
 	const [isConnected, setIsConnected] = useState(false);
 	const [mouseDown, setMouseDown] = useState(false);
@@ -30,14 +32,14 @@ const App = function() {
 	const [curFrame, setCurFrame] = useState([]);
 	const [drawMode, setDrawMode] = useState(false);
 	const [gameMode, setGameMode] = useState(false);
-	const[rainMode, setRainMode] = useState(false);
+	const [rainMode, setRainMode] = useState(false);
 	const [prevFrameNames, setPrevFrameNames] = useState(null);
 	const [inputError, setInputError] = useState(false);
 	const [anims, setAnims] = useState([]);
 	const [animPlaying, setAnimPlaying] = useState(false);
 
 	useEffect(() => handleSendRequests(setPixelSending, pixelSending), []); //On start
-	useEffect(() => {if (isConnected === true) {sendRequests["off"]}}, [isConnected]) //On connect
+	useEffect(() => {if (isConnected === true) {handleRain()}}, [isConnected]) //On connect
 
 	function turnOn() {
 		setTimeout(() => {sendData("names");}, 100);
@@ -97,7 +99,7 @@ const App = function() {
 				if (!amount) {
 					amount = document.getElementById('rainAmount').value
 				}
-				if (isNaN(Number(amount) || amount.length < 1 || rainColorsSent === 0)) {
+				if (isNaN(Number(amount)) || amount.length < 1 || rainColorsSent === 0) {
 					setInputError("Please input a number value and a color");
 					return;
 				}
@@ -111,7 +113,7 @@ const App = function() {
 		<div id='colorApp'>
 			<div>Version 2.0</div>
 			{isConnected ? <h1 style={{'color': 'blue', 'fontSize': '15px'}}>Connected</h1> : <h1 style={{'color': 'red', 'fontSize': '20px'}}>Not connected</h1>}
-			{!isConnected ? <button onClick={() => connectToBle(setIsConnected, turnOn, setAnims, setPrevFrameNames, setRainSending, handleRain)}>Connect</button> : null}
+			{!isConnected ? <button onClick={() => connectToBle(setIsConnected, turnOn, setAnims, setPrevFrameNames, setRainSending)}>Connect</button> : null}
 			<h1 id='title'>
 			<div id='title-line'></div>
 				LED Canvas
@@ -131,6 +133,7 @@ const App = function() {
 			{/* <RainController sendData={sendData} handleRain={handleRain}/> */}
 			{drawMode ? <MatrixButtons mouseDown={mouseDown} sendRequests={sendRequests}/> : null}
 			{gameMode ? <PongController sendData={sendData}/> : null}
+			{inputError ? <div style={{"color": "red"}}>{inputError}</div>: null}
 		</div>
 		</div>
 	)

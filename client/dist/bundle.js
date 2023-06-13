@@ -68,11 +68,6 @@ var DrawMode = function DrawMode(_ref) {
       }), animPlaying ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
         onClick: handleStop,
         children: "STOP"
-      }) : null, inputError ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
-        style: {
-          "color": "red"
-        },
-        children: inputError
       }) : null]
     }) : null]
   });
@@ -304,10 +299,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "sendData": () => (/* binding */ sendData)
 /* harmony export */ });
 window.sending = false;
-window.sendRequests = {
-  'off': true
-};
-window.waitingForFrames = true;
+window.sendRequests = {};
+window.waitingForFrames = false;
 var sendingTimer = 0;
 var names = "";
 var handleSendRequests = function handleSendRequests(setPixelSending, pixelSending) {
@@ -357,7 +350,8 @@ var handleSendRequests = function handleSendRequests(setPixelSending, pixelSendi
     return handleSendRequests(setPixelSending, pixelSending);
   }, 20);
 };
-function gotValue(value, setAnims, setPrevFrameNames, setRainSending, handleRain) {
+function gotValue(value, setAnims, setPrevFrameNames, setRainSending, turnOn) {
+  console.log(value);
   if (waitingForFrames) {
     names += value;
     if (value.includes('~')) {
@@ -377,12 +371,20 @@ function gotValue(value, setAnims, setPrevFrameNames, setRainSending, handleRain
     }
   }
   if (value === 'OFF') {
-    console.log(value);
-    handleRain();
+    if (!window.turnedOn) {
+      turnOn();
+      waitingForFrames = true;
+      window.turnedOn = true;
+    }
   }
   if (value === 'sRAIN' || value === 'cRAIN') {
     setRainSending(false);
     isRaining = false;
+    if (!window.turnedOn) {
+      setTimeout(function () {
+        return sendData("OFF\n");
+      }, 100);
+    }
   } else if (value === "RAIN") {
     setRainSending(false);
     isRaining = true;
@@ -428,14 +430,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var blueTooth = new (p5ble__WEBPACK_IMPORTED_MODULE_0___default())();
-function connectToBle(setIsConnected, turnOn, setAnims, setPrevFrameNames, setRainSending, handleRain) {
+function connectToBle(setIsConnected, turnOn, setAnims, setPrevFrameNames, setRainSending) {
   var paramFuncs = {
     setIsConnected: setIsConnected,
     turnOn: turnOn,
     setAnims: setAnims,
     setPrevFrameNames: setPrevFrameNames,
-    setRainSending: setRainSending,
-    handleRain: handleRain
+    setRainSending: setRainSending
   };
   blueTooth.connect('0000ffe0-0000-1000-8000-00805f9b34fb', function (error, characteristics) {
     return gotCharacteristics(error, characteristics, paramFuncs);
@@ -455,12 +456,11 @@ function gotCharacteristics(error, characteristics, paramFuncs) {
   }
   window.blueToothCharacteristic = characteristics[0];
   blueTooth.startNotifications(window.blueToothCharacteristic, function (value) {
-    return (0,_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.gotValue)(value, paramFuncs.setAnims, paramFuncs.setPrevFrameNames, paramFuncs.setRainSending, paramFuncs.handleRain);
+    return (0,_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.gotValue)(value, paramFuncs.setAnims, paramFuncs.setPrevFrameNames, paramFuncs.setRainSending, paramFuncs.turnOn);
   }, 'string');
   blueTooth.onDisconnected(function () {
     return onDisconnected(paramFuncs.setIsConnected);
   });
-  paramFuncs.turnOn();
   ledConnected = blueTooth.isConnected();
   paramFuncs.setIsConnected(blueTooth.isConnected());
   // Add a event handler when the device is disconnected
@@ -20133,6 +20133,7 @@ window.color = "#FF0000";
 window.ledConnected = false;
 window.isRaining = true;
 window.framePlayed = false;
+window.turnedOn = false;
 var App = function App() {
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState2 = _slicedToArray(_useState, 2),
@@ -20191,7 +20192,7 @@ var App = function App() {
   }, []); //On start
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     if (isConnected === true) {
-      sendRequests["off"];
+      handleRain();
     }
   }, [isConnected]); //On connect
 
@@ -20251,7 +20252,7 @@ var App = function App() {
         if (!amount) {
           amount = document.getElementById('rainAmount').value;
         }
-        if (isNaN(Number(amount) || amount.length < 1 || rainColorsSent === 0)) {
+        if (isNaN(Number(amount)) || amount.length < 1 || rainColorsSent === 0) {
           setInputError("Please input a number value and a color");
           return;
         }
@@ -20280,7 +20281,7 @@ var App = function App() {
       children: "Not connected"
     }), !isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("button", {
       onClick: function onClick() {
-        return (0,_helperFunctions_setupBluetooth__WEBPACK_IMPORTED_MODULE_3__["default"])(setIsConnected, turnOn, setAnims, setPrevFrameNames, setRainSending, handleRain);
+        return (0,_helperFunctions_setupBluetooth__WEBPACK_IMPORTED_MODULE_3__["default"])(setIsConnected, turnOn, setAnims, setPrevFrameNames, setRainSending);
       },
       children: "Connect"
     }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("h1", {
@@ -20355,6 +20356,11 @@ var App = function App() {
         sendRequests: sendRequests
       }) : null, gameMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_pongController_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], {
         sendData: _helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData
+      }) : null, inputError ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
+        style: {
+          "color": "red"
+        },
+        children: inputError
       }) : null]
     })]
   });
