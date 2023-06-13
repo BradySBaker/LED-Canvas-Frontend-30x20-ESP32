@@ -20147,7 +20147,7 @@ var App = function App() {
     _useState6 = _slicedToArray(_useState5, 2),
     pixelSending = _useState6[0],
     setPixelSending = _useState6[1];
-  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(true),
     _useState8 = _slicedToArray(_useState7, 2),
     rainSending = _useState8[0],
     setRainSending = _useState8[1];
@@ -20301,7 +20301,7 @@ var App = function App() {
         setRainMode(false);
       },
       children: "Back"
-    }) : null, pixelSending || rainSending ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("img", {
+    }) : null, (pixelSending || rainSending) && isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("img", {
       id: "loading",
       src: "./icons/loading.gif"
     }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("div", {
@@ -20312,7 +20312,7 @@ var App = function App() {
       onMouseUp: function onMouseUp() {
         return setMouseDown(false);
       },
-      children: [!drawMode && !gameMode && !rainMode && isConnected && !pixelSending ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("div", {
+      children: [!drawMode && !gameMode && !rainMode && isConnected && !pixelSending && !rainSending ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("div", {
         id: "modeChoices",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("button", {
           onClick: function onClick() {

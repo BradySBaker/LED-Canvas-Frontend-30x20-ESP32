@@ -27,7 +27,7 @@ const App = function() {
 	const [isConnected, setIsConnected] = useState(false);
 	const [mouseDown, setMouseDown] = useState(false);
 	const [pixelSending, setPixelSending] = useState(false);
-	const [rainSending, setRainSending] = useState(false);
+	const [rainSending, setRainSending] = useState(true);
 	const [frames, setFrames] = useState([]);
 	const [curFrame, setCurFrame] = useState([]);
 	const [drawMode, setDrawMode] = useState(false);
@@ -119,9 +119,9 @@ const App = function() {
 				LED Canvas
 			</h1>
 			{drawMode || gameMode || rainMode ? <button style={{'position': 'absolute', 'right': '10%', 'fontSize': '20px'}} onClick={() => {setDrawMode(false); setGameMode(false); setRainMode(false);}}>Back</button> : null}
-			{pixelSending || rainSending ? <img id='loading' src='./icons/loading.gif'></img> : null}
+			{(pixelSending || rainSending) && isConnected ? <img id='loading' src='./icons/loading.gif'></img> : null}
 			<div id='app' onMouseDown={() => {setMouseDown(true);}} onMouseUp={() => setMouseDown(false)}>
-			{!drawMode && !gameMode && !rainMode && isConnected && !pixelSending ?
+			{!drawMode && !gameMode && !rainMode && isConnected && !pixelSending && !rainSending ?
 			<div id='modeChoices'>
 				<button onClick={() => setDrawMode(true)}>Draw Mode</button>
 				<button onClick={() => {setGameMode(true); sendData('GAME')}}>Game Mode</button>
