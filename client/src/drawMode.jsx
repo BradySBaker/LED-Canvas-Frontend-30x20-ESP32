@@ -23,7 +23,6 @@ const DrawMode = ({callSave, handleStop, animPlaying, turnOff, isLoading, inputE
 				<button onClick={(e) => callSave(e, true)}>Save Frame</button>
 				<input id="animName" type="text" placeholder="animation name..." maxLength="7"/>
 				{animPlaying ? <button onClick={handleStop}>STOP</button>: null}
-				{inputError ? <div style={{"color": "red"}}>{inputError}</div>: null}
 			</>
 			: null}
 		</div>
