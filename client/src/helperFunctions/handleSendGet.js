@@ -88,7 +88,7 @@ export function gotValue(value, setAnims, setPrevFrameNames, setModeDataSending,
 		} else {
 			setModeDataSending(false);
 		}
-	} else if (value === "RAIN") {
+	} else if (value === "RAIN" || value === "HAV") {
 		setModeDataSending(false);
 		modeRunning = true;
 	}

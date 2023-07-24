@@ -14,21 +14,60 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_colorful__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-colorful */ "./node_modules/react-colorful/dist/index.mjs");
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 
 
-var AVController = function AVController(handleChooseColor) {
+
+
+
+var AVController = function AVController(_ref) {
+  var handleChooseColor = _ref.handleChooseColor,
+    setCurChosenColor = _ref.setCurChosenColor,
+    modeDataSending = _ref.modeDataSending,
+    colorChoices = _ref.colorChoices,
+    handleModeStartStop = _ref.handleModeStartStop,
+    curChosenColor = _ref.curChosenColor;
+  var handleAVColor = function handleAVColor(newColor) {
+    if (colorChoices.length < 2) {
+      setCurChosenColor(newColor);
+    }
+  };
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
-      className: "picker-container",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(HexColorPicker, {
+    id: "avController",
+    children: !modeDataSending ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.Fragment, {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+        className: "picker-container",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(react_colorful__WEBPACK_IMPORTED_MODULE_2__.HexColorPicker, {
+          style: {
+            height: 'calc(90vw * 0.5)'
+          },
+          color: color,
+          onChange: handleAVColor
+        })
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+        children: colorChoices.map(function (curChoice) {
+          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+            style: {
+              'backgroundColor': curChoice,
+              'width': '100px',
+              'height': '100px'
+            }
+          });
+        })
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
         style: {
-          height: 'calc(90vw * 0.5)'
+          'color': curChosenColor
         },
-        color: color,
-        onChange: handleChooseColor
-      })
-    })
+        onClick: handleChooseColor,
+        children: "Choose Color"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
+        onClick: function onClick(e) {
+          return handleModeStartStop(e, false);
+        },
+        children: "Start"
+      })]
+    }) : null
   });
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (AVController);
@@ -423,7 +462,7 @@ function gotValue(value, setAnims, setPrevFrameNames, setModeDataSending, turnOn
     } else {
       setModeDataSending(false);
     }
-  } else if (value === "RAIN") {
+  } else if (value === "RAIN" || value === "HAV") {
     setModeDataSending(false);
     modeRunning = true;
   }
@@ -631,7 +670,6 @@ var RainController = function RainController(_ref) {
     colorChoices = _ref.colorChoices,
     handleChooseColor = _ref.handleChooseColor,
     curChosenColor = _ref.curChosenColor;
-  var colorsSent = 0;
   var handleRainColor = function handleRainColor(newColor) {
     setCurChosenColor(newColor);
   };
@@ -671,7 +709,7 @@ var RainController = function RainController(_ref) {
         onClick: function onClick(e) {
           return handleModeStartStop(e, true);
         },
-        children: "rain"
+        children: "Start"
       })]
     }) : null
   });
@@ -20259,6 +20297,12 @@ var App = function App() {
         setTimeout(function () {
           handleModeStartStop(true, true, true, rainAmount);
         }, 400);
+      } else if (!modeRunning) {
+        //Audio visualizer
+        (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)("HAV");
+        setTimeout(function () {
+          handleModeStartStop(true, false, true, rainAmount);
+        }, 400);
       }
     } else {
       setColorChoices([]);
@@ -20331,7 +20375,6 @@ var App = function App() {
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("button", {
           onClick: function onClick() {
             setAudioVisualizer(true);
-            (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)('AV');
           },
           children: "Audio Visualizer"
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("button", {
@@ -20365,9 +20408,12 @@ var App = function App() {
         mouseDown: mouseDown,
         sendRequests: sendRequests
       }) : null, audioVisualizer ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_avController_jsx__WEBPACK_IMPORTED_MODULE_9__["default"], {
-        setModeDataSending: setModeDataSending,
         handleChooseColor: handleModeChooseColor,
-        modeDataSending: modeDataSending
+        curChosenColor: curChosenColor,
+        modeDataSending: modeDataSending,
+        setCurChosenColor: setCurChosenColor,
+        colorChoices: colorChoices,
+        handleModeStartStop: handleModeStartStop
       }) : null, inputError ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
         style: {
           "color": "red"

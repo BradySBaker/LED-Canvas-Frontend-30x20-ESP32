@@ -108,7 +108,10 @@ const App = function() {
 				}
 				sendData("R" + rainAmount);
 				setTimeout(() => {handleModeStartStop(true, true, true, rainAmount)}, 400);
-			}
+			} else if(!modeRunning) { //Audio visualizer
+        sendData("HAV");
+				setTimeout(() => {handleModeStartStop(true, false, true, rainAmount)}, 400);
+      }
 		} else {
       setColorChoices([]);
     }
@@ -138,14 +141,14 @@ const App = function() {
 			{!drawMode && !audioVisualizer && !rainMode && isConnected && !pixelSending && !modeDataSending ?
 			<div id='modeChoices'>
 				<button onClick={() => setDrawMode(true)}>Draw Mode</button>
-				<button onClick={() => {setAudioVisualizer(true); sendData('AV')}}>Audio Visualizer</button>
+				<button onClick={() => {setAudioVisualizer(true);}}>Audio Visualizer</button>
 				<button onClick={() => {setRainMode(true);}}>Rain Mode</button>
 			</div> : null}
 			{drawMode ? <DrawMode inputError={inputError} turnOff={turnOff} callSave={callSave} handleStop={handleStop} animPlaying={animPlaying} pixelSending={pixelSending}/> : null}
 			{drawMode || rainMode && !modeDataSending ? <FrameChoices handleSave={callSave} anims={anims} prevFrameNames={prevFrameNames} frames={frames} handleFrameChoice={handleFrameChoice} handleDelete={callDelete}/> : null}
 			{rainMode ? <RainController sendData={sendData} modeDataSending={modeDataSending} curChosenColor={curChosenColor} handleChooseColor={handleModeChooseColor} colorChoices={colorChoices} setCurChosenColor={setCurChosenColor} modeDataSending={modeDataSending} setInputError={setInputError} handleModeStartStop={handleModeStartStop}/> : null}
 			{drawMode ? <MatrixButtons mouseDown={mouseDown} sendRequests={sendRequests}/> : null}
-      {audioVisualizer ? <AVController setModeDataSending={setModeDataSending} handleChooseColor={handleModeChooseColor} modeDataSending={modeDataSending}/> : null}
+      {audioVisualizer ? <AVController handleChooseColor={handleModeChooseColor} curChosenColor={curChosenColor} modeDataSending={modeDataSending} setCurChosenColor={setCurChosenColor} colorChoices={colorChoices} handleModeStartStop={handleModeStartStop}/> : null}
 			{inputError ? <div style={{"color": "red"}}>{inputError}</div>: null}
 		</div>
 		</div>
