@@ -3,8 +3,8 @@ import p5ble from 'p5ble';
 import {gotValue} from './handleSendGet';
 
 let blueTooth = new p5ble();
-export default function connectToBle(setIsConnected, turnOn, setAnims, setPrevFrameNames, setRainSending) {
-	var paramFuncs = {setIsConnected, turnOn, setAnims, setPrevFrameNames, setRainSending};
+export default function connectToBle(setIsConnected, turnOn, setAnims, setPrevFrameNames, setModeDataSending) {
+	var paramFuncs = {setIsConnected, turnOn, setAnims, setPrevFrameNames, setModeDataSending};
 	blueTooth.connect('0000ffe0-0000-1000-8000-00805f9b34fb', (error, characteristics) => gotCharacteristics(error, characteristics, paramFuncs));
 }
 
@@ -24,7 +24,7 @@ if (error) {
 }
 
 window.blueToothCharacteristic = characteristics[0];
-blueTooth.startNotifications(window.blueToothCharacteristic, (value) => gotValue(value, paramFuncs.setAnims, paramFuncs.setPrevFrameNames, paramFuncs.setRainSending, paramFuncs.turnOn), 'string');
+blueTooth.startNotifications(window.blueToothCharacteristic, (value) => gotValue(value, paramFuncs.setAnims, paramFuncs.setPrevFrameNames, paramFuncs.setModeDataSending, paramFuncs.turnOn), 'string');
 blueTooth.onDisconnected(() => onDisconnected(paramFuncs.setIsConnected));
 ledConnected = blueTooth.isConnected();
 paramFuncs.setIsConnected(blueTooth.isConnected());

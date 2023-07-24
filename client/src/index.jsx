@@ -7,9 +7,9 @@ import connectToBle from './helperFunctions/setupBluetooth';
 import { createRoot } from "react-dom/client";
 import MatrixButtons from "./matrixButtons.jsx";
 import FrameChoices from "./frameChoices.jsx";
-import PongController from "./pongController.jsx";
 import RainController from "./rainController.jsx";
 import DrawMode from "./drawMode.jsx";
+import AVController from "./avController.jsx";
 
 window.rainColorsSent = 0;
 
@@ -17,7 +17,7 @@ window.color = "#FF0000";
 
 window.ledConnected = false;
 
-window.isRaining = true;
+window.modeRunning = true;
 
 window.framePlayed = false;
 
@@ -27,19 +27,22 @@ const App = function() {
 	const [isConnected, setIsConnected] = useState(false);
 	const [mouseDown, setMouseDown] = useState(false);
 	const [pixelSending, setPixelSending] = useState(false);
-	const [rainSending, setRainSending] = useState(true);
+	const [modeDataSending, setModeDataSending] = useState(true);
 	const [frames, setFrames] = useState([]);
 	const [curFrame, setCurFrame] = useState([]);
 	const [drawMode, setDrawMode] = useState(false);
-	const [gameMode, setGameMode] = useState(false);
+	const [audioVisualizer, setAudioVisualizer] = useState(false);
 	const [rainMode, setRainMode] = useState(false);
 	const [prevFrameNames, setPrevFrameNames] = useState(null);
 	const [inputError, setInputError] = useState(false);
 	const [anims, setAnims] = useState([]);
 	const [animPlaying, setAnimPlaying] = useState(false);
 
+  const [colorChoices, setColorChoices] = useState([]);
+	const [curChosenColor, setCurChosenColor] = useState(color);
+
 	useEffect(() => handleSendRequests(setPixelSending, pixelSending), []); //On start
-	useEffect(() => {if (isConnected === true) {handleRain()}}, [isConnected]) //On connect
+	useEffect(() => {if (isConnected === true) {handleModeStartStop()}}, [isConnected]) //On connect
 
 	function turnOn() {
 		setTimeout(() => {sendData("names");}, 100);
@@ -56,14 +59,14 @@ const App = function() {
 
 
 	const handleFrameChoice = (frameName, animation) => {
-		if (isRaining && !framePlayed) {
-			setRainSending(true);
+		if (modeRunning && !framePlayed) {
+			setModeDataSending(true);
 			sendData(`F${frameName}`);
 			setTimeout(() => {handleFrameChoice(frameName)}, 400);
 			return;
-		} else if (isRaining) {
+		} else if (modeRunning) {
 			framePlayed = false;
-			setRainSending(false);
+			setModeDataSending(false);
 			return;
 		}
 		if (animation) {
@@ -86,53 +89,63 @@ const App = function() {
 	};
 
 	const callDelete = (frameName, idx, type) => {
-		handleDelete(setFrames, frames, setPrevFrameNames, anims, setAnims, sendData, frameName, idx, type);
+		handleDelete(setFrames, frames, setPrevFrameNames, prevFrameNames, anims, setAnims, sendData, frameName, idx, type);
 	};
 
-	//Rain handler for off and on
-	const handleRain = (e, startRain, amount) => {
-		if (isRaining && !startRain) {
-			sendData("SR");
-			setTimeout(handleRain, 400);
+	//Rain/Audio Visaulizer handler for off and on
+	const handleModeStartStop = (e, rain, startMode, rainAmount) => {
+		if (modeRunning && !startMode) {
+			sendData("SM");
+			setTimeout(handleModeStartStop, 400);
 		} else if (e) {
-			if (!isRaining) {
-				if (!amount) {
-					amount = document.getElementById('rainAmount').value
+			if (!modeRunning && rain) {
+				if (!rainAmount) {
+					rainAmount = document.getElementById('rainAmount').value
 				}
-				if (isNaN(Number(amount)) || amount.length < 1 || rainColorsSent === 0) {
+				if (isNaN(Number(rainAmount)) || rainAmount.length < 1 || rainColorsSent === 0) {
 					setInputError("Please input a number value and a color");
 					return;
 				}
-				sendData("R" + amount);
-				setTimeout(() => {handleRain(true, true, amount)}, 400);
+				sendData("R" + rainAmount);
+				setTimeout(() => {handleModeStartStop(true, true, true, rainAmount)}, 400);
 			}
-		}
+		} else {
+      setColorChoices([]);
+    }
+	};
+
+  const handleModeChooseColor = () => {
+		var colors = JSON.parse(JSON.stringify(colorChoices));
+		colors.push(curChosenColor);
+		setColorChoices(colors);
+		sendData("CM" + curChosenColor.slice(1));
+		setModeDataSending(true);
+		rainColorsSent++;
 	};
 
 	return (
 		<div id='colorApp'>
 			<div>Version 2.0</div>
 			{isConnected ? <h1 style={{'color': 'blue', 'fontSize': '15px'}}>Connected</h1> : <h1 style={{'color': 'red', 'fontSize': '20px'}}>Not connected</h1>}
-			{!isConnected ? <button onClick={() => connectToBle(setIsConnected, turnOn, setAnims, setPrevFrameNames, setRainSending)}>Connect</button> : null}
+			{!isConnected ? <button onClick={() => connectToBle(setIsConnected, turnOn, setAnims, setPrevFrameNames, setModeDataSending)}>Connect</button> : null}
 			<h1 id='title'>
 			<div id='title-line'></div>
 				LED Canvas
 			</h1>
-			{drawMode || gameMode || rainMode ? <button style={{'position': 'absolute', 'right': '10%', 'fontSize': '20px'}} onClick={() => {setDrawMode(false); setGameMode(false); setRainMode(false);}}>Back</button> : null}
-			{(pixelSending || rainSending) && isConnected ? <img id='loading' src='./icons/loading.gif'></img> : null}
+			{drawMode || audioVisualizer || rainMode ? <button style={{'position': 'absolute', 'right': '2%', 'fontSize': '20px'}} onClick={() => {setDrawMode(false); setAudioVisualizer(false); setRainMode(false);}}>Back</button> : null}
+			{(pixelSending || modeDataSending) && isConnected ? <img id='loading' src='./icons/loading.gif'></img> : null}
 			<div id='app' onMouseDown={() => {setMouseDown(true);}} onMouseUp={() => setMouseDown(false)}>
-			{!drawMode && !gameMode && !rainMode && isConnected && !pixelSending && !rainSending ?
+			{!drawMode && !audioVisualizer && !rainMode && isConnected && !pixelSending && !modeDataSending ?
 			<div id='modeChoices'>
 				<button onClick={() => setDrawMode(true)}>Draw Mode</button>
-				<button onClick={() => {setGameMode(true); sendData('GAME')}}>Game Mode</button>
+				<button onClick={() => {setAudioVisualizer(true); sendData('AV')}}>Audio Visualizer</button>
 				<button onClick={() => {setRainMode(true);}}>Rain Mode</button>
 			</div> : null}
 			{drawMode ? <DrawMode inputError={inputError} turnOff={turnOff} callSave={callSave} handleStop={handleStop} animPlaying={animPlaying} pixelSending={pixelSending}/> : null}
-			{drawMode || rainMode && !rainSending ? <FrameChoices handleSave={callSave} anims={anims} prevFrameNames={prevFrameNames} frames={frames} handleFrameChoice={handleFrameChoice} handleDelete={callDelete}/> : null}
-			{rainMode ? <RainController sendData={sendData} setRainSending={setRainSending} rainSending={rainSending} setInputError={setInputError} handleRain={handleRain}/> : null}
-			{/* <RainController sendData={sendData} handleRain={handleRain}/> */}
+			{drawMode || rainMode && !modeDataSending ? <FrameChoices handleSave={callSave} anims={anims} prevFrameNames={prevFrameNames} frames={frames} handleFrameChoice={handleFrameChoice} handleDelete={callDelete}/> : null}
+			{rainMode ? <RainController sendData={sendData} modeDataSending={modeDataSending} curChosenColor={curChosenColor} handleChooseColor={handleModeChooseColor} colorChoices={colorChoices} setCurChosenColor={setCurChosenColor} modeDataSending={modeDataSending} setInputError={setInputError} handleModeStartStop={handleModeStartStop}/> : null}
 			{drawMode ? <MatrixButtons mouseDown={mouseDown} sendRequests={sendRequests}/> : null}
-			{gameMode ? <PongController sendData={sendData}/> : null}
+      {audioVisualizer ? <AVController setModeDataSending={setModeDataSending} handleChooseColor={handleModeChooseColor} modeDataSending={modeDataSending}/> : null}
 			{inputError ? <div style={{"color": "red"}}>{inputError}</div>: null}
 		</div>
 		</div>

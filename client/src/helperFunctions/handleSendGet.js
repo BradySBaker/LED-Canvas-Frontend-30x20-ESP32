@@ -52,7 +52,7 @@ export const handleSendRequests = (setPixelSending, pixelSending) => { //Occurs 
 };
 
 
-export function gotValue(value, setAnims, setPrevFrameNames, setRainSending, turnOn) {
+export function gotValue(value, setAnims, setPrevFrameNames, setModeDataSending, turnOn) {
 	console.log(value);
 	if (waitingForFrames) {
 		names += value;
@@ -69,7 +69,7 @@ export function gotValue(value, setAnims, setPrevFrameNames, setRainSending, tur
 			});
 		if (!window.turnedOn) {
 			window.turnedOn = true;
-			setRainSending(false);
+			setModeDataSending(false);
 		}
 		setAnims(correctAnimNames);
 		setPrevFrameNames(correctFrameNames);
@@ -81,16 +81,16 @@ export function gotValue(value, setAnims, setPrevFrameNames, setRainSending, tur
 			waitingForFrames = true;
 		}
 	}
-	if (value === 'sRAIN' || value === 'cRAIN') {
-		isRaining = false;
+	if (value === 'SM' || value === 'CM') {
+		modeRunning = false;
 		if (!window.turnedOn) {
 			setTimeout(() => sendData("OFF\n"), 100);
 		} else {
-			setRainSending(false);
+			setModeDataSending(false);
 		}
 	} else if (value === "RAIN") {
-		setRainSending(false);
-		isRaining = true;
+		setModeDataSending(false);
+		modeRunning = true;
 	}
 	if (value === "FRAME") {
 		framePlayed = true;

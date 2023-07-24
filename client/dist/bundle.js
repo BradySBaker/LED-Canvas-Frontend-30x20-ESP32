@@ -1,6 +1,40 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./client/src/avController.jsx":
+/*!*************************************!*\
+  !*** ./client/src/avController.jsx ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
+var AVController = function AVController(handleChooseColor) {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+      className: "picker-container",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(HexColorPicker, {
+        style: {
+          height: 'calc(90vw * 0.5)'
+        },
+        color: color,
+        onChange: handleChooseColor
+      })
+    })
+  });
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (AVController);
+
+/***/ }),
+
 /***/ "./client/src/drawMode.jsx":
 /*!*********************************!*\
   !*** ./client/src/drawMode.jsx ***!
@@ -31,7 +65,7 @@ var DrawMode = function DrawMode(_ref) {
   var handleColor = function handleColor(newColor) {
     document.getElementById('title').style.color = newColor;
     color = newColor;
-    sendRequests['color'] = "CR".concat(newColor.slice(1));
+    sendRequests['color'] = "C".concat(newColor.slice(1));
   };
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
@@ -270,7 +304,7 @@ var handleSave = function handleSave(sendData, setFrames, frames, anims, setAnim
     setInputError("Please input a name for your drawing");
   }
 };
-var handleDelete = function handleDelete(setFrames, frames, setPrevFrameNames, anims, setAnims, sendData, frameName, idx, type) {
+var handleDelete = function handleDelete(setFrames, frames, setPrevFrameNames, prevFrameNames, anims, setAnims, sendData, frameName, idx, type) {
   if (type === 'prev') {
     setPrevFrameNames(prevFrameNames.slice(0, idx).concat(prevFrameNames.slice(idx + 1)));
   } else if (type === 'animation') {
@@ -350,7 +384,7 @@ var handleSendRequests = function handleSendRequests(setPixelSending, pixelSendi
     return handleSendRequests(setPixelSending, pixelSending);
   }, 20);
 };
-function gotValue(value, setAnims, setPrevFrameNames, setRainSending, turnOn) {
+function gotValue(value, setAnims, setPrevFrameNames, setModeDataSending, turnOn) {
   console.log(value);
   if (waitingForFrames) {
     names += value;
@@ -368,7 +402,7 @@ function gotValue(value, setAnims, setPrevFrameNames, setRainSending, turnOn) {
       });
       if (!window.turnedOn) {
         window.turnedOn = true;
-        setRainSending(false);
+        setModeDataSending(false);
       }
       setAnims(correctAnimNames);
       setPrevFrameNames(correctFrameNames);
@@ -380,18 +414,18 @@ function gotValue(value, setAnims, setPrevFrameNames, setRainSending, turnOn) {
       waitingForFrames = true;
     }
   }
-  if (value === 'sRAIN' || value === 'cRAIN') {
-    isRaining = false;
+  if (value === 'SM' || value === 'CM') {
+    modeRunning = false;
     if (!window.turnedOn) {
       setTimeout(function () {
         return sendData("OFF\n");
       }, 100);
     } else {
-      setRainSending(false);
+      setModeDataSending(false);
     }
   } else if (value === "RAIN") {
-    setRainSending(false);
-    isRaining = true;
+    setModeDataSending(false);
+    modeRunning = true;
   }
   if (value === "FRAME") {
     framePlayed = true;
@@ -434,13 +468,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var blueTooth = new (p5ble__WEBPACK_IMPORTED_MODULE_0___default())();
-function connectToBle(setIsConnected, turnOn, setAnims, setPrevFrameNames, setRainSending) {
+function connectToBle(setIsConnected, turnOn, setAnims, setPrevFrameNames, setModeDataSending) {
   var paramFuncs = {
     setIsConnected: setIsConnected,
     turnOn: turnOn,
     setAnims: setAnims,
     setPrevFrameNames: setPrevFrameNames,
-    setRainSending: setRainSending
+    setModeDataSending: setModeDataSending
   };
   blueTooth.connect('0000ffe0-0000-1000-8000-00805f9b34fb', function (error, characteristics) {
     return gotCharacteristics(error, characteristics, paramFuncs);
@@ -460,7 +494,7 @@ function gotCharacteristics(error, characteristics, paramFuncs) {
   }
   window.blueToothCharacteristic = characteristics[0];
   blueTooth.startNotifications(window.blueToothCharacteristic, function (value) {
-    return (0,_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.gotValue)(value, paramFuncs.setAnims, paramFuncs.setPrevFrameNames, paramFuncs.setRainSending, paramFuncs.turnOn);
+    return (0,_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.gotValue)(value, paramFuncs.setAnims, paramFuncs.setPrevFrameNames, paramFuncs.setModeDataSending, paramFuncs.turnOn);
   }, 'string');
   blueTooth.onDisconnected(function () {
     return onDisconnected(paramFuncs.setIsConnected);
@@ -568,41 +602,6 @@ var MatrixButtons = function MatrixButtons(_ref) {
 
 /***/ }),
 
-/***/ "./client/src/pongController.jsx":
-/*!***************************************!*\
-  !*** ./client/src/pongController.jsx ***!
-  \***************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-
-
-var PongController = function PongController(_ref) {
-  var sendData = _ref.sendData;
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", {
-    id: "pong-controller",
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", {
-      onClick: function onClick() {
-        return sendData('GU');
-      },
-      children: "UP"
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", {
-      onClick: function onClick() {
-        return sendData('GD');
-      },
-      children: "DOWN"
-    })]
-  });
-};
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (PongController);
-
-/***/ }),
-
 /***/ "./client/src/rainController.jsx":
 /*!***************************************!*\
   !*** ./client/src/rainController.jsx ***!
@@ -618,12 +617,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_colorful__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-colorful */ "./node_modules/react-colorful/dist/index.mjs");
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
-function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
@@ -631,33 +624,20 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 var RainController = function RainController(_ref) {
   var sendData = _ref.sendData,
-    setRainSending = _ref.setRainSending,
-    rainSending = _ref.rainSending,
     setInputError = _ref.setInputError,
-    handleRain = _ref.handleRain;
+    handleModeStartStop = _ref.handleModeStartStop,
+    setCurChosenColor = _ref.setCurChosenColor,
+    modeDataSending = _ref.modeDataSending,
+    colorChoices = _ref.colorChoices,
+    handleChooseColor = _ref.handleChooseColor,
+    curChosenColor = _ref.curChosenColor;
   var colorsSent = 0;
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
-    _useState2 = _slicedToArray(_useState, 2),
-    colorChoices = _useState2[0],
-    setColorChoices = _useState2[1];
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(color),
-    _useState4 = _slicedToArray(_useState3, 2),
-    curChosenColor = _useState4[0],
-    setCurChosenColor = _useState4[1];
   var handleRainColor = function handleRainColor(newColor) {
     setCurChosenColor(newColor);
   };
-  var handleChooseColor = function handleChooseColor() {
-    var colors = JSON.parse(JSON.stringify(colorChoices));
-    colors.push(curChosenColor);
-    setColorChoices(colors);
-    sendData("CRR" + curChosenColor.slice(1));
-    setRainSending(true);
-    rainColorsSent++;
-  };
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
     id: "rainController",
-    children: !rainSending ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.Fragment, {
+    children: !modeDataSending ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.Fragment, {
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
         className: "picker-container",
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(react_colorful__WEBPACK_IMPORTED_MODULE_2__.HexColorPicker, {
@@ -688,7 +668,9 @@ var RainController = function RainController(_ref) {
         type: "text",
         placeholder: "1..."
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
-        onClick: handleRain,
+        onClick: function onClick(e) {
+          return handleModeStartStop(e, true);
+        },
         children: "rain"
       })]
     }) : null
@@ -20110,10 +20092,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_dom_client__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-dom/client */ "./node_modules/react-dom/client.js");
 /* harmony import */ var _matrixButtons_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./matrixButtons.jsx */ "./client/src/matrixButtons.jsx");
 /* harmony import */ var _frameChoices_jsx__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./frameChoices.jsx */ "./client/src/frameChoices.jsx");
-/* harmony import */ var _pongController_jsx__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./pongController.jsx */ "./client/src/pongController.jsx");
-/* harmony import */ var _rainController_jsx__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./rainController.jsx */ "./client/src/rainController.jsx");
-/* harmony import */ var _drawMode_jsx__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./drawMode.jsx */ "./client/src/drawMode.jsx");
+/* harmony import */ var _rainController_jsx__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./rainController.jsx */ "./client/src/rainController.jsx");
+/* harmony import */ var _drawMode_jsx__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./drawMode.jsx */ "./client/src/drawMode.jsx");
+/* harmony import */ var _avController_jsx__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./avController.jsx */ "./client/src/avController.jsx");
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -20135,10 +20121,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 window.rainColorsSent = 0;
 window.color = "#FF0000";
 window.ledConnected = false;
-window.isRaining = true;
+window.modeRunning = true;
 window.framePlayed = false;
 window.turnedOn = false;
 var App = function App() {
+  var _jsx2;
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState2 = _slicedToArray(_useState, 2),
     isConnected = _useState2[0],
@@ -20153,8 +20140,8 @@ var App = function App() {
     setPixelSending = _useState6[1];
   var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(true),
     _useState8 = _slicedToArray(_useState7, 2),
-    rainSending = _useState8[0],
-    setRainSending = _useState8[1];
+    modeDataSending = _useState8[0],
+    setModeDataSending = _useState8[1];
   var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
     _useState10 = _slicedToArray(_useState9, 2),
     frames = _useState10[0],
@@ -20169,8 +20156,8 @@ var App = function App() {
     setDrawMode = _useState14[1];
   var _useState15 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState16 = _slicedToArray(_useState15, 2),
-    gameMode = _useState16[0],
-    setGameMode = _useState16[1];
+    audioVisualizer = _useState16[0],
+    setAudioVisualizer = _useState16[1];
   var _useState17 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState18 = _slicedToArray(_useState17, 2),
     rainMode = _useState18[0],
@@ -20191,12 +20178,20 @@ var App = function App() {
     _useState26 = _slicedToArray(_useState25, 2),
     animPlaying = _useState26[0],
     setAnimPlaying = _useState26[1];
+  var _useState27 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+    _useState28 = _slicedToArray(_useState27, 2),
+    colorChoices = _useState28[0],
+    setColorChoices = _useState28[1];
+  var _useState29 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(color),
+    _useState30 = _slicedToArray(_useState29, 2),
+    curChosenColor = _useState30[0],
+    setCurChosenColor = _useState30[1];
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     return (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.handleSendRequests)(setPixelSending, pixelSending);
   }, []); //On start
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     if (isConnected === true) {
-      handleRain();
+      handleModeStartStop();
     }
   }, [isConnected]); //On connect
 
@@ -20215,16 +20210,16 @@ var App = function App() {
     sendRequests["off"] = true;
   }
   var handleFrameChoice = function handleFrameChoice(frameName, animation) {
-    if (isRaining && !framePlayed) {
-      setRainSending(true);
+    if (modeRunning && !framePlayed) {
+      setModeDataSending(true);
       (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)("F".concat(frameName));
       setTimeout(function () {
         handleFrameChoice(frameName);
       }, 400);
       return;
-    } else if (isRaining) {
+    } else if (modeRunning) {
       framePlayed = false;
-      setRainSending(false);
+      setModeDataSending(false);
       return;
     }
     if (animation) {
@@ -20243,29 +20238,39 @@ var App = function App() {
     (0,_helperFunctions_handleSaveDelete__WEBPACK_IMPORTED_MODULE_2__.handleSave)(_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData, setFrames, frames, anims, setAnims, setInputError, e, animation, animName);
   };
   var callDelete = function callDelete(frameName, idx, type) {
-    (0,_helperFunctions_handleSaveDelete__WEBPACK_IMPORTED_MODULE_2__.handleDelete)(setFrames, frames, setPrevFrameNames, anims, setAnims, _helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData, frameName, idx, type);
+    (0,_helperFunctions_handleSaveDelete__WEBPACK_IMPORTED_MODULE_2__.handleDelete)(setFrames, frames, setPrevFrameNames, prevFrameNames, anims, setAnims, _helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData, frameName, idx, type);
   };
 
-  //Rain handler for off and on
-  var handleRain = function handleRain(e, startRain, amount) {
-    if (isRaining && !startRain) {
-      (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)("SR");
-      setTimeout(handleRain, 400);
+  //Rain/Audio Visaulizer handler for off and on
+  var handleModeStartStop = function handleModeStartStop(e, rain, startMode, rainAmount) {
+    if (modeRunning && !startMode) {
+      (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)("SM");
+      setTimeout(handleModeStartStop, 400);
     } else if (e) {
-      if (!isRaining) {
-        if (!amount) {
-          amount = document.getElementById('rainAmount').value;
+      if (!modeRunning && rain) {
+        if (!rainAmount) {
+          rainAmount = document.getElementById('rainAmount').value;
         }
-        if (isNaN(Number(amount)) || amount.length < 1 || rainColorsSent === 0) {
+        if (isNaN(Number(rainAmount)) || rainAmount.length < 1 || rainColorsSent === 0) {
           setInputError("Please input a number value and a color");
           return;
         }
-        (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)("R" + amount);
+        (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)("R" + rainAmount);
         setTimeout(function () {
-          handleRain(true, true, amount);
+          handleModeStartStop(true, true, true, rainAmount);
         }, 400);
       }
+    } else {
+      setColorChoices([]);
     }
+  };
+  var handleModeChooseColor = function handleModeChooseColor() {
+    var colors = JSON.parse(JSON.stringify(colorChoices));
+    colors.push(curChosenColor);
+    setColorChoices(colors);
+    (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)("CM" + curChosenColor.slice(1));
+    setModeDataSending(true);
+    rainColorsSent++;
   };
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("div", {
     id: "colorApp",
@@ -20285,7 +20290,7 @@ var App = function App() {
       children: "Not connected"
     }), !isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("button", {
       onClick: function onClick() {
-        return (0,_helperFunctions_setupBluetooth__WEBPACK_IMPORTED_MODULE_3__["default"])(setIsConnected, turnOn, setAnims, setPrevFrameNames, setRainSending);
+        return (0,_helperFunctions_setupBluetooth__WEBPACK_IMPORTED_MODULE_3__["default"])(setIsConnected, turnOn, setAnims, setPrevFrameNames, setModeDataSending);
       },
       children: "Connect"
     }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("h1", {
@@ -20293,19 +20298,19 @@ var App = function App() {
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
         id: "title-line"
       }), "LED Canvas"]
-    }), drawMode || gameMode || rainMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("button", {
+    }), drawMode || audioVisualizer || rainMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("button", {
       style: {
         'position': 'absolute',
-        'right': '10%',
+        'right': '2%',
         'fontSize': '20px'
       },
       onClick: function onClick() {
         setDrawMode(false);
-        setGameMode(false);
+        setAudioVisualizer(false);
         setRainMode(false);
       },
       children: "Back"
-    }) : null, (pixelSending || rainSending) && isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("img", {
+    }) : null, (pixelSending || modeDataSending) && isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("img", {
       id: "loading",
       src: "./icons/loading.gif"
     }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("div", {
@@ -20316,7 +20321,7 @@ var App = function App() {
       onMouseUp: function onMouseUp() {
         return setMouseDown(false);
       },
-      children: [!drawMode && !gameMode && !rainMode && isConnected && !pixelSending && !rainSending ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("div", {
+      children: [!drawMode && !audioVisualizer && !rainMode && isConnected && !pixelSending && !modeDataSending ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("div", {
         id: "modeChoices",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("button", {
           onClick: function onClick() {
@@ -20325,41 +20330,44 @@ var App = function App() {
           children: "Draw Mode"
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("button", {
           onClick: function onClick() {
-            setGameMode(true);
-            (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)('GAME');
+            setAudioVisualizer(true);
+            (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)('AV');
           },
-          children: "Game Mode"
+          children: "Audio Visualizer"
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("button", {
           onClick: function onClick() {
             setRainMode(true);
           },
           children: "Rain Mode"
         })]
-      }) : null, drawMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_drawMode_jsx__WEBPACK_IMPORTED_MODULE_9__["default"], {
+      }) : null, drawMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_drawMode_jsx__WEBPACK_IMPORTED_MODULE_8__["default"], {
         inputError: inputError,
         turnOff: turnOff,
         callSave: callSave,
         handleStop: handleStop,
         animPlaying: animPlaying,
         pixelSending: pixelSending
-      }) : null, drawMode || rainMode && !rainSending ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_frameChoices_jsx__WEBPACK_IMPORTED_MODULE_6__["default"], {
+      }) : null, drawMode || rainMode && !modeDataSending ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_frameChoices_jsx__WEBPACK_IMPORTED_MODULE_6__["default"], {
         handleSave: callSave,
         anims: anims,
         prevFrameNames: prevFrameNames,
         frames: frames,
         handleFrameChoice: handleFrameChoice,
         handleDelete: callDelete
-      }) : null, rainMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_rainController_jsx__WEBPACK_IMPORTED_MODULE_8__["default"], {
+      }) : null, rainMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_rainController_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], (_jsx2 = {
         sendData: _helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData,
-        setRainSending: setRainSending,
-        rainSending: rainSending,
-        setInputError: setInputError,
-        handleRain: handleRain
-      }) : null, drawMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_matrixButtons_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
+        modeDataSending: modeDataSending,
+        curChosenColor: curChosenColor,
+        handleChooseColor: handleModeChooseColor,
+        colorChoices: colorChoices,
+        setCurChosenColor: setCurChosenColor
+      }, _defineProperty(_jsx2, "modeDataSending", modeDataSending), _defineProperty(_jsx2, "setInputError", setInputError), _defineProperty(_jsx2, "handleModeStartStop", handleModeStartStop), _jsx2)) : null, drawMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_matrixButtons_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
         mouseDown: mouseDown,
         sendRequests: sendRequests
-      }) : null, gameMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_pongController_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], {
-        sendData: _helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData
+      }) : null, audioVisualizer ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_avController_jsx__WEBPACK_IMPORTED_MODULE_9__["default"], {
+        setModeDataSending: setModeDataSending,
+        handleChooseColor: handleModeChooseColor,
+        modeDataSending: modeDataSending
       }) : null, inputError ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
         style: {
           "color": "red"

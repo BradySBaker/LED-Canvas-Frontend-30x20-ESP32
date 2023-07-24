@@ -40,7 +40,7 @@ export const handleSave = (sendData, setFrames, frames, anims, setAnims, setInpu
 	}
 };
 
-export const handleDelete = (setFrames, frames, setPrevFrameNames, anims, setAnims, sendData, frameName, idx, type) => {
+export const handleDelete = (setFrames, frames, setPrevFrameNames, prevFrameNames, anims, setAnims, sendData, frameName, idx, type) => {
 	if (type === 'prev') {
 		setPrevFrameNames(prevFrameNames.slice(0, idx).concat(prevFrameNames.slice(idx+1)))
 	} else if (type === 'animation'){

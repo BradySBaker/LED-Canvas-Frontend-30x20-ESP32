@@ -7,7 +7,7 @@ const DrawMode = ({callSave, handleStop, animPlaying, turnOff, isLoading, inputE
 	const handleColor = (newColor) => {
 		document.getElementById('title').style.color = newColor;
 		color = newColor;
-		sendRequests['color'] = `CR${newColor.slice(1)}`;
+		sendRequests['color'] = `C${newColor.slice(1)}`;
 	}
 
 	return (
