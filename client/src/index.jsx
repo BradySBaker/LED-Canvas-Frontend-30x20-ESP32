@@ -11,6 +11,8 @@ import RainController from "./rainController.jsx";
 import DrawMode from "./drawMode.jsx";
 import AVController from "./avController.jsx";
 
+import HomePage from "./homePage.jsx";
+
 window.rainColorsSent = 0;
 
 window.color = "#FF0000";
@@ -77,13 +79,6 @@ const App = function() {
 		sendData(`F${frameName}`);
 	};
 
-
-	const handleStop = () => {
-		sendData('STOP');
-		setAnimPlaying(false);
-	};
-
-
 	const callSave = (e, animation, animName = document.getElementById('animName').value) => {
 		handleSave(sendData, setFrames, frames, anims, setAnims, setInputError, e, animation, animName);
 	};
@@ -95,10 +90,12 @@ const App = function() {
 	//Rain/Audio Visaulizer handler for off and on
 	const handleModeStartStop = (e, rain, startMode, rainAmount) => {
 		if (modeRunning && !startMode) {
+      setModeDataSending(true);
 			sendData("SM");
 			setTimeout(handleModeStartStop, 400);
 		} else if (e) {
 			if (!modeRunning && rain) {
+        setModeDataSending(true);
 				if (!rainAmount) {
 					rainAmount = document.getElementById('rainAmount').value
 				}
@@ -113,6 +110,7 @@ const App = function() {
 				setTimeout(() => {handleModeStartStop(true, false, true, rainAmount)}, 400);
       }
 		} else {
+      setModeDataSending(false);
       setColorChoices([]);
     }
 	};
@@ -126,29 +124,27 @@ const App = function() {
 		rainColorsSent++;
 	};
 
+  const handleConnect = () => {
+    connectToBle(setIsConnected, turnOn, setAnims, setPrevFrameNames, setModeDataSending)
+  };
+
 	return (
-		<div id='colorApp'>
-			<div>Version 2.0</div>
-			{isConnected ? <h1 style={{'color': 'blue', 'fontSize': '15px'}}>Connected</h1> : <h1 style={{'color': 'red', 'fontSize': '20px'}}>Not connected</h1>}
-			{!isConnected ? <button onClick={() => connectToBle(setIsConnected, turnOn, setAnims, setPrevFrameNames, setModeDataSending)}>Connect</button> : null}
-			<h1 id='title'>
-			<div id='title-line'></div>
-				LED Canvas
-			</h1>
-			{drawMode || audioVisualizer || rainMode ? <button style={{'position': 'absolute', 'right': '2%', 'fontSize': '20px'}} onClick={() => {setDrawMode(false); setAudioVisualizer(false); setRainMode(false);}}>Back</button> : null}
+		<div id='colorApp' onMouseDown={() => {setMouseDown(true);}} onMouseUp={() => setMouseDown(false)}>
+			<HomePage connectToBle={connectToBle} isConnected={isConnected}/>
+			{drawMode || audioVisualizer || rainMode ? <button style={{'position': 'absolute', 'right': '2%', 'fontSize': '20px'}} onClick={() => {setDrawMode(false); setAudioVisualizer(false); setRainMode(false); if (modeRunning) {handleModeStartStop()}; }}>Back</button> : null}
 			{(pixelSending || modeDataSending) && isConnected ? <img id='loading' src='./icons/loading.gif'></img> : null}
-			<div id='app' onMouseDown={() => {setMouseDown(true);}} onMouseUp={() => setMouseDown(false)}>
+			<div id='app'>
 			{!drawMode && !audioVisualizer && !rainMode && isConnected && !pixelSending && !modeDataSending ?
 			<div id='modeChoices'>
 				<button onClick={() => setDrawMode(true)}>Draw Mode</button>
 				<button onClick={() => {setAudioVisualizer(true);}}>Audio Visualizer</button>
 				<button onClick={() => {setRainMode(true);}}>Rain Mode</button>
 			</div> : null}
-			{drawMode ? <DrawMode inputError={inputError} turnOff={turnOff} callSave={callSave} handleStop={handleStop} animPlaying={animPlaying} pixelSending={pixelSending}/> : null}
+			{drawMode ? <DrawMode inputError={inputError} turnOff={turnOff} callSave={callSave} animPlaying={animPlaying} pixelSending={pixelSending}/> : null}
 			{drawMode || rainMode && !modeDataSending ? <FrameChoices handleSave={callSave} anims={anims} prevFrameNames={prevFrameNames} frames={frames} handleFrameChoice={handleFrameChoice} handleDelete={callDelete}/> : null}
-			{rainMode ? <RainController sendData={sendData} modeDataSending={modeDataSending} curChosenColor={curChosenColor} handleChooseColor={handleModeChooseColor} colorChoices={colorChoices} setCurChosenColor={setCurChosenColor} modeDataSending={modeDataSending} setInputError={setInputError} handleModeStartStop={handleModeStartStop}/> : null}
+			{rainMode ? <RainController modeRunning={modeRunning} modeDataSending={modeDataSending} curChosenColor={curChosenColor} handleChooseColor={handleModeChooseColor} colorChoices={colorChoices} setCurChosenColor={setCurChosenColor} modeDataSending={modeDataSending} setInputError={setInputError} handleModeStartStop={handleModeStartStop}/> : null}
 			{drawMode ? <MatrixButtons mouseDown={mouseDown} sendRequests={sendRequests}/> : null}
-      {audioVisualizer ? <AVController handleChooseColor={handleModeChooseColor} curChosenColor={curChosenColor} modeDataSending={modeDataSending} setCurChosenColor={setCurChosenColor} colorChoices={colorChoices} handleModeStartStop={handleModeStartStop}/> : null}
+      {audioVisualizer ? <AVController modeRunning={modeRunning} handleChooseColor={handleModeChooseColor} curChosenColor={curChosenColor} modeDataSending={modeDataSending} setCurChosenColor={setCurChosenColor} colorChoices={colorChoices} handleModeStartStop={handleModeStartStop}/> : null}
 			{inputError ? <div style={{"color": "red"}}>{inputError}</div>: null}
 		</div>
 		</div>

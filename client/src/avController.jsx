@@ -3,6 +3,7 @@ import react, {useEffect, useState} from 'react';
 import { HexColorPicker } from "react-colorful";
 
 const AVController = ({handleChooseColor, setCurChosenColor, modeDataSending, colorChoices, handleModeStartStop, curChosenColor}) => {
+  const [startClicked, setStartClicked] = useState(false);
 	const handleAVColor = (newColor) => {
     if (colorChoices.length < 2) {
       setCurChosenColor(newColor);
@@ -24,7 +25,7 @@ const AVController = ({handleChooseColor, setCurChosenColor, modeDataSending, co
 					})}
 				</div>
 				<button style={{'color': curChosenColor}} onClick={handleChooseColor}>Choose Color</button>
-				<button onClick={(e) => handleModeStartStop(e, false)}>Start</button>
+				<button onClick={(e) => { handleModeStartStop(e, false); setStartClicked(!startClicked) }}>{!startClicked ? "Start" : "Stop"}</button>
 			</> : null}
 		</div>
   )

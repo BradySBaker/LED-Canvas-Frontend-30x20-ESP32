@@ -6,6 +6,8 @@ var sendingTimer = 0;
 
 var names = "";
 
+var justSent;
+
 export const handleSendRequests = (setPixelSending, pixelSending) => { //Occurs every 20ms
 	sendingTimer++;
 	if (sendingTimer >= 550) {
@@ -95,10 +97,15 @@ export function gotValue(value, setAnims, setPrevFrameNames, setModeDataSending,
 	if (value === "FRAME") {
 		framePlayed = true;
 	}
+  if (value === "INVALID") {
+    sendData(justSent);
+    return;
+  }
 	sending = false;
 };
 
 export function sendData(command) {
+  justSent = command;
 	sending = true;
   const inputValue = command + '\r';
   if (!("TextEncoder" in window)) {

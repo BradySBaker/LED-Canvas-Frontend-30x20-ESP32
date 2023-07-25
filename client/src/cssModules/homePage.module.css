@@ -1,0 +1,18 @@
+#title-line {
+	position: absolute;
+	width: 400px;
+	height: 5px;
+	transform: translateY(-3.5px);
+	background: linear-gradient(to right, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff);
+	background-size: 200% auto;
+	animation: rainbow 10s ease infinite;
+	border-radius: 20px;
+}
+#title {
+	display: flex;
+  justify-content: center;
+	color: black;
+	font-weight: bold;
+	font-size: 50px;
+	text-align: center;
+}

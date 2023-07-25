@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 
 import { HexColorPicker } from "react-colorful";
 
-const RainController = ({sendData, setInputError, handleModeStartStop, setCurChosenColor, modeDataSending, colorChoices, handleChooseColor, curChosenColor}) => {
+const RainController = ({setInputError, handleModeStartStop, setCurChosenColor, modeDataSending, colorChoices, handleChooseColor, curChosenColor}) => {
+  const [startClicked, setStartClicked] = useState(false);
 	const handleRainColor = (newColor) => {
 		setCurChosenColor(newColor);
 	};
@@ -23,7 +24,7 @@ const RainController = ({sendData, setInputError, handleModeStartStop, setCurCho
 				</div>
 				<button style={{'color': curChosenColor}} onClick={handleChooseColor}>Choose Color</button>
 				<input id='rainAmount' type='text' placeholder='1...'/>
-				<button onClick={(e) => handleModeStartStop(e, true)}>Start</button>
+				<button onClick={(e) => { handleModeStartStop(e, true); setStartClicked(!startClicked) }}>{!startClicked ? "Start" : "Stop"}</button>
 			</> : null}
 		</div>
 	)
