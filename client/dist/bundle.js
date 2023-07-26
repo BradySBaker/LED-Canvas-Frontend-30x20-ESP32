@@ -586,26 +586,33 @@ var HomePage = function HomePage(_ref) {
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
       children: "Version 2.0"
-    }), isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h1", {
-      style: {
-        'color': 'blue',
-        'fontSize': '15px'
-      },
-      children: "Connected"
-    }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h1", {
-      style: {
-        'color': 'red',
-        'fontSize': '20px'
-      },
-      children: "Not connected"
-    }), !isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
-      onClick: handleConnect,
-      children: "Connect"
-    }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("h1", {
-      id: "".concat(_cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].title),
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-        id: "".concat(_cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["title-line"])
-      }), "LED Canvas"]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+      className: "".concat(_cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["rgb-line"]),
+      id: "".concat(_cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].top)
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+      id: "".concat(_cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].main),
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h1", {
+        className: "".concat(_cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].title),
+        children: "LED Canvas"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h2", {
+        className: "".concat(_cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].title),
+        children: "Welcome"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("button", {
+        onClick: handleConnect,
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("img", {
+          className: "".concat(_cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["button-icon"]),
+          src: "./icons/blu.png"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("img", {
+          className: "".concat(_cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["button-icon"]),
+          src: "./icons/arrow.png"
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("p", {
+        className: "".concat(_cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].title),
+        children: "Not Connected"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h3", {})]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+      className: "".concat(_cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["rgb-line"]),
+      id: "".concat(_cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].bottom)
     })]
   });
 };
@@ -20218,12 +20225,16 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "#qjx9urHuyiWO2jrDJd2G {\n\tposition: absolute;\n\twidth: 400px;\n\theight: 5px;\n\ttransform: translateY(-3.5px);\n\tbackground: linear-gradient(to right, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff);\n\tbackground-size: 200% auto;\n\tanimation: CHl4pSVCDkbyd0C5IPjP 10s ease infinite;\n\tborder-radius: 20px;\n}\n#oQV9oJT3RfR5JQjav19b {\n\tdisplay: flex;\n  justify-content: center;\n\tcolor: black;\n\tfont-weight: bold;\n\tfont-size: 50px;\n\ttext-align: center;\n}", "",{"version":3,"sources":["webpack://./client/src/cssModules/homePage.module.css"],"names":[],"mappings":"AAAA;CACC,kBAAkB;CAClB,YAAY;CACZ,WAAW;CACX,6BAA6B;CAC7B,oGAAoG;CACpG,0BAA0B;CAC1B,iDAAoC;CACpC,mBAAmB;AACpB;AACA;CACC,aAAa;EACZ,uBAAuB;CACxB,YAAY;CACZ,iBAAiB;CACjB,eAAe;CACf,kBAAkB;AACnB","sourcesContent":["#title-line {\n\tposition: absolute;\n\twidth: 400px;\n\theight: 5px;\n\ttransform: translateY(-3.5px);\n\tbackground: linear-gradient(to right, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff);\n\tbackground-size: 200% auto;\n\tanimation: rainbow 10s ease infinite;\n\tborder-radius: 20px;\n}\n#title {\n\tdisplay: flex;\n  justify-content: center;\n\tcolor: black;\n\tfont-weight: bold;\n\tfont-size: 50px;\n\ttext-align: center;\n}"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, ".uqNmLZEiRQKsk8jdHtij {\n\twidth: 100%;\n\theight: 5px;\n\ttransform: translateY(-3.5px);\n\tbackground: linear-gradient(to right, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff);\n\tbackground-size: 200% auto;\n\tanimation: CHl4pSVCDkbyd0C5IPjP 10s ease infinite;\n\tborder-radius: 20px;\n}\n\n#ZI5zVKYw0G4AMOHawOEY {\n  position: absolute;\n  top: 5%;\n}\n\n#Pg8ygrC2KjQPlZ_OUxNM {\n  position: absolute;\n  bottom: 5%;\n}\n\n#jR53lvfLBFfG9bb9OLiQ {\n  display: flex;\n  align-items: center;\n  flex-direction: column;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n}\n\n.oQV9oJT3RfR5JQjav19b {\n  text-align: center;\n  font-family: 'Roboto', sans-serif;\n  margin: 0;\n}\n\nh1.oQV9oJT3RfR5JQjav19b {\n\tcolor: white;\n\tfont-weight: bold;\n\tfont-size: 40px;\n  white-space: nowrap;\n}\n\nh2.oQV9oJT3RfR5JQjav19b {\n  font-weight: lighter;\n  color: #BCBCBC;\n}\n\np.oQV9oJT3RfR5JQjav19b {\n  color: white;\n  font-size: 15px;\n  font-weight: lighter;\n  margin-top: 20px;\n}\n\n.PJHu9SIWXjh6tuRGmPkA {\n  width: 30px;\n  height: 30px;\n  margin: 10px 20px 10px 20px;\n}\n\nbutton {\n  display: flex;\n  justify-content: space-between;\n  margin-top: 30px;\n  background-color: #4CC2FF;\n  border-radius: 10px;\n  border: none;\n}", "",{"version":3,"sources":["webpack://./client/src/cssModules/homePage.module.css"],"names":[],"mappings":"AAAA;CACC,WAAW;CACX,WAAW;CACX,6BAA6B;CAC7B,oGAAoG;CACpG,0BAA0B;CAC1B,iDAAoC;CACpC,mBAAmB;AACpB;;AAEA;EACE,kBAAkB;EAClB,OAAO;AACT;;AAEA;EACE,kBAAkB;EAClB,UAAU;AACZ;;AAEA;EACE,aAAa;EACb,mBAAmB;EACnB,sBAAsB;EACtB,kBAAkB;EAClB,QAAQ;EACR,SAAS;EACT,gCAAgC;AAClC;;AAEA;EACE,kBAAkB;EAClB,iCAAiC;EACjC,SAAS;AACX;;AAEA;CACC,YAAY;CACZ,iBAAiB;CACjB,eAAe;EACd,mBAAmB;AACrB;;AAEA;EACE,oBAAoB;EACpB,cAAc;AAChB;;AAEA;EACE,YAAY;EACZ,eAAe;EACf,oBAAoB;EACpB,gBAAgB;AAClB;;AAEA;EACE,WAAW;EACX,YAAY;EACZ,2BAA2B;AAC7B;;AAEA;EACE,aAAa;EACb,8BAA8B;EAC9B,gBAAgB;EAChB,yBAAyB;EACzB,mBAAmB;EACnB,YAAY;AACd","sourcesContent":[".rgb-line {\n\twidth: 100%;\n\theight: 5px;\n\ttransform: translateY(-3.5px);\n\tbackground: linear-gradient(to right, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff);\n\tbackground-size: 200% auto;\n\tanimation: rainbow 10s ease infinite;\n\tborder-radius: 20px;\n}\n\n#top {\n  position: absolute;\n  top: 5%;\n}\n\n#bottom {\n  position: absolute;\n  bottom: 5%;\n}\n\n#main {\n  display: flex;\n  align-items: center;\n  flex-direction: column;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n}\n\n.title {\n  text-align: center;\n  font-family: 'Roboto', sans-serif;\n  margin: 0;\n}\n\nh1.title {\n\tcolor: white;\n\tfont-weight: bold;\n\tfont-size: 40px;\n  white-space: nowrap;\n}\n\nh2.title {\n  font-weight: lighter;\n  color: #BCBCBC;\n}\n\np.title {\n  color: white;\n  font-size: 15px;\n  font-weight: lighter;\n  margin-top: 20px;\n}\n\n.button-icon {\n  width: 30px;\n  height: 30px;\n  margin: 10px 20px 10px 20px;\n}\n\nbutton {\n  display: flex;\n  justify-content: space-between;\n  margin-top: 30px;\n  background-color: #4CC2FF;\n  border-radius: 10px;\n  border: none;\n}"],"sourceRoot":""}]);
 // Exports
 ___CSS_LOADER_EXPORT___.locals = {
-	"title-line": "qjx9urHuyiWO2jrDJd2G",
+	"rgb-line": "uqNmLZEiRQKsk8jdHtij",
 	"rainbow": "CHl4pSVCDkbyd0C5IPjP",
-	"title": "oQV9oJT3RfR5JQjav19b"
+	"top": "ZI5zVKYw0G4AMOHawOEY",
+	"bottom": "Pg8ygrC2KjQPlZ_OUxNM",
+	"main": "jR53lvfLBFfG9bb9OLiQ",
+	"title": "oQV9oJT3RfR5JQjav19b",
+	"button-icon": "PJHu9SIWXjh6tuRGmPkA"
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
