@@ -5,7 +5,7 @@ import { HexColorPicker } from "react-colorful";
 const DrawMode = ({callSave, animPlaying, turnOff, isLoading, inputError}) => {
 
 	const handleColor = (newColor) => {
-		document.getElementById('title').style.color = newColor;
+		// document.getElementById('title').style.color = newColor;
 		color = newColor;
 		sendRequests['color'] = `C${newColor.slice(1)}`;
 	}

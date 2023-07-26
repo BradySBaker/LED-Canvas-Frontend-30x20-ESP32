@@ -43,6 +43,18 @@ const App = function() {
   const [colorChoices, setColorChoices] = useState([]);
 	const [curChosenColor, setCurChosenColor] = useState(color);
 
+  useEffect(() => { //Mouse up handler
+    const handleMouseUp = () => {
+      setMouseDown(false);
+    };
+
+    document.addEventListener('mouseup', handleMouseUp);
+
+    return () => {
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, []);
+
 	useEffect(() => handleSendRequests(setPixelSending, pixelSending), []); //On start
 	useEffect(() => {if (isConnected === true) {handleModeStartStop()}}, [isConnected]) //On connect
 
@@ -129,11 +141,11 @@ const App = function() {
   };
 
 	return (
-		<div id='colorApp' onMouseDown={() => {setMouseDown(true);}} onMouseUp={() => setMouseDown(false)}>
-			<HomePage connectToBle={connectToBle} isConnected={isConnected}/>
+		<div id='colorApp'>
+			<HomePage handleConnect={handleConnect} isConnected={isConnected} />
 			{drawMode || audioVisualizer || rainMode ? <button style={{'position': 'absolute', 'right': '2%', 'fontSize': '20px'}} onClick={() => {setDrawMode(false); setAudioVisualizer(false); setRainMode(false); if (modeRunning) {handleModeStartStop()}; }}>Back</button> : null}
 			{(pixelSending || modeDataSending) && isConnected ? <img id='loading' src='./icons/loading.gif'></img> : null}
-			<div id='app'>
+			<div id='app' onMouseDown={() => setMouseDown(true)}>
 			{!drawMode && !audioVisualizer && !rainMode && isConnected && !pixelSending && !modeDataSending ?
 			<div id='modeChoices'>
 				<button onClick={() => setDrawMode(true)}>Draw Mode</button>

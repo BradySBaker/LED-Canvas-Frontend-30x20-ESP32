@@ -112,7 +112,7 @@ var DrawMode = function DrawMode(_ref) {
     isLoading = _ref.isLoading,
     inputError = _ref.inputError;
   var handleColor = function handleColor(newColor) {
-    document.getElementById('title').style.color = newColor;
+    // document.getElementById('title').style.color = newColor;
     color = newColor;
     sendRequests['color'] = "C".concat(newColor.slice(1));
   };
@@ -644,8 +644,8 @@ var MatrixButtons = function MatrixButtons(_ref) {
   var handleDataSend = function handleDataSend(value) {
     window.sendRequests["P" + value] = true;
   };
-  function handleDraw(e, clicked) {
-    var value = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : e.target.id;
+  function handleDraw(e, clicked, value) {
+    value = e ? e.target.id : value;
     if (mouseDown || clicked) {
       document.getElementById(value).style.backgroundColor = window.color;
       handleDataSend(value);
@@ -687,6 +687,9 @@ var MatrixButtons = function MatrixButtons(_ref) {
     var x = touch.clientX;
     var y = touch.clientY;
     var button = document.elementFromPoint(x, y);
+    if (!button || !button.id) {
+      return;
+    }
     handleDraw(null, true, button.id);
     // update state based on the touch position
   }
@@ -20786,6 +20789,16 @@ var App = function App() {
     curChosenColor = _useState30[0],
     setCurChosenColor = _useState30[1];
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    //Mouse up handler
+    var handleMouseUp = function handleMouseUp() {
+      setMouseDown(false);
+    };
+    document.addEventListener('mouseup', handleMouseUp);
+    return function () {
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, []);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     return (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.handleSendRequests)(setPixelSending, pixelSending);
   }, []); //On start
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
@@ -20881,14 +20894,8 @@ var App = function App() {
   };
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
     id: "colorApp",
-    onMouseDown: function onMouseDown() {
-      setMouseDown(true);
-    },
-    onMouseUp: function onMouseUp() {
-      return setMouseDown(false);
-    },
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_homePage_jsx__WEBPACK_IMPORTED_MODULE_10__["default"], {
-      connectToBle: _helperFunctions_setupBluetooth__WEBPACK_IMPORTED_MODULE_3__["default"],
+      handleConnect: handleConnect,
       isConnected: isConnected
     }), drawMode || audioVisualizer || rainMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("button", {
       style: {
@@ -20911,6 +20918,9 @@ var App = function App() {
       src: "./icons/loading.gif"
     }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
       id: "app",
+      onMouseDown: function onMouseDown() {
+        return setMouseDown(true);
+      },
       children: [!drawMode && !audioVisualizer && !rainMode && isConnected && !pixelSending && !modeDataSending ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
         id: "modeChoices",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("button", {

@@ -8,7 +8,8 @@ const MatrixButtons = function({mouseDown}) {
 	};
 
 
-	function handleDraw(e, clicked, value = e.target.id) {
+	function handleDraw(e, clicked, value) {
+    value = e ? e.target.id : value;
 		if (mouseDown || clicked) {
 			document.getElementById(value).style.backgroundColor = window.color;
 			handleDataSend(value);
@@ -44,6 +45,9 @@ const MatrixButtons = function({mouseDown}) {
 		const x = touch.clientX;
 		const y = touch.clientY;
 		const button = document.elementFromPoint(x, y);
+    if (!button || !button.id) {
+      return;
+    }
 		handleDraw(null, true, button.id);
 		// update state based on the touch position
 	}
