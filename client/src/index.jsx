@@ -142,7 +142,7 @@ const App = function() {
 
 	return (
 		<div id='colorApp'>
-			<HomePage handleConnect={handleConnect} isConnected={isConnected} />
+			{!isConnected ? <HomePage handleConnect={handleConnect} isConnected={isConnected} /> :  null}
 			{drawMode || audioVisualizer || rainMode ? <button style={{'position': 'absolute', 'right': '2%', 'fontSize': '20px'}} onClick={() => {setDrawMode(false); setAudioVisualizer(false); setRainMode(false); if (modeRunning) {handleModeStartStop()}; }}>Back</button> : null}
 			{(pixelSending || modeDataSending) && isConnected ? <img id='loading' src='./icons/loading.gif'></img> : null}
 			<div id='app' onMouseDown={() => setMouseDown(true)}>

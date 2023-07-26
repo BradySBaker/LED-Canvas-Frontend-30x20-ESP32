@@ -8,6 +8,19 @@
 	border-radius: 20px;
 }
 
+@keyframes rainbow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+
 #top {
   position: absolute;
   top: 5%;
@@ -66,4 +79,17 @@ button {
   background-color: #4CC2FF;
   border-radius: 10px;
   border: none;
+}
+
+button:hover {
+  animation: changeBackgroundColor .3s ease forwards;
+}
+
+@keyframes changeBackgroundColor {
+  0% {
+    background-color: #4CC2FF;
+  }
+  100% {
+    background-color: #337fa5;
+  }
 }
