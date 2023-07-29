@@ -5,13 +5,15 @@ import {handleSave, handleDelete} from './helperFunctions/handleSaveDelete';
 import connectToBle from './helperFunctions/setupBluetooth';
 
 import { createRoot } from "react-dom/client";
-import MatrixButtons from "./matrixButtons.jsx";
+
 import FrameChoices from "./frameChoices.jsx";
 import RainController from "./rainController.jsx";
 import DrawMode from "./drawMode.jsx";
+import CreateMode from "./CreateMode.jsx";
 import AVController from "./avController.jsx";
 
-import HomePage from "./homePage.jsx";
+import HomePage from "./HomePage.jsx";
+import TopBar from "./TopBar.jsx";
 
 window.rainColorsSent = 0;
 
@@ -70,7 +72,6 @@ const App = function() {
 		}
 		sendRequests["off"] = true;
 	}
-
 
 	const handleFrameChoice = (frameName, animation) => {
 		if (modeRunning && !framePlayed) {
@@ -142,7 +143,9 @@ const App = function() {
 
 	return (
 		<div id='colorApp'>
-			{!isConnected ? <HomePage handleConnect={handleConnect} isConnected={isConnected} /> :  null}
+      <TopBar />
+      <CreateMode inputError={inputError} turnOff={turnOff} callSave={callSave} animPlaying={animPlaying} pixelSending={pixelSending} mouseDown={mouseDown} sendRequests={sendRequests}/>
+			{/* {!isConnected ? <HomePage handleConnect={handleConnect} isConnected={isConnected} /> :  null}
 			{drawMode || audioVisualizer || rainMode ? <button style={{'position': 'absolute', 'right': '2%', 'fontSize': '20px'}} onClick={() => {setDrawMode(false); setAudioVisualizer(false); setRainMode(false); if (modeRunning) {handleModeStartStop()}; }}>Back</button> : null}
 			{(pixelSending || modeDataSending) && isConnected ? <img id='loading' src='./icons/loading.gif'></img> : null}
 			<div id='app' onMouseDown={() => setMouseDown(true)}>
@@ -158,7 +161,7 @@ const App = function() {
 			{drawMode ? <MatrixButtons mouseDown={mouseDown} sendRequests={sendRequests}/> : null}
       {audioVisualizer ? <AVController modeRunning={modeRunning} handleChooseColor={handleModeChooseColor} curChosenColor={curChosenColor} modeDataSending={modeDataSending} setCurChosenColor={setCurChosenColor} colorChoices={colorChoices} handleModeStartStop={handleModeStartStop}/> : null}
 			{inputError ? <div style={{"color": "red"}}>{inputError}</div>: null}
-		</div>
+		</div> */}
 		</div>
 	)
 }

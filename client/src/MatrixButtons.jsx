@@ -25,13 +25,13 @@ const MatrixButtons = function({mouseDown}) {
 			if (x === 16) {
 				x = 0;
 				y++;
-				divMatrix.push(<div className={`${y} buttonColumn`}>{curButtons}</div>)
+				divMatrix.push(<div key={y} className={`${y} buttonColumn`} >{curButtons}</div>)
 				curButtons = [];
 				if (y === 16) {
 					break;
 				}
 			}
-			curButtons.push(<button id={`${x},${y}`} onMouseDown={(e) => {handleDraw(e, true)}} onMouseEnter={handleDraw}></button>);
+			curButtons.push(<button id={`${x},${y}`} key={x} onMouseDown={(e) => {handleDraw(e, true)}} onMouseEnter={handleDraw}></button>);
 			x++;
 		}
 		setButtons(divMatrix);
