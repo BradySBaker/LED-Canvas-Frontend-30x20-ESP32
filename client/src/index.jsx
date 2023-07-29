@@ -17,8 +17,6 @@ import TopBar from "./TopBar.jsx";
 
 window.rainColorsSent = 0;
 
-window.color = "#FF0000";
-
 window.ledConnected = false;
 
 window.modeRunning = true;
@@ -26,6 +24,8 @@ window.modeRunning = true;
 window.framePlayed = false;
 
 window.turnedOn = false;
+
+window.color = "#FF0000";
 
 const App = function() {
 	const [isConnected, setIsConnected] = useState(false);
@@ -44,6 +44,8 @@ const App = function() {
 
   const [colorChoices, setColorChoices] = useState([]);
 	const [curChosenColor, setCurChosenColor] = useState(color);
+
+  const [selectedColor, setSelectedColor] = useState(color);
 
   useEffect(() => { //Mouse up handler
     const handleMouseUp = () => {
@@ -142,9 +144,9 @@ const App = function() {
   };
 
 	return (
-		<div id='colorApp'>
-      <TopBar />
-      <CreateMode inputError={inputError} turnOff={turnOff} callSave={callSave} animPlaying={animPlaying} pixelSending={pixelSending} mouseDown={mouseDown} sendRequests={sendRequests}/>
+		<div id='colorApp' onMouseDown={() => setMouseDown(true)} >
+      <TopBar selectedColor={selectedColor}/>
+      <CreateMode inputError={inputError} turnOff={turnOff} callSave={callSave} animPlaying={animPlaying} pixelSending={pixelSending} mouseDown={mouseDown} sendRequests={sendRequests} selectedColor={selectedColor} setSelectedColor={setSelectedColor}/>
 			{/* {!isConnected ? <HomePage handleConnect={handleConnect} isConnected={isConnected} /> :  null}
 			{drawMode || audioVisualizer || rainMode ? <button style={{'position': 'absolute', 'right': '2%', 'fontSize': '20px'}} onClick={() => {setDrawMode(false); setAudioVisualizer(false); setRainMode(false); if (modeRunning) {handleModeStartStop()}; }}>Back</button> : null}
 			{(pixelSending || modeDataSending) && isConnected ? <img id='loading' src='./icons/loading.gif'></img> : null}

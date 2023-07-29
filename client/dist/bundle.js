@@ -30,6 +30,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
 var colorOptions = ['#FF0000', '#A020F0', '#FFC0CB', '#0000FF', '#FFFF00', '#00FF00', '#FFA500', '#FFFFFF'];
 var CreateMode = function CreateMode(_ref) {
   var callSave = _ref.callSave,
@@ -38,7 +39,9 @@ var CreateMode = function CreateMode(_ref) {
     isLoading = _ref.isLoading,
     inputError = _ref.inputError,
     mouseDown = _ref.mouseDown,
-    sendRequests = _ref.sendRequests;
+    sendRequests = _ref.sendRequests,
+    selectedColor = _ref.selectedColor,
+    setSelectedColor = _ref.setSelectedColor;
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState2 = _slicedToArray(_useState, 2),
     selectColor = _useState2[0],
@@ -51,8 +54,8 @@ var CreateMode = function CreateMode(_ref) {
     if (newColor.target) {
       newColor = newColor.target.style['background-color'];
     }
-    // document.getElementById('title').style.color = newColor;
-    color = newColor;
+    setSelectedColor(newColor); //For visual elements
+    window.color = newColor; //For color buttons
     sendRequests['color'] = "C".concat(newColor.slice(1));
   };
   var colorButtons = colorOptions.map(function (curColor) {
@@ -66,15 +69,22 @@ var CreateMode = function CreateMode(_ref) {
   });
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
     id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].widget,
-    children: [selectColor ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
-      className: "picker-container",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_colorful__WEBPACK_IMPORTED_MODULE_4__.HexColorPicker, {
-        style: {
-          height: 'calc(90vw * 0.5)'
-        },
-        color: color,
-        onChange: handleColor
-      })
+    children: [selectColor ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+        id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["popup-closer"],
+        onClick: function onClick() {
+          return setSelectColor(false);
+        }
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+        id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["color-picker-container"],
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_colorful__WEBPACK_IMPORTED_MODULE_4__.HexColorPicker, {
+          style: {
+            height: 'calc(90vw * 0.5)'
+          },
+          color: color,
+          onChange: handleColor
+        })
+      })]
     }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
       id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["mode-picker"],
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
@@ -98,15 +108,50 @@ var CreateMode = function CreateMode(_ref) {
         },
         children: "Animate Mode"
       })]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+      id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["mode-select-line"],
+      style: drawMode ? {
+        transform: 'translate(10vw, -35px)'
+      } : {
+        transform: 'translate(53vw, -35px)'
+      }
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("img", {
+      src: "./icons/trash-icon.png",
+      id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].trash,
+      onClick: turnOff
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+      id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["eraser-save-column"],
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("img", {
+        src: "./icons/eraser-icon.png",
+        id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].eraser,
+        onClick: function onClick() {
+          return handleColor('#000');
+        }
+      }), !isLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("button", {
+          id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["save-button"],
+          children: ["Save", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("img", {
+            src: "./icons/save-icon.png",
+            id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["save-icon"]
+          })]
+        })
+      }) : null]
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
       id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["preset-color-picker"],
       children: [colorButtons, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("img", {
         src: "./icons/color-picker.png",
-        className: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].icons
+        id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["color-picker"],
+        onClick: function onClick() {
+          return setSelectColor(true);
+        }
       })]
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_MatrixButtons_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
       mouseDown: mouseDown,
-      sendRequests: sendRequests
+      sendRequests: sendRequests,
+      selectedColor: selectedColor
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+      id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["gallery-button"],
+      children: "Gallery"
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("a", {
       href: "https://www.flaticon.com/free-icons/color-picker",
       title: "color picker icons",
@@ -301,7 +346,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var TopBar = function TopBar() {
+var TopBar = function TopBar(_ref) {
+  var selectedColor = _ref.selectedColor;
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
     id: _cssModules_topBar_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].widget,
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
@@ -312,6 +358,9 @@ var TopBar = function TopBar() {
       })
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
       id: _cssModules_topBar_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].title,
+      style: {
+        color: selectedColor
+      },
       children: "LED Canvas"
     })]
   });
@@ -20386,15 +20435,24 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "#usl_yAlxxfZrkdQc2boR {\n  font-family: 'Roboto', sans-serif;\n}\n\n#qDyetfokRCzfrByBexH7 {\n  display: flex;\n  justify-content: space-between;\n  margin: 20px;\n  margin-bottom: 40px;\n}\n\n#qDyetfokRCzfrByBexH7 button {\n  border: none;\n  padding: 13px 25px;\n  font-weight: bold;\n  font-size: 15px;\n  border-radius: 15px;\n}\n\n#Oa3Upf9OzloKPAdvzWgC {\n  display: flex;\n  justify-content: space-between;\n  margin: 0 10px;\n  margin-bottom: 10px;\n  align-items: center;\n}\n\n.Chvp2PNTU5bOJT9W0UTB {\n  width: 30px;\n  height: 30px;\n  border: none;\n  border-radius: 5px;\n}\n\n#LqNfF5A2BCDzAGCVhiql {\n  position: absolute;\n  bottom: 0;\n  font-size: 10px;\n  color: rgb(0, 0, 126);\n}\n\n.qu0QtmsQeMEP5cSmWHXr {\n  width: 30px;\n  height: 30px;\n}", "",{"version":3,"sources":["webpack://./client/src/cssModules/createMode.module.css"],"names":[],"mappings":"AAAA;EACE,iCAAiC;AACnC;;AAEA;EACE,aAAa;EACb,8BAA8B;EAC9B,YAAY;EACZ,mBAAmB;AACrB;;AAEA;EACE,YAAY;EACZ,kBAAkB;EAClB,iBAAiB;EACjB,eAAe;EACf,mBAAmB;AACrB;;AAEA;EACE,aAAa;EACb,8BAA8B;EAC9B,cAAc;EACd,mBAAmB;EACnB,mBAAmB;AACrB;;AAEA;EACE,WAAW;EACX,YAAY;EACZ,YAAY;EACZ,kBAAkB;AACpB;;AAEA;EACE,kBAAkB;EAClB,SAAS;EACT,eAAe;EACf,qBAAqB;AACvB;;AAEA;EACE,WAAW;EACX,YAAY;AACd","sourcesContent":["#widget {\n  font-family: 'Roboto', sans-serif;\n}\n\n#mode-picker {\n  display: flex;\n  justify-content: space-between;\n  margin: 20px;\n  margin-bottom: 40px;\n}\n\n#mode-picker button {\n  border: none;\n  padding: 13px 25px;\n  font-weight: bold;\n  font-size: 15px;\n  border-radius: 15px;\n}\n\n#preset-color-picker {\n  display: flex;\n  justify-content: space-between;\n  margin: 0 10px;\n  margin-bottom: 10px;\n  align-items: center;\n}\n\n.color-buttons {\n  width: 30px;\n  height: 30px;\n  border: none;\n  border-radius: 5px;\n}\n\n#credit {\n  position: absolute;\n  bottom: 0;\n  font-size: 10px;\n  color: rgb(0, 0, 126);\n}\n\n.icons {\n  width: 30px;\n  height: 30px;\n}"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, "#usl_yAlxxfZrkdQc2boR {\n  font-family: 'Roboto', sans-serif;\n}\n\n#qDyetfokRCzfrByBexH7 {\n  display: flex;\n  justify-content: space-between;\n  margin: 20px;\n  margin-bottom: 40px;\n}\n\n#qDyetfokRCzfrByBexH7 button {\n  border: none;\n  padding: 13px 25px;\n  font-weight: bold;\n  font-size: 4vw;\n  border-radius: 15px;\n  color: #121D24;\n}\n\n#DKalD0CZ3VPXsTN3DCrg {\n  height: 3px;\n  width: 120px;\n  border-radius: 10px;\n  background-color: #4CC2FF;\n  transition: transform 0.3s ease;\n}\n\n\n#Oa3Upf9OzloKPAdvzWgC {\n  display: flex;\n  justify-content: space-between;\n  margin: 0 10px;\n  align-items: center;\n  margin-bottom: 30px;\n}\n\n.Chvp2PNTU5bOJT9W0UTB {\n  width: 30px;\n  height: 30px;\n  border: none;\n  border-radius: 5px;\n}\n\n#LqNfF5A2BCDzAGCVhiql {\n  position: absolute;\n  bottom: 0;\n  font-size: 10px;\n  color: rgb(0, 0, 126);\n}\n\n#WbPPJemBXhzTgCG_2U81 {\n  width: 30px;\n  height: 30px;\n}\n\n#c5hjAmrewVXQxPlsXSJM {\n  width: 40px;\n  height: 40px;\n  margin: 0 5px;\n}\n\n#d7Mu_gXsL3IzSApxiFpS {\n  display: block;\n  transform: rotate(45deg);\n  width: 40px;\n  height: 40px;\n  margin-bottom: 10px;\n}\n\n#ykRA0B5UzTurciM72MKl {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n}\n\n#NYYDzfkbYC8D9OZJz6RU {\n  display: flex;\n  border: none;\n  padding: 5px 2px;\n  font-weight: 600;\n  font-size: 3.5vw;\n  border-radius: 5px;\n  background-color: #4CC2FF;\n  color: #121D24;\n}\n\n#KMr5UbbiWbHl38S34nJw {\n  width: 4vw;\n  height: 4vw;\n  margin-left: 5px;\n}\n\n#v9NRiBEhhCgREQochW1r {\n  position: absolute;\n  border-radius: 10px 10px 0 0;\n  border: none;\n  width: 50%;\n  bottom: 0;\n  left: 50%;\n  transform: translateX(-50%);\n  background-color: #4CC2FF;\n  font-weight: bold;\n  font-size: 4vw;\n  padding: 10px;\n}\n\n#_wLpWcqCM76DJ8HLA_13 {\n  z-index: 10;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n}\n\n#jsR_MzAIQvYWtUriy6uG {\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100vw;\n  height: 100vh;\n  background-color: rgba(0, 0, 0, 0.308);\n}", "",{"version":3,"sources":["webpack://./client/src/cssModules/createMode.module.css"],"names":[],"mappings":"AAAA;EACE,iCAAiC;AACnC;;AAEA;EACE,aAAa;EACb,8BAA8B;EAC9B,YAAY;EACZ,mBAAmB;AACrB;;AAEA;EACE,YAAY;EACZ,kBAAkB;EAClB,iBAAiB;EACjB,cAAc;EACd,mBAAmB;EACnB,cAAc;AAChB;;AAEA;EACE,WAAW;EACX,YAAY;EACZ,mBAAmB;EACnB,yBAAyB;EACzB,+BAA+B;AACjC;;;AAGA;EACE,aAAa;EACb,8BAA8B;EAC9B,cAAc;EACd,mBAAmB;EACnB,mBAAmB;AACrB;;AAEA;EACE,WAAW;EACX,YAAY;EACZ,YAAY;EACZ,kBAAkB;AACpB;;AAEA;EACE,kBAAkB;EAClB,SAAS;EACT,eAAe;EACf,qBAAqB;AACvB;;AAEA;EACE,WAAW;EACX,YAAY;AACd;;AAEA;EACE,WAAW;EACX,YAAY;EACZ,aAAa;AACf;;AAEA;EACE,cAAc;EACd,wBAAwB;EACxB,WAAW;EACX,YAAY;EACZ,mBAAmB;AACrB;;AAEA;EACE,aAAa;EACb,8BAA8B;EAC9B,mBAAmB;AACrB;;AAEA;EACE,aAAa;EACb,YAAY;EACZ,gBAAgB;EAChB,gBAAgB;EAChB,gBAAgB;EAChB,kBAAkB;EAClB,yBAAyB;EACzB,cAAc;AAChB;;AAEA;EACE,UAAU;EACV,WAAW;EACX,gBAAgB;AAClB;;AAEA;EACE,kBAAkB;EAClB,4BAA4B;EAC5B,YAAY;EACZ,UAAU;EACV,SAAS;EACT,SAAS;EACT,2BAA2B;EAC3B,yBAAyB;EACzB,iBAAiB;EACjB,cAAc;EACd,aAAa;AACf;;AAEA;EACE,WAAW;EACX,kBAAkB;EAClB,QAAQ;EACR,SAAS;EACT,gCAAgC;AAClC;;AAEA;EACE,eAAe;EACf,MAAM;EACN,OAAO;EACP,YAAY;EACZ,aAAa;EACb,sCAAsC;AACxC","sourcesContent":["#widget {\n  font-family: 'Roboto', sans-serif;\n}\n\n#mode-picker {\n  display: flex;\n  justify-content: space-between;\n  margin: 20px;\n  margin-bottom: 40px;\n}\n\n#mode-picker button {\n  border: none;\n  padding: 13px 25px;\n  font-weight: bold;\n  font-size: 4vw;\n  border-radius: 15px;\n  color: #121D24;\n}\n\n#mode-select-line {\n  height: 3px;\n  width: 120px;\n  border-radius: 10px;\n  background-color: #4CC2FF;\n  transition: transform 0.3s ease;\n}\n\n\n#preset-color-picker {\n  display: flex;\n  justify-content: space-between;\n  margin: 0 10px;\n  align-items: center;\n  margin-bottom: 30px;\n}\n\n.color-buttons {\n  width: 30px;\n  height: 30px;\n  border: none;\n  border-radius: 5px;\n}\n\n#credit {\n  position: absolute;\n  bottom: 0;\n  font-size: 10px;\n  color: rgb(0, 0, 126);\n}\n\n#color-picker {\n  width: 30px;\n  height: 30px;\n}\n\n#trash {\n  width: 40px;\n  height: 40px;\n  margin: 0 5px;\n}\n\n#eraser {\n  display: block;\n  transform: rotate(45deg);\n  width: 40px;\n  height: 40px;\n  margin-bottom: 10px;\n}\n\n#eraser-save-column {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n}\n\n#save-button {\n  display: flex;\n  border: none;\n  padding: 5px 2px;\n  font-weight: 600;\n  font-size: 3.5vw;\n  border-radius: 5px;\n  background-color: #4CC2FF;\n  color: #121D24;\n}\n\n#save-icon {\n  width: 4vw;\n  height: 4vw;\n  margin-left: 5px;\n}\n\n#gallery-button {\n  position: absolute;\n  border-radius: 10px 10px 0 0;\n  border: none;\n  width: 50%;\n  bottom: 0;\n  left: 50%;\n  transform: translateX(-50%);\n  background-color: #4CC2FF;\n  font-weight: bold;\n  font-size: 4vw;\n  padding: 10px;\n}\n\n#color-picker-container {\n  z-index: 10;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n}\n\n#popup-closer {\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100vw;\n  height: 100vh;\n  background-color: rgba(0, 0, 0, 0.308);\n}"],"sourceRoot":""}]);
 // Exports
 ___CSS_LOADER_EXPORT___.locals = {
 	"widget": "usl_yAlxxfZrkdQc2boR",
 	"mode-picker": "qDyetfokRCzfrByBexH7",
+	"mode-select-line": "DKalD0CZ3VPXsTN3DCrg",
 	"preset-color-picker": "Oa3Upf9OzloKPAdvzWgC",
 	"color-buttons": "Chvp2PNTU5bOJT9W0UTB",
 	"credit": "LqNfF5A2BCDzAGCVhiql",
-	"icons": "qu0QtmsQeMEP5cSmWHXr"
+	"color-picker": "WbPPJemBXhzTgCG_2U81",
+	"trash": "c5hjAmrewVXQxPlsXSJM",
+	"eraser": "d7Mu_gXsL3IzSApxiFpS",
+	"eraser-save-column": "ykRA0B5UzTurciM72MKl",
+	"save-button": "NYYDzfkbYC8D9OZJz6RU",
+	"save-icon": "KMr5UbbiWbHl38S34nJw",
+	"gallery-button": "v9NRiBEhhCgREQochW1r",
+	"color-picker-container": "_wLpWcqCM76DJ8HLA_13",
+	"popup-closer": "jsR_MzAIQvYWtUriy6uG"
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -21071,11 +21129,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 window.rainColorsSent = 0;
-window.color = "#FF0000";
 window.ledConnected = false;
 window.modeRunning = true;
 window.framePlayed = false;
 window.turnedOn = false;
+window.color = "#FF0000";
 var App = function App() {
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState2 = _slicedToArray(_useState, 2),
@@ -21137,6 +21195,10 @@ var App = function App() {
     _useState30 = _slicedToArray(_useState29, 2),
     curChosenColor = _useState30[0],
     setCurChosenColor = _useState30[1];
+  var _useState31 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(color),
+    _useState32 = _slicedToArray(_useState31, 2),
+    selectedColor = _useState32[0],
+    setSelectedColor = _useState32[1];
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     //Mouse up handler
     var handleMouseUp = function handleMouseUp() {
@@ -21243,14 +21305,21 @@ var App = function App() {
   };
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
     id: "colorApp",
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_TopBar_jsx__WEBPACK_IMPORTED_MODULE_11__["default"], {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_CreateMode_jsx__WEBPACK_IMPORTED_MODULE_8__["default"], {
+    onMouseDown: function onMouseDown() {
+      return setMouseDown(true);
+    },
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_TopBar_jsx__WEBPACK_IMPORTED_MODULE_11__["default"], {
+      selectedColor: selectedColor
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_CreateMode_jsx__WEBPACK_IMPORTED_MODULE_8__["default"], {
       inputError: inputError,
       turnOff: turnOff,
       callSave: callSave,
       animPlaying: animPlaying,
       pixelSending: pixelSending,
       mouseDown: mouseDown,
-      sendRequests: sendRequests
+      sendRequests: sendRequests,
+      selectedColor: selectedColor,
+      setSelectedColor: setSelectedColor
     })]
   });
 };

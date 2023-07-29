@@ -13,16 +13,26 @@
   border: none;
   padding: 13px 25px;
   font-weight: bold;
-  font-size: 15px;
+  font-size: 4vw;
   border-radius: 15px;
+  color: #121D24;
 }
+
+#mode-select-line {
+  height: 3px;
+  width: 120px;
+  border-radius: 10px;
+  background-color: #4CC2FF;
+  transition: transform 0.3s ease;
+}
+
 
 #preset-color-picker {
   display: flex;
   justify-content: space-between;
   margin: 0 10px;
-  margin-bottom: 10px;
   align-items: center;
+  margin-bottom: 30px;
 }
 
 .color-buttons {
@@ -39,7 +49,75 @@
   color: rgb(0, 0, 126);
 }
 
-.icons {
+#color-picker {
   width: 30px;
   height: 30px;
+}
+
+#trash {
+  width: 40px;
+  height: 40px;
+  margin: 0 5px;
+}
+
+#eraser {
+  display: block;
+  transform: rotate(45deg);
+  width: 40px;
+  height: 40px;
+  margin-bottom: 10px;
+}
+
+#eraser-save-column {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#save-button {
+  display: flex;
+  border: none;
+  padding: 5px 2px;
+  font-weight: 600;
+  font-size: 3.5vw;
+  border-radius: 5px;
+  background-color: #4CC2FF;
+  color: #121D24;
+}
+
+#save-icon {
+  width: 4vw;
+  height: 4vw;
+  margin-left: 5px;
+}
+
+#gallery-button {
+  position: absolute;
+  border-radius: 10px 10px 0 0;
+  border: none;
+  width: 50%;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #4CC2FF;
+  font-weight: bold;
+  font-size: 4vw;
+  padding: 10px;
+}
+
+#color-picker-container {
+  z-index: 10;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#popup-closer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.308);
 }
