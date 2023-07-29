@@ -11,8 +11,10 @@ const MatrixButtons = function({mouseDown}) {
 	function handleDraw(e, clicked, value) {
     value = e ? e.target.id : value;
 		if (mouseDown || clicked) {
-			document.getElementById(value).style.backgroundColor = window.color;
-			handleDataSend(value);
+      if (value.includes(',')) { //think about more efficient solutions
+        document.getElementById(value).style.backgroundColor = window.color;
+        handleDataSend(value);
+      }
 		}
 	}
 
@@ -31,7 +33,7 @@ const MatrixButtons = function({mouseDown}) {
 					break;
 				}
 			}
-			curButtons.push(<button id={`${x},${y}`} key={x} onMouseDown={(e) => {handleDraw(e, true)}} onMouseEnter={handleDraw}></button>);
+			curButtons.push(<button id={`${x},${y}`} className='matrix-button' key={x} onMouseDown={(e) => {handleDraw(e, true)}} onMouseEnter={handleDraw}></button>);
 			x++;
 		}
 		setButtons(divMatrix);

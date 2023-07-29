@@ -1,0 +1,45 @@
+#widget {
+  font-family: 'Roboto', sans-serif;
+}
+
+#mode-picker {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px;
+  margin-bottom: 40px;
+}
+
+#mode-picker button {
+  border: none;
+  padding: 13px 25px;
+  font-weight: bold;
+  font-size: 15px;
+  border-radius: 15px;
+}
+
+#preset-color-picker {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 10px;
+  margin-bottom: 10px;
+  align-items: center;
+}
+
+.color-buttons {
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 5px;
+}
+
+#credit {
+  position: absolute;
+  bottom: 0;
+  font-size: 10px;
+  color: rgb(0, 0, 126);
+}
+
+.icons {
+  width: 30px;
+  height: 30px;
+}

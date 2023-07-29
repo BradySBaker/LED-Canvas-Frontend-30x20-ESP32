@@ -30,7 +30,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-
+var colorOptions = ['#FF0000', '#A020F0', '#FFC0CB', '#0000FF', '#FFFF00', '#00FF00', '#FFA500', '#FFFFFF'];
 var CreateMode = function CreateMode(_ref) {
   var callSave = _ref.callSave,
     animPlaying = _ref.animPlaying,
@@ -43,50 +43,75 @@ var CreateMode = function CreateMode(_ref) {
     _useState2 = _slicedToArray(_useState, 2),
     selectColor = _useState2[0],
     setSelectColor = _useState2[1];
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(true),
+    _useState4 = _slicedToArray(_useState3, 2),
+    drawMode = _useState4[0],
+    setDrawMode = _useState4[1];
   var handleColor = function handleColor(newColor) {
+    if (newColor.target) {
+      newColor = newColor.target.style['background-color'];
+    }
     // document.getElementById('title').style.color = newColor;
     color = newColor;
     sendRequests['color'] = "C".concat(newColor.slice(1));
   };
+  var colorButtons = colorOptions.map(function (curColor) {
+    return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+      className: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["color-buttons"],
+      style: {
+        'background-color': curColor
+      },
+      onClick: handleColor
+    });
+  });
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+    id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].widget,
+    children: [selectColor ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
       className: "picker-container",
-      children: selectColor ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_colorful__WEBPACK_IMPORTED_MODULE_4__.HexColorPicker, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_colorful__WEBPACK_IMPORTED_MODULE_4__.HexColorPicker, {
         style: {
           height: 'calc(90vw * 0.5)'
         },
         color: color,
         onChange: handleColor
-      }) : null
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
-      onClick: turnOff,
-      children: "Turn Off"
-    }), !isLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {
+      })
+    }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+      id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["mode-picker"],
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
-        onClick: callSave,
-        children: "Save Drawing"
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
-        id: "drawName",
-        type: "text",
-        placeholder: "drawing...",
-        maxLength: "7"
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
-        onClick: function onClick(e) {
-          return callSave(e, true);
+        style: !drawMode ? {
+          'background-color': '#4CC2FF'
+        } : {
+          'background-color': '#7D7D7D'
         },
-        children: "Save Frame"
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
-        id: "animName",
-        type: "text",
-        placeholder: "animation name...",
-        maxLength: "7"
-      }), animPlaying ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
-        onClick: turnOff,
-        children: "STOP"
-      }) : null]
-    }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_MatrixButtons_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        onClick: function onClick() {
+          return setDrawMode(true);
+        },
+        children: "Drawing Mode"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+        style: drawMode ? {
+          'background-color': '#4CC2FF'
+        } : {
+          'background-color': '#7D7D7D'
+        },
+        onClick: function onClick() {
+          return setDrawMode(false);
+        },
+        children: "Animate Mode"
+      })]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+      id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["preset-color-picker"],
+      children: [colorButtons, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("img", {
+        src: "./icons/color-picker.png",
+        className: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].icons
+      })]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_MatrixButtons_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
       mouseDown: mouseDown,
       sendRequests: sendRequests
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("a", {
+      href: "https://www.flaticon.com/free-icons/color-picker",
+      title: "color picker icons",
+      id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].credit,
+      children: "Color picker icons created by Design Circle - Flaticon"
     })]
   });
 };
@@ -188,8 +213,11 @@ var MatrixButtons = function MatrixButtons(_ref) {
   function handleDraw(e, clicked, value) {
     value = e ? e.target.id : value;
     if (mouseDown || clicked) {
-      document.getElementById(value).style.backgroundColor = window.color;
-      handleDataSend(value);
+      if (value.includes(',')) {
+        //think about more efficient solutions
+        document.getElementById(value).style.backgroundColor = window.color;
+        handleDataSend(value);
+      }
     }
   }
   var createButtons = function createButtons() {
@@ -212,6 +240,7 @@ var MatrixButtons = function MatrixButtons(_ref) {
       }
       curButtons.push( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
         id: "".concat(x, ",").concat(y),
+        className: "matrix-button",
         onMouseDown: function onMouseDown(e) {
           handleDraw(e, true);
         },
@@ -20357,9 +20386,16 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "", "",{"version":3,"sources":[],"names":[],"mappings":"","sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, "#usl_yAlxxfZrkdQc2boR {\n  font-family: 'Roboto', sans-serif;\n}\n\n#qDyetfokRCzfrByBexH7 {\n  display: flex;\n  justify-content: space-between;\n  margin: 20px;\n  margin-bottom: 40px;\n}\n\n#qDyetfokRCzfrByBexH7 button {\n  border: none;\n  padding: 13px 25px;\n  font-weight: bold;\n  font-size: 15px;\n  border-radius: 15px;\n}\n\n#Oa3Upf9OzloKPAdvzWgC {\n  display: flex;\n  justify-content: space-between;\n  margin: 0 10px;\n  margin-bottom: 10px;\n  align-items: center;\n}\n\n.Chvp2PNTU5bOJT9W0UTB {\n  width: 30px;\n  height: 30px;\n  border: none;\n  border-radius: 5px;\n}\n\n#LqNfF5A2BCDzAGCVhiql {\n  position: absolute;\n  bottom: 0;\n  font-size: 10px;\n  color: rgb(0, 0, 126);\n}\n\n.qu0QtmsQeMEP5cSmWHXr {\n  width: 30px;\n  height: 30px;\n}", "",{"version":3,"sources":["webpack://./client/src/cssModules/createMode.module.css"],"names":[],"mappings":"AAAA;EACE,iCAAiC;AACnC;;AAEA;EACE,aAAa;EACb,8BAA8B;EAC9B,YAAY;EACZ,mBAAmB;AACrB;;AAEA;EACE,YAAY;EACZ,kBAAkB;EAClB,iBAAiB;EACjB,eAAe;EACf,mBAAmB;AACrB;;AAEA;EACE,aAAa;EACb,8BAA8B;EAC9B,cAAc;EACd,mBAAmB;EACnB,mBAAmB;AACrB;;AAEA;EACE,WAAW;EACX,YAAY;EACZ,YAAY;EACZ,kBAAkB;AACpB;;AAEA;EACE,kBAAkB;EAClB,SAAS;EACT,eAAe;EACf,qBAAqB;AACvB;;AAEA;EACE,WAAW;EACX,YAAY;AACd","sourcesContent":["#widget {\n  font-family: 'Roboto', sans-serif;\n}\n\n#mode-picker {\n  display: flex;\n  justify-content: space-between;\n  margin: 20px;\n  margin-bottom: 40px;\n}\n\n#mode-picker button {\n  border: none;\n  padding: 13px 25px;\n  font-weight: bold;\n  font-size: 15px;\n  border-radius: 15px;\n}\n\n#preset-color-picker {\n  display: flex;\n  justify-content: space-between;\n  margin: 0 10px;\n  margin-bottom: 10px;\n  align-items: center;\n}\n\n.color-buttons {\n  width: 30px;\n  height: 30px;\n  border: none;\n  border-radius: 5px;\n}\n\n#credit {\n  position: absolute;\n  bottom: 0;\n  font-size: 10px;\n  color: rgb(0, 0, 126);\n}\n\n.icons {\n  width: 30px;\n  height: 30px;\n}"],"sourceRoot":""}]);
 // Exports
-___CSS_LOADER_EXPORT___.locals = {};
+___CSS_LOADER_EXPORT___.locals = {
+	"widget": "usl_yAlxxfZrkdQc2boR",
+	"mode-picker": "qDyetfokRCzfrByBexH7",
+	"preset-color-picker": "Oa3Upf9OzloKPAdvzWgC",
+	"color-buttons": "Chvp2PNTU5bOJT9W0UTB",
+	"credit": "LqNfF5A2BCDzAGCVhiql",
+	"icons": "qu0QtmsQeMEP5cSmWHXr"
+};
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
 
