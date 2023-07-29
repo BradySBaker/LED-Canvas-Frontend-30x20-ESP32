@@ -92,7 +92,7 @@
 }
 
 #gallery-button {
-  position: absolute;
+  position: fixed;
   border-radius: 10px 10px 0 0;
   border: none;
   width: 50%;
