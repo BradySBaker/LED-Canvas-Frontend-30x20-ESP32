@@ -35,8 +35,7 @@ var CreateMode = function CreateMode(_ref) {
   var callSave = _ref.callSave,
     animPlaying = _ref.animPlaying,
     turnOff = _ref.turnOff,
-    isLoading = _ref.isLoading,
-    inputError = _ref.inputError,
+    pixelSending = _ref.pixelSending,
     mouseDown = _ref.mouseDown,
     sendRequests = _ref.sendRequests,
     selectedColor = _ref.selectedColor,
@@ -58,7 +57,7 @@ var CreateMode = function CreateMode(_ref) {
     _useState8 = _slicedToArray(_useState7, 2),
     saving = _useState8[0],
     setSaving = _useState8[1];
-  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
+  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState10 = _slicedToArray(_useState9, 2),
     currentAnimFrame = _useState10[0],
     setCurrentAnimFrame = _useState10[1];
@@ -66,6 +65,10 @@ var CreateMode = function CreateMode(_ref) {
     _useState12 = _slicedToArray(_useState11, 2),
     playClicked = _useState12[0],
     setPlayClicked = _useState12[1];
+  var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState14 = _slicedToArray(_useState13, 2),
+    error = _useState14[0],
+    setError = _useState14[1];
   var handleColor = function handleColor(newColor) {
     if (newColor.target) {
       newColor = colorOptions[newColor.target.id];
@@ -85,18 +88,32 @@ var CreateMode = function CreateMode(_ref) {
     });
   });
   var handleSaveFrame = function handleSaveFrame(e) {
+    setSaving(false);
+    setError(false);
+    if (pixelSending) {
+      return;
+    }
     var frameName = document.getElementById('frameName').value;
     if (drawMode) {
-      console.log(frameName);
-      callSave(e, false, frameName);
+      var inputError = callSave(e, false, frameName);
+      if (inputError) {
+        setError(inputError);
+        return;
+      }
     } else {
+      var inputError = callSave(e, true, frameName);
+      if (inputError) {
+        setError(inputError);
+        return;
+      }
       setFrameCount(frameCount + 1);
-      callSave(e, true, frameName);
       setCurrentAnimFrame(frameName);
     }
-    setSaving(false);
   };
-  var handleAddAnimFrame = function handleAddAnimFrame() {
+  var handleAddAnimFrame = function handleAddAnimFrame(e) {
+    if (pixelSending) {
+      return;
+    }
     if (frameCount === 0) {
       setSaving(true);
     } else {
@@ -106,11 +123,12 @@ var CreateMode = function CreateMode(_ref) {
   };
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
     id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].widget,
-    children: [selectColor || saving ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+    children: [selectColor || saving || error ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
       id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["popup-closer"],
       onClick: function onClick() {
         setSelectColor(false);
         setSaving(false);
+        setError(false);
       }
     }) : null, selectColor ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
       id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["color-picker-container"],
@@ -165,7 +183,7 @@ var CreateMode = function CreateMode(_ref) {
       src: "./icons/trash-icon.png",
       id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].trash,
       onClick: turnOff
-    }), !isLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
       id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["eraser-save-column"],
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("img", {
         src: "./icons/eraser-icon.png",
@@ -173,7 +191,10 @@ var CreateMode = function CreateMode(_ref) {
         onClick: function onClick() {
           return handleColor('#000000');
         }
-      }), drawMode && !saving ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("button", {
+      }), error ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["error-pupup"],
+        children: ["! ", error, " !"]
+      }) : null, drawMode && !saving ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("button", {
         id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["save-button"],
         onClick: function onClick() {
           return setSaving(true);
@@ -191,11 +212,13 @@ var CreateMode = function CreateMode(_ref) {
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
           children: frameCount
         })]
-      }) : null, !drawMode && frameCount < 1 && !playClicked ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("button", {
+      }) : null, !drawMode && frameCount > 1 && !playClicked ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("button", {
         id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["start-stop-button"],
-        onClick: function onClick(e) {
-          handleFrameChoice(e, currentAnimFrame);
-          setPlayClicked(true);
+        onClick: function onClick() {
+          if (!pixelSending) {
+            handleFrameChoice(currentAnimFrame, true);
+            setPlayClicked(true);
+          }
         },
         children: ["Play", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("img", {
           src: "./icons/animation-icon.png",
@@ -204,10 +227,19 @@ var CreateMode = function CreateMode(_ref) {
       }) : null, playClicked ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("button", {
         id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["start-stop-button"],
         onClick: function onClick(e) {
-          turnOff(e);
-          setPlayClicked(false);
+          if (!pixelSending) {
+            turnOff(e);
+            setPlayClicked(false);
+          }
         },
         children: ["Stop", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {})]
+      }) : null, !drawMode && !playClicked && frameCount >= 1 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+        id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["start-stop-button"],
+        onClick: function onClick() {
+          setCurrentAnimFrame(false);
+          setFrameCount(0);
+        },
+        children: "Done\u2713"
       }) : null, saving ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
         id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["save-form"],
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
@@ -220,7 +252,7 @@ var CreateMode = function CreateMode(_ref) {
           onClick: handleSaveFrame
         })]
       }) : null]
-    }) /* end of eraser-save colum ============== */ : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
       id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["matrix-color-section"],
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
         id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["preset-color-picker"],
@@ -694,14 +726,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "handleDelete": () => (/* binding */ handleDelete),
 /* harmony export */   "handleSave": () => (/* binding */ handleSave)
 /* harmony export */ });
-var handleSave = function handleSave(sendData, setFrames, frames, anims, setAnims, setInputError, e, animation, frameName) {
-  setInputError(false);
+var handleSave = function handleSave(sendData, setFrames, frames, anims, setAnims, e, animation, frameName) {
   if (frameName.length > 0) {
+    //Returns string if error otherwise false
     var regex = /^[a-zA-Z0-9_\-]+$/; // valid characters are letters, numbers, underscores, and dashes
     if (!regex.test(frameName)) {
       // the name is invalid
-      setInputError("Invalid character");
-      return;
+      return "Invalid character";
     }
     if (animation) {
       if (!anims.includes(frameName)) {
@@ -710,7 +741,7 @@ var handleSave = function handleSave(sendData, setFrames, frames, anims, setAnim
         setAnims(newAnims);
       }
       sendData('A' + frameName);
-      return;
+      return false;
     }
     //Retrieves all matrix colors and adds them to matrix array
     var columnElements = document.getElementById('buttons').children;
@@ -729,8 +760,9 @@ var handleSave = function handleSave(sendData, setFrames, frames, anims, setAnim
     newFrames.push(curFrame);
     setFrames(newFrames);
     sendData('S' + frameName);
+    return false;
   } else {
-    setInputError("Please input a name for your drawing");
+    return "Please input a name for your drawing";
   }
 };
 var handleDelete = function handleDelete(setFrames, frames, setPrevFrameNames, prevFrameNames, anims, setAnims, sendData, frameName, idx, type) {
@@ -20488,7 +20520,7 @@ var ___CSS_LOADER_URL_IMPORT_0___ = new URL(/* asset import */ __webpack_require
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 var ___CSS_LOADER_URL_REPLACEMENT_0___ = _node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_2___default()(___CSS_LOADER_URL_IMPORT_0___);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "#usl_yAlxxfZrkdQc2boR {\n  font-family: 'Roboto', sans-serif;\n}\n\n#qDyetfokRCzfrByBexH7 {\n  display: flex;\n  justify-content: space-between;\n  margin: 20px;\n  margin-bottom: 40px;\n}\n\n#qDyetfokRCzfrByBexH7 button {\n  border: none;\n  padding: 13px 25px;\n  font-weight: bold;\n  font-size: 13px;\n  border-radius: 15px;\n  color: #121D24;\n}\n\n#WV59dg5u_OJpLiSvfYZT, #bWcDN7yqz2m1ocaJ4f4g {\n  position: absolute;\n  height: 3px;\n  width: 120px;\n  border-radius: 10px;\n  background-color: #4CC2FF;\n  transition: transform 0.3s ease;\n}\n\n#bWcDN7yqz2m1ocaJ4f4g {\n  width: 0;\n  height: 0;\n}\n\n\n.BpEn_XLLHI9JG8PaSTQM {\n\tflex: 1;\n  flex-direction: column;\n  margin: 0;\n}\n\n.BpEn_XLLHI9JG8PaSTQM button {\n\taspect-ratio : 1 / 1;\n  flex-grow: 1;\n  width: 100%;\n\tbackground-color: rgb(0, 0, 0);\n  border: 1px solid white;\n  border-radius: 4px;\n}\n\n.QXf7tIq86ySqUBdobBHQ {\n\tdisplay: flex;\n\twidth: 100%;\n\tmax-width: 600px;\n}\n\n.Chvp2PNTU5bOJT9W0UTB {\n  width: 30px;\n  height: 30px;\n  border: none;\n  border-radius: 5px;\n  margin: 0 1.1vw;\n}\n\n#WbPPJemBXhzTgCG_2U81 {\n  width: 30px;\n  height: 30px;\n}\n\n#ykRA0B5UzTurciM72MKl {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  margin-bottom: 20px;\n}\n\n\n#c5hjAmrewVXQxPlsXSJM {\n  width: 40px;\n  height: 40px;\n  margin: 0 5px;\n}\n\n#d7Mu_gXsL3IzSApxiFpS {\n  display: block;\n  transform: rotate(45deg);\n  width: 40px;\n  height: 40px;\n  margin-bottom: 10px;\n}\n\n#NYYDzfkbYC8D9OZJz6RU {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  border: none;\n  padding: 5px 0px;\n  font-weight: 600;\n  font-size: 70%;\n  border-radius: 5px;\n  background-color: #4cff5b;\n  color: #121D24;\n\n}\n\n#KMr5UbbiWbHl38S34nJw {\n  width: 15%;\n  height: 15%;\n  margin-left: 10%;\n}\n\n#p6lOefaAGmgPjjPGGFqw {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  background-color: #4CC2FF;\n  border: none;\n  border-radius: 5px;\n  padding: 5px 15px;\n  font-weight: bold;\n  color: #182b36;\n}\n\n#hHWO6oQzjaDzvYkVA3kA {\n  width: 15px;\n  height: 15px;\n}\n\n#p6lOefaAGmgPjjPGGFqw div {\n  background-color: red;\n  border-radius: 5px;\n  width: 15px;\n  height: 15px;\n}\n\n\n#bxNeTtvDNLRtHPQeJ_Fs {\n  display: flex;\n  align-items: center;\n  margin-left: 20px;\n}\n\n#bxNeTtvDNLRtHPQeJ_Fs div {\n  background-color: #2d6f91;\n  color: white;\n  border-radius: 5px;\n  width: 20px;\n  height: 20px;\n  text-align: center;\n  font-weight: bold;\n  margin-left: 5px;\n}\n\n#t8kzB9bkjIXrw_4dvSjj {\n  background-color: #4cff5b;\n  border: none;\n  border-radius: 5px;\n  padding: 5px 10px;\n  font-weight: bold;\n}\n\n#FuUN9yHbY2iJkNkmULIm {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  flex-direction: column;\n}\n\n#jK5GQnyqY53LqQfS7CUA {\n  margin-top: 20px;\n}\n\n\n@media screen and (min-aspect-ratio: 3/2) { /* Desktop mode switch*/\n  #FuUN9yHbY2iJkNkmULIm {\n    flex-direction: row;\n  }\n  #jK5GQnyqY53LqQfS7CUA {\n    order: 0;\n  }\n  #Oa3Upf9OzloKPAdvzWgC {\n    order: 1;\n    margin-left: 20px;\n  }\n  .Chvp2PNTU5bOJT9W0UTB {\n    display: block;\n    margin: 3vh 0;\n  }\n  #ykRA0B5UzTurciM72MKl {\n    margin: 0px 32vw;\n  }\n  #c5hjAmrewVXQxPlsXSJM {\n    margin-left: 32vw;\n  }\n  #qDyetfokRCzfrByBexH7 {\n    margin: 0 40%;\n  }\n  #WV59dg5u_OJpLiSvfYZT {\n    width: 0;\n    height: 0;\n  }\n  #bWcDN7yqz2m1ocaJ4f4g {\n    height: 3px;\n    width: 120px;\n  }\n}\n\n\n#LqNfF5A2BCDzAGCVhiql {\n  position: relative;\n  bottom: 0;\n  font-size: 10px;\n  color: rgb(0, 0, 126);\n}\n\n#_wLpWcqCM76DJ8HLA_13 {\n  z-index: 10;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n}\n\n#jsR_MzAIQvYWtUriy6uG {\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100vw;\n  height: 100vh;\n  background-color: rgba(0, 0, 0, 0.308);\n}\n\n#fr1DuugvzNpOOA0RfyRi {\n  position: absolute;\n  z-index: 10;\n  display: flex;\n  background-color: #00ccff7a;\n  padding: 10px;\n  left: 50%;\n  transform: translateX(-50%);\n  border-radius: 5px;\n}\n\n#O8fg4ai4DCdNKqd7H8gS {\n  width: 35px;\n  height: 35px;\n  background-repeat: no-repeat;\n  background-size: 35px;\n  margin-left: 5px;\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ");\n}", "",{"version":3,"sources":["webpack://./client/src/cssModules/createMode.module.css"],"names":[],"mappings":"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","sourcesContent":["#widget {\n  font-family: 'Roboto', sans-serif;\n}\n\n#mode-picker {\n  display: flex;\n  justify-content: space-between;\n  margin: 20px;\n  margin-bottom: 40px;\n}\n\n#mode-picker button {\n  border: none;\n  padding: 13px 25px;\n  font-weight: bold;\n  font-size: 13px;\n  border-radius: 15px;\n  color: #121D24;\n}\n\n#mode-select-line-mobile, #mode-select-line-desktop {\n  position: absolute;\n  height: 3px;\n  width: 120px;\n  border-radius: 10px;\n  background-color: #4CC2FF;\n  transition: transform 0.3s ease;\n}\n\n#mode-select-line-desktop {\n  width: 0;\n  height: 0;\n}\n\n\n.button-column {\n\tflex: 1;\n  flex-direction: column;\n  margin: 0;\n}\n\n.button-column button {\n\taspect-ratio : 1 / 1;\n  flex-grow: 1;\n  width: 100%;\n\tbackground-color: rgb(0, 0, 0);\n  border: 1px solid white;\n  border-radius: 4px;\n}\n\n.buttons {\n\tdisplay: flex;\n\twidth: 100%;\n\tmax-width: 600px;\n}\n\n.color-buttons {\n  width: 30px;\n  height: 30px;\n  border: none;\n  border-radius: 5px;\n  margin: 0 1.1vw;\n}\n\n#color-picker {\n  width: 30px;\n  height: 30px;\n}\n\n#eraser-save-column {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  margin-bottom: 20px;\n}\n\n\n#trash {\n  width: 40px;\n  height: 40px;\n  margin: 0 5px;\n}\n\n#eraser {\n  display: block;\n  transform: rotate(45deg);\n  width: 40px;\n  height: 40px;\n  margin-bottom: 10px;\n}\n\n#save-button {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  border: none;\n  padding: 5px 0px;\n  font-weight: 600;\n  font-size: 70%;\n  border-radius: 5px;\n  background-color: #4cff5b;\n  color: #121D24;\n\n}\n\n#save-icon {\n  width: 15%;\n  height: 15%;\n  margin-left: 10%;\n}\n\n#start-stop-button {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  background-color: #4CC2FF;\n  border: none;\n  border-radius: 5px;\n  padding: 5px 15px;\n  font-weight: bold;\n  color: #182b36;\n}\n\n#start-stop-icon {\n  width: 15px;\n  height: 15px;\n}\n\n#start-stop-button div {\n  background-color: red;\n  border-radius: 5px;\n  width: 15px;\n  height: 15px;\n}\n\n\n#add-section {\n  display: flex;\n  align-items: center;\n  margin-left: 20px;\n}\n\n#add-section div {\n  background-color: #2d6f91;\n  color: white;\n  border-radius: 5px;\n  width: 20px;\n  height: 20px;\n  text-align: center;\n  font-weight: bold;\n  margin-left: 5px;\n}\n\n#add-button {\n  background-color: #4cff5b;\n  border: none;\n  border-radius: 5px;\n  padding: 5px 10px;\n  font-weight: bold;\n}\n\n#matrix-color-section {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  flex-direction: column;\n}\n\n#matrix-widget {\n  margin-top: 20px;\n}\n\n\n@media screen and (min-aspect-ratio: 3/2) { /* Desktop mode switch*/\n  #matrix-color-section {\n    flex-direction: row;\n  }\n  #matrix-widget {\n    order: 0;\n  }\n  #preset-color-picker {\n    order: 1;\n    margin-left: 20px;\n  }\n  .color-buttons {\n    display: block;\n    margin: 3vh 0;\n  }\n  #eraser-save-column {\n    margin: 0px 32vw;\n  }\n  #trash {\n    margin-left: 32vw;\n  }\n  #mode-picker {\n    margin: 0 40%;\n  }\n  #mode-select-line-mobile {\n    width: 0;\n    height: 0;\n  }\n  #mode-select-line-desktop {\n    height: 3px;\n    width: 120px;\n  }\n}\n\n\n#credit {\n  position: relative;\n  bottom: 0;\n  font-size: 10px;\n  color: rgb(0, 0, 126);\n}\n\n#color-picker-container {\n  z-index: 10;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n}\n\n#popup-closer {\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100vw;\n  height: 100vh;\n  background-color: rgba(0, 0, 0, 0.308);\n}\n\n#save-form {\n  position: absolute;\n  z-index: 10;\n  display: flex;\n  background-color: #00ccff7a;\n  padding: 10px;\n  left: 50%;\n  transform: translateX(-50%);\n  border-radius: 5px;\n}\n\n#checkmark {\n  width: 35px;\n  height: 35px;\n  background-repeat: no-repeat;\n  background-size: 35px;\n  margin-left: 5px;\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Cpath fill='lightgreen' d='M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8.009 8.009 0 0 1-8 8z'/%3E%3Cpath fill='lightgreen' d='M16.293 8.293 11 13.586l-2.293-2.293-1.414 1.414L11 16.414l6.707-6.707-1.414-1.414z'/%3E%3C/svg%3E\");\n}"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, "#usl_yAlxxfZrkdQc2boR {\n  font-family: 'Roboto', sans-serif;\n}\n\n#qDyetfokRCzfrByBexH7 {\n  display: flex;\n  justify-content: space-between;\n  margin: 20px;\n  margin-bottom: 40px;\n}\n\n#qDyetfokRCzfrByBexH7 button {\n  border: none;\n  padding: 13px 25px;\n  font-weight: bold;\n  font-size: 13px;\n  border-radius: 15px;\n  color: #121D24;\n}\n\n#WV59dg5u_OJpLiSvfYZT, #bWcDN7yqz2m1ocaJ4f4g {\n  position: absolute;\n  height: 3px;\n  width: 120px;\n  border-radius: 10px;\n  background-color: #4CC2FF;\n  transition: transform 0.3s ease;\n}\n\n#bWcDN7yqz2m1ocaJ4f4g {\n  width: 0;\n  height: 0;\n}\n\n\n.BpEn_XLLHI9JG8PaSTQM {\n\tflex: 1;\n  flex-direction: column;\n  margin: 0;\n}\n\n.BpEn_XLLHI9JG8PaSTQM button {\n\taspect-ratio : 1 / 1;\n  flex-grow: 1;\n  width: 100%;\n\tbackground-color: rgb(0, 0, 0);\n  border: 1px solid white;\n  border-radius: 4px;\n}\n\n.QXf7tIq86ySqUBdobBHQ {\n\tdisplay: flex;\n\twidth: 100%;\n\tmax-width: 600px;\n}\n\n.Chvp2PNTU5bOJT9W0UTB {\n  width: 30px;\n  height: 30px;\n  border: none;\n  border-radius: 5px;\n  margin: 0 1.1vw;\n}\n\n#WbPPJemBXhzTgCG_2U81 {\n  width: 30px;\n  height: 30px;\n}\n\n#ykRA0B5UzTurciM72MKl {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  margin-bottom: 20px;\n}\n\n\n#c5hjAmrewVXQxPlsXSJM {\n  width: 40px;\n  height: 40px;\n  margin: 0 5px;\n}\n\n#d7Mu_gXsL3IzSApxiFpS {\n  display: block;\n  transform: rotate(45deg);\n  width: 40px;\n  height: 40px;\n  margin-bottom: 10px;\n}\n\n#NYYDzfkbYC8D9OZJz6RU {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  border: none;\n  padding: 5px 0px;\n  font-weight: 600;\n  font-size: 70%;\n  border-radius: 5px;\n  background-color: #4cff5b;\n  color: #121D24;\n\n}\n\n#KMr5UbbiWbHl38S34nJw {\n  width: 15%;\n  height: 15%;\n  margin-left: 10%;\n}\n\n#p6lOefaAGmgPjjPGGFqw {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  background-color: #4CC2FF;\n  border: none;\n  border-radius: 5px;\n  padding: 5px 15px;\n  font-weight: bold;\n  color: #182b36;\n}\n\n#hHWO6oQzjaDzvYkVA3kA {\n  width: 15px;\n  height: 15px;\n}\n\n#p6lOefaAGmgPjjPGGFqw div {\n  background-color: red;\n  border-radius: 5px;\n  width: 15px;\n  height: 15px;\n}\n\n\n#bxNeTtvDNLRtHPQeJ_Fs {\n  display: flex;\n  align-items: center;\n  margin-left: 20px;\n}\n\n#bxNeTtvDNLRtHPQeJ_Fs div {\n  background-color: #2d6f91;\n  color: white;\n  border-radius: 5px;\n  width: 20px;\n  height: 20px;\n  text-align: center;\n  font-weight: bold;\n  margin-left: 5px;\n}\n\n#t8kzB9bkjIXrw_4dvSjj {\n  background-color: #4cff5b;\n  border: none;\n  border-radius: 5px;\n  padding: 5px 10px;\n  font-weight: bold;\n}\n\n#FuUN9yHbY2iJkNkmULIm {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  flex-direction: column;\n}\n\n#jK5GQnyqY53LqQfS7CUA {\n  margin-top: 20px;\n}\n\n\n@media screen and (min-aspect-ratio: 3/2) { /* Desktop mode switch*/\n  #FuUN9yHbY2iJkNkmULIm {\n    flex-direction: row;\n  }\n  #jK5GQnyqY53LqQfS7CUA {\n    order: 0;\n  }\n  #Oa3Upf9OzloKPAdvzWgC {\n    order: 1;\n    margin-left: 20px;\n  }\n  .Chvp2PNTU5bOJT9W0UTB {\n    display: block;\n    margin: 3vh 0;\n  }\n  #ykRA0B5UzTurciM72MKl {\n    margin: 0px 32vw;\n  }\n  #c5hjAmrewVXQxPlsXSJM {\n    margin-left: 32vw;\n  }\n  #qDyetfokRCzfrByBexH7 {\n    margin: 0 40%;\n  }\n  #WV59dg5u_OJpLiSvfYZT {\n    width: 0;\n    height: 0;\n  }\n  #bWcDN7yqz2m1ocaJ4f4g {\n    height: 3px;\n    width: 120px;\n  }\n}\n\n\n#LqNfF5A2BCDzAGCVhiql {\n  position: relative;\n  bottom: 0;\n  font-size: 10px;\n  color: rgb(0, 0, 126);\n}\n\n#_wLpWcqCM76DJ8HLA_13 {\n  z-index: 10;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n}\n\n#jsR_MzAIQvYWtUriy6uG {\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100vw;\n  height: 100vh;\n  background-color: rgba(0, 0, 0, 0.308);\n}\n\n#fr1DuugvzNpOOA0RfyRi {\n  position: absolute;\n  z-index: 10;\n  display: flex;\n  background-color: #00ccff7a;\n  padding: 10px;\n  left: 50%;\n  transform: translateX(-50%);\n  border-radius: 5px;\n}\n\n#O8fg4ai4DCdNKqd7H8gS {\n  width: 35px;\n  height: 35px;\n  background-repeat: no-repeat;\n  background-size: 35px;\n  margin-left: 5px;\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ");\n}\n\n#SzaZ3hlv1errwIZALpjw {\n  z-index: 20;\n  position: absolute;\n  left: 50%;\n  top: 20%;\n  transform: translateX(-50%);\n  color: rgb(255, 255, 255);\n  background-color: rgb(153, 0, 0);\n  font-weight: bold;\n  border-radius: 5px;\n  padding: 5px 5px;\n}", "",{"version":3,"sources":["webpack://./client/src/cssModules/createMode.module.css"],"names":[],"mappings":"AAAA;EACE,iCAAiC;AACnC;;AAEA;EACE,aAAa;EACb,8BAA8B;EAC9B,YAAY;EACZ,mBAAmB;AACrB;;AAEA;EACE,YAAY;EACZ,kBAAkB;EAClB,iBAAiB;EACjB,eAAe;EACf,mBAAmB;EACnB,cAAc;AAChB;;AAEA;EACE,kBAAkB;EAClB,WAAW;EACX,YAAY;EACZ,mBAAmB;EACnB,yBAAyB;EACzB,+BAA+B;AACjC;;AAEA;EACE,QAAQ;EACR,SAAS;AACX;;;AAGA;CACC,OAAO;EACN,sBAAsB;EACtB,SAAS;AACX;;AAEA;CACC,oBAAoB;EACnB,YAAY;EACZ,WAAW;CACZ,8BAA8B;EAC7B,uBAAuB;EACvB,kBAAkB;AACpB;;AAEA;CACC,aAAa;CACb,WAAW;CACX,gBAAgB;AACjB;;AAEA;EACE,WAAW;EACX,YAAY;EACZ,YAAY;EACZ,kBAAkB;EAClB,eAAe;AACjB;;AAEA;EACE,WAAW;EACX,YAAY;AACd;;AAEA;EACE,aAAa;EACb,8BAA8B;EAC9B,mBAAmB;EACnB,mBAAmB;AACrB;;;AAGA;EACE,WAAW;EACX,YAAY;EACZ,aAAa;AACf;;AAEA;EACE,cAAc;EACd,wBAAwB;EACxB,WAAW;EACX,YAAY;EACZ,mBAAmB;AACrB;;AAEA;EACE,aAAa;EACb,mBAAmB;EACnB,uBAAuB;EACvB,YAAY;EACZ,gBAAgB;EAChB,gBAAgB;EAChB,cAAc;EACd,kBAAkB;EAClB,yBAAyB;EACzB,cAAc;;AAEhB;;AAEA;EACE,UAAU;EACV,WAAW;EACX,gBAAgB;AAClB;;AAEA;EACE,aAAa;EACb,mBAAmB;EACnB,uBAAuB;EACvB,yBAAyB;EACzB,YAAY;EACZ,kBAAkB;EAClB,iBAAiB;EACjB,iBAAiB;EACjB,cAAc;AAChB;;AAEA;EACE,WAAW;EACX,YAAY;AACd;;AAEA;EACE,qBAAqB;EACrB,kBAAkB;EAClB,WAAW;EACX,YAAY;AACd;;;AAGA;EACE,aAAa;EACb,mBAAmB;EACnB,iBAAiB;AACnB;;AAEA;EACE,yBAAyB;EACzB,YAAY;EACZ,kBAAkB;EAClB,WAAW;EACX,YAAY;EACZ,kBAAkB;EAClB,iBAAiB;EACjB,gBAAgB;AAClB;;AAEA;EACE,yBAAyB;EACzB,YAAY;EACZ,kBAAkB;EAClB,iBAAiB;EACjB,iBAAiB;AACnB;;AAEA;EACE,aAAa;EACb,mBAAmB;EACnB,uBAAuB;EACvB,sBAAsB;AACxB;;AAEA;EACE,gBAAgB;AAClB;;;AAGA,4CAA4C,uBAAuB;EACjE;IACE,mBAAmB;EACrB;EACA;IACE,QAAQ;EACV;EACA;IACE,QAAQ;IACR,iBAAiB;EACnB;EACA;IACE,cAAc;IACd,aAAa;EACf;EACA;IACE,gBAAgB;EAClB;EACA;IACE,iBAAiB;EACnB;EACA;IACE,aAAa;EACf;EACA;IACE,QAAQ;IACR,SAAS;EACX;EACA;IACE,WAAW;IACX,YAAY;EACd;AACF;;;AAGA;EACE,kBAAkB;EAClB,SAAS;EACT,eAAe;EACf,qBAAqB;AACvB;;AAEA;EACE,WAAW;EACX,kBAAkB;EAClB,QAAQ;EACR,SAAS;EACT,gCAAgC;AAClC;;AAEA;EACE,eAAe;EACf,MAAM;EACN,OAAO;EACP,YAAY;EACZ,aAAa;EACb,sCAAsC;AACxC;;AAEA;EACE,kBAAkB;EAClB,WAAW;EACX,aAAa;EACb,2BAA2B;EAC3B,aAAa;EACb,SAAS;EACT,2BAA2B;EAC3B,kBAAkB;AACpB;;AAEA;EACE,WAAW;EACX,YAAY;EACZ,4BAA4B;EAC5B,qBAAqB;EACrB,gBAAgB;EAChB,yDAA2W;AAC7W;;AAEA;EACE,WAAW;EACX,kBAAkB;EAClB,SAAS;EACT,QAAQ;EACR,2BAA2B;EAC3B,yBAAyB;EACzB,gCAAgC;EAChC,iBAAiB;EACjB,kBAAkB;EAClB,gBAAgB;AAClB","sourcesContent":["#widget {\n  font-family: 'Roboto', sans-serif;\n}\n\n#mode-picker {\n  display: flex;\n  justify-content: space-between;\n  margin: 20px;\n  margin-bottom: 40px;\n}\n\n#mode-picker button {\n  border: none;\n  padding: 13px 25px;\n  font-weight: bold;\n  font-size: 13px;\n  border-radius: 15px;\n  color: #121D24;\n}\n\n#mode-select-line-mobile, #mode-select-line-desktop {\n  position: absolute;\n  height: 3px;\n  width: 120px;\n  border-radius: 10px;\n  background-color: #4CC2FF;\n  transition: transform 0.3s ease;\n}\n\n#mode-select-line-desktop {\n  width: 0;\n  height: 0;\n}\n\n\n.button-column {\n\tflex: 1;\n  flex-direction: column;\n  margin: 0;\n}\n\n.button-column button {\n\taspect-ratio : 1 / 1;\n  flex-grow: 1;\n  width: 100%;\n\tbackground-color: rgb(0, 0, 0);\n  border: 1px solid white;\n  border-radius: 4px;\n}\n\n.buttons {\n\tdisplay: flex;\n\twidth: 100%;\n\tmax-width: 600px;\n}\n\n.color-buttons {\n  width: 30px;\n  height: 30px;\n  border: none;\n  border-radius: 5px;\n  margin: 0 1.1vw;\n}\n\n#color-picker {\n  width: 30px;\n  height: 30px;\n}\n\n#eraser-save-column {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  margin-bottom: 20px;\n}\n\n\n#trash {\n  width: 40px;\n  height: 40px;\n  margin: 0 5px;\n}\n\n#eraser {\n  display: block;\n  transform: rotate(45deg);\n  width: 40px;\n  height: 40px;\n  margin-bottom: 10px;\n}\n\n#save-button {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  border: none;\n  padding: 5px 0px;\n  font-weight: 600;\n  font-size: 70%;\n  border-radius: 5px;\n  background-color: #4cff5b;\n  color: #121D24;\n\n}\n\n#save-icon {\n  width: 15%;\n  height: 15%;\n  margin-left: 10%;\n}\n\n#start-stop-button {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  background-color: #4CC2FF;\n  border: none;\n  border-radius: 5px;\n  padding: 5px 15px;\n  font-weight: bold;\n  color: #182b36;\n}\n\n#start-stop-icon {\n  width: 15px;\n  height: 15px;\n}\n\n#start-stop-button div {\n  background-color: red;\n  border-radius: 5px;\n  width: 15px;\n  height: 15px;\n}\n\n\n#add-section {\n  display: flex;\n  align-items: center;\n  margin-left: 20px;\n}\n\n#add-section div {\n  background-color: #2d6f91;\n  color: white;\n  border-radius: 5px;\n  width: 20px;\n  height: 20px;\n  text-align: center;\n  font-weight: bold;\n  margin-left: 5px;\n}\n\n#add-button {\n  background-color: #4cff5b;\n  border: none;\n  border-radius: 5px;\n  padding: 5px 10px;\n  font-weight: bold;\n}\n\n#matrix-color-section {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  flex-direction: column;\n}\n\n#matrix-widget {\n  margin-top: 20px;\n}\n\n\n@media screen and (min-aspect-ratio: 3/2) { /* Desktop mode switch*/\n  #matrix-color-section {\n    flex-direction: row;\n  }\n  #matrix-widget {\n    order: 0;\n  }\n  #preset-color-picker {\n    order: 1;\n    margin-left: 20px;\n  }\n  .color-buttons {\n    display: block;\n    margin: 3vh 0;\n  }\n  #eraser-save-column {\n    margin: 0px 32vw;\n  }\n  #trash {\n    margin-left: 32vw;\n  }\n  #mode-picker {\n    margin: 0 40%;\n  }\n  #mode-select-line-mobile {\n    width: 0;\n    height: 0;\n  }\n  #mode-select-line-desktop {\n    height: 3px;\n    width: 120px;\n  }\n}\n\n\n#credit {\n  position: relative;\n  bottom: 0;\n  font-size: 10px;\n  color: rgb(0, 0, 126);\n}\n\n#color-picker-container {\n  z-index: 10;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n}\n\n#popup-closer {\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100vw;\n  height: 100vh;\n  background-color: rgba(0, 0, 0, 0.308);\n}\n\n#save-form {\n  position: absolute;\n  z-index: 10;\n  display: flex;\n  background-color: #00ccff7a;\n  padding: 10px;\n  left: 50%;\n  transform: translateX(-50%);\n  border-radius: 5px;\n}\n\n#checkmark {\n  width: 35px;\n  height: 35px;\n  background-repeat: no-repeat;\n  background-size: 35px;\n  margin-left: 5px;\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Cpath fill='lightgreen' d='M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8.009 8.009 0 0 1-8 8z'/%3E%3Cpath fill='lightgreen' d='M16.293 8.293 11 13.586l-2.293-2.293-1.414 1.414L11 16.414l6.707-6.707-1.414-1.414z'/%3E%3C/svg%3E\");\n}\n\n#error-pupup {\n  z-index: 20;\n  position: absolute;\n  left: 50%;\n  top: 20%;\n  transform: translateX(-50%);\n  color: rgb(255, 255, 255);\n  background-color: rgb(153, 0, 0);\n  font-weight: bold;\n  border-radius: 5px;\n  padding: 5px 5px;\n}"],"sourceRoot":""}]);
 // Exports
 ___CSS_LOADER_EXPORT___.locals = {
 	"widget": "usl_yAlxxfZrkdQc2boR",
@@ -20515,7 +20547,8 @@ ___CSS_LOADER_EXPORT___.locals = {
 	"color-picker-container": "_wLpWcqCM76DJ8HLA_13",
 	"popup-closer": "jsR_MzAIQvYWtUriy6uG",
 	"save-form": "fr1DuugvzNpOOA0RfyRi",
-	"checkmark": "O8fg4ai4DCdNKqd7H8gS"
+	"checkmark": "O8fg4ai4DCdNKqd7H8gS",
+	"error-pupup": "SzaZ3hlv1errwIZALpjw"
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -21281,30 +21314,26 @@ var App = function App() {
     _useState22 = _slicedToArray(_useState21, 2),
     prevFrameNames = _useState22[0],
     setPrevFrameNames = _useState22[1];
-  var _useState23 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+  var _useState23 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
     _useState24 = _slicedToArray(_useState23, 2),
-    inputError = _useState24[0],
-    setInputError = _useState24[1];
-  var _useState25 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+    anims = _useState24[0],
+    setAnims = _useState24[1];
+  var _useState25 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState26 = _slicedToArray(_useState25, 2),
-    anims = _useState26[0],
-    setAnims = _useState26[1];
-  var _useState27 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    animPlaying = _useState26[0],
+    setAnimPlaying = _useState26[1];
+  var _useState27 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
     _useState28 = _slicedToArray(_useState27, 2),
-    animPlaying = _useState28[0],
-    setAnimPlaying = _useState28[1];
-  var _useState29 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+    colorChoices = _useState28[0],
+    setColorChoices = _useState28[1];
+  var _useState29 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(color),
     _useState30 = _slicedToArray(_useState29, 2),
-    colorChoices = _useState30[0],
-    setColorChoices = _useState30[1];
+    curChosenColor = _useState30[0],
+    setCurChosenColor = _useState30[1];
   var _useState31 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(color),
     _useState32 = _slicedToArray(_useState31, 2),
-    curChosenColor = _useState32[0],
-    setCurChosenColor = _useState32[1];
-  var _useState33 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(color),
-    _useState34 = _slicedToArray(_useState33, 2),
-    selectedColor = _useState34[0],
-    setSelectedColor = _useState34[1];
+    selectedColor = _useState32[0],
+    setSelectedColor = _useState32[1];
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     //Mouse up handler
     var handleMouseUp = function handleMouseUp() {
@@ -21359,7 +21388,7 @@ var App = function App() {
     (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)("F".concat(frameName));
   };
   var callSave = function callSave(e, animation, frameName) {
-    (0,_helperFunctions_handleSaveDelete__WEBPACK_IMPORTED_MODULE_2__.handleSave)(_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData, setFrames, frames, anims, setAnims, setInputError, e, animation, frameName);
+    return (0,_helperFunctions_handleSaveDelete__WEBPACK_IMPORTED_MODULE_2__.handleSave)(_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData, setFrames, frames, anims, setAnims, e, animation, frameName);
   };
   var callDelete = function callDelete(frameName, idx, type) {
     (0,_helperFunctions_handleSaveDelete__WEBPACK_IMPORTED_MODULE_2__.handleDelete)(setFrames, frames, setPrevFrameNames, prevFrameNames, anims, setAnims, _helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData, frameName, idx, type);
@@ -21378,8 +21407,7 @@ var App = function App() {
           rainAmount = document.getElementById('rainAmount').value;
         }
         if (isNaN(Number(rainAmount)) || rainAmount.length < 1 || rainColorsSent === 0) {
-          setInputError("Please input a number value and a color");
-          return;
+          return "Please input a number value and a color";
         }
         (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)("R" + rainAmount);
         setTimeout(function () {
@@ -21396,6 +21424,7 @@ var App = function App() {
       setModeDataSending(false);
       setColorChoices([]);
     }
+    return false;
   };
   var handleModeChooseColor = function handleModeChooseColor() {
     var colors = JSON.parse(JSON.stringify(colorChoices));
@@ -21413,10 +21442,9 @@ var App = function App() {
     onMouseDown: function onMouseDown() {
       return setMouseDown(true);
     },
-    children: [!isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_TopBar_jsx__WEBPACK_IMPORTED_MODULE_10__["default"], {
+    children: [isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_TopBar_jsx__WEBPACK_IMPORTED_MODULE_10__["default"], {
       selectedColor: selectedColor
-    }) : null, !isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_CreateMode_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], {
-      inputError: inputError,
+    }) : null, isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_CreateMode_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], {
       turnOff: turnOff,
       callSave: callSave,
       animPlaying: animPlaying,
@@ -21433,7 +21461,13 @@ var App = function App() {
       frames: frames,
       handleFrameChoice: handleFrameChoice,
       handleDelete: callDelete
-    }) : null, !isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("button", {
+    }) : null, !isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_HomePage_jsx__WEBPACK_IMPORTED_MODULE_9__["default"], {
+      handleConnect: handleConnect,
+      isConnected: isConnected
+    }) : null, (pixelSending || modeDataSending) && isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("img", {
+      id: "loading",
+      src: "./icons/loading.gif"
+    }) : null, isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("button", {
       id: "gallery-button",
       onClick: function onClick() {
         setShowGallery(true);

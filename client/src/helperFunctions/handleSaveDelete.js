@@ -1,12 +1,10 @@
-export const handleSave = (sendData, setFrames, frames, anims, setAnims, setInputError, e, animation, frameName) => {
-	setInputError(false);
+export const handleSave = (sendData, setFrames, frames, anims, setAnims, e, animation, frameName) => {
 
-	if (frameName.length > 0) {
+	if (frameName.length > 0) { //Returns string if error otherwise false
 		const regex = /^[a-zA-Z0-9_\-]+$/; // valid characters are letters, numbers, underscores, and dashes
 		if ((!regex.test(frameName))) {
 			// the name is invalid
-			setInputError("Invalid character");
-			return;
+			return "Invalid character";
 		}
 		if (animation) {
 			if (!anims.includes(frameName)) {
@@ -15,7 +13,7 @@ export const handleSave = (sendData, setFrames, frames, anims, setAnims, setInpu
 				setAnims(newAnims);
 			}
 			sendData('A' + frameName);
-			return;
+			return false;
 		}
 		//Retrieves all matrix colors and adds them to matrix array
 		var columnElements = document.getElementById('buttons').children;
@@ -34,8 +32,9 @@ export const handleSave = (sendData, setFrames, frames, anims, setAnims, setInpu
 		newFrames.push(curFrame);
 		setFrames(newFrames);
 		sendData('S' + frameName);
+    return false;
 	} else {
-		setInputError("Please input a name for your drawing");
+		return "Please input a name for your drawing";
 	}
 };
 

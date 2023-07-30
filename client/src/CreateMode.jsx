@@ -7,14 +7,16 @@ import MatrixButtons from "./MatrixButtons.jsx";
 
 const colorOptions = ['#FF0000', '#A020F0', '#FFC0CB', '#0000FF', '#FFFF00', '#00FF00', '#FFA500', '#FFFFFF'];
 
-const CreateMode = ({callSave, animPlaying, turnOff, isLoading, inputError, mouseDown, sendRequests, selectedColor, setSelectedColor, handleFrameChoice}) => {
+const CreateMode = ({callSave, animPlaying, turnOff, pixelSending, mouseDown, sendRequests, selectedColor, setSelectedColor, handleFrameChoice}) => {
 
   const [frameCount, setFrameCount] = useState(0);
   const [selectColor, setSelectColor] = useState(false);
   const [drawMode, setDrawMode] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [currentAnimFrame, setCurrentAnimFrame] = useState('');
+  const [currentAnimFrame, setCurrentAnimFrame] = useState(false);
   const [playClicked, setPlayClicked] = useState(false);
+  const [error, setError] = useState(false);
+
 
 	const handleColor = (newColor) => {
     if (newColor.target) {
@@ -30,19 +32,33 @@ const CreateMode = ({callSave, animPlaying, turnOff, isLoading, inputError, mous
   });
 
   const handleSaveFrame = (e) => {
+    setSaving(false);
+    setError(false);
+    if (pixelSending) {
+      return;
+    }
     var frameName = document.getElementById('frameName').value;
     if (drawMode) {
-      console.log(frameName);
-      callSave(e, false, frameName);
+      var inputError = callSave(e, false, frameName);
+      if (inputError) {
+        setError(inputError);
+        return;
+      }
     } else {
+      var inputError = callSave(e, true, frameName);
+      if (inputError) {
+        setError(inputError);
+        return;
+      }
       setFrameCount(frameCount+1);
-      callSave(e, true, frameName);
       setCurrentAnimFrame(frameName);
     }
-    setSaving(false);
   };
 
-  const handleAddAnimFrame = () => {
+  const handleAddAnimFrame = (e) => {
+    if (pixelSending) {
+      return;
+    }
     if (frameCount === 0) {
       setSaving(true)
     } else {
@@ -53,7 +69,7 @@ const CreateMode = ({callSave, animPlaying, turnOff, isLoading, inputError, mous
 
 	return (
 		<div id={styles['widget']}>
-        {selectColor || saving ? <div id={styles['popup-closer']} onClick={() => {setSelectColor(false); setSaving(false);}}></div> : null}
+        {selectColor || saving || error ? <div id={styles['popup-closer']} onClick={() => {setSelectColor(false); setSaving(false); setError(false);}}></div> : null}
 				{selectColor ?
 
           <div id={styles['color-picker-container']} >
@@ -67,9 +83,9 @@ const CreateMode = ({callSave, animPlaying, turnOff, isLoading, inputError, mous
       <div id={styles['mode-select-line-mobile']} style={drawMode ?  {transform: 'translate(8vw, -35px)'} : {transform: 'translate(55vw, -35px)'}}></div>
       <div id={styles['mode-select-line-desktop']} style={drawMode ?  {transform: 'translate(40.1vw, 5px)'} : {transform: 'translate(51vw, 5px)'}}></div>
       <img src='./icons/trash-icon.png' id={styles['trash']} onClick={turnOff}/>
-        {!isLoading ?
         <div id={styles['eraser-save-column']}>
           <img src='./icons/eraser-icon.png' id={styles['eraser']} onClick={() => handleColor('#000000')}/>
+          {error ? <div id={styles['error-pupup']}>! {error} !</div> : null}
           {drawMode && !saving ?
           <button id={styles['save-button']} onClick={() => setSaving(true)}>
             Save
@@ -82,16 +98,22 @@ const CreateMode = ({callSave, animPlaying, turnOff, isLoading, inputError, mous
             <div>{frameCount}</div>
           </div>
           : null}
-          {!drawMode && frameCount < 1 && !playClicked ?
-          <button id={styles['start-stop-button']} onClick={(e) => {handleFrameChoice(e, currentAnimFrame); setPlayClicked(true)}}>
+          {!drawMode && frameCount > 1 && !playClicked ?
+          <button id={styles['start-stop-button']} onClick={() => {if(!pixelSending) {handleFrameChoice(currentAnimFrame, true); setPlayClicked(true)}}}>
             Play
             <img src='./icons/animation-icon.png' id={styles['start-stop-icon']} />
             </button>
           : null }
           {playClicked ?
-          <button id={styles['start-stop-button']}  onClick={(e) => {turnOff(e); setPlayClicked(false)}}>
+          <button id={styles['start-stop-button']}  onClick={(e) => {if(!pixelSending) {turnOff(e); setPlayClicked(false)}}}>
             Stop
             <div />
+          </button>
+
+          : null}
+          {!drawMode && !playClicked && frameCount >= 1 ?
+          <button id={styles['start-stop-button']} onClick={() => {setCurrentAnimFrame(false); setFrameCount(0);}}>
+            Done✓
           </button>
           : null}
           {saving ?
@@ -100,12 +122,7 @@ const CreateMode = ({callSave, animPlaying, turnOff, isLoading, inputError, mous
             <div id={styles['checkmark']} onClick={handleSaveFrame}/>
           </div>
           : null}
-                        {/* <input id="drawName" type="text" placeholder="drawing..." maxLength="7" />
-          <button onClick={(e) => callSave(e, true)}>Save Frame</button>
-          <input id="animName" type="text" placeholder="animation name..." maxLength="7"/>
-          {animPlaying ? <button onClick={turnOff}>STOP</button>: null} */}
-          </div> /* end of eraser-save colum ============== */
-        : null}
+          </div>
       <div id={styles['matrix-color-section']}>
         <div id={styles['preset-color-picker']}>
           {colorButtons}

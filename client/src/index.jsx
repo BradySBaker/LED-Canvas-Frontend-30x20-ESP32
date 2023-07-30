@@ -42,7 +42,6 @@ const App = function() {
 	const [audioVisualizer, setAudioVisualizer] = useState(false);
 	const [rainMode, setRainMode] = useState(false);
 	const [prevFrameNames, setPrevFrameNames] = useState(null);
-	const [inputError, setInputError] = useState(false);
 	const [anims, setAnims] = useState([]);
 	const [animPlaying, setAnimPlaying] = useState(false);
 
@@ -99,7 +98,7 @@ const App = function() {
 	};
 
 	const callSave = (e, animation, frameName) => {
-		handleSave(sendData, setFrames, frames, anims, setAnims, setInputError, e, animation, frameName);
+		return handleSave(sendData, setFrames, frames, anims, setAnims, e, animation, frameName);
 	};
 
 	const callDelete = (frameName, idx, type) => {
@@ -119,8 +118,7 @@ const App = function() {
 					rainAmount = document.getElementById('rainAmount').value
 				}
 				if (isNaN(Number(rainAmount)) || rainAmount.length < 1 || rainColorsSent === 0) {
-					setInputError("Please input a number value and a color");
-					return;
+					return "Please input a number value and a color";
 				}
 				sendData("R" + rainAmount);
 				setTimeout(() => {handleModeStartStop(true, true, true, rainAmount)}, 400);
@@ -132,8 +130,8 @@ const App = function() {
       setModeDataSending(false);
       setColorChoices([]);
     }
+    return false;
 	};
-
   const handleModeChooseColor = () => {
 		var colors = JSON.parse(JSON.stringify(colorChoices));
 		colors.push(curChosenColor);
@@ -149,10 +147,11 @@ const App = function() {
 
 	return (
 		<div id='colorApp' onMouseDown={() => setMouseDown(true)} >
-      {!isConnected ? <TopBar selectedColor={selectedColor}/> : null}
-      {!isConnected ? <CreateMode inputError={inputError} turnOff={turnOff} callSave={callSave} animPlaying={animPlaying} pixelSending={pixelSending} mouseDown={mouseDown} handleFrameChoice={handleFrameChoice} sendRequests={sendRequests} selectedColor={selectedColor} setSelectedColor={setSelectedColor}/> : null}
+      {isConnected ? <TopBar selectedColor={selectedColor}/> : null}
+      {isConnected ? <CreateMode turnOff={turnOff} callSave={callSave} animPlaying={animPlaying} pixelSending={pixelSending} mouseDown={mouseDown} handleFrameChoice={handleFrameChoice} sendRequests={sendRequests} selectedColor={selectedColor} setSelectedColor={setSelectedColor}/> : null}
       {showGallery ?  <Gallery handleSave={callSave} anims={anims} prevFrameNames={prevFrameNames} frames={frames} handleFrameChoice={handleFrameChoice} handleDelete={callDelete}/> : null}
-			{/* {!isConnected ? <HomePage handleConnect={handleConnect} isConnected={isConnected} /> :  null} */}
+			{!isConnected ? <HomePage handleConnect={handleConnect} isConnected={isConnected} /> :  null}
+      {(pixelSending || modeDataSending) && isConnected ? <img id='loading' src='./icons/loading.gif'></img> : null}
 			{/* {drawMode || audioVisualizer || rainMode ? <button style={{'position': 'absolute', 'right': '2%', 'fontSize': '20px'}} onClick={() => {setDrawMode(false); setAudioVisualizer(false); setRainMode(false); if (modeRunning) {handleModeStartStop()}; }}>Back</button> : null}
 			{(pixelSending || modeDataSending) && isConnected ? <img id='loading' src='./icons/loading.gif'></img> : null}
 			<div id='app' onMouseDown={() => setMouseDown(true)}>
@@ -169,7 +168,7 @@ const App = function() {
       {audioVisualizer ? <AVController modeRunning={modeRunning} handleChooseColor={handleModeChooseColor} curChosenColor={curChosenColor} modeDataSending={modeDataSending} setCurChosenColor={setCurChosenColor} colorChoices={colorChoices} handleModeStartStop={handleModeStartStop}/> : null}
 			{inputError ? <div style={{"color": "red"}}>{inputError}</div>: null}
 		</div> */}
-    {!isConnected ? <button id='gallery-button' onClick={() => {setShowGallery(true); setCreateMode(false);}}>Gallery</button> : null}
+    {isConnected ? <button id='gallery-button' onClick={() => {setShowGallery(true); setCreateMode(false);}}>Gallery</button> : null}
 		</div>
 	)
 }
