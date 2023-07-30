@@ -32,7 +32,7 @@ const App = function() {
 	const [isConnected, setIsConnected] = useState(false);
 	const [mouseDown, setMouseDown] = useState(false);
 	const [pixelSending, setPixelSending] = useState(false);
-	const [modeDataSending, setModeDataSending] = useState(true);
+	const [modeDataSending, setModeDataSending] = useState(false);
 	const [frames, setFrames] = useState([]);
 	const [curFrame, setCurFrame] = useState([]);
 
@@ -49,6 +49,8 @@ const App = function() {
 	const [curChosenColor, setCurChosenColor] = useState(color);
 
   const [selectedColor, setSelectedColor] = useState(color);
+
+  const [connectError, setConnectError] = useState(false);
 
   useEffect(() => { //Mouse up handler
     const handleMouseUp = () => {
@@ -142,7 +144,7 @@ const App = function() {
 	};
 
   const handleConnect = () => {
-    connectToBle(setIsConnected, turnOn, setAnims, setPrevFrameNames, setModeDataSending)
+    connectToBle(setIsConnected, turnOn, setAnims, setPrevFrameNames, setModeDataSending, setConnectError);
   };
 
 	return (
@@ -150,8 +152,8 @@ const App = function() {
       {isConnected ? <TopBar selectedColor={selectedColor}/> : null}
       {isConnected ? <CreateMode turnOff={turnOff} callSave={callSave} animPlaying={animPlaying} pixelSending={pixelSending} mouseDown={mouseDown} handleFrameChoice={handleFrameChoice} sendRequests={sendRequests} selectedColor={selectedColor} setSelectedColor={setSelectedColor}/> : null}
       {showGallery ?  <Gallery handleSave={callSave} anims={anims} prevFrameNames={prevFrameNames} frames={frames} handleFrameChoice={handleFrameChoice} handleDelete={callDelete}/> : null}
-			{!isConnected ? <HomePage handleConnect={handleConnect} isConnected={isConnected} /> :  null}
-      {(pixelSending || modeDataSending) && isConnected ? <img id='loading' src='./icons/loading.gif'></img> : null}
+			{!isConnected ? <HomePage handleConnect={handleConnect} connectError={connectError}/> :  null}
+      {(pixelSending || modeDataSending) ? <img id='loading' src='./icons/loading.gif'></img> : null}
 			{/* {drawMode || audioVisualizer || rainMode ? <button style={{'position': 'absolute', 'right': '2%', 'fontSize': '20px'}} onClick={() => {setDrawMode(false); setAudioVisualizer(false); setRainMode(false); if (modeRunning) {handleModeStartStop()}; }}>Back</button> : null}
 			{(pixelSending || modeDataSending) && isConnected ? <img id='loading' src='./icons/loading.gif'></img> : null}
 			<div id='app' onMouseDown={() => setMouseDown(true)}>
