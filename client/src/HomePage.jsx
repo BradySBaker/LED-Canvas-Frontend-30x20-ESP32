@@ -5,7 +5,6 @@ import styles from './cssModules/homePage.module.css';
 const HomePage = ({handleConnect, isConnected}) => {
   return (
     <div>
-      <div>Version 2.0</div>
         <div className={`${styles['rgb-line']}`} id={`${styles['top']}`} />
         <div id={`${styles['main']}`}>
           <h1 className={`${styles['title']}`}>LED Canvas</h1>

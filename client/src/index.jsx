@@ -6,11 +6,12 @@ import connectToBle from './helperFunctions/setupBluetooth';
 
 import { createRoot } from "react-dom/client";
 
-import FrameChoices from "./frameChoices.jsx";
+import Gallery from "./Gallery.jsx";
 import RainController from "./rainController.jsx";
-import DrawMode from "./drawMode.jsx";
+// import DrawMode from "./drawMode.jsx";
 import CreateMode from "./CreateMode.jsx";
 import AVController from "./avController.jsx";
+
 
 import HomePage from "./HomePage.jsx";
 import TopBar from "./TopBar.jsx";
@@ -34,7 +35,10 @@ const App = function() {
 	const [modeDataSending, setModeDataSending] = useState(true);
 	const [frames, setFrames] = useState([]);
 	const [curFrame, setCurFrame] = useState([]);
-	const [drawMode, setDrawMode] = useState(false);
+
+	const [createMode, setCreateMode] = useState(false);
+  const [showGallery, setShowGallery] = useState(false);
+
 	const [audioVisualizer, setAudioVisualizer] = useState(false);
 	const [rainMode, setRainMode] = useState(false);
 	const [prevFrameNames, setPrevFrameNames] = useState(null);
@@ -95,10 +99,7 @@ const App = function() {
 	};
 
 	const callSave = (e, animation, frameName) => {
-    if (animation && !frameName) {
-      animName = document.getElementById('drawName').value;
-    }
-		handleSave(sendData, setFrames, frames, anims, setAnims, setInputError, e, animation, animName);
+		handleSave(sendData, setFrames, frames, anims, setAnims, setInputError, e, animation, frameName);
 	};
 
 	const callDelete = (frameName, idx, type) => {
@@ -148,10 +149,11 @@ const App = function() {
 
 	return (
 		<div id='colorApp' onMouseDown={() => setMouseDown(true)} >
-      <TopBar selectedColor={selectedColor}/>
-      <CreateMode inputError={inputError} turnOff={turnOff} callSave={callSave} animPlaying={animPlaying} pixelSending={pixelSending} mouseDown={mouseDown} sendRequests={sendRequests} selectedColor={selectedColor} setSelectedColor={setSelectedColor}/>
-			{/* {!isConnected ? <HomePage handleConnect={handleConnect} isConnected={isConnected} /> :  null}
-			{drawMode || audioVisualizer || rainMode ? <button style={{'position': 'absolute', 'right': '2%', 'fontSize': '20px'}} onClick={() => {setDrawMode(false); setAudioVisualizer(false); setRainMode(false); if (modeRunning) {handleModeStartStop()}; }}>Back</button> : null}
+      {!isConnected ? <TopBar selectedColor={selectedColor}/> : null}
+      {!isConnected ? <CreateMode inputError={inputError} turnOff={turnOff} callSave={callSave} animPlaying={animPlaying} pixelSending={pixelSending} mouseDown={mouseDown} handleFrameChoice={handleFrameChoice} sendRequests={sendRequests} selectedColor={selectedColor} setSelectedColor={setSelectedColor}/> : null}
+      {showGallery ?  <Gallery handleSave={callSave} anims={anims} prevFrameNames={prevFrameNames} frames={frames} handleFrameChoice={handleFrameChoice} handleDelete={callDelete}/> : null}
+			{/* {!isConnected ? <HomePage handleConnect={handleConnect} isConnected={isConnected} /> :  null} */}
+			{/* {drawMode || audioVisualizer || rainMode ? <button style={{'position': 'absolute', 'right': '2%', 'fontSize': '20px'}} onClick={() => {setDrawMode(false); setAudioVisualizer(false); setRainMode(false); if (modeRunning) {handleModeStartStop()}; }}>Back</button> : null}
 			{(pixelSending || modeDataSending) && isConnected ? <img id='loading' src='./icons/loading.gif'></img> : null}
 			<div id='app' onMouseDown={() => setMouseDown(true)}>
 			{!drawMode && !audioVisualizer && !rainMode && isConnected && !pixelSending && !modeDataSending ?
@@ -167,7 +169,7 @@ const App = function() {
       {audioVisualizer ? <AVController modeRunning={modeRunning} handleChooseColor={handleModeChooseColor} curChosenColor={curChosenColor} modeDataSending={modeDataSending} setCurChosenColor={setCurChosenColor} colorChoices={colorChoices} handleModeStartStop={handleModeStartStop}/> : null}
 			{inputError ? <div style={{"color": "red"}}>{inputError}</div>: null}
 		</div> */}
-    <button id='gallery-button'>Gallery</button>
+    {!isConnected ? <button id='gallery-button' onClick={() => {setShowGallery(true); setCreateMode(false);}}>Gallery</button> : null}
 		</div>
 	)
 }

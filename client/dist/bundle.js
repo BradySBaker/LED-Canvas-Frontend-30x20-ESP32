@@ -41,7 +41,8 @@ var CreateMode = function CreateMode(_ref) {
     mouseDown = _ref.mouseDown,
     sendRequests = _ref.sendRequests,
     selectedColor = _ref.selectedColor,
-    setSelectedColor = _ref.setSelectedColor;
+    setSelectedColor = _ref.setSelectedColor,
+    handleFrameChoice = _ref.handleFrameChoice;
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(0),
     _useState2 = _slicedToArray(_useState, 2),
     frameCount = _useState2[0],
@@ -58,23 +59,48 @@ var CreateMode = function CreateMode(_ref) {
     _useState8 = _slicedToArray(_useState7, 2),
     saving = _useState8[0],
     setSaving = _useState8[1];
+  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
+    _useState10 = _slicedToArray(_useState9, 2),
+    currentAnimFrame = _useState10[0],
+    setCurrentAnimFrame = _useState10[1];
   var handleColor = function handleColor(newColor) {
     if (newColor.target) {
-      newColor = newColor.target.style['background-color'];
+      newColor = colorOptions[newColor.target.id];
     }
     setSelectedColor(newColor); //For visual elements
     window.color = newColor; //For color buttons
     sendRequests['color'] = "C".concat(newColor.slice(1));
   };
-  var colorButtons = colorOptions.map(function (curColor) {
+  var colorButtons = colorOptions.map(function (curColor, idx) {
     return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
       className: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["color-buttons"],
+      id: idx,
       style: {
         'background-color': curColor
       },
       onClick: handleColor
     });
   });
+  var handleSaveFrame = function handleSaveFrame(e) {
+    var frameName = document.getElementById('frameName').value;
+    if (drawMode) {
+      console.log(frameName);
+      callSave(e, false, frameName);
+    } else {
+      setFrameCount(frameCount + 1);
+      callSave(e, true, frameName);
+      setCurrentAnimFrame(frameName);
+    }
+    setSaving(false);
+  };
+  var handleAddAnimFrame = function handleAddAnimFrame() {
+    if (frameCount === 0) {
+      setSaving(true);
+    } else {
+      setFrameCount(frameCount + 1);
+      callSave(e, true, currentAnimFrame);
+    }
+  };
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
     id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].widget,
     children: [selectColor || saving ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
@@ -142,7 +168,7 @@ var CreateMode = function CreateMode(_ref) {
         src: "./icons/eraser-icon.png",
         id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].eraser,
         onClick: function onClick() {
-          return handleColor('#000');
+          return handleColor('#000000');
         }
       }), !isLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {
         children: [drawMode && !saving ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("button", {
@@ -154,51 +180,53 @@ var CreateMode = function CreateMode(_ref) {
             src: "./icons/save-icon.png",
             id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["save-icon"]
           })]
+        }) : null, !drawMode && frameCount < 1 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("button", {
+          id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["start-stop-button"],
+          onClick: function onClick(e) {
+            return handleFrameChoice(e, currentAnimFrame);
+          },
+          children: ["Play", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("img", {
+            src: "./icons/animation-icon.png",
+            id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["start-stop-icon"]
+          })]
         }) : null, saving ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
           id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["save-form"],
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
-            id: "drawName",
+            id: "frameName",
             type: "text",
             maxLength: "7",
             placeholder: "name..."
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
             id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].checkmark,
-            onClick: function onClick(e) {
-              if (drawMode) {
-                callSave(e);
-              } else {
-                callSave(e, true);
-              }
-            }
+            onClick: handleSaveFrame
           })]
         }) : null, !drawMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
           id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["add-section"],
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
             id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["add-button"],
-            onClick: function onClick() {
-              if (frameCount === 0) {
-                setSaving(true);
-              }
-            },
+            onClick: handleAddAnimFrame,
             children: "Add"
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
-            children: "0"
+            children: frameCount
           })]
         }) : null]
       }) : null]
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-      id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["preset-color-picker"],
-      children: [colorButtons, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("img", {
-        src: "./icons/color-picker.png",
-        id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["color-picker"],
-        onClick: function onClick() {
-          return setSelectColor(true);
-        }
+      id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["matrix-color-section"],
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["preset-color-picker"],
+        children: [colorButtons, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("img", {
+          src: "./icons/color-picker.png",
+          id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["color-picker"],
+          onClick: function onClick() {
+            return setSelectColor(true);
+          }
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_MatrixButtons_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        mouseDown: mouseDown,
+        sendRequests: sendRequests,
+        selectedColor: selectedColor
       })]
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_MatrixButtons_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
-      mouseDown: mouseDown,
-      sendRequests: sendRequests,
-      selectedColor: selectedColor
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("a", {
       href: "https://www.flaticon.com/free-icons/color-picker",
       title: "color picker icons",
@@ -208,6 +236,147 @@ var CreateMode = function CreateMode(_ref) {
   });
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CreateMode);
+
+/***/ }),
+
+/***/ "./client/src/Gallery.jsx":
+/*!********************************!*\
+  !*** ./client/src/Gallery.jsx ***!
+  \********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+var Gallery = function Gallery(_ref) {
+  var frames = _ref.frames,
+    handleFrameChoice = _ref.handleFrameChoice,
+    prevFrameNames = _ref.prevFrameNames,
+    handleDelete = _ref.handleDelete,
+    anims = _ref.anims,
+    handleSave = _ref.handleSave;
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+    _useState2 = _slicedToArray(_useState, 2),
+    frameElements = _useState2[0],
+    setFrameElements = _useState2[1];
+  var createFrames = function createFrames() {
+    var newFrames = [];
+    frames.forEach(function (curFrame, idx) {
+      var canvas = document.createElement('canvas');
+      canvas.width = 128;
+      canvas.height = 128;
+      var c = canvas.getContext("2d");
+      for (var y = 0; y < 16; y++) {
+        var curColumn = curFrame[y];
+        for (var x = 0; x < 16; x++) {
+          var yPos = x * canvas.width / 16;
+          var xPos = y * canvas.height / 16;
+          var curSquare = curColumn[x];
+          c.fillStyle = curSquare;
+          c.fillRect(xPos, yPos, 16, 16);
+        }
+      }
+      newFrames.push(canvas);
+    });
+    setFrameElements(newFrames);
+  };
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(createFrames, [frames]);
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+    id: "frameChoices",
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+      children: "Saved Frames"
+    }), prevFrameNames.map(function (curName, idx) {
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+        className: "prevFrameBox",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
+          style: {
+            'color': 'blue',
+            'fontSize': '15px'
+          },
+          onClick: function onClick() {
+            handleFrameChoice(curName);
+          },
+          children: curName
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
+          style: {
+            'color': 'red'
+          },
+          onClick: function onClick() {
+            handleDelete(curName, idx, 'prev');
+          },
+          children: "delete"
+        })]
+      });
+    }), frameElements.map(function (curElem, idx) {
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+        className: "frameBox",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("canvas", {
+          onClick: function onClick() {
+            handleFrameChoice(frames[idx][16]); /* 16 contains name */
+          },
+          className: "frame",
+          ref: function ref(canvas) {
+            canvas && canvas.getContext("2d").drawImage(curElem, 0, 0);
+          },
+          width: 128,
+          height: 128
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
+          style: {
+            'color': 'red'
+          },
+          onClick: function onClick() {
+            handleDelete(frames[idx][16], idx);
+          },
+          children: "delete"
+        })]
+      });
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+      children: "Saved Animations"
+    }), anims.map(function (curName, idx) {
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+        className: "prevFrameBox",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
+          style: {
+            'color': 'blue',
+            'fontSize': '15px'
+          },
+          onClick: function onClick() {
+            handleFrameChoice(curName, true);
+          },
+          children: curName
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
+          onClick: function onClick(e) {
+            return handleSave(e, true, curName);
+          },
+          children: "Add"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
+          style: {
+            'color': 'red'
+          },
+          onClick: function onClick() {
+            handleDelete(curName, idx, 'animation');
+          },
+          children: "delete"
+        })]
+      });
+    })]
+  });
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Gallery);
 
 /***/ }),
 
@@ -235,8 +404,6 @@ var HomePage = function HomePage(_ref) {
     isConnected = _ref.isConnected;
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-      children: "Version 2.0"
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
       className: "".concat(_cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["rgb-line"]),
       id: "".concat(_cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].top)
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
@@ -506,221 +673,6 @@ var AVController = function AVController(_ref) {
 
 /***/ }),
 
-/***/ "./client/src/drawMode.jsx":
-/*!*********************************!*\
-  !*** ./client/src/drawMode.jsx ***!
-  \*********************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_colorful__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-colorful */ "./node_modules/react-colorful/dist/index.mjs");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-
-
-
-
-
-var DrawMode = function DrawMode(_ref) {
-  var callSave = _ref.callSave,
-    animPlaying = _ref.animPlaying,
-    turnOff = _ref.turnOff,
-    isLoading = _ref.isLoading,
-    inputError = _ref.inputError;
-  var handleColor = function handleColor(newColor) {
-    // document.getElementById('title').style.color = newColor;
-    color = newColor;
-    sendRequests['color'] = "C".concat(newColor.slice(1));
-  };
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
-      className: "picker-container",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(react_colorful__WEBPACK_IMPORTED_MODULE_2__.HexColorPicker, {
-        style: {
-          height: 'calc(90vw * 0.5)'
-        },
-        color: color,
-        onChange: handleColor
-      })
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
-      onClick: turnOff,
-      children: "Turn Off"
-    }), !isLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.Fragment, {
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
-        onClick: callSave,
-        children: "Save Drawing"
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
-        id: "drawName",
-        type: "text",
-        placeholder: "drawing...",
-        maxLength: "7"
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
-        onClick: function onClick(e) {
-          return callSave(e, true);
-        },
-        children: "Save Frame"
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
-        id: "animName",
-        type: "text",
-        placeholder: "animation name...",
-        maxLength: "7"
-      }), animPlaying ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
-        onClick: turnOff,
-        children: "STOP"
-      }) : null]
-    }) : null]
-  });
-};
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (DrawMode);
-
-/***/ }),
-
-/***/ "./client/src/frameChoices.jsx":
-/*!*************************************!*\
-  !*** ./client/src/frameChoices.jsx ***!
-  \*************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
-function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-
-
-var FrameChoices = function FrameChoices(_ref) {
-  var frames = _ref.frames,
-    handleFrameChoice = _ref.handleFrameChoice,
-    prevFrameNames = _ref.prevFrameNames,
-    handleDelete = _ref.handleDelete,
-    anims = _ref.anims,
-    handleSave = _ref.handleSave;
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
-    _useState2 = _slicedToArray(_useState, 2),
-    frameElements = _useState2[0],
-    setFrameElements = _useState2[1];
-  var createFrames = function createFrames() {
-    var newFrames = [];
-    frames.forEach(function (curFrame, idx) {
-      var canvas = document.createElement('canvas');
-      canvas.width = 128;
-      canvas.height = 128;
-      var c = canvas.getContext("2d");
-      for (var y = 0; y < 16; y++) {
-        var curColumn = curFrame[y];
-        for (var x = 0; x < 16; x++) {
-          var yPos = x * canvas.width / 16;
-          var xPos = y * canvas.height / 16;
-          var curSquare = curColumn[x];
-          c.fillStyle = curSquare;
-          c.fillRect(xPos, yPos, 16, 16);
-        }
-      }
-      newFrames.push(canvas);
-    });
-    setFrameElements(newFrames);
-  };
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(createFrames, [frames]);
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
-    id: "frameChoices",
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
-      children: "Saved Frames"
-    }), prevFrameNames.map(function (curName, idx) {
-      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
-        className: "prevFrameBox",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
-          style: {
-            'color': 'blue',
-            'fontSize': '15px'
-          },
-          onClick: function onClick() {
-            handleFrameChoice(curName);
-          },
-          children: curName
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
-          style: {
-            'color': 'red'
-          },
-          onClick: function onClick() {
-            handleDelete(curName, idx, 'prev');
-          },
-          children: "delete"
-        })]
-      });
-    }), frameElements.map(function (curElem, idx) {
-      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
-        className: "frameBox",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("canvas", {
-          onClick: function onClick() {
-            handleFrameChoice(frames[idx][16]); /* 16 contains name */
-          },
-          className: "frame",
-          ref: function ref(canvas) {
-            canvas && canvas.getContext("2d").drawImage(curElem, 0, 0);
-          },
-          width: 128,
-          height: 128
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
-          style: {
-            'color': 'red'
-          },
-          onClick: function onClick() {
-            handleDelete(frames[idx][16], idx);
-          },
-          children: "delete"
-        })]
-      });
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
-      children: "Saved Animations"
-    }), anims.map(function (curName, idx) {
-      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
-        className: "prevFrameBox",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
-          style: {
-            'color': 'blue',
-            'fontSize': '15px'
-          },
-          onClick: function onClick() {
-            handleFrameChoice(curName, true);
-          },
-          children: curName
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
-          onClick: function onClick(e) {
-            return handleSave(e, true, curName);
-          },
-          children: "Add"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
-          style: {
-            'color': 'red'
-          },
-          onClick: function onClick() {
-            handleDelete(curName, idx, 'animation');
-          },
-          children: "delete"
-        })]
-      });
-    })]
-  });
-};
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (FrameChoices);
-
-/***/ }),
-
 /***/ "./client/src/helperFunctions/handleSaveDelete.js":
 /*!********************************************************!*\
   !*** ./client/src/helperFunctions/handleSaveDelete.js ***!
@@ -763,11 +715,11 @@ var handleSave = function handleSave(sendData, setFrames, frames, anims, setAnim
         curColumn.push(curColor);
       }
     }
-    curFrame[16] = drawName; //Set 16th column to name of frame
+    curFrame[16] = frameName; //Set 16th column to name of frame
     var newFrames = JSON.parse(JSON.stringify(frames));
     newFrames.push(curFrame);
     setFrames(newFrames);
-    sendData('S' + drawName);
+    sendData('S' + frameName);
   } else {
     setInputError("Please input a name for your drawing");
   }
@@ -20527,14 +20479,13 @@ var ___CSS_LOADER_URL_IMPORT_0___ = new URL(/* asset import */ __webpack_require
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 var ___CSS_LOADER_URL_REPLACEMENT_0___ = _node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_2___default()(___CSS_LOADER_URL_IMPORT_0___);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "#usl_yAlxxfZrkdQc2boR {\n  font-family: 'Roboto', sans-serif;\n}\n\n#qDyetfokRCzfrByBexH7 {\n  display: flex;\n  justify-content: space-between;\n  margin: 20px;\n  margin-bottom: 40px;\n}\n\n#qDyetfokRCzfrByBexH7 button {\n  border: none;\n  padding: 13px 25px;\n  font-weight: bold;\n  font-size: 13px;\n  border-radius: 15px;\n  color: #121D24;\n}\n\n#WV59dg5u_OJpLiSvfYZT, #bWcDN7yqz2m1ocaJ4f4g {\n  position: absolute;\n  height: 3px;\n  width: 120px;\n  border-radius: 10px;\n  background-color: #4CC2FF;\n  transition: transform 0.3s ease;\n}\n\n#bWcDN7yqz2m1ocaJ4f4g {\n  width: 0;\n  height: 0;\n}\n\n\n#Oa3Upf9OzloKPAdvzWgC {\n  display: flex;\n  justify-content: space-between;\n  margin: 5% 10px;\n  align-items: center;\n}\n\n.BpEn_XLLHI9JG8PaSTQM {\n\tflex: 1;\n  flex-direction: column;\n  margin: 0;\n}\n\n.BpEn_XLLHI9JG8PaSTQM button {\n\taspect-ratio : 1 / 1;\n  flex-grow: 1;\n  width: 100%;\n\tbackground-color: rgb(0, 0, 0);\n  border: 1px solid white;\n  border-radius: 4px;\n}\n\n.QXf7tIq86ySqUBdobBHQ {\n\tdisplay: flex;\n\twidth: 100%;\n\tmax-width: 500px;\n}\n\n.Chvp2PNTU5bOJT9W0UTB {\n  width: 30px;\n  height: 30px;\n  border: none;\n  border-radius: 5px;\n}\n\n#WbPPJemBXhzTgCG_2U81 {\n  width: 30px;\n  height: 30px;\n}\n\n#ykRA0B5UzTurciM72MKl {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n}\n\n\n#c5hjAmrewVXQxPlsXSJM {\n  width: 40px;\n  height: 40px;\n  margin: 0 5px;\n}\n\n#d7Mu_gXsL3IzSApxiFpS {\n  display: block;\n  transform: rotate(45deg);\n  width: 40px;\n  height: 40px;\n  margin-bottom: 10px;\n}\n\n#NYYDzfkbYC8D9OZJz6RU {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  border: none;\n  padding: 5px 0px;\n  font-weight: 600;\n  font-size: 70%;\n  border-radius: 5px;\n  background-color: #4cff5b;\n  color: #121D24;\n}\n\n#jK5GQnyqY53LqQfS7CUA {\n  margin-bottom: 4%;\n}\n\n#KMr5UbbiWbHl38S34nJw {\n  width: 15%;\n  height: 15%;\n  margin-left: 10%;\n}\n\n#bxNeTtvDNLRtHPQeJ_Fs {\n  position: absolute;\n  display: flex;\n  align-items: center;\n  left: 50%;\n  transform: translateX(-50%);\n  top: 18%\n}\n\n#bxNeTtvDNLRtHPQeJ_Fs div {\n  background-color: #2d6f91;\n  color: white;\n  border-radius: 5px;\n  width: 20px;\n  height: 20px;\n  text-align: center;\n  font-weight: bold;\n  margin-left: 5px;\n}\n\n#t8kzB9bkjIXrw_4dvSjj {\n  background-color: #4cff5b;\n  border: none;\n  border-radius: 5px;\n  padding: 5px 10px;\n  font-weight: bold;\n}\n\n@media screen and (min-aspect-ratio: 1/1) { /* Desktop mode switch*/\n  #Oa3Upf9OzloKPAdvzWgC {\n    display: inline-block;\n  }\n  .Chvp2PNTU5bOJT9W0UTB {\n    display: block;\n    margin-bottom: 4vh;\n  }\n  #jK5GQnyqY53LqQfS7CUA {\n    display: inline-block;\n    float: left;\n    margin-left: 32vw;\n    margin-right: 20px;\n  }\n  #ykRA0B5UzTurciM72MKl {\n    margin: 0px 32vw;\n  }\n  #c5hjAmrewVXQxPlsXSJM {\n    margin-left: 32vw;\n  }\n  #qDyetfokRCzfrByBexH7 {\n    margin: 0 40%;\n  }\n  #WV59dg5u_OJpLiSvfYZT {\n    width: 0;\n    height: 0;\n  }\n  #bWcDN7yqz2m1ocaJ4f4g {\n    height: 3px;\n    width: 120px;\n  }\n}\n\n\n#LqNfF5A2BCDzAGCVhiql {\n  position: relative;\n  bottom: 0;\n  font-size: 10px;\n  color: rgb(0, 0, 126);\n}\n\n#_wLpWcqCM76DJ8HLA_13 {\n  z-index: 10;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n}\n\n#jsR_MzAIQvYWtUriy6uG {\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100vw;\n  height: 100vh;\n  background-color: rgba(0, 0, 0, 0.308);\n}\n\n#fr1DuugvzNpOOA0RfyRi {\n  position: absolute;\n  z-index: 10;\n  display: flex;\n  background-color: #00ccff7a;\n  padding: 10px;\n  left: 50%;\n  transform: translateX(-50%);\n  border-radius: 5px;\n}\n\n#O8fg4ai4DCdNKqd7H8gS {\n  width: 35px;\n  height: 35px;\n  background-repeat: no-repeat;\n  background-size: 35px;\n  margin-left: 5px;\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ");\n}", "",{"version":3,"sources":["webpack://./client/src/cssModules/createMode.module.css"],"names":[],"mappings":"AAAA;EACE,iCAAiC;AACnC;;AAEA;EACE,aAAa;EACb,8BAA8B;EAC9B,YAAY;EACZ,mBAAmB;AACrB;;AAEA;EACE,YAAY;EACZ,kBAAkB;EAClB,iBAAiB;EACjB,eAAe;EACf,mBAAmB;EACnB,cAAc;AAChB;;AAEA;EACE,kBAAkB;EAClB,WAAW;EACX,YAAY;EACZ,mBAAmB;EACnB,yBAAyB;EACzB,+BAA+B;AACjC;;AAEA;EACE,QAAQ;EACR,SAAS;AACX;;;AAGA;EACE,aAAa;EACb,8BAA8B;EAC9B,eAAe;EACf,mBAAmB;AACrB;;AAEA;CACC,OAAO;EACN,sBAAsB;EACtB,SAAS;AACX;;AAEA;CACC,oBAAoB;EACnB,YAAY;EACZ,WAAW;CACZ,8BAA8B;EAC7B,uBAAuB;EACvB,kBAAkB;AACpB;;AAEA;CACC,aAAa;CACb,WAAW;CACX,gBAAgB;AACjB;;AAEA;EACE,WAAW;EACX,YAAY;EACZ,YAAY;EACZ,kBAAkB;AACpB;;AAEA;EACE,WAAW;EACX,YAAY;AACd;;AAEA;EACE,aAAa;EACb,8BAA8B;EAC9B,mBAAmB;AACrB;;;AAGA;EACE,WAAW;EACX,YAAY;EACZ,aAAa;AACf;;AAEA;EACE,cAAc;EACd,wBAAwB;EACxB,WAAW;EACX,YAAY;EACZ,mBAAmB;AACrB;;AAEA;EACE,aAAa;EACb,mBAAmB;EACnB,uBAAuB;EACvB,YAAY;EACZ,gBAAgB;EAChB,gBAAgB;EAChB,cAAc;EACd,kBAAkB;EAClB,yBAAyB;EACzB,cAAc;AAChB;;AAEA;EACE,iBAAiB;AACnB;;AAEA;EACE,UAAU;EACV,WAAW;EACX,gBAAgB;AAClB;;AAEA;EACE,kBAAkB;EAClB,aAAa;EACb,mBAAmB;EACnB,SAAS;EACT,2BAA2B;EAC3B;AACF;;AAEA;EACE,yBAAyB;EACzB,YAAY;EACZ,kBAAkB;EAClB,WAAW;EACX,YAAY;EACZ,kBAAkB;EAClB,iBAAiB;EACjB,gBAAgB;AAClB;;AAEA;EACE,yBAAyB;EACzB,YAAY;EACZ,kBAAkB;EAClB,iBAAiB;EACjB,iBAAiB;AACnB;;AAEA,4CAA4C,uBAAuB;EACjE;IACE,qBAAqB;EACvB;EACA;IACE,cAAc;IACd,kBAAkB;EACpB;EACA;IACE,qBAAqB;IACrB,WAAW;IACX,iBAAiB;IACjB,kBAAkB;EACpB;EACA;IACE,gBAAgB;EAClB;EACA;IACE,iBAAiB;EACnB;EACA;IACE,aAAa;EACf;EACA;IACE,QAAQ;IACR,SAAS;EACX;EACA;IACE,WAAW;IACX,YAAY;EACd;AACF;;;AAGA;EACE,kBAAkB;EAClB,SAAS;EACT,eAAe;EACf,qBAAqB;AACvB;;AAEA;EACE,WAAW;EACX,kBAAkB;EAClB,QAAQ;EACR,SAAS;EACT,gCAAgC;AAClC;;AAEA;EACE,eAAe;EACf,MAAM;EACN,OAAO;EACP,YAAY;EACZ,aAAa;EACb,sCAAsC;AACxC;;AAEA;EACE,kBAAkB;EAClB,WAAW;EACX,aAAa;EACb,2BAA2B;EAC3B,aAAa;EACb,SAAS;EACT,2BAA2B;EAC3B,kBAAkB;AACpB;;AAEA;EACE,WAAW;EACX,YAAY;EACZ,4BAA4B;EAC5B,qBAAqB;EACrB,gBAAgB;EAChB,yDAA2W;AAC7W","sourcesContent":["#widget {\n  font-family: 'Roboto', sans-serif;\n}\n\n#mode-picker {\n  display: flex;\n  justify-content: space-between;\n  margin: 20px;\n  margin-bottom: 40px;\n}\n\n#mode-picker button {\n  border: none;\n  padding: 13px 25px;\n  font-weight: bold;\n  font-size: 13px;\n  border-radius: 15px;\n  color: #121D24;\n}\n\n#mode-select-line-mobile, #mode-select-line-desktop {\n  position: absolute;\n  height: 3px;\n  width: 120px;\n  border-radius: 10px;\n  background-color: #4CC2FF;\n  transition: transform 0.3s ease;\n}\n\n#mode-select-line-desktop {\n  width: 0;\n  height: 0;\n}\n\n\n#preset-color-picker {\n  display: flex;\n  justify-content: space-between;\n  margin: 5% 10px;\n  align-items: center;\n}\n\n.button-column {\n\tflex: 1;\n  flex-direction: column;\n  margin: 0;\n}\n\n.button-column button {\n\taspect-ratio : 1 / 1;\n  flex-grow: 1;\n  width: 100%;\n\tbackground-color: rgb(0, 0, 0);\n  border: 1px solid white;\n  border-radius: 4px;\n}\n\n.buttons {\n\tdisplay: flex;\n\twidth: 100%;\n\tmax-width: 500px;\n}\n\n.color-buttons {\n  width: 30px;\n  height: 30px;\n  border: none;\n  border-radius: 5px;\n}\n\n#color-picker {\n  width: 30px;\n  height: 30px;\n}\n\n#eraser-save-column {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n}\n\n\n#trash {\n  width: 40px;\n  height: 40px;\n  margin: 0 5px;\n}\n\n#eraser {\n  display: block;\n  transform: rotate(45deg);\n  width: 40px;\n  height: 40px;\n  margin-bottom: 10px;\n}\n\n#save-button {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  border: none;\n  padding: 5px 0px;\n  font-weight: 600;\n  font-size: 70%;\n  border-radius: 5px;\n  background-color: #4cff5b;\n  color: #121D24;\n}\n\n#matrix-widget {\n  margin-bottom: 4%;\n}\n\n#save-icon {\n  width: 15%;\n  height: 15%;\n  margin-left: 10%;\n}\n\n#add-section {\n  position: absolute;\n  display: flex;\n  align-items: center;\n  left: 50%;\n  transform: translateX(-50%);\n  top: 18%\n}\n\n#add-section div {\n  background-color: #2d6f91;\n  color: white;\n  border-radius: 5px;\n  width: 20px;\n  height: 20px;\n  text-align: center;\n  font-weight: bold;\n  margin-left: 5px;\n}\n\n#add-button {\n  background-color: #4cff5b;\n  border: none;\n  border-radius: 5px;\n  padding: 5px 10px;\n  font-weight: bold;\n}\n\n@media screen and (min-aspect-ratio: 1/1) { /* Desktop mode switch*/\n  #preset-color-picker {\n    display: inline-block;\n  }\n  .color-buttons {\n    display: block;\n    margin-bottom: 4vh;\n  }\n  #matrix-widget {\n    display: inline-block;\n    float: left;\n    margin-left: 32vw;\n    margin-right: 20px;\n  }\n  #eraser-save-column {\n    margin: 0px 32vw;\n  }\n  #trash {\n    margin-left: 32vw;\n  }\n  #mode-picker {\n    margin: 0 40%;\n  }\n  #mode-select-line-mobile {\n    width: 0;\n    height: 0;\n  }\n  #mode-select-line-desktop {\n    height: 3px;\n    width: 120px;\n  }\n}\n\n\n#credit {\n  position: relative;\n  bottom: 0;\n  font-size: 10px;\n  color: rgb(0, 0, 126);\n}\n\n#color-picker-container {\n  z-index: 10;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n}\n\n#popup-closer {\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100vw;\n  height: 100vh;\n  background-color: rgba(0, 0, 0, 0.308);\n}\n\n#save-form {\n  position: absolute;\n  z-index: 10;\n  display: flex;\n  background-color: #00ccff7a;\n  padding: 10px;\n  left: 50%;\n  transform: translateX(-50%);\n  border-radius: 5px;\n}\n\n#checkmark {\n  width: 35px;\n  height: 35px;\n  background-repeat: no-repeat;\n  background-size: 35px;\n  margin-left: 5px;\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Cpath fill='lightgreen' d='M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8.009 8.009 0 0 1-8 8z'/%3E%3Cpath fill='lightgreen' d='M16.293 8.293 11 13.586l-2.293-2.293-1.414 1.414L11 16.414l6.707-6.707-1.414-1.414z'/%3E%3C/svg%3E\");\n}"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, "#usl_yAlxxfZrkdQc2boR {\n  font-family: 'Roboto', sans-serif;\n}\n\n#qDyetfokRCzfrByBexH7 {\n  display: flex;\n  justify-content: space-between;\n  margin: 20px;\n  margin-bottom: 40px;\n}\n\n#qDyetfokRCzfrByBexH7 button {\n  border: none;\n  padding: 13px 25px;\n  font-weight: bold;\n  font-size: 13px;\n  border-radius: 15px;\n  color: #121D24;\n}\n\n#WV59dg5u_OJpLiSvfYZT, #bWcDN7yqz2m1ocaJ4f4g {\n  position: absolute;\n  height: 3px;\n  width: 120px;\n  border-radius: 10px;\n  background-color: #4CC2FF;\n  transition: transform 0.3s ease;\n}\n\n#bWcDN7yqz2m1ocaJ4f4g {\n  width: 0;\n  height: 0;\n}\n\n\n.BpEn_XLLHI9JG8PaSTQM {\n\tflex: 1;\n  flex-direction: column;\n  margin: 0;\n}\n\n.BpEn_XLLHI9JG8PaSTQM button {\n\taspect-ratio : 1 / 1;\n  flex-grow: 1;\n  width: 100%;\n\tbackground-color: rgb(0, 0, 0);\n  border: 1px solid white;\n  border-radius: 4px;\n}\n\n.QXf7tIq86ySqUBdobBHQ {\n\tdisplay: flex;\n\twidth: 100%;\n\tmax-width: 600px;\n}\n\n.Chvp2PNTU5bOJT9W0UTB {\n  width: 30px;\n  height: 30px;\n  border: none;\n  border-radius: 5px;\n  margin: 0 1.1vw;\n}\n\n#WbPPJemBXhzTgCG_2U81 {\n  width: 30px;\n  height: 30px;\n}\n\n#ykRA0B5UzTurciM72MKl {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  margin-bottom: 20px;\n}\n\n\n#c5hjAmrewVXQxPlsXSJM {\n  width: 40px;\n  height: 40px;\n  margin: 0 5px;\n}\n\n#d7Mu_gXsL3IzSApxiFpS {\n  display: block;\n  transform: rotate(45deg);\n  width: 40px;\n  height: 40px;\n  margin-bottom: 10px;\n}\n\n#NYYDzfkbYC8D9OZJz6RU {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  border: none;\n  padding: 5px 0px;\n  font-weight: 600;\n  font-size: 70%;\n  border-radius: 5px;\n  background-color: #4cff5b;\n  color: #121D24;\n\n}\n\n#KMr5UbbiWbHl38S34nJw {\n  width: 15%;\n  height: 15%;\n  margin-left: 10%;\n}\n\n#p6lOefaAGmgPjjPGGFqw {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  background-color: #4CC2FF;\n  border: none;\n  border-radius: 5px;\n  padding: 5px 15px;\n  font-weight: bold;\n  color: #182b36;\n}\n\n#hHWO6oQzjaDzvYkVA3kA {\n  width: 15px;\n  height: 15px;\n}\n\n\n#bxNeTtvDNLRtHPQeJ_Fs {\n  position: absolute;\n  display: flex;\n  align-items: center;\n  left: 50%;\n  transform: translateX(-50%);\n  top: 14%\n}\n\n#bxNeTtvDNLRtHPQeJ_Fs div {\n  background-color: #2d6f91;\n  color: white;\n  border-radius: 5px;\n  width: 20px;\n  height: 20px;\n  text-align: center;\n  font-weight: bold;\n  margin-left: 5px;\n}\n\n#t8kzB9bkjIXrw_4dvSjj {\n  background-color: #4cff5b;\n  border: none;\n  border-radius: 5px;\n  padding: 5px 10px;\n  font-weight: bold;\n}\n\n#FuUN9yHbY2iJkNkmULIm {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  flex-direction: column;\n}\n\n#jK5GQnyqY53LqQfS7CUA {\n  margin-top: 20px;\n}\n\n\n@media screen and (min-aspect-ratio: 3/2) { /* Desktop mode switch*/\n  #FuUN9yHbY2iJkNkmULIm {\n    flex-direction: row;\n  }\n  #jK5GQnyqY53LqQfS7CUA {\n    order: 0;\n  }\n  #Oa3Upf9OzloKPAdvzWgC {\n    order: 1;\n    margin-left: 20px;\n  }\n  .Chvp2PNTU5bOJT9W0UTB {\n    display: block;\n    margin: 3vh 0;\n  }\n  #ykRA0B5UzTurciM72MKl {\n    margin: 0px 32vw;\n  }\n  #c5hjAmrewVXQxPlsXSJM {\n    margin-left: 32vw;\n  }\n  #qDyetfokRCzfrByBexH7 {\n    margin: 0 40%;\n  }\n  #WV59dg5u_OJpLiSvfYZT {\n    width: 0;\n    height: 0;\n  }\n  #bWcDN7yqz2m1ocaJ4f4g {\n    height: 3px;\n    width: 120px;\n  }\n}\n\n\n#LqNfF5A2BCDzAGCVhiql {\n  position: relative;\n  bottom: 0;\n  font-size: 10px;\n  color: rgb(0, 0, 126);\n}\n\n#_wLpWcqCM76DJ8HLA_13 {\n  z-index: 10;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n}\n\n#jsR_MzAIQvYWtUriy6uG {\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100vw;\n  height: 100vh;\n  background-color: rgba(0, 0, 0, 0.308);\n}\n\n#fr1DuugvzNpOOA0RfyRi {\n  position: absolute;\n  z-index: 10;\n  display: flex;\n  background-color: #00ccff7a;\n  padding: 10px;\n  left: 50%;\n  transform: translateX(-50%);\n  border-radius: 5px;\n}\n\n#O8fg4ai4DCdNKqd7H8gS {\n  width: 35px;\n  height: 35px;\n  background-repeat: no-repeat;\n  background-size: 35px;\n  margin-left: 5px;\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ");\n}", "",{"version":3,"sources":["webpack://./client/src/cssModules/createMode.module.css"],"names":[],"mappings":"AAAA;EACE,iCAAiC;AACnC;;AAEA;EACE,aAAa;EACb,8BAA8B;EAC9B,YAAY;EACZ,mBAAmB;AACrB;;AAEA;EACE,YAAY;EACZ,kBAAkB;EAClB,iBAAiB;EACjB,eAAe;EACf,mBAAmB;EACnB,cAAc;AAChB;;AAEA;EACE,kBAAkB;EAClB,WAAW;EACX,YAAY;EACZ,mBAAmB;EACnB,yBAAyB;EACzB,+BAA+B;AACjC;;AAEA;EACE,QAAQ;EACR,SAAS;AACX;;;AAGA;CACC,OAAO;EACN,sBAAsB;EACtB,SAAS;AACX;;AAEA;CACC,oBAAoB;EACnB,YAAY;EACZ,WAAW;CACZ,8BAA8B;EAC7B,uBAAuB;EACvB,kBAAkB;AACpB;;AAEA;CACC,aAAa;CACb,WAAW;CACX,gBAAgB;AACjB;;AAEA;EACE,WAAW;EACX,YAAY;EACZ,YAAY;EACZ,kBAAkB;EAClB,eAAe;AACjB;;AAEA;EACE,WAAW;EACX,YAAY;AACd;;AAEA;EACE,aAAa;EACb,8BAA8B;EAC9B,mBAAmB;EACnB,mBAAmB;AACrB;;;AAGA;EACE,WAAW;EACX,YAAY;EACZ,aAAa;AACf;;AAEA;EACE,cAAc;EACd,wBAAwB;EACxB,WAAW;EACX,YAAY;EACZ,mBAAmB;AACrB;;AAEA;EACE,aAAa;EACb,mBAAmB;EACnB,uBAAuB;EACvB,YAAY;EACZ,gBAAgB;EAChB,gBAAgB;EAChB,cAAc;EACd,kBAAkB;EAClB,yBAAyB;EACzB,cAAc;;AAEhB;;AAEA;EACE,UAAU;EACV,WAAW;EACX,gBAAgB;AAClB;;AAEA;EACE,aAAa;EACb,mBAAmB;EACnB,uBAAuB;EACvB,yBAAyB;EACzB,YAAY;EACZ,kBAAkB;EAClB,iBAAiB;EACjB,iBAAiB;EACjB,cAAc;AAChB;;AAEA;EACE,WAAW;EACX,YAAY;AACd;;;AAGA;EACE,kBAAkB;EAClB,aAAa;EACb,mBAAmB;EACnB,SAAS;EACT,2BAA2B;EAC3B;AACF;;AAEA;EACE,yBAAyB;EACzB,YAAY;EACZ,kBAAkB;EAClB,WAAW;EACX,YAAY;EACZ,kBAAkB;EAClB,iBAAiB;EACjB,gBAAgB;AAClB;;AAEA;EACE,yBAAyB;EACzB,YAAY;EACZ,kBAAkB;EAClB,iBAAiB;EACjB,iBAAiB;AACnB;;AAEA;EACE,aAAa;EACb,mBAAmB;EACnB,uBAAuB;EACvB,sBAAsB;AACxB;;AAEA;EACE,gBAAgB;AAClB;;;AAGA,4CAA4C,uBAAuB;EACjE;IACE,mBAAmB;EACrB;EACA;IACE,QAAQ;EACV;EACA;IACE,QAAQ;IACR,iBAAiB;EACnB;EACA;IACE,cAAc;IACd,aAAa;EACf;EACA;IACE,gBAAgB;EAClB;EACA;IACE,iBAAiB;EACnB;EACA;IACE,aAAa;EACf;EACA;IACE,QAAQ;IACR,SAAS;EACX;EACA;IACE,WAAW;IACX,YAAY;EACd;AACF;;;AAGA;EACE,kBAAkB;EAClB,SAAS;EACT,eAAe;EACf,qBAAqB;AACvB;;AAEA;EACE,WAAW;EACX,kBAAkB;EAClB,QAAQ;EACR,SAAS;EACT,gCAAgC;AAClC;;AAEA;EACE,eAAe;EACf,MAAM;EACN,OAAO;EACP,YAAY;EACZ,aAAa;EACb,sCAAsC;AACxC;;AAEA;EACE,kBAAkB;EAClB,WAAW;EACX,aAAa;EACb,2BAA2B;EAC3B,aAAa;EACb,SAAS;EACT,2BAA2B;EAC3B,kBAAkB;AACpB;;AAEA;EACE,WAAW;EACX,YAAY;EACZ,4BAA4B;EAC5B,qBAAqB;EACrB,gBAAgB;EAChB,yDAA2W;AAC7W","sourcesContent":["#widget {\n  font-family: 'Roboto', sans-serif;\n}\n\n#mode-picker {\n  display: flex;\n  justify-content: space-between;\n  margin: 20px;\n  margin-bottom: 40px;\n}\n\n#mode-picker button {\n  border: none;\n  padding: 13px 25px;\n  font-weight: bold;\n  font-size: 13px;\n  border-radius: 15px;\n  color: #121D24;\n}\n\n#mode-select-line-mobile, #mode-select-line-desktop {\n  position: absolute;\n  height: 3px;\n  width: 120px;\n  border-radius: 10px;\n  background-color: #4CC2FF;\n  transition: transform 0.3s ease;\n}\n\n#mode-select-line-desktop {\n  width: 0;\n  height: 0;\n}\n\n\n.button-column {\n\tflex: 1;\n  flex-direction: column;\n  margin: 0;\n}\n\n.button-column button {\n\taspect-ratio : 1 / 1;\n  flex-grow: 1;\n  width: 100%;\n\tbackground-color: rgb(0, 0, 0);\n  border: 1px solid white;\n  border-radius: 4px;\n}\n\n.buttons {\n\tdisplay: flex;\n\twidth: 100%;\n\tmax-width: 600px;\n}\n\n.color-buttons {\n  width: 30px;\n  height: 30px;\n  border: none;\n  border-radius: 5px;\n  margin: 0 1.1vw;\n}\n\n#color-picker {\n  width: 30px;\n  height: 30px;\n}\n\n#eraser-save-column {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  margin-bottom: 20px;\n}\n\n\n#trash {\n  width: 40px;\n  height: 40px;\n  margin: 0 5px;\n}\n\n#eraser {\n  display: block;\n  transform: rotate(45deg);\n  width: 40px;\n  height: 40px;\n  margin-bottom: 10px;\n}\n\n#save-button {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  border: none;\n  padding: 5px 0px;\n  font-weight: 600;\n  font-size: 70%;\n  border-radius: 5px;\n  background-color: #4cff5b;\n  color: #121D24;\n\n}\n\n#save-icon {\n  width: 15%;\n  height: 15%;\n  margin-left: 10%;\n}\n\n#start-stop-button {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  background-color: #4CC2FF;\n  border: none;\n  border-radius: 5px;\n  padding: 5px 15px;\n  font-weight: bold;\n  color: #182b36;\n}\n\n#start-stop-icon {\n  width: 15px;\n  height: 15px;\n}\n\n\n#add-section {\n  position: absolute;\n  display: flex;\n  align-items: center;\n  left: 50%;\n  transform: translateX(-50%);\n  top: 14%\n}\n\n#add-section div {\n  background-color: #2d6f91;\n  color: white;\n  border-radius: 5px;\n  width: 20px;\n  height: 20px;\n  text-align: center;\n  font-weight: bold;\n  margin-left: 5px;\n}\n\n#add-button {\n  background-color: #4cff5b;\n  border: none;\n  border-radius: 5px;\n  padding: 5px 10px;\n  font-weight: bold;\n}\n\n#matrix-color-section {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  flex-direction: column;\n}\n\n#matrix-widget {\n  margin-top: 20px;\n}\n\n\n@media screen and (min-aspect-ratio: 3/2) { /* Desktop mode switch*/\n  #matrix-color-section {\n    flex-direction: row;\n  }\n  #matrix-widget {\n    order: 0;\n  }\n  #preset-color-picker {\n    order: 1;\n    margin-left: 20px;\n  }\n  .color-buttons {\n    display: block;\n    margin: 3vh 0;\n  }\n  #eraser-save-column {\n    margin: 0px 32vw;\n  }\n  #trash {\n    margin-left: 32vw;\n  }\n  #mode-picker {\n    margin: 0 40%;\n  }\n  #mode-select-line-mobile {\n    width: 0;\n    height: 0;\n  }\n  #mode-select-line-desktop {\n    height: 3px;\n    width: 120px;\n  }\n}\n\n\n#credit {\n  position: relative;\n  bottom: 0;\n  font-size: 10px;\n  color: rgb(0, 0, 126);\n}\n\n#color-picker-container {\n  z-index: 10;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n}\n\n#popup-closer {\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100vw;\n  height: 100vh;\n  background-color: rgba(0, 0, 0, 0.308);\n}\n\n#save-form {\n  position: absolute;\n  z-index: 10;\n  display: flex;\n  background-color: #00ccff7a;\n  padding: 10px;\n  left: 50%;\n  transform: translateX(-50%);\n  border-radius: 5px;\n}\n\n#checkmark {\n  width: 35px;\n  height: 35px;\n  background-repeat: no-repeat;\n  background-size: 35px;\n  margin-left: 5px;\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Cpath fill='lightgreen' d='M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8.009 8.009 0 0 1-8 8z'/%3E%3Cpath fill='lightgreen' d='M16.293 8.293 11 13.586l-2.293-2.293-1.414 1.414L11 16.414l6.707-6.707-1.414-1.414z'/%3E%3C/svg%3E\");\n}"],"sourceRoot":""}]);
 // Exports
 ___CSS_LOADER_EXPORT___.locals = {
 	"widget": "usl_yAlxxfZrkdQc2boR",
 	"mode-picker": "qDyetfokRCzfrByBexH7",
 	"mode-select-line-mobile": "WV59dg5u_OJpLiSvfYZT",
 	"mode-select-line-desktop": "bWcDN7yqz2m1ocaJ4f4g",
-	"preset-color-picker": "Oa3Upf9OzloKPAdvzWgC",
 	"button-column": "BpEn_XLLHI9JG8PaSTQM",
 	"buttons": "QXf7tIq86ySqUBdobBHQ",
 	"color-buttons": "Chvp2PNTU5bOJT9W0UTB",
@@ -20543,10 +20494,14 @@ ___CSS_LOADER_EXPORT___.locals = {
 	"trash": "c5hjAmrewVXQxPlsXSJM",
 	"eraser": "d7Mu_gXsL3IzSApxiFpS",
 	"save-button": "NYYDzfkbYC8D9OZJz6RU",
-	"matrix-widget": "jK5GQnyqY53LqQfS7CUA",
 	"save-icon": "KMr5UbbiWbHl38S34nJw",
+	"start-stop-button": "p6lOefaAGmgPjjPGGFqw",
+	"start-stop-icon": "hHWO6oQzjaDzvYkVA3kA",
 	"add-section": "bxNeTtvDNLRtHPQeJ_Fs",
 	"add-button": "t8kzB9bkjIXrw_4dvSjj",
+	"matrix-color-section": "FuUN9yHbY2iJkNkmULIm",
+	"matrix-widget": "jK5GQnyqY53LqQfS7CUA",
+	"preset-color-picker": "Oa3Upf9OzloKPAdvzWgC",
 	"credit": "LqNfF5A2BCDzAGCVhiql",
 	"color-picker-container": "_wLpWcqCM76DJ8HLA_13",
 	"popup-closer": "jsR_MzAIQvYWtUriy6uG",
@@ -21239,14 +21194,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _helperFunctions_handleSaveDelete__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./helperFunctions/handleSaveDelete */ "./client/src/helperFunctions/handleSaveDelete.js");
 /* harmony import */ var _helperFunctions_setupBluetooth__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./helperFunctions/setupBluetooth */ "./client/src/helperFunctions/setupBluetooth.js");
 /* harmony import */ var react_dom_client__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-dom/client */ "./node_modules/react-dom/client.js");
-/* harmony import */ var _frameChoices_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./frameChoices.jsx */ "./client/src/frameChoices.jsx");
+/* harmony import */ var _Gallery_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Gallery.jsx */ "./client/src/Gallery.jsx");
 /* harmony import */ var _rainController_jsx__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./rainController.jsx */ "./client/src/rainController.jsx");
-/* harmony import */ var _drawMode_jsx__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./drawMode.jsx */ "./client/src/drawMode.jsx");
-/* harmony import */ var _CreateMode_jsx__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./CreateMode.jsx */ "./client/src/CreateMode.jsx");
-/* harmony import */ var _avController_jsx__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./avController.jsx */ "./client/src/avController.jsx");
-/* harmony import */ var _HomePage_jsx__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./HomePage.jsx */ "./client/src/HomePage.jsx");
-/* harmony import */ var _TopBar_jsx__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./TopBar.jsx */ "./client/src/TopBar.jsx");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _CreateMode_jsx__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./CreateMode.jsx */ "./client/src/CreateMode.jsx");
+/* harmony import */ var _avController_jsx__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./avController.jsx */ "./client/src/avController.jsx");
+/* harmony import */ var _HomePage_jsx__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./HomePage.jsx */ "./client/src/HomePage.jsx");
+/* harmony import */ var _TopBar_jsx__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./TopBar.jsx */ "./client/src/TopBar.jsx");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -21260,7 +21214,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-
+// import DrawMode from "./drawMode.jsx";
 
 
 
@@ -21300,44 +21254,48 @@ var App = function App() {
     setCurFrame = _useState12[1];
   var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState14 = _slicedToArray(_useState13, 2),
-    drawMode = _useState14[0],
-    setDrawMode = _useState14[1];
+    createMode = _useState14[0],
+    setCreateMode = _useState14[1];
   var _useState15 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState16 = _slicedToArray(_useState15, 2),
-    audioVisualizer = _useState16[0],
-    setAudioVisualizer = _useState16[1];
+    showGallery = _useState16[0],
+    setShowGallery = _useState16[1];
   var _useState17 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState18 = _slicedToArray(_useState17, 2),
-    rainMode = _useState18[0],
-    setRainMode = _useState18[1];
-  var _useState19 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
+    audioVisualizer = _useState18[0],
+    setAudioVisualizer = _useState18[1];
+  var _useState19 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState20 = _slicedToArray(_useState19, 2),
-    prevFrameNames = _useState20[0],
-    setPrevFrameNames = _useState20[1];
-  var _useState21 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    rainMode = _useState20[0],
+    setRainMode = _useState20[1];
+  var _useState21 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
     _useState22 = _slicedToArray(_useState21, 2),
-    inputError = _useState22[0],
-    setInputError = _useState22[1];
-  var _useState23 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+    prevFrameNames = _useState22[0],
+    setPrevFrameNames = _useState22[1];
+  var _useState23 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState24 = _slicedToArray(_useState23, 2),
-    anims = _useState24[0],
-    setAnims = _useState24[1];
-  var _useState25 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    inputError = _useState24[0],
+    setInputError = _useState24[1];
+  var _useState25 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
     _useState26 = _slicedToArray(_useState25, 2),
-    animPlaying = _useState26[0],
-    setAnimPlaying = _useState26[1];
-  var _useState27 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+    anims = _useState26[0],
+    setAnims = _useState26[1];
+  var _useState27 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState28 = _slicedToArray(_useState27, 2),
-    colorChoices = _useState28[0],
-    setColorChoices = _useState28[1];
-  var _useState29 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(color),
+    animPlaying = _useState28[0],
+    setAnimPlaying = _useState28[1];
+  var _useState29 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
     _useState30 = _slicedToArray(_useState29, 2),
-    curChosenColor = _useState30[0],
-    setCurChosenColor = _useState30[1];
+    colorChoices = _useState30[0],
+    setColorChoices = _useState30[1];
   var _useState31 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(color),
     _useState32 = _slicedToArray(_useState31, 2),
-    selectedColor = _useState32[0],
-    setSelectedColor = _useState32[1];
+    curChosenColor = _useState32[0],
+    setCurChosenColor = _useState32[1];
+  var _useState33 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(color),
+    _useState34 = _slicedToArray(_useState33, 2),
+    selectedColor = _useState34[0],
+    setSelectedColor = _useState34[1];
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     //Mouse up handler
     var handleMouseUp = function handleMouseUp() {
@@ -21392,10 +21350,7 @@ var App = function App() {
     (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)("F".concat(frameName));
   };
   var callSave = function callSave(e, animation, frameName) {
-    if (animation && !frameName) {
-      animName = document.getElementById('drawName').value;
-    }
-    (0,_helperFunctions_handleSaveDelete__WEBPACK_IMPORTED_MODULE_2__.handleSave)(_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData, setFrames, frames, anims, setAnims, setInputError, e, animation, animName);
+    (0,_helperFunctions_handleSaveDelete__WEBPACK_IMPORTED_MODULE_2__.handleSave)(_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData, setFrames, frames, anims, setAnims, setInputError, e, animation, frameName);
   };
   var callDelete = function callDelete(frameName, idx, type) {
     (0,_helperFunctions_handleSaveDelete__WEBPACK_IMPORTED_MODULE_2__.handleDelete)(setFrames, frames, setPrevFrameNames, prevFrameNames, anims, setAnims, _helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData, frameName, idx, type);
@@ -21444,32 +21399,44 @@ var App = function App() {
   var handleConnect = function handleConnect() {
     (0,_helperFunctions_setupBluetooth__WEBPACK_IMPORTED_MODULE_3__["default"])(setIsConnected, turnOn, setAnims, setPrevFrameNames, setModeDataSending);
   };
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
     id: "colorApp",
     onMouseDown: function onMouseDown() {
       return setMouseDown(true);
     },
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_TopBar_jsx__WEBPACK_IMPORTED_MODULE_11__["default"], {
+    children: [!isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_TopBar_jsx__WEBPACK_IMPORTED_MODULE_10__["default"], {
       selectedColor: selectedColor
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_CreateMode_jsx__WEBPACK_IMPORTED_MODULE_8__["default"], {
+    }) : null, !isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_CreateMode_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], {
       inputError: inputError,
       turnOff: turnOff,
       callSave: callSave,
       animPlaying: animPlaying,
       pixelSending: pixelSending,
       mouseDown: mouseDown,
+      handleFrameChoice: handleFrameChoice,
       sendRequests: sendRequests,
       selectedColor: selectedColor,
       setSelectedColor: setSelectedColor
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("button", {
+    }) : null, showGallery ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_Gallery_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
+      handleSave: callSave,
+      anims: anims,
+      prevFrameNames: prevFrameNames,
+      frames: frames,
+      handleFrameChoice: handleFrameChoice,
+      handleDelete: callDelete
+    }) : null, !isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("button", {
       id: "gallery-button",
+      onClick: function onClick() {
+        setShowGallery(true);
+        setCreateMode(false);
+      },
       children: "Gallery"
-    })]
+    }) : null]
   });
 };
 var container = document.getElementById('root');
 var root = (0,react_dom_client__WEBPACK_IMPORTED_MODULE_4__.createRoot)(container);
-root.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(App, {}));
+root.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(App, {}));
 })();
 
 /******/ })()

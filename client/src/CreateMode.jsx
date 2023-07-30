@@ -7,25 +7,48 @@ import MatrixButtons from "./MatrixButtons.jsx";
 
 const colorOptions = ['#FF0000', '#A020F0', '#FFC0CB', '#0000FF', '#FFFF00', '#00FF00', '#FFA500', '#FFFFFF'];
 
-const CreateMode = ({callSave, animPlaying, turnOff, isLoading, inputError, mouseDown, sendRequests, selectedColor, setSelectedColor}) => {
+const CreateMode = ({callSave, animPlaying, turnOff, isLoading, inputError, mouseDown, sendRequests, selectedColor, setSelectedColor, handleFrameChoice}) => {
 
   const [frameCount, setFrameCount] = useState(0);
   const [selectColor, setSelectColor] = useState(false);
   const [drawMode, setDrawMode] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [currentAnimFrame, setCurrentAnimFrame] = useState('');
 
 	const handleColor = (newColor) => {
     if (newColor.target) {
-      newColor = newColor.target.style['background-color'];
+      newColor = colorOptions[newColor.target.id];
     }
 		setSelectedColor(newColor); //For visual elements
     window.color = newColor; //For color buttons
 		sendRequests['color'] = `C${newColor.slice(1)}`;
 	}
 
-  const colorButtons = colorOptions.map ((curColor) => {
-    return <button className={styles['color-buttons']} style={{'background-color': curColor}} onClick={handleColor}></button>
+  const colorButtons = colorOptions.map ((curColor, idx) => {
+    return <button className={styles['color-buttons']} id={idx} style={{'background-color': curColor}} onClick={handleColor}></button>
   });
+
+  const handleSaveFrame = (e) => {
+    var frameName = document.getElementById('frameName').value;
+    if (drawMode) {
+      console.log(frameName);
+      callSave(e, false, frameName);
+    } else {
+      setFrameCount(frameCount+1);
+      callSave(e, true, frameName);
+      setCurrentAnimFrame(frameName);
+    }
+    setSaving(false);
+  };
+
+  const handleAddAnimFrame = () => {
+    if (frameCount === 0) {
+      setSaving(true)
+    } else {
+      setFrameCount(frameCount + 1);
+      callSave(e, true, currentAnimFrame)
+    }
+  };
 
 	return (
 		<div id={styles['widget']}>
@@ -44,25 +67,31 @@ const CreateMode = ({callSave, animPlaying, turnOff, isLoading, inputError, mous
       <div id={styles['mode-select-line-desktop']} style={drawMode ?  {transform: 'translate(40.1vw, 5px)'} : {transform: 'translate(51vw, 5px)'}}></div>
       <img src='./icons/trash-icon.png' id={styles['trash']} onClick={turnOff}/>
       <div id={styles['eraser-save-column']}>
-        <img src='./icons/eraser-icon.png' id={styles['eraser']} onClick={() => handleColor('#000')}/>
+        <img src='./icons/eraser-icon.png' id={styles['eraser']} onClick={() => handleColor('#000000')}/>
         {!isLoading ?
         <>
           {drawMode && !saving ?
           <button id={styles['save-button']} onClick={() => setSaving(true)}>
             Save
-            <img src='./icons/save-icon.png' id={styles['save-icon']}></img>
+            <img src='./icons/save-icon.png' id={styles['save-icon']} />
           </button>
+          : null}
+          {!drawMode && frameCount < 1 ?
+          <button id={styles['start-stop-button']} onClick={(e) => handleFrameChoice(e, currentAnimFrame)}>
+            Play
+            <img src='./icons/animation-icon.png' id={styles['start-stop-icon']} />
+            </button>
           : null}
           {saving ?
           <div id={styles['save-form']}>
-            <input  id='drawName' type='text' maxLength='7' placeholder='name...'/>
-            <div id={styles['checkmark']} onClick={(e) => {if (drawMode) {callSave(e)} else {callSave(e, true)}}}/>
+            <input  id='frameName' type='text' maxLength='7' placeholder='name...'/>
+            <div id={styles['checkmark']} onClick={handleSaveFrame}/>
           </div>
           : null}
           {!drawMode ?
           <div id={styles['add-section']}>
-            <button id={styles['add-button']} onClick={() => {if (frameCount === 0) {setSaving(true)}}}>Add</button>
-            <div>0</div>
+            <button id={styles['add-button']} onClick={handleAddAnimFrame}>Add</button>
+            <div>{frameCount}</div>
           </div>
           :null}
           {/* <input id="drawName" type="text" placeholder="drawing..." maxLength="7" />
@@ -72,11 +101,13 @@ const CreateMode = ({callSave, animPlaying, turnOff, isLoading, inputError, mous
         </>
         : null}
       </div>
-      <div id={styles['preset-color-picker']}>
-        {colorButtons}
-        <img src='./icons/color-picker.png' id={styles['color-picker']} onClick={() => setSelectColor(true)}/>
+      <div id={styles['matrix-color-section']}>
+        <div id={styles['preset-color-picker']}>
+          {colorButtons}
+          <img src='./icons/color-picker.png' id={styles['color-picker']} onClick={() => setSelectColor(true)}/>
+        </div>
+        <MatrixButtons mouseDown={mouseDown} sendRequests={sendRequests} selectedColor={selectedColor}/>
       </div>
-      <MatrixButtons mouseDown={mouseDown} sendRequests={sendRequests} selectedColor={selectedColor}/>
       <a href="https://www.flaticon.com/free-icons/color-picker" title="color picker icons" id={styles['credit']}>Color picker icons created by Design Circle - Flaticon</a>
 		</div>
 	);

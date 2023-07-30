@@ -29,11 +29,11 @@ export const handleSave = (sendData, setFrames, frames, anims, setAnims, setInpu
 				curColumn.push(curColor);
 			}
 		}
-		curFrame[16] = drawName; //Set 16th column to name of frame
+		curFrame[16] = frameName; //Set 16th column to name of frame
 		var newFrames = JSON.parse(JSON.stringify(frames));
 		newFrames.push(curFrame);
 		setFrames(newFrames);
-		sendData('S' + drawName);
+		sendData('S' + frameName);
 	} else {
 		setInputError("Please input a name for your drawing");
 	}
