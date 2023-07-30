@@ -126,14 +126,18 @@
   height: 15px;
 }
 
+#start-stop-button div {
+  background-color: red;
+  border-radius: 5px;
+  width: 15px;
+  height: 15px;
+}
+
 
 #add-section {
-  position: absolute;
   display: flex;
   align-items: center;
-  left: 50%;
-  transform: translateX(-50%);
-  top: 14%
+  margin-left: 20px;
 }
 
 #add-section div {
