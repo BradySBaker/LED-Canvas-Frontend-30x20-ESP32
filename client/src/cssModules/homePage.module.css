@@ -6,6 +6,7 @@
 	background-size: 200% auto;
 	animation: rainbow 10s ease infinite;
 	border-radius: 20px;
+  left: 0;
 }
 
 @keyframes rainbow {

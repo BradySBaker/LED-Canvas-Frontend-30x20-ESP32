@@ -442,36 +442,42 @@ __webpack_require__.r(__webpack_exports__);
 
 var HomePage = function HomePage(_ref) {
   var handleConnect = _ref.handleConnect,
-    isConnected = _ref.isConnected;
+    connectError = _ref.connectError;
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-      className: "".concat(_cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["rgb-line"]),
-      id: "".concat(_cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].top)
+      className: _cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["rgb-line"],
+      id: _cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].top
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-      id: "".concat(_cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].main),
+      id: _cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].main,
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h1", {
-        className: "".concat(_cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].title),
+        className: _cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].title,
         children: "LED Canvas"
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h2", {
-        className: "".concat(_cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].title),
+        className: _cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].title,
         children: "Welcome"
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("button", {
-        id: "".concat(_cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["blue-button"]),
+        id: _cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["blue-button"],
         onClick: handleConnect,
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("img", {
-          className: "".concat(_cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["button-icon"]),
+          className: _cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["button-icon"],
           src: "./icons/blu.png"
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("img", {
-          className: "".concat(_cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["button-icon"]),
+          className: _cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["button-icon"],
           src: "./icons/arrow.png"
         })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("p", {
-        className: "".concat(_cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].title),
+        className: _cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].title,
         children: "Not Connected"
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h3", {})]
+      }), connectError ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("p", {
+        className: _cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].title,
+        style: {
+          color: 'red'
+        },
+        children: "Connect Error"
+      }) : null]
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-      className: "".concat(_cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["rgb-line"]),
-      id: "".concat(_cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].bottom)
+      className: _cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["rgb-line"],
+      id: _cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].bottom
     })]
   });
 };
@@ -935,28 +941,32 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var blueTooth = new (p5ble__WEBPACK_IMPORTED_MODULE_0___default())();
-function connectToBle(setIsConnected, turnOn, setAnims, setPrevFrameNames, setModeDataSending) {
+function connectToBle(setIsConnected, turnOn, setAnims, setPrevFrameNames, setModeDataSending, setConnectError) {
+  setConnectError(false);
+  setModeDataSending(true);
   var paramFuncs = {
     setIsConnected: setIsConnected,
     turnOn: turnOn,
     setAnims: setAnims,
     setPrevFrameNames: setPrevFrameNames,
-    setModeDataSending: setModeDataSending
+    setModeDataSending: setModeDataSending,
+    setConnectError: setConnectError
   };
   blueTooth.connect('0000ffe0-0000-1000-8000-00805f9b34fb', function (error, characteristics) {
     return gotCharacteristics(error, characteristics, paramFuncs);
   });
 }
 function onDisconnected() {
-  console.log('Device got disconnected.');
   ledConnected = false;
   setIsConnected(false);
 }
 
 // A function that will be called once got characteristics
 function gotCharacteristics(error, characteristics, paramFuncs) {
+  paramFuncs.setModeDataSending(false);
   if (error) {
     console.log('error: ', error);
+    paramFuncs.setConnectError(true);
     return;
   }
   window.blueToothCharacteristic = characteristics[0];
@@ -20575,7 +20585,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".uqNmLZEiRQKsk8jdHtij {\n\twidth: 100%;\n\theight: 5px;\n\ttransform: translateY(-3.5px);\n\tbackground: linear-gradient(to right, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff);\n\tbackground-size: 200% auto;\n\tanimation: CHl4pSVCDkbyd0C5IPjP 10s ease infinite;\n\tborder-radius: 20px;\n}\n\n@keyframes CHl4pSVCDkbyd0C5IPjP {\n  0% {\n    background-position: 0% 50%;\n  }\n  50% {\n    background-position: 100% 50%;\n  }\n  100% {\n    background-position: 0% 50%;\n  }\n}\n\n\n#ZI5zVKYw0G4AMOHawOEY {\n  position: absolute;\n  top: 5%;\n}\n\n#Pg8ygrC2KjQPlZ_OUxNM {\n  position: absolute;\n  bottom: 5%;\n}\n\n#jR53lvfLBFfG9bb9OLiQ {\n  display: flex;\n  align-items: center;\n  flex-direction: column;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n}\n\n.oQV9oJT3RfR5JQjav19b {\n  text-align: center;\n  font-family: 'Roboto', sans-serif;\n  margin: 0;\n}\n\nh1.oQV9oJT3RfR5JQjav19b {\n\tcolor: white;\n\tfont-weight: bold;\n\tfont-size: 40px;\n  white-space: nowrap;\n}\n\nh2.oQV9oJT3RfR5JQjav19b {\n  font-weight: lighter;\n  color: #BCBCBC;\n}\n\np.oQV9oJT3RfR5JQjav19b {\n  color: white;\n  font-size: 15px;\n  font-weight: lighter;\n  margin-top: 20px;\n}\n\n.PJHu9SIWXjh6tuRGmPkA {\n  width: 30px;\n  height: 30px;\n  margin: 10px 20px 10px 20px;\n}\n\n#c99rg7UlqJvO8gzM3ux0 {\n  display: flex;\n  justify-content: space-between;\n  margin-top: 30px;\n  background-color: #4CC2FF;\n  border-radius: 10px;\n  border: none;\n}\n\n#c99rg7UlqJvO8gzM3ux0:hover {\n  animation: pqwc_Q063Pc5FmI2074w .3s ease forwards;\n}\n\n@keyframes pqwc_Q063Pc5FmI2074w {\n  0% {\n    background-color: #4CC2FF;\n  }\n  100% {\n    background-color: #337fa5;\n  }\n}", "",{"version":3,"sources":["webpack://./client/src/cssModules/homePage.module.css"],"names":[],"mappings":"AAAA;CACC,WAAW;CACX,WAAW;CACX,6BAA6B;CAC7B,oGAAoG;CACpG,0BAA0B;CAC1B,iDAAoC;CACpC,mBAAmB;AACpB;;AAEA;EACE;IACE,2BAA2B;EAC7B;EACA;IACE,6BAA6B;EAC/B;EACA;IACE,2BAA2B;EAC7B;AACF;;;AAGA;EACE,kBAAkB;EAClB,OAAO;AACT;;AAEA;EACE,kBAAkB;EAClB,UAAU;AACZ;;AAEA;EACE,aAAa;EACb,mBAAmB;EACnB,sBAAsB;EACtB,kBAAkB;EAClB,QAAQ;EACR,SAAS;EACT,gCAAgC;AAClC;;AAEA;EACE,kBAAkB;EAClB,iCAAiC;EACjC,SAAS;AACX;;AAEA;CACC,YAAY;CACZ,iBAAiB;CACjB,eAAe;EACd,mBAAmB;AACrB;;AAEA;EACE,oBAAoB;EACpB,cAAc;AAChB;;AAEA;EACE,YAAY;EACZ,eAAe;EACf,oBAAoB;EACpB,gBAAgB;AAClB;;AAEA;EACE,WAAW;EACX,YAAY;EACZ,2BAA2B;AAC7B;;AAEA;EACE,aAAa;EACb,8BAA8B;EAC9B,gBAAgB;EAChB,yBAAyB;EACzB,mBAAmB;EACnB,YAAY;AACd;;AAEA;EACE,iDAAkD;AACpD;;AAEA;EACE;IACE,yBAAyB;EAC3B;EACA;IACE,yBAAyB;EAC3B;AACF","sourcesContent":[".rgb-line {\n\twidth: 100%;\n\theight: 5px;\n\ttransform: translateY(-3.5px);\n\tbackground: linear-gradient(to right, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff);\n\tbackground-size: 200% auto;\n\tanimation: rainbow 10s ease infinite;\n\tborder-radius: 20px;\n}\n\n@keyframes rainbow {\n  0% {\n    background-position: 0% 50%;\n  }\n  50% {\n    background-position: 100% 50%;\n  }\n  100% {\n    background-position: 0% 50%;\n  }\n}\n\n\n#top {\n  position: absolute;\n  top: 5%;\n}\n\n#bottom {\n  position: absolute;\n  bottom: 5%;\n}\n\n#main {\n  display: flex;\n  align-items: center;\n  flex-direction: column;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n}\n\n.title {\n  text-align: center;\n  font-family: 'Roboto', sans-serif;\n  margin: 0;\n}\n\nh1.title {\n\tcolor: white;\n\tfont-weight: bold;\n\tfont-size: 40px;\n  white-space: nowrap;\n}\n\nh2.title {\n  font-weight: lighter;\n  color: #BCBCBC;\n}\n\np.title {\n  color: white;\n  font-size: 15px;\n  font-weight: lighter;\n  margin-top: 20px;\n}\n\n.button-icon {\n  width: 30px;\n  height: 30px;\n  margin: 10px 20px 10px 20px;\n}\n\n#blue-button {\n  display: flex;\n  justify-content: space-between;\n  margin-top: 30px;\n  background-color: #4CC2FF;\n  border-radius: 10px;\n  border: none;\n}\n\n#blue-button:hover {\n  animation: changeBackgroundColor .3s ease forwards;\n}\n\n@keyframes changeBackgroundColor {\n  0% {\n    background-color: #4CC2FF;\n  }\n  100% {\n    background-color: #337fa5;\n  }\n}"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, ".uqNmLZEiRQKsk8jdHtij {\n\twidth: 100%;\n\theight: 5px;\n\ttransform: translateY(-3.5px);\n\tbackground: linear-gradient(to right, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff);\n\tbackground-size: 200% auto;\n\tanimation: CHl4pSVCDkbyd0C5IPjP 10s ease infinite;\n\tborder-radius: 20px;\n  left: 0;\n}\n\n@keyframes CHl4pSVCDkbyd0C5IPjP {\n  0% {\n    background-position: 0% 50%;\n  }\n  50% {\n    background-position: 100% 50%;\n  }\n  100% {\n    background-position: 0% 50%;\n  }\n}\n\n\n#ZI5zVKYw0G4AMOHawOEY {\n  position: absolute;\n  top: 5%;\n}\n\n#Pg8ygrC2KjQPlZ_OUxNM {\n  position: absolute;\n  bottom: 5%;\n}\n\n#jR53lvfLBFfG9bb9OLiQ {\n  display: flex;\n  align-items: center;\n  flex-direction: column;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n}\n\n.oQV9oJT3RfR5JQjav19b {\n  text-align: center;\n  font-family: 'Roboto', sans-serif;\n  margin: 0;\n}\n\nh1.oQV9oJT3RfR5JQjav19b {\n\tcolor: white;\n\tfont-weight: bold;\n\tfont-size: 40px;\n  white-space: nowrap;\n}\n\nh2.oQV9oJT3RfR5JQjav19b {\n  font-weight: lighter;\n  color: #BCBCBC;\n}\n\np.oQV9oJT3RfR5JQjav19b {\n  color: white;\n  font-size: 15px;\n  font-weight: lighter;\n  margin-top: 20px;\n}\n\n.PJHu9SIWXjh6tuRGmPkA {\n  width: 30px;\n  height: 30px;\n  margin: 10px 20px 10px 20px;\n}\n\n#c99rg7UlqJvO8gzM3ux0 {\n  display: flex;\n  justify-content: space-between;\n  margin-top: 30px;\n  background-color: #4CC2FF;\n  border-radius: 10px;\n  border: none;\n}\n\n#c99rg7UlqJvO8gzM3ux0:hover {\n  animation: pqwc_Q063Pc5FmI2074w .3s ease forwards;\n}\n\n@keyframes pqwc_Q063Pc5FmI2074w {\n  0% {\n    background-color: #4CC2FF;\n  }\n  100% {\n    background-color: #337fa5;\n  }\n}", "",{"version":3,"sources":["webpack://./client/src/cssModules/homePage.module.css"],"names":[],"mappings":"AAAA;CACC,WAAW;CACX,WAAW;CACX,6BAA6B;CAC7B,oGAAoG;CACpG,0BAA0B;CAC1B,iDAAoC;CACpC,mBAAmB;EAClB,OAAO;AACT;;AAEA;EACE;IACE,2BAA2B;EAC7B;EACA;IACE,6BAA6B;EAC/B;EACA;IACE,2BAA2B;EAC7B;AACF;;;AAGA;EACE,kBAAkB;EAClB,OAAO;AACT;;AAEA;EACE,kBAAkB;EAClB,UAAU;AACZ;;AAEA;EACE,aAAa;EACb,mBAAmB;EACnB,sBAAsB;EACtB,kBAAkB;EAClB,QAAQ;EACR,SAAS;EACT,gCAAgC;AAClC;;AAEA;EACE,kBAAkB;EAClB,iCAAiC;EACjC,SAAS;AACX;;AAEA;CACC,YAAY;CACZ,iBAAiB;CACjB,eAAe;EACd,mBAAmB;AACrB;;AAEA;EACE,oBAAoB;EACpB,cAAc;AAChB;;AAEA;EACE,YAAY;EACZ,eAAe;EACf,oBAAoB;EACpB,gBAAgB;AAClB;;AAEA;EACE,WAAW;EACX,YAAY;EACZ,2BAA2B;AAC7B;;AAEA;EACE,aAAa;EACb,8BAA8B;EAC9B,gBAAgB;EAChB,yBAAyB;EACzB,mBAAmB;EACnB,YAAY;AACd;;AAEA;EACE,iDAAkD;AACpD;;AAEA;EACE;IACE,yBAAyB;EAC3B;EACA;IACE,yBAAyB;EAC3B;AACF","sourcesContent":[".rgb-line {\n\twidth: 100%;\n\theight: 5px;\n\ttransform: translateY(-3.5px);\n\tbackground: linear-gradient(to right, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff);\n\tbackground-size: 200% auto;\n\tanimation: rainbow 10s ease infinite;\n\tborder-radius: 20px;\n  left: 0;\n}\n\n@keyframes rainbow {\n  0% {\n    background-position: 0% 50%;\n  }\n  50% {\n    background-position: 100% 50%;\n  }\n  100% {\n    background-position: 0% 50%;\n  }\n}\n\n\n#top {\n  position: absolute;\n  top: 5%;\n}\n\n#bottom {\n  position: absolute;\n  bottom: 5%;\n}\n\n#main {\n  display: flex;\n  align-items: center;\n  flex-direction: column;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n}\n\n.title {\n  text-align: center;\n  font-family: 'Roboto', sans-serif;\n  margin: 0;\n}\n\nh1.title {\n\tcolor: white;\n\tfont-weight: bold;\n\tfont-size: 40px;\n  white-space: nowrap;\n}\n\nh2.title {\n  font-weight: lighter;\n  color: #BCBCBC;\n}\n\np.title {\n  color: white;\n  font-size: 15px;\n  font-weight: lighter;\n  margin-top: 20px;\n}\n\n.button-icon {\n  width: 30px;\n  height: 30px;\n  margin: 10px 20px 10px 20px;\n}\n\n#blue-button {\n  display: flex;\n  justify-content: space-between;\n  margin-top: 30px;\n  background-color: #4CC2FF;\n  border-radius: 10px;\n  border: none;\n}\n\n#blue-button:hover {\n  animation: changeBackgroundColor .3s ease forwards;\n}\n\n@keyframes changeBackgroundColor {\n  0% {\n    background-color: #4CC2FF;\n  }\n  100% {\n    background-color: #337fa5;\n  }\n}"],"sourceRoot":""}]);
 // Exports
 ___CSS_LOADER_EXPORT___.locals = {
 	"rgb-line": "uqNmLZEiRQKsk8jdHtij",
@@ -21282,7 +21292,7 @@ var App = function App() {
     _useState6 = _slicedToArray(_useState5, 2),
     pixelSending = _useState6[0],
     setPixelSending = _useState6[1];
-  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(true),
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState8 = _slicedToArray(_useState7, 2),
     modeDataSending = _useState8[0],
     setModeDataSending = _useState8[1];
@@ -21334,6 +21344,10 @@ var App = function App() {
     _useState32 = _slicedToArray(_useState31, 2),
     selectedColor = _useState32[0],
     setSelectedColor = _useState32[1];
+  var _useState33 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState34 = _slicedToArray(_useState33, 2),
+    connectError = _useState34[0],
+    setConnectError = _useState34[1];
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     //Mouse up handler
     var handleMouseUp = function handleMouseUp() {
@@ -21435,7 +21449,7 @@ var App = function App() {
     rainColorsSent++;
   };
   var handleConnect = function handleConnect() {
-    (0,_helperFunctions_setupBluetooth__WEBPACK_IMPORTED_MODULE_3__["default"])(setIsConnected, turnOn, setAnims, setPrevFrameNames, setModeDataSending);
+    (0,_helperFunctions_setupBluetooth__WEBPACK_IMPORTED_MODULE_3__["default"])(setIsConnected, turnOn, setAnims, setPrevFrameNames, setModeDataSending, setConnectError);
   };
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
     id: "colorApp",
@@ -21463,8 +21477,8 @@ var App = function App() {
       handleDelete: callDelete
     }) : null, !isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_HomePage_jsx__WEBPACK_IMPORTED_MODULE_9__["default"], {
       handleConnect: handleConnect,
-      isConnected: isConnected
-    }) : null, (pixelSending || modeDataSending) && isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("img", {
+      connectError: connectError
+    }) : null, pixelSending || modeDataSending ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("img", {
       id: "loading",
       src: "./icons/loading.gif"
     }) : null, isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("button", {
