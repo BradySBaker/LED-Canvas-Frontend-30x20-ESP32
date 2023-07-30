@@ -72,7 +72,7 @@ p.title {
   margin: 10px 20px 10px 20px;
 }
 
-button {
+#blue-button {
   display: flex;
   justify-content: space-between;
   margin-top: 30px;
@@ -81,7 +81,7 @@ button {
   border: none;
 }
 
-button:hover {
+#blue-button:hover {
   animation: changeBackgroundColor .3s ease forwards;
 }
 

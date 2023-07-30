@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
 
-const FrameChoices = ({frames, handleFrameChoice, prevFrameNames, handleDelete, anims, handleSave}) => {
+const Gallery = ({frames, handleFrameChoice, prevFrameNames, handleDelete, anims, handleSave}) => {
 
 	const [frameElements, setFrameElements] = useState([]);
 
@@ -62,4 +62,4 @@ const FrameChoices = ({frames, handleFrameChoice, prevFrameNames, handleDelete, 
 	)
 }
 
-export default FrameChoices;
+export default Gallery;

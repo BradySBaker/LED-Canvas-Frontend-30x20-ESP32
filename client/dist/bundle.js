@@ -1,10 +1,10 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./client/src/avController.jsx":
-/*!*************************************!*\
-  !*** ./client/src/avController.jsx ***!
-  \*************************************/
+/***/ "./client/src/CreateMode.jsx":
+/*!***********************************!*\
+  !*** ./client/src/CreateMode.jsx ***!
+  \***********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -14,8 +14,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_colorful__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-colorful */ "./node_modules/react-colorful/dist/index.mjs");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./cssModules/createMode.module.css */ "./client/src/cssModules/createMode.module.css");
+/* harmony import */ var react_colorful__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-colorful */ "./node_modules/react-colorful/dist/index.mjs");
+/* harmony import */ var _MatrixButtons_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./MatrixButtons.jsx */ "./client/src/MatrixButtons.jsx");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -27,142 +29,261 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-var AVController = function AVController(_ref) {
-  var handleChooseColor = _ref.handleChooseColor,
-    setCurChosenColor = _ref.setCurChosenColor,
-    modeDataSending = _ref.modeDataSending,
-    colorChoices = _ref.colorChoices,
-    handleModeStartStop = _ref.handleModeStartStop,
-    curChosenColor = _ref.curChosenColor;
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
-    _useState2 = _slicedToArray(_useState, 2),
-    startClicked = _useState2[0],
-    setStartClicked = _useState2[1];
-  var handleAVColor = function handleAVColor(newColor) {
-    if (colorChoices.length < 2) {
-      setCurChosenColor(newColor);
-    }
-  };
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
-    id: "avController",
-    children: !modeDataSending ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.Fragment, {
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
-        className: "picker-container",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(react_colorful__WEBPACK_IMPORTED_MODULE_2__.HexColorPicker, {
-          style: {
-            height: 'calc(90vw * 0.5)'
-          },
-          color: color,
-          onChange: handleAVColor
-        })
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
-        children: colorChoices.map(function (curChoice) {
-          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
-            style: {
-              'backgroundColor': curChoice,
-              'width': '100px',
-              'height': '100px'
-            }
-          });
-        })
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
-        style: {
-          'color': curChosenColor
-        },
-        onClick: handleChooseColor,
-        children: "Choose Color"
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
-        onClick: function onClick(e) {
-          handleModeStartStop(e, false);
-          setStartClicked(!startClicked);
-        },
-        children: !startClicked ? "Start" : "Stop"
-      })]
-    }) : null
-  });
-};
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (AVController);
 
-/***/ }),
-
-/***/ "./client/src/drawMode.jsx":
-/*!*********************************!*\
-  !*** ./client/src/drawMode.jsx ***!
-  \*********************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_colorful__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-colorful */ "./node_modules/react-colorful/dist/index.mjs");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-
-
-
-
-
-var DrawMode = function DrawMode(_ref) {
+var colorOptions = ['#FF0000', '#A020F0', '#FFC0CB', '#0000FF', '#FFFF00', '#00FF00', '#FFA500', '#FFFFFF'];
+var CreateMode = function CreateMode(_ref) {
   var callSave = _ref.callSave,
     animPlaying = _ref.animPlaying,
     turnOff = _ref.turnOff,
-    isLoading = _ref.isLoading,
-    inputError = _ref.inputError;
+    pixelSending = _ref.pixelSending,
+    mouseDown = _ref.mouseDown,
+    sendRequests = _ref.sendRequests,
+    selectedColor = _ref.selectedColor,
+    setSelectedColor = _ref.setSelectedColor,
+    handleFrameChoice = _ref.handleFrameChoice;
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(0),
+    _useState2 = _slicedToArray(_useState, 2),
+    frameCount = _useState2[0],
+    setFrameCount = _useState2[1];
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState4 = _slicedToArray(_useState3, 2),
+    selectColor = _useState4[0],
+    setSelectColor = _useState4[1];
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(true),
+    _useState6 = _slicedToArray(_useState5, 2),
+    drawMode = _useState6[0],
+    setDrawMode = _useState6[1];
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState8 = _slicedToArray(_useState7, 2),
+    saving = _useState8[0],
+    setSaving = _useState8[1];
+  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState10 = _slicedToArray(_useState9, 2),
+    currentAnimFrame = _useState10[0],
+    setCurrentAnimFrame = _useState10[1];
+  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState12 = _slicedToArray(_useState11, 2),
+    playClicked = _useState12[0],
+    setPlayClicked = _useState12[1];
+  var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState14 = _slicedToArray(_useState13, 2),
+    error = _useState14[0],
+    setError = _useState14[1];
   var handleColor = function handleColor(newColor) {
-    // document.getElementById('title').style.color = newColor;
-    color = newColor;
+    if (newColor.target) {
+      newColor = colorOptions[newColor.target.id];
+    }
+    setSelectedColor(newColor); //For visual elements
+    window.color = newColor; //For color buttons
     sendRequests['color'] = "C".concat(newColor.slice(1));
   };
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
-      className: "picker-container",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(react_colorful__WEBPACK_IMPORTED_MODULE_2__.HexColorPicker, {
+  var colorButtons = colorOptions.map(function (curColor, idx) {
+    return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+      className: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["color-buttons"],
+      id: idx,
+      style: {
+        'background-color': curColor
+      },
+      onClick: handleColor
+    });
+  });
+  var handleSaveFrame = function handleSaveFrame(e) {
+    setSaving(false);
+    setError(false);
+    if (pixelSending) {
+      return;
+    }
+    var frameName = document.getElementById('frameName').value;
+    if (drawMode) {
+      var inputError = callSave(e, false, frameName);
+      if (inputError) {
+        setError(inputError);
+        return;
+      }
+    } else {
+      var inputError = callSave(e, true, frameName);
+      if (inputError) {
+        setError(inputError);
+        return;
+      }
+      setFrameCount(frameCount + 1);
+      setCurrentAnimFrame(frameName);
+    }
+  };
+  var handleAddAnimFrame = function handleAddAnimFrame(e) {
+    if (pixelSending) {
+      return;
+    }
+    if (frameCount === 0) {
+      setSaving(true);
+    } else {
+      setFrameCount(frameCount + 1);
+      callSave(e, true, currentAnimFrame);
+    }
+  };
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+    id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].widget,
+    children: [selectColor || saving || error ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+      id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["popup-closer"],
+      onClick: function onClick() {
+        setSelectColor(false);
+        setSaving(false);
+        setError(false);
+      }
+    }) : null, selectColor ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+      id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["color-picker-container"],
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_colorful__WEBPACK_IMPORTED_MODULE_4__.HexColorPicker, {
         style: {
-          height: 'calc(90vw * 0.5)'
+          height: '80vw',
+          width: '80vw',
+          maxHeight: '70vh',
+          maxWidth: '700px'
         },
         color: color,
         onChange: handleColor
       })
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
-      onClick: turnOff,
-      children: "Turn Off"
-    }), !isLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.Fragment, {
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
-        onClick: callSave,
-        children: "Save Drawing"
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
-        id: "drawName",
-        type: "text",
-        placeholder: "drawing...",
-        maxLength: "7"
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
-        onClick: function onClick(e) {
-          return callSave(e, true);
+    }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+      id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["mode-picker"],
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+        style: !drawMode ? {
+          'background-color': '#4CC2FF'
+        } : {
+          'background-color': '#7D7D7D'
         },
-        children: "Save Frame"
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
-        id: "animName",
-        type: "text",
-        placeholder: "animation name...",
-        maxLength: "7"
-      }), animPlaying ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
-        onClick: turnOff,
-        children: "STOP"
+        onClick: function onClick() {
+          return setDrawMode(true);
+        },
+        children: "Drawing Mode"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+        style: drawMode ? {
+          'background-color': '#4CC2FF'
+        } : {
+          'background-color': '#7D7D7D'
+        },
+        onClick: function onClick() {
+          return setDrawMode(false);
+        },
+        children: "Animate Mode"
+      })]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+      id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["mode-select-line-mobile"],
+      style: drawMode ? {
+        transform: 'translate(8vw, -35px)'
+      } : {
+        transform: 'translate(55vw, -35px)'
+      }
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+      id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["mode-select-line-desktop"],
+      style: drawMode ? {
+        transform: 'translate(40.1vw, 5px)'
+      } : {
+        transform: 'translate(51vw, 5px)'
+      }
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("img", {
+      src: "./icons/trash-icon.png",
+      id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].trash,
+      onClick: turnOff
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+      id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["eraser-save-column"],
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("img", {
+        src: "./icons/eraser-icon.png",
+        id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].eraser,
+        onClick: function onClick() {
+          return handleColor('#000000');
+        }
+      }), error ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["error-pupup"],
+        children: ["! ", error, " !"]
+      }) : null, drawMode && !saving ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("button", {
+        id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["save-button"],
+        onClick: function onClick() {
+          return setSaving(true);
+        },
+        children: ["Save", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("img", {
+          src: "./icons/save-icon.png",
+          id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["save-icon"]
+        })]
+      }) : null, !drawMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["add-section"],
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+          id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["add-button"],
+          onClick: handleAddAnimFrame,
+          children: "Add"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+          children: frameCount
+        })]
+      }) : null, !drawMode && frameCount > 1 && !playClicked ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("button", {
+        id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["start-stop-button"],
+        onClick: function onClick() {
+          if (!pixelSending) {
+            handleFrameChoice(currentAnimFrame, true);
+            setPlayClicked(true);
+          }
+        },
+        children: ["Play", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("img", {
+          src: "./icons/animation-icon.png",
+          id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["start-stop-icon"]
+        })]
+      }) : null, playClicked ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("button", {
+        id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["start-stop-button"],
+        onClick: function onClick(e) {
+          if (!pixelSending) {
+            turnOff(e);
+            setPlayClicked(false);
+          }
+        },
+        children: ["Stop", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {})]
+      }) : null, !drawMode && !playClicked && frameCount >= 1 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+        id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["start-stop-button"],
+        onClick: function onClick() {
+          setCurrentAnimFrame(false);
+          setFrameCount(0);
+        },
+        children: "Done\u2713"
+      }) : null, saving ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["save-form"],
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+          id: "frameName",
+          type: "text",
+          maxLength: "7",
+          placeholder: "name..."
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+          id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].checkmark,
+          onClick: handleSaveFrame
+        })]
       }) : null]
-    }) : null]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+      id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["matrix-color-section"],
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["preset-color-picker"],
+        children: [colorButtons, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("img", {
+          src: "./icons/color-picker.png",
+          id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["color-picker"],
+          onClick: function onClick() {
+            return setSelectColor(true);
+          }
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_MatrixButtons_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        mouseDown: mouseDown,
+        sendRequests: sendRequests,
+        selectedColor: selectedColor
+      })]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("a", {
+      href: "https://www.flaticon.com/free-icons/color-picker",
+      title: "color picker icons",
+      id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].credit,
+      children: "Color picker icons created by Design Circle - Flaticon"
+    })]
   });
 };
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (DrawMode);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CreateMode);
 
 /***/ }),
 
-/***/ "./client/src/frameChoices.jsx":
-/*!*************************************!*\
-  !*** ./client/src/frameChoices.jsx ***!
-  \*************************************/
+/***/ "./client/src/Gallery.jsx":
+/*!********************************!*\
+  !*** ./client/src/Gallery.jsx ***!
+  \********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -182,7 +303,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-var FrameChoices = function FrameChoices(_ref) {
+var Gallery = function Gallery(_ref) {
   var frames = _ref.frames,
     handleFrameChoice = _ref.handleFrameChoice,
     prevFrameNames = _ref.prevFrameNames,
@@ -296,7 +417,300 @@ var FrameChoices = function FrameChoices(_ref) {
     })]
   });
 };
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (FrameChoices);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Gallery);
+
+/***/ }),
+
+/***/ "./client/src/HomePage.jsx":
+/*!*********************************!*\
+  !*** ./client/src/HomePage.jsx ***!
+  \*********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./cssModules/homePage.module.css */ "./client/src/cssModules/homePage.module.css");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
+
+
+var HomePage = function HomePage(_ref) {
+  var handleConnect = _ref.handleConnect,
+    isConnected = _ref.isConnected;
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+      className: "".concat(_cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["rgb-line"]),
+      id: "".concat(_cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].top)
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+      id: "".concat(_cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].main),
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h1", {
+        className: "".concat(_cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].title),
+        children: "LED Canvas"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h2", {
+        className: "".concat(_cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].title),
+        children: "Welcome"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("button", {
+        id: "".concat(_cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["blue-button"]),
+        onClick: handleConnect,
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("img", {
+          className: "".concat(_cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["button-icon"]),
+          src: "./icons/blu.png"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("img", {
+          className: "".concat(_cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["button-icon"]),
+          src: "./icons/arrow.png"
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("p", {
+        className: "".concat(_cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].title),
+        children: "Not Connected"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h3", {})]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+      className: "".concat(_cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["rgb-line"]),
+      id: "".concat(_cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].bottom)
+    })]
+  });
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (HomePage);
+
+/***/ }),
+
+/***/ "./client/src/MatrixButtons.jsx":
+/*!**************************************!*\
+  !*** ./client/src/MatrixButtons.jsx ***!
+  \**************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./cssModules/createMode.module.css */ "./client/src/cssModules/createMode.module.css");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+var MatrixButtons = function MatrixButtons(_ref) {
+  var mouseDown = _ref.mouseDown;
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+    _useState2 = _slicedToArray(_useState, 2),
+    buttons = _useState2[0],
+    setButtons = _useState2[1];
+  var handleDataSend = function handleDataSend(value) {
+    window.sendRequests["P" + value] = true;
+  };
+  function handleDraw(e, clicked, value) {
+    value = e ? e.target.id : value;
+    if (mouseDown || clicked) {
+      if (value.includes(',')) {
+        //think about more efficient solutions
+        document.getElementById(value).style.backgroundColor = window.color;
+        handleDataSend(value);
+      }
+    }
+  }
+  var createButtons = function createButtons() {
+    var y = 0;
+    var x = 0;
+    var divMatrix = [];
+    var curButtons = [];
+    while (y < 16) {
+      if (x === 16) {
+        x = 0;
+        y++;
+        divMatrix.push( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+          className: "".concat(y, " ").concat(_cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["button-column"]),
+          children: curButtons
+        }, y));
+        curButtons = [];
+        if (y === 16) {
+          break;
+        }
+      }
+      curButtons.push( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+        id: "".concat(x, ",").concat(y),
+        className: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["matrix-button"],
+        onMouseDown: function onMouseDown(e) {
+          handleDraw(e, true);
+        },
+        onMouseEnter: handleDraw
+      }, x));
+      x++;
+    }
+    setButtons(divMatrix);
+  };
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(createButtons, [mouseDown]);
+  function handleTouchMove(e) {
+    e.preventDefault();
+    var touch = e.touches[0];
+    var x = touch.clientX;
+    var y = touch.clientY;
+    var button = document.elementFromPoint(x, y);
+    if (!button || !button.id) {
+      return;
+    }
+    handleDraw(null, true, button.id);
+    // update state based on the touch position
+  }
+
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    var element = document.getElementById('buttons');
+    element.addEventListener('touchmove', handleTouchMove, {
+      passive: false
+    });
+    return function () {
+      element.removeEventListener('touchmove', handleTouchMove);
+    };
+  }, []);
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+    id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["matrix-widget"],
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+      id: "buttons",
+      className: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].buttons,
+      children: buttons
+    })
+  });
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (MatrixButtons);
+
+/***/ }),
+
+/***/ "./client/src/TopBar.jsx":
+/*!*******************************!*\
+  !*** ./client/src/TopBar.jsx ***!
+  \*******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _cssModules_topBar_module_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./cssModules/topBar.module.css */ "./client/src/cssModules/topBar.module.css");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
+
+
+var TopBar = function TopBar(_ref) {
+  var selectedColor = _ref.selectedColor;
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+    id: _cssModules_topBar_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].widget,
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+      id: _cssModules_topBar_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["back-button"],
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("img", {
+        id: _cssModules_topBar_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["button-icon"],
+        src: "./icons/arrowThick.png"
+      })
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+      id: _cssModules_topBar_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].title,
+      style: {
+        color: selectedColor
+      },
+      children: "LED Canvas"
+    })]
+  });
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (TopBar);
+
+/***/ }),
+
+/***/ "./client/src/avController.jsx":
+/*!*************************************!*\
+  !*** ./client/src/avController.jsx ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_colorful__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-colorful */ "./node_modules/react-colorful/dist/index.mjs");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+
+var AVController = function AVController(_ref) {
+  var handleChooseColor = _ref.handleChooseColor,
+    setCurChosenColor = _ref.setCurChosenColor,
+    modeDataSending = _ref.modeDataSending,
+    colorChoices = _ref.colorChoices,
+    handleModeStartStop = _ref.handleModeStartStop,
+    curChosenColor = _ref.curChosenColor;
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState2 = _slicedToArray(_useState, 2),
+    startClicked = _useState2[0],
+    setStartClicked = _useState2[1];
+  var handleAVColor = function handleAVColor(newColor) {
+    if (colorChoices.length < 2) {
+      setCurChosenColor(newColor);
+    }
+  };
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+    id: "avController",
+    children: !modeDataSending ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.Fragment, {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+        className: "picker-container",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(react_colorful__WEBPACK_IMPORTED_MODULE_2__.HexColorPicker, {
+          style: {
+            height: 'calc(90vw * 0.5)'
+          },
+          color: color,
+          onChange: handleAVColor
+        })
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+        children: colorChoices.map(function (curChoice) {
+          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+            style: {
+              'backgroundColor': curChoice,
+              'width': '100px',
+              'height': '100px'
+            }
+          });
+        })
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
+        style: {
+          'color': curChosenColor
+        },
+        onClick: handleChooseColor,
+        children: "Choose Color"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
+        onClick: function onClick(e) {
+          handleModeStartStop(e, false);
+          setStartClicked(!startClicked);
+        },
+        children: !startClicked ? "Start" : "Stop"
+      })]
+    }) : null
+  });
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (AVController);
 
 /***/ }),
 
@@ -312,25 +726,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "handleDelete": () => (/* binding */ handleDelete),
 /* harmony export */   "handleSave": () => (/* binding */ handleSave)
 /* harmony export */ });
-var handleSave = function handleSave(sendData, setFrames, frames, anims, setAnims, setInputError, e, animation) {
-  var animName = arguments.length > 8 && arguments[8] !== undefined ? arguments[8] : document.getElementById('animName').value;
-  setInputError(false);
-  var drawName = document.getElementById('drawName').value;
-  if (drawName.length > 0 || animName.length > 0) {
+var handleSave = function handleSave(sendData, setFrames, frames, anims, setAnims, e, animation, frameName) {
+  if (frameName.length > 0) {
+    //Returns string if error otherwise false
     var regex = /^[a-zA-Z0-9_\-]+$/; // valid characters are letters, numbers, underscores, and dashes
-    if (!regex.test(drawName) && !animation || !regex.test(animName) && animation) {
+    if (!regex.test(frameName)) {
       // the name is invalid
-      setInputError("Invalid character");
-      return;
+      return "Invalid character";
     }
     if (animation) {
-      if (!anims.includes(animName)) {
+      if (!anims.includes(frameName)) {
         var newAnims = JSON.parse(JSON.stringify(anims));
-        newAnims.push(animName);
+        newAnims.push(frameName);
         setAnims(newAnims);
       }
-      sendData('A' + animName);
-      return;
+      sendData('A' + frameName);
+      return false;
     }
     //Retrieves all matrix colors and adds them to matrix array
     var columnElements = document.getElementById('buttons').children;
@@ -344,13 +755,14 @@ var handleSave = function handleSave(sendData, setFrames, frames, anims, setAnim
         curColumn.push(curColor);
       }
     }
-    curFrame[16] = drawName; //Set 16th column to name of frame
+    curFrame[16] = frameName; //Set 16th column to name of frame
     var newFrames = JSON.parse(JSON.stringify(frames));
     newFrames.push(curFrame);
     setFrames(newFrames);
-    sendData('S' + drawName);
+    sendData('S' + frameName);
+    return false;
   } else {
-    setInputError("Please input a name for your drawing");
+    return "Please input a name for your drawing";
   }
 };
 var handleDelete = function handleDelete(setFrames, frames, setPrevFrameNames, prevFrameNames, anims, setAnims, sendData, frameName, idx, type) {
@@ -561,164 +973,6 @@ function gotCharacteristics(error, characteristics, paramFuncs) {
 
 /***/ }),
 
-/***/ "./client/src/homePage.jsx":
-/*!*********************************!*\
-  !*** ./client/src/homePage.jsx ***!
-  \*********************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./cssModules/homePage.module.css */ "./client/src/cssModules/homePage.module.css");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-
-
-
-
-var HomePage = function HomePage(_ref) {
-  var handleConnect = _ref.handleConnect,
-    isConnected = _ref.isConnected;
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-      children: "Version 2.0"
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-      className: "".concat(_cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["rgb-line"]),
-      id: "".concat(_cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].top)
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-      id: "".concat(_cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].main),
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h1", {
-        className: "".concat(_cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].title),
-        children: "LED Canvas"
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h2", {
-        className: "".concat(_cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].title),
-        children: "Welcome"
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("button", {
-        onClick: handleConnect,
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("img", {
-          className: "".concat(_cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["button-icon"]),
-          src: "./icons/blu.png"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("img", {
-          className: "".concat(_cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["button-icon"]),
-          src: "./icons/arrow.png"
-        })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("p", {
-        className: "".concat(_cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].title),
-        children: "Not Connected"
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h3", {})]
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-      className: "".concat(_cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["rgb-line"]),
-      id: "".concat(_cssModules_homePage_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].bottom)
-    })]
-  });
-};
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (HomePage);
-
-/***/ }),
-
-/***/ "./client/src/matrixButtons.jsx":
-/*!**************************************!*\
-  !*** ./client/src/matrixButtons.jsx ***!
-  \**************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
-function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-
-var MatrixButtons = function MatrixButtons(_ref) {
-  var mouseDown = _ref.mouseDown;
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
-    _useState2 = _slicedToArray(_useState, 2),
-    buttons = _useState2[0],
-    setButtons = _useState2[1];
-  var handleDataSend = function handleDataSend(value) {
-    window.sendRequests["P" + value] = true;
-  };
-  function handleDraw(e, clicked, value) {
-    value = e ? e.target.id : value;
-    if (mouseDown || clicked) {
-      document.getElementById(value).style.backgroundColor = window.color;
-      handleDataSend(value);
-    }
-  }
-  var createButtons = function createButtons() {
-    var y = 0;
-    var x = 0;
-    var divMatrix = [];
-    var curButtons = [];
-    while (y < 16) {
-      if (x === 16) {
-        x = 0;
-        y++;
-        divMatrix.push( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
-          className: "".concat(y, " buttonColumn"),
-          children: curButtons
-        }));
-        curButtons = [];
-        if (y === 16) {
-          break;
-        }
-      }
-      curButtons.push( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
-        id: "".concat(x, ",").concat(y),
-        onMouseDown: function onMouseDown(e) {
-          handleDraw(e, true);
-        },
-        onMouseEnter: handleDraw
-      }));
-      x++;
-    }
-    setButtons(divMatrix);
-  };
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(createButtons, [mouseDown]);
-  function handleTouchMove(e) {
-    e.preventDefault();
-    var touch = e.touches[0];
-    var x = touch.clientX;
-    var y = touch.clientY;
-    var button = document.elementFromPoint(x, y);
-    if (!button || !button.id) {
-      return;
-    }
-    handleDraw(null, true, button.id);
-    // update state based on the touch position
-  }
-
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    var element = document.getElementById('buttons');
-    element.addEventListener('touchmove', handleTouchMove, {
-      passive: false
-    });
-    return function () {
-      element.removeEventListener('touchmove', handleTouchMove);
-    };
-  }, []);
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
-    id: "buttons",
-    children: buttons
-  });
-};
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (MatrixButtons);
-
-/***/ }),
-
 /***/ "./client/src/rainController.jsx":
 /*!***************************************!*\
   !*** ./client/src/rainController.jsx ***!
@@ -897,6 +1151,42 @@ module.exports = function (cssWithMappingToString) {
     }
   };
   return list;
+};
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/runtime/getUrl.js":
+/*!********************************************************!*\
+  !*** ./node_modules/css-loader/dist/runtime/getUrl.js ***!
+  \********************************************************/
+/***/ ((module) => {
+
+"use strict";
+
+
+module.exports = function (url, options) {
+  if (!options) {
+    options = {};
+  }
+  if (!url) {
+    return url;
+  }
+  url = String(url.__esModule ? url.default : url);
+
+  // If url is already wrapped in quotes, remove them
+  if (/^['"].*['"]$/.test(url)) {
+    url = url.slice(1, -1);
+  }
+  if (options.hash) {
+    url += options.hash;
+  }
+
+  // Should url be wrapped?
+  // See https://drafts.csswg.org/css-values-3/#urls
+  if (/["'() \t\n]|(%20)/.test(url) || options.needQuotes) {
+    return "\"".concat(url.replace(/"/g, '\\"').replace(/\n/g, "\\n"), "\"");
+  }
+  return url;
 };
 
 /***/ }),
@@ -20205,6 +20495,66 @@ if (false) {} else {
 
 /***/ }),
 
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./client/src/cssModules/createMode.module.css":
+/*!***********************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./client/src/cssModules/createMode.module.css ***!
+  \***********************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ "./node_modules/css-loader/dist/runtime/sourceMaps.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/getUrl.js */ "./node_modules/css-loader/dist/runtime/getUrl.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_2__);
+// Imports
+
+
+
+var ___CSS_LOADER_URL_IMPORT_0___ = new URL(/* asset import */ __webpack_require__(/*! data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2724%27 height=%2724%27%3E%3Cpath fill=%27lightgreen%27 d=%27M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8.009 8.009 0 0 1-8 8z%27/%3E%3Cpath fill=%27lightgreen%27 d=%27M16.293 8.293 11 13.586l-2.293-2.293-1.414 1.414L11 16.414l6.707-6.707-1.414-1.414z%27/%3E%3C/svg%3E */ "data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2724%27 height=%2724%27%3E%3Cpath fill=%27lightgreen%27 d=%27M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8.009 8.009 0 0 1-8 8z%27/%3E%3Cpath fill=%27lightgreen%27 d=%27M16.293 8.293 11 13.586l-2.293-2.293-1.414 1.414L11 16.414l6.707-6.707-1.414-1.414z%27/%3E%3C/svg%3E"), __webpack_require__.b);
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
+var ___CSS_LOADER_URL_REPLACEMENT_0___ = _node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_2___default()(___CSS_LOADER_URL_IMPORT_0___);
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "#usl_yAlxxfZrkdQc2boR {\n  font-family: 'Roboto', sans-serif;\n}\n\n#qDyetfokRCzfrByBexH7 {\n  display: flex;\n  justify-content: space-between;\n  margin: 20px;\n  margin-bottom: 40px;\n}\n\n#qDyetfokRCzfrByBexH7 button {\n  border: none;\n  padding: 13px 25px;\n  font-weight: bold;\n  font-size: 13px;\n  border-radius: 15px;\n  color: #121D24;\n}\n\n#WV59dg5u_OJpLiSvfYZT, #bWcDN7yqz2m1ocaJ4f4g {\n  position: absolute;\n  height: 3px;\n  width: 120px;\n  border-radius: 10px;\n  background-color: #4CC2FF;\n  transition: transform 0.3s ease;\n}\n\n#bWcDN7yqz2m1ocaJ4f4g {\n  width: 0;\n  height: 0;\n}\n\n\n.BpEn_XLLHI9JG8PaSTQM {\n\tflex: 1;\n  flex-direction: column;\n  margin: 0;\n}\n\n.BpEn_XLLHI9JG8PaSTQM button {\n\taspect-ratio : 1 / 1;\n  flex-grow: 1;\n  width: 100%;\n\tbackground-color: rgb(0, 0, 0);\n  border: 1px solid white;\n  border-radius: 4px;\n}\n\n.QXf7tIq86ySqUBdobBHQ {\n\tdisplay: flex;\n\twidth: 100%;\n\tmax-width: 600px;\n}\n\n.Chvp2PNTU5bOJT9W0UTB {\n  width: 30px;\n  height: 30px;\n  border: none;\n  border-radius: 5px;\n  margin: 0 1.1vw;\n}\n\n#WbPPJemBXhzTgCG_2U81 {\n  width: 30px;\n  height: 30px;\n}\n\n#ykRA0B5UzTurciM72MKl {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  margin-bottom: 20px;\n}\n\n\n#c5hjAmrewVXQxPlsXSJM {\n  width: 40px;\n  height: 40px;\n  margin: 0 5px;\n}\n\n#d7Mu_gXsL3IzSApxiFpS {\n  display: block;\n  transform: rotate(45deg);\n  width: 40px;\n  height: 40px;\n  margin-bottom: 10px;\n}\n\n#NYYDzfkbYC8D9OZJz6RU {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  border: none;\n  padding: 5px 0px;\n  font-weight: 600;\n  font-size: 70%;\n  border-radius: 5px;\n  background-color: #4cff5b;\n  color: #121D24;\n\n}\n\n#KMr5UbbiWbHl38S34nJw {\n  width: 15%;\n  height: 15%;\n  margin-left: 10%;\n}\n\n#p6lOefaAGmgPjjPGGFqw {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  background-color: #4CC2FF;\n  border: none;\n  border-radius: 5px;\n  padding: 5px 15px;\n  font-weight: bold;\n  color: #182b36;\n}\n\n#hHWO6oQzjaDzvYkVA3kA {\n  width: 15px;\n  height: 15px;\n}\n\n#p6lOefaAGmgPjjPGGFqw div {\n  background-color: red;\n  border-radius: 5px;\n  width: 15px;\n  height: 15px;\n}\n\n\n#bxNeTtvDNLRtHPQeJ_Fs {\n  display: flex;\n  align-items: center;\n  margin-left: 20px;\n}\n\n#bxNeTtvDNLRtHPQeJ_Fs div {\n  background-color: #2d6f91;\n  color: white;\n  border-radius: 5px;\n  width: 20px;\n  height: 20px;\n  text-align: center;\n  font-weight: bold;\n  margin-left: 5px;\n}\n\n#t8kzB9bkjIXrw_4dvSjj {\n  background-color: #4cff5b;\n  border: none;\n  border-radius: 5px;\n  padding: 5px 10px;\n  font-weight: bold;\n}\n\n#FuUN9yHbY2iJkNkmULIm {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  flex-direction: column;\n}\n\n#jK5GQnyqY53LqQfS7CUA {\n  margin-top: 20px;\n}\n\n\n@media screen and (min-aspect-ratio: 3/2) { /* Desktop mode switch*/\n  #FuUN9yHbY2iJkNkmULIm {\n    flex-direction: row;\n  }\n  #jK5GQnyqY53LqQfS7CUA {\n    order: 0;\n  }\n  #Oa3Upf9OzloKPAdvzWgC {\n    order: 1;\n    margin-left: 20px;\n  }\n  .Chvp2PNTU5bOJT9W0UTB {\n    display: block;\n    margin: 3vh 0;\n  }\n  #ykRA0B5UzTurciM72MKl {\n    margin: 0px 32vw;\n  }\n  #c5hjAmrewVXQxPlsXSJM {\n    margin-left: 32vw;\n  }\n  #qDyetfokRCzfrByBexH7 {\n    margin: 0 40%;\n  }\n  #WV59dg5u_OJpLiSvfYZT {\n    width: 0;\n    height: 0;\n  }\n  #bWcDN7yqz2m1ocaJ4f4g {\n    height: 3px;\n    width: 120px;\n  }\n}\n\n\n#LqNfF5A2BCDzAGCVhiql {\n  position: relative;\n  bottom: 0;\n  font-size: 10px;\n  color: rgb(0, 0, 126);\n}\n\n#_wLpWcqCM76DJ8HLA_13 {\n  z-index: 10;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n}\n\n#jsR_MzAIQvYWtUriy6uG {\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100vw;\n  height: 100vh;\n  background-color: rgba(0, 0, 0, 0.308);\n}\n\n#fr1DuugvzNpOOA0RfyRi {\n  position: absolute;\n  z-index: 10;\n  display: flex;\n  background-color: #00ccff7a;\n  padding: 10px;\n  left: 50%;\n  transform: translateX(-50%);\n  border-radius: 5px;\n}\n\n#O8fg4ai4DCdNKqd7H8gS {\n  width: 35px;\n  height: 35px;\n  background-repeat: no-repeat;\n  background-size: 35px;\n  margin-left: 5px;\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ");\n}\n\n#SzaZ3hlv1errwIZALpjw {\n  z-index: 20;\n  position: absolute;\n  left: 50%;\n  top: 20%;\n  transform: translateX(-50%);\n  color: rgb(255, 255, 255);\n  background-color: rgb(153, 0, 0);\n  font-weight: bold;\n  border-radius: 5px;\n  padding: 5px 5px;\n}", "",{"version":3,"sources":["webpack://./client/src/cssModules/createMode.module.css"],"names":[],"mappings":"AAAA;EACE,iCAAiC;AACnC;;AAEA;EACE,aAAa;EACb,8BAA8B;EAC9B,YAAY;EACZ,mBAAmB;AACrB;;AAEA;EACE,YAAY;EACZ,kBAAkB;EAClB,iBAAiB;EACjB,eAAe;EACf,mBAAmB;EACnB,cAAc;AAChB;;AAEA;EACE,kBAAkB;EAClB,WAAW;EACX,YAAY;EACZ,mBAAmB;EACnB,yBAAyB;EACzB,+BAA+B;AACjC;;AAEA;EACE,QAAQ;EACR,SAAS;AACX;;;AAGA;CACC,OAAO;EACN,sBAAsB;EACtB,SAAS;AACX;;AAEA;CACC,oBAAoB;EACnB,YAAY;EACZ,WAAW;CACZ,8BAA8B;EAC7B,uBAAuB;EACvB,kBAAkB;AACpB;;AAEA;CACC,aAAa;CACb,WAAW;CACX,gBAAgB;AACjB;;AAEA;EACE,WAAW;EACX,YAAY;EACZ,YAAY;EACZ,kBAAkB;EAClB,eAAe;AACjB;;AAEA;EACE,WAAW;EACX,YAAY;AACd;;AAEA;EACE,aAAa;EACb,8BAA8B;EAC9B,mBAAmB;EACnB,mBAAmB;AACrB;;;AAGA;EACE,WAAW;EACX,YAAY;EACZ,aAAa;AACf;;AAEA;EACE,cAAc;EACd,wBAAwB;EACxB,WAAW;EACX,YAAY;EACZ,mBAAmB;AACrB;;AAEA;EACE,aAAa;EACb,mBAAmB;EACnB,uBAAuB;EACvB,YAAY;EACZ,gBAAgB;EAChB,gBAAgB;EAChB,cAAc;EACd,kBAAkB;EAClB,yBAAyB;EACzB,cAAc;;AAEhB;;AAEA;EACE,UAAU;EACV,WAAW;EACX,gBAAgB;AAClB;;AAEA;EACE,aAAa;EACb,mBAAmB;EACnB,uBAAuB;EACvB,yBAAyB;EACzB,YAAY;EACZ,kBAAkB;EAClB,iBAAiB;EACjB,iBAAiB;EACjB,cAAc;AAChB;;AAEA;EACE,WAAW;EACX,YAAY;AACd;;AAEA;EACE,qBAAqB;EACrB,kBAAkB;EAClB,WAAW;EACX,YAAY;AACd;;;AAGA;EACE,aAAa;EACb,mBAAmB;EACnB,iBAAiB;AACnB;;AAEA;EACE,yBAAyB;EACzB,YAAY;EACZ,kBAAkB;EAClB,WAAW;EACX,YAAY;EACZ,kBAAkB;EAClB,iBAAiB;EACjB,gBAAgB;AAClB;;AAEA;EACE,yBAAyB;EACzB,YAAY;EACZ,kBAAkB;EAClB,iBAAiB;EACjB,iBAAiB;AACnB;;AAEA;EACE,aAAa;EACb,mBAAmB;EACnB,uBAAuB;EACvB,sBAAsB;AACxB;;AAEA;EACE,gBAAgB;AAClB;;;AAGA,4CAA4C,uBAAuB;EACjE;IACE,mBAAmB;EACrB;EACA;IACE,QAAQ;EACV;EACA;IACE,QAAQ;IACR,iBAAiB;EACnB;EACA;IACE,cAAc;IACd,aAAa;EACf;EACA;IACE,gBAAgB;EAClB;EACA;IACE,iBAAiB;EACnB;EACA;IACE,aAAa;EACf;EACA;IACE,QAAQ;IACR,SAAS;EACX;EACA;IACE,WAAW;IACX,YAAY;EACd;AACF;;;AAGA;EACE,kBAAkB;EAClB,SAAS;EACT,eAAe;EACf,qBAAqB;AACvB;;AAEA;EACE,WAAW;EACX,kBAAkB;EAClB,QAAQ;EACR,SAAS;EACT,gCAAgC;AAClC;;AAEA;EACE,eAAe;EACf,MAAM;EACN,OAAO;EACP,YAAY;EACZ,aAAa;EACb,sCAAsC;AACxC;;AAEA;EACE,kBAAkB;EAClB,WAAW;EACX,aAAa;EACb,2BAA2B;EAC3B,aAAa;EACb,SAAS;EACT,2BAA2B;EAC3B,kBAAkB;AACpB;;AAEA;EACE,WAAW;EACX,YAAY;EACZ,4BAA4B;EAC5B,qBAAqB;EACrB,gBAAgB;EAChB,yDAA2W;AAC7W;;AAEA;EACE,WAAW;EACX,kBAAkB;EAClB,SAAS;EACT,QAAQ;EACR,2BAA2B;EAC3B,yBAAyB;EACzB,gCAAgC;EAChC,iBAAiB;EACjB,kBAAkB;EAClB,gBAAgB;AAClB","sourcesContent":["#widget {\n  font-family: 'Roboto', sans-serif;\n}\n\n#mode-picker {\n  display: flex;\n  justify-content: space-between;\n  margin: 20px;\n  margin-bottom: 40px;\n}\n\n#mode-picker button {\n  border: none;\n  padding: 13px 25px;\n  font-weight: bold;\n  font-size: 13px;\n  border-radius: 15px;\n  color: #121D24;\n}\n\n#mode-select-line-mobile, #mode-select-line-desktop {\n  position: absolute;\n  height: 3px;\n  width: 120px;\n  border-radius: 10px;\n  background-color: #4CC2FF;\n  transition: transform 0.3s ease;\n}\n\n#mode-select-line-desktop {\n  width: 0;\n  height: 0;\n}\n\n\n.button-column {\n\tflex: 1;\n  flex-direction: column;\n  margin: 0;\n}\n\n.button-column button {\n\taspect-ratio : 1 / 1;\n  flex-grow: 1;\n  width: 100%;\n\tbackground-color: rgb(0, 0, 0);\n  border: 1px solid white;\n  border-radius: 4px;\n}\n\n.buttons {\n\tdisplay: flex;\n\twidth: 100%;\n\tmax-width: 600px;\n}\n\n.color-buttons {\n  width: 30px;\n  height: 30px;\n  border: none;\n  border-radius: 5px;\n  margin: 0 1.1vw;\n}\n\n#color-picker {\n  width: 30px;\n  height: 30px;\n}\n\n#eraser-save-column {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  margin-bottom: 20px;\n}\n\n\n#trash {\n  width: 40px;\n  height: 40px;\n  margin: 0 5px;\n}\n\n#eraser {\n  display: block;\n  transform: rotate(45deg);\n  width: 40px;\n  height: 40px;\n  margin-bottom: 10px;\n}\n\n#save-button {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  border: none;\n  padding: 5px 0px;\n  font-weight: 600;\n  font-size: 70%;\n  border-radius: 5px;\n  background-color: #4cff5b;\n  color: #121D24;\n\n}\n\n#save-icon {\n  width: 15%;\n  height: 15%;\n  margin-left: 10%;\n}\n\n#start-stop-button {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  background-color: #4CC2FF;\n  border: none;\n  border-radius: 5px;\n  padding: 5px 15px;\n  font-weight: bold;\n  color: #182b36;\n}\n\n#start-stop-icon {\n  width: 15px;\n  height: 15px;\n}\n\n#start-stop-button div {\n  background-color: red;\n  border-radius: 5px;\n  width: 15px;\n  height: 15px;\n}\n\n\n#add-section {\n  display: flex;\n  align-items: center;\n  margin-left: 20px;\n}\n\n#add-section div {\n  background-color: #2d6f91;\n  color: white;\n  border-radius: 5px;\n  width: 20px;\n  height: 20px;\n  text-align: center;\n  font-weight: bold;\n  margin-left: 5px;\n}\n\n#add-button {\n  background-color: #4cff5b;\n  border: none;\n  border-radius: 5px;\n  padding: 5px 10px;\n  font-weight: bold;\n}\n\n#matrix-color-section {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  flex-direction: column;\n}\n\n#matrix-widget {\n  margin-top: 20px;\n}\n\n\n@media screen and (min-aspect-ratio: 3/2) { /* Desktop mode switch*/\n  #matrix-color-section {\n    flex-direction: row;\n  }\n  #matrix-widget {\n    order: 0;\n  }\n  #preset-color-picker {\n    order: 1;\n    margin-left: 20px;\n  }\n  .color-buttons {\n    display: block;\n    margin: 3vh 0;\n  }\n  #eraser-save-column {\n    margin: 0px 32vw;\n  }\n  #trash {\n    margin-left: 32vw;\n  }\n  #mode-picker {\n    margin: 0 40%;\n  }\n  #mode-select-line-mobile {\n    width: 0;\n    height: 0;\n  }\n  #mode-select-line-desktop {\n    height: 3px;\n    width: 120px;\n  }\n}\n\n\n#credit {\n  position: relative;\n  bottom: 0;\n  font-size: 10px;\n  color: rgb(0, 0, 126);\n}\n\n#color-picker-container {\n  z-index: 10;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n}\n\n#popup-closer {\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100vw;\n  height: 100vh;\n  background-color: rgba(0, 0, 0, 0.308);\n}\n\n#save-form {\n  position: absolute;\n  z-index: 10;\n  display: flex;\n  background-color: #00ccff7a;\n  padding: 10px;\n  left: 50%;\n  transform: translateX(-50%);\n  border-radius: 5px;\n}\n\n#checkmark {\n  width: 35px;\n  height: 35px;\n  background-repeat: no-repeat;\n  background-size: 35px;\n  margin-left: 5px;\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Cpath fill='lightgreen' d='M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8.009 8.009 0 0 1-8 8z'/%3E%3Cpath fill='lightgreen' d='M16.293 8.293 11 13.586l-2.293-2.293-1.414 1.414L11 16.414l6.707-6.707-1.414-1.414z'/%3E%3C/svg%3E\");\n}\n\n#error-pupup {\n  z-index: 20;\n  position: absolute;\n  left: 50%;\n  top: 20%;\n  transform: translateX(-50%);\n  color: rgb(255, 255, 255);\n  background-color: rgb(153, 0, 0);\n  font-weight: bold;\n  border-radius: 5px;\n  padding: 5px 5px;\n}"],"sourceRoot":""}]);
+// Exports
+___CSS_LOADER_EXPORT___.locals = {
+	"widget": "usl_yAlxxfZrkdQc2boR",
+	"mode-picker": "qDyetfokRCzfrByBexH7",
+	"mode-select-line-mobile": "WV59dg5u_OJpLiSvfYZT",
+	"mode-select-line-desktop": "bWcDN7yqz2m1ocaJ4f4g",
+	"button-column": "BpEn_XLLHI9JG8PaSTQM",
+	"buttons": "QXf7tIq86ySqUBdobBHQ",
+	"color-buttons": "Chvp2PNTU5bOJT9W0UTB",
+	"color-picker": "WbPPJemBXhzTgCG_2U81",
+	"eraser-save-column": "ykRA0B5UzTurciM72MKl",
+	"trash": "c5hjAmrewVXQxPlsXSJM",
+	"eraser": "d7Mu_gXsL3IzSApxiFpS",
+	"save-button": "NYYDzfkbYC8D9OZJz6RU",
+	"save-icon": "KMr5UbbiWbHl38S34nJw",
+	"start-stop-button": "p6lOefaAGmgPjjPGGFqw",
+	"start-stop-icon": "hHWO6oQzjaDzvYkVA3kA",
+	"add-section": "bxNeTtvDNLRtHPQeJ_Fs",
+	"add-button": "t8kzB9bkjIXrw_4dvSjj",
+	"matrix-color-section": "FuUN9yHbY2iJkNkmULIm",
+	"matrix-widget": "jK5GQnyqY53LqQfS7CUA",
+	"preset-color-picker": "Oa3Upf9OzloKPAdvzWgC",
+	"credit": "LqNfF5A2BCDzAGCVhiql",
+	"color-picker-container": "_wLpWcqCM76DJ8HLA_13",
+	"popup-closer": "jsR_MzAIQvYWtUriy6uG",
+	"save-form": "fr1DuugvzNpOOA0RfyRi",
+	"checkmark": "O8fg4ai4DCdNKqd7H8gS",
+	"error-pupup": "SzaZ3hlv1errwIZALpjw"
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
 /***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./client/src/cssModules/homePage.module.css":
 /*!*********************************************************************************************************************!*\
   !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./client/src/cssModules/homePage.module.css ***!
@@ -20225,7 +20575,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".uqNmLZEiRQKsk8jdHtij {\n\twidth: 100%;\n\theight: 5px;\n\ttransform: translateY(-3.5px);\n\tbackground: linear-gradient(to right, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff);\n\tbackground-size: 200% auto;\n\tanimation: CHl4pSVCDkbyd0C5IPjP 10s ease infinite;\n\tborder-radius: 20px;\n}\n\n@keyframes CHl4pSVCDkbyd0C5IPjP {\n  0% {\n    background-position: 0% 50%;\n  }\n  50% {\n    background-position: 100% 50%;\n  }\n  100% {\n    background-position: 0% 50%;\n  }\n}\n\n\n#ZI5zVKYw0G4AMOHawOEY {\n  position: absolute;\n  top: 5%;\n}\n\n#Pg8ygrC2KjQPlZ_OUxNM {\n  position: absolute;\n  bottom: 5%;\n}\n\n#jR53lvfLBFfG9bb9OLiQ {\n  display: flex;\n  align-items: center;\n  flex-direction: column;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n}\n\n.oQV9oJT3RfR5JQjav19b {\n  text-align: center;\n  font-family: 'Roboto', sans-serif;\n  margin: 0;\n}\n\nh1.oQV9oJT3RfR5JQjav19b {\n\tcolor: white;\n\tfont-weight: bold;\n\tfont-size: 40px;\n  white-space: nowrap;\n}\n\nh2.oQV9oJT3RfR5JQjav19b {\n  font-weight: lighter;\n  color: #BCBCBC;\n}\n\np.oQV9oJT3RfR5JQjav19b {\n  color: white;\n  font-size: 15px;\n  font-weight: lighter;\n  margin-top: 20px;\n}\n\n.PJHu9SIWXjh6tuRGmPkA {\n  width: 30px;\n  height: 30px;\n  margin: 10px 20px 10px 20px;\n}\n\nbutton {\n  display: flex;\n  justify-content: space-between;\n  margin-top: 30px;\n  background-color: #4CC2FF;\n  border-radius: 10px;\n  border: none;\n}\n\nbutton:hover {\n  animation: pqwc_Q063Pc5FmI2074w .3s ease forwards;\n}\n\n@keyframes pqwc_Q063Pc5FmI2074w {\n  0% {\n    background-color: #4CC2FF;\n  }\n  100% {\n    background-color: #337fa5;\n  }\n}", "",{"version":3,"sources":["webpack://./client/src/cssModules/homePage.module.css"],"names":[],"mappings":"AAAA;CACC,WAAW;CACX,WAAW;CACX,6BAA6B;CAC7B,oGAAoG;CACpG,0BAA0B;CAC1B,iDAAoC;CACpC,mBAAmB;AACpB;;AAEA;EACE;IACE,2BAA2B;EAC7B;EACA;IACE,6BAA6B;EAC/B;EACA;IACE,2BAA2B;EAC7B;AACF;;;AAGA;EACE,kBAAkB;EAClB,OAAO;AACT;;AAEA;EACE,kBAAkB;EAClB,UAAU;AACZ;;AAEA;EACE,aAAa;EACb,mBAAmB;EACnB,sBAAsB;EACtB,kBAAkB;EAClB,QAAQ;EACR,SAAS;EACT,gCAAgC;AAClC;;AAEA;EACE,kBAAkB;EAClB,iCAAiC;EACjC,SAAS;AACX;;AAEA;CACC,YAAY;CACZ,iBAAiB;CACjB,eAAe;EACd,mBAAmB;AACrB;;AAEA;EACE,oBAAoB;EACpB,cAAc;AAChB;;AAEA;EACE,YAAY;EACZ,eAAe;EACf,oBAAoB;EACpB,gBAAgB;AAClB;;AAEA;EACE,WAAW;EACX,YAAY;EACZ,2BAA2B;AAC7B;;AAEA;EACE,aAAa;EACb,8BAA8B;EAC9B,gBAAgB;EAChB,yBAAyB;EACzB,mBAAmB;EACnB,YAAY;AACd;;AAEA;EACE,iDAAkD;AACpD;;AAEA;EACE;IACE,yBAAyB;EAC3B;EACA;IACE,yBAAyB;EAC3B;AACF","sourcesContent":[".rgb-line {\n\twidth: 100%;\n\theight: 5px;\n\ttransform: translateY(-3.5px);\n\tbackground: linear-gradient(to right, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff);\n\tbackground-size: 200% auto;\n\tanimation: rainbow 10s ease infinite;\n\tborder-radius: 20px;\n}\n\n@keyframes rainbow {\n  0% {\n    background-position: 0% 50%;\n  }\n  50% {\n    background-position: 100% 50%;\n  }\n  100% {\n    background-position: 0% 50%;\n  }\n}\n\n\n#top {\n  position: absolute;\n  top: 5%;\n}\n\n#bottom {\n  position: absolute;\n  bottom: 5%;\n}\n\n#main {\n  display: flex;\n  align-items: center;\n  flex-direction: column;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n}\n\n.title {\n  text-align: center;\n  font-family: 'Roboto', sans-serif;\n  margin: 0;\n}\n\nh1.title {\n\tcolor: white;\n\tfont-weight: bold;\n\tfont-size: 40px;\n  white-space: nowrap;\n}\n\nh2.title {\n  font-weight: lighter;\n  color: #BCBCBC;\n}\n\np.title {\n  color: white;\n  font-size: 15px;\n  font-weight: lighter;\n  margin-top: 20px;\n}\n\n.button-icon {\n  width: 30px;\n  height: 30px;\n  margin: 10px 20px 10px 20px;\n}\n\nbutton {\n  display: flex;\n  justify-content: space-between;\n  margin-top: 30px;\n  background-color: #4CC2FF;\n  border-radius: 10px;\n  border: none;\n}\n\nbutton:hover {\n  animation: changeBackgroundColor .3s ease forwards;\n}\n\n@keyframes changeBackgroundColor {\n  0% {\n    background-color: #4CC2FF;\n  }\n  100% {\n    background-color: #337fa5;\n  }\n}"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, ".uqNmLZEiRQKsk8jdHtij {\n\twidth: 100%;\n\theight: 5px;\n\ttransform: translateY(-3.5px);\n\tbackground: linear-gradient(to right, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff);\n\tbackground-size: 200% auto;\n\tanimation: CHl4pSVCDkbyd0C5IPjP 10s ease infinite;\n\tborder-radius: 20px;\n}\n\n@keyframes CHl4pSVCDkbyd0C5IPjP {\n  0% {\n    background-position: 0% 50%;\n  }\n  50% {\n    background-position: 100% 50%;\n  }\n  100% {\n    background-position: 0% 50%;\n  }\n}\n\n\n#ZI5zVKYw0G4AMOHawOEY {\n  position: absolute;\n  top: 5%;\n}\n\n#Pg8ygrC2KjQPlZ_OUxNM {\n  position: absolute;\n  bottom: 5%;\n}\n\n#jR53lvfLBFfG9bb9OLiQ {\n  display: flex;\n  align-items: center;\n  flex-direction: column;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n}\n\n.oQV9oJT3RfR5JQjav19b {\n  text-align: center;\n  font-family: 'Roboto', sans-serif;\n  margin: 0;\n}\n\nh1.oQV9oJT3RfR5JQjav19b {\n\tcolor: white;\n\tfont-weight: bold;\n\tfont-size: 40px;\n  white-space: nowrap;\n}\n\nh2.oQV9oJT3RfR5JQjav19b {\n  font-weight: lighter;\n  color: #BCBCBC;\n}\n\np.oQV9oJT3RfR5JQjav19b {\n  color: white;\n  font-size: 15px;\n  font-weight: lighter;\n  margin-top: 20px;\n}\n\n.PJHu9SIWXjh6tuRGmPkA {\n  width: 30px;\n  height: 30px;\n  margin: 10px 20px 10px 20px;\n}\n\n#c99rg7UlqJvO8gzM3ux0 {\n  display: flex;\n  justify-content: space-between;\n  margin-top: 30px;\n  background-color: #4CC2FF;\n  border-radius: 10px;\n  border: none;\n}\n\n#c99rg7UlqJvO8gzM3ux0:hover {\n  animation: pqwc_Q063Pc5FmI2074w .3s ease forwards;\n}\n\n@keyframes pqwc_Q063Pc5FmI2074w {\n  0% {\n    background-color: #4CC2FF;\n  }\n  100% {\n    background-color: #337fa5;\n  }\n}", "",{"version":3,"sources":["webpack://./client/src/cssModules/homePage.module.css"],"names":[],"mappings":"AAAA;CACC,WAAW;CACX,WAAW;CACX,6BAA6B;CAC7B,oGAAoG;CACpG,0BAA0B;CAC1B,iDAAoC;CACpC,mBAAmB;AACpB;;AAEA;EACE;IACE,2BAA2B;EAC7B;EACA;IACE,6BAA6B;EAC/B;EACA;IACE,2BAA2B;EAC7B;AACF;;;AAGA;EACE,kBAAkB;EAClB,OAAO;AACT;;AAEA;EACE,kBAAkB;EAClB,UAAU;AACZ;;AAEA;EACE,aAAa;EACb,mBAAmB;EACnB,sBAAsB;EACtB,kBAAkB;EAClB,QAAQ;EACR,SAAS;EACT,gCAAgC;AAClC;;AAEA;EACE,kBAAkB;EAClB,iCAAiC;EACjC,SAAS;AACX;;AAEA;CACC,YAAY;CACZ,iBAAiB;CACjB,eAAe;EACd,mBAAmB;AACrB;;AAEA;EACE,oBAAoB;EACpB,cAAc;AAChB;;AAEA;EACE,YAAY;EACZ,eAAe;EACf,oBAAoB;EACpB,gBAAgB;AAClB;;AAEA;EACE,WAAW;EACX,YAAY;EACZ,2BAA2B;AAC7B;;AAEA;EACE,aAAa;EACb,8BAA8B;EAC9B,gBAAgB;EAChB,yBAAyB;EACzB,mBAAmB;EACnB,YAAY;AACd;;AAEA;EACE,iDAAkD;AACpD;;AAEA;EACE;IACE,yBAAyB;EAC3B;EACA;IACE,yBAAyB;EAC3B;AACF","sourcesContent":[".rgb-line {\n\twidth: 100%;\n\theight: 5px;\n\ttransform: translateY(-3.5px);\n\tbackground: linear-gradient(to right, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff);\n\tbackground-size: 200% auto;\n\tanimation: rainbow 10s ease infinite;\n\tborder-radius: 20px;\n}\n\n@keyframes rainbow {\n  0% {\n    background-position: 0% 50%;\n  }\n  50% {\n    background-position: 100% 50%;\n  }\n  100% {\n    background-position: 0% 50%;\n  }\n}\n\n\n#top {\n  position: absolute;\n  top: 5%;\n}\n\n#bottom {\n  position: absolute;\n  bottom: 5%;\n}\n\n#main {\n  display: flex;\n  align-items: center;\n  flex-direction: column;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n}\n\n.title {\n  text-align: center;\n  font-family: 'Roboto', sans-serif;\n  margin: 0;\n}\n\nh1.title {\n\tcolor: white;\n\tfont-weight: bold;\n\tfont-size: 40px;\n  white-space: nowrap;\n}\n\nh2.title {\n  font-weight: lighter;\n  color: #BCBCBC;\n}\n\np.title {\n  color: white;\n  font-size: 15px;\n  font-weight: lighter;\n  margin-top: 20px;\n}\n\n.button-icon {\n  width: 30px;\n  height: 30px;\n  margin: 10px 20px 10px 20px;\n}\n\n#blue-button {\n  display: flex;\n  justify-content: space-between;\n  margin-top: 30px;\n  background-color: #4CC2FF;\n  border-radius: 10px;\n  border: none;\n}\n\n#blue-button:hover {\n  animation: changeBackgroundColor .3s ease forwards;\n}\n\n@keyframes changeBackgroundColor {\n  0% {\n    background-color: #4CC2FF;\n  }\n  100% {\n    background-color: #337fa5;\n  }\n}"],"sourceRoot":""}]);
 // Exports
 ___CSS_LOADER_EXPORT___.locals = {
 	"rgb-line": "uqNmLZEiRQKsk8jdHtij",
@@ -20235,9 +20585,98 @@ ___CSS_LOADER_EXPORT___.locals = {
 	"main": "jR53lvfLBFfG9bb9OLiQ",
 	"title": "oQV9oJT3RfR5JQjav19b",
 	"button-icon": "PJHu9SIWXjh6tuRGmPkA",
+	"blue-button": "c99rg7UlqJvO8gzM3ux0",
 	"changeBackgroundColor": "pqwc_Q063Pc5FmI2074w"
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./client/src/cssModules/topBar.module.css":
+/*!*******************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./client/src/cssModules/topBar.module.css ***!
+  \*******************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ "./node_modules/css-loader/dist/runtime/sourceMaps.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+// Imports
+
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "#ukNaG7WgEOPayQqF4iCO {\n  margin: 10px 0 15px 0;\n}\n#PsD4LjbKBRDoIOJvrBzj {\n  width: 23px;\n  height: 23px;\n}\n\n#cKSqDjqmnqzP9GzqH9qJ {\n  background-color: transparent;\n  border: none;\n  margin-right: 20px;\n}\n\n#PEujSb5Dve5aTvab0e5q {\n  color: white;\n  display: inline-block;\n  font-family: 'Roboto', sans-serif;\n  font-weight: bold;\n  font-size: 23px;\n  position: absolute;\n  left: 50%;\n  transform: translate(-50%);\n}", "",{"version":3,"sources":["webpack://./client/src/cssModules/topBar.module.css"],"names":[],"mappings":"AAAA;EACE,qBAAqB;AACvB;AACA;EACE,WAAW;EACX,YAAY;AACd;;AAEA;EACE,6BAA6B;EAC7B,YAAY;EACZ,kBAAkB;AACpB;;AAEA;EACE,YAAY;EACZ,qBAAqB;EACrB,iCAAiC;EACjC,iBAAiB;EACjB,eAAe;EACf,kBAAkB;EAClB,SAAS;EACT,0BAA0B;AAC5B","sourcesContent":["#widget {\n  margin: 10px 0 15px 0;\n}\n#button-icon {\n  width: 23px;\n  height: 23px;\n}\n\n#back-button {\n  background-color: transparent;\n  border: none;\n  margin-right: 20px;\n}\n\n#title {\n  color: white;\n  display: inline-block;\n  font-family: 'Roboto', sans-serif;\n  font-weight: bold;\n  font-size: 23px;\n  position: absolute;\n  left: 50%;\n  transform: translate(-50%);\n}"],"sourceRoot":""}]);
+// Exports
+___CSS_LOADER_EXPORT___.locals = {
+	"widget": "ukNaG7WgEOPayQqF4iCO",
+	"button-icon": "PsD4LjbKBRDoIOJvrBzj",
+	"back-button": "cKSqDjqmnqzP9GzqH9qJ",
+	"title": "PEujSb5Dve5aTvab0e5q"
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./client/src/cssModules/createMode.module.css":
+/*!*****************************************************!*\
+  !*** ./client/src/cssModules/createMode.module.css ***!
+  \*****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/styleDomAPI.js */ "./node_modules/style-loader/dist/runtime/styleDomAPI.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/insertBySelector.js */ "./node_modules/style-loader/dist/runtime/insertBySelector.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js */ "./node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/insertStyleElement.js */ "./node_modules/style-loader/dist/runtime/insertStyleElement.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_createMode_module_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./createMode.module.css */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./client/src/cssModules/createMode.module.css");
+
+      
+      
+      
+      
+      
+      
+      
+      
+      
+
+var options = {};
+
+options.styleTagTransform = (_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default());
+options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default());
+
+      options.insert = _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default().bind(null, "head");
+    
+options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
+options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_createMode_module_css__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+
+
+
+
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_createMode_module_css__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_createMode_module_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_createMode_module_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
 
 /***/ }),
@@ -20293,6 +20732,61 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 
        /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_homePage_module_css__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_homePage_module_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_homePage_module_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+
+
+/***/ }),
+
+/***/ "./client/src/cssModules/topBar.module.css":
+/*!*************************************************!*\
+  !*** ./client/src/cssModules/topBar.module.css ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/styleDomAPI.js */ "./node_modules/style-loader/dist/runtime/styleDomAPI.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/insertBySelector.js */ "./node_modules/style-loader/dist/runtime/insertBySelector.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js */ "./node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/insertStyleElement.js */ "./node_modules/style-loader/dist/runtime/insertStyleElement.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_topBar_module_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./topBar.module.css */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./client/src/cssModules/topBar.module.css");
+
+      
+      
+      
+      
+      
+      
+      
+      
+      
+
+var options = {};
+
+options.styleTagTransform = (_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default());
+options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default());
+
+      options.insert = _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default().bind(null, "head");
+    
+options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
+options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_topBar_module_css__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+
+
+
+
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_topBar_module_css__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_topBar_module_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_topBar_module_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
 
 /***/ }),
@@ -20570,6 +21064,17 @@ module.exports = styleTagTransform;
 
 /***/ }),
 
+/***/ "data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2724%27 height=%2724%27%3E%3Cpath fill=%27lightgreen%27 d=%27M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8.009 8.009 0 0 1-8 8z%27/%3E%3Cpath fill=%27lightgreen%27 d=%27M16.293 8.293 11 13.586l-2.293-2.293-1.414 1.414L11 16.414l6.707-6.707-1.414-1.414z%27/%3E%3C/svg%3E":
+/*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2724%27 height=%2724%27%3E%3Cpath fill=%27lightgreen%27 d=%27M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8.009 8.009 0 0 1-8 8z%27/%3E%3Cpath fill=%27lightgreen%27 d=%27M16.293 8.293 11 13.586l-2.293-2.293-1.414 1.414L11 16.414l6.707-6.707-1.414-1.414z%27/%3E%3C/svg%3E ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = "data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2724%27 height=%2724%27%3E%3Cpath fill=%27lightgreen%27 d=%27M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8.009 8.009 0 0 1-8 8z%27/%3E%3Cpath fill=%27lightgreen%27 d=%27M16.293 8.293 11 13.586l-2.293-2.293-1.414 1.414L11 16.414l6.707-6.707-1.414-1.414z%27/%3E%3C/svg%3E";
+
+/***/ }),
+
 /***/ "./node_modules/react-colorful/dist/index.mjs":
 /*!****************************************************!*\
   !*** ./node_modules/react-colorful/dist/index.mjs ***!
@@ -20632,6 +21137,9 @@ function u(){return(u=Object.assign||function(e){for(var r=1;r<arguments.length;
 /******/ 		return module.exports;
 /******/ 	}
 /******/ 	
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = __webpack_modules__;
+/******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
 /******/ 	(() => {
@@ -20682,6 +21190,32 @@ function u(){return(u=Object.assign||function(e){for(var r=1;r<arguments.length;
 /******/ 		};
 /******/ 	})();
 /******/ 	
+/******/ 	/* webpack/runtime/jsonp chunk loading */
+/******/ 	(() => {
+/******/ 		__webpack_require__.b = document.baseURI || self.location.href;
+/******/ 		
+/******/ 		// object to store loaded and loading chunks
+/******/ 		// undefined = chunk not loaded, null = chunk preloaded/prefetched
+/******/ 		// [resolve, reject, Promise] = chunk loading, 0 = chunk loaded
+/******/ 		var installedChunks = {
+/******/ 			"main": 0
+/******/ 		};
+/******/ 		
+/******/ 		// no chunk on demand loading
+/******/ 		
+/******/ 		// no prefetching
+/******/ 		
+/******/ 		// no preloaded
+/******/ 		
+/******/ 		// no HMR
+/******/ 		
+/******/ 		// no HMR manifest
+/******/ 		
+/******/ 		// no on chunks loaded
+/******/ 		
+/******/ 		// no jsonp function
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/nonce */
 /******/ 	(() => {
 /******/ 		__webpack_require__.nc = undefined;
@@ -20702,17 +21236,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _helperFunctions_handleSaveDelete__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./helperFunctions/handleSaveDelete */ "./client/src/helperFunctions/handleSaveDelete.js");
 /* harmony import */ var _helperFunctions_setupBluetooth__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./helperFunctions/setupBluetooth */ "./client/src/helperFunctions/setupBluetooth.js");
 /* harmony import */ var react_dom_client__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-dom/client */ "./node_modules/react-dom/client.js");
-/* harmony import */ var _matrixButtons_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./matrixButtons.jsx */ "./client/src/matrixButtons.jsx");
-/* harmony import */ var _frameChoices_jsx__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./frameChoices.jsx */ "./client/src/frameChoices.jsx");
-/* harmony import */ var _rainController_jsx__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./rainController.jsx */ "./client/src/rainController.jsx");
-/* harmony import */ var _drawMode_jsx__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./drawMode.jsx */ "./client/src/drawMode.jsx");
-/* harmony import */ var _avController_jsx__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./avController.jsx */ "./client/src/avController.jsx");
-/* harmony import */ var _homePage_jsx__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./homePage.jsx */ "./client/src/homePage.jsx");
+/* harmony import */ var _Gallery_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Gallery.jsx */ "./client/src/Gallery.jsx");
+/* harmony import */ var _rainController_jsx__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./rainController.jsx */ "./client/src/rainController.jsx");
+/* harmony import */ var _CreateMode_jsx__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./CreateMode.jsx */ "./client/src/CreateMode.jsx");
+/* harmony import */ var _avController_jsx__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./avController.jsx */ "./client/src/avController.jsx");
+/* harmony import */ var _HomePage_jsx__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./HomePage.jsx */ "./client/src/HomePage.jsx");
+/* harmony import */ var _TopBar_jsx__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./TopBar.jsx */ "./client/src/TopBar.jsx");
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
-function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
-function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -20726,6 +21256,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+// import DrawMode from "./drawMode.jsx";
 
 
 
@@ -20733,13 +21264,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 window.rainColorsSent = 0;
-window.color = "#FF0000";
 window.ledConnected = false;
 window.modeRunning = true;
 window.framePlayed = false;
 window.turnedOn = false;
+window.color = "#FF0000";
 var App = function App() {
-  var _jsx2;
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState2 = _slicedToArray(_useState, 2),
     isConnected = _useState2[0],
@@ -20766,24 +21296,24 @@ var App = function App() {
     setCurFrame = _useState12[1];
   var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState14 = _slicedToArray(_useState13, 2),
-    drawMode = _useState14[0],
-    setDrawMode = _useState14[1];
+    createMode = _useState14[0],
+    setCreateMode = _useState14[1];
   var _useState15 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState16 = _slicedToArray(_useState15, 2),
-    audioVisualizer = _useState16[0],
-    setAudioVisualizer = _useState16[1];
+    showGallery = _useState16[0],
+    setShowGallery = _useState16[1];
   var _useState17 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState18 = _slicedToArray(_useState17, 2),
-    rainMode = _useState18[0],
-    setRainMode = _useState18[1];
-  var _useState19 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
+    audioVisualizer = _useState18[0],
+    setAudioVisualizer = _useState18[1];
+  var _useState19 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState20 = _slicedToArray(_useState19, 2),
-    prevFrameNames = _useState20[0],
-    setPrevFrameNames = _useState20[1];
-  var _useState21 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    rainMode = _useState20[0],
+    setRainMode = _useState20[1];
+  var _useState21 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
     _useState22 = _slicedToArray(_useState21, 2),
-    inputError = _useState22[0],
-    setInputError = _useState22[1];
+    prevFrameNames = _useState22[0],
+    setPrevFrameNames = _useState22[1];
   var _useState23 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
     _useState24 = _slicedToArray(_useState23, 2),
     anims = _useState24[0],
@@ -20800,6 +21330,10 @@ var App = function App() {
     _useState30 = _slicedToArray(_useState29, 2),
     curChosenColor = _useState30[0],
     setCurChosenColor = _useState30[1];
+  var _useState31 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(color),
+    _useState32 = _slicedToArray(_useState31, 2),
+    selectedColor = _useState32[0],
+    setSelectedColor = _useState32[1];
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     //Mouse up handler
     var handleMouseUp = function handleMouseUp() {
@@ -20853,9 +21387,8 @@ var App = function App() {
     }
     (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)("F".concat(frameName));
   };
-  var callSave = function callSave(e, animation) {
-    var animName = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : document.getElementById('animName').value;
-    (0,_helperFunctions_handleSaveDelete__WEBPACK_IMPORTED_MODULE_2__.handleSave)(_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData, setFrames, frames, anims, setAnims, setInputError, e, animation, animName);
+  var callSave = function callSave(e, animation, frameName) {
+    return (0,_helperFunctions_handleSaveDelete__WEBPACK_IMPORTED_MODULE_2__.handleSave)(_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData, setFrames, frames, anims, setAnims, e, animation, frameName);
   };
   var callDelete = function callDelete(frameName, idx, type) {
     (0,_helperFunctions_handleSaveDelete__WEBPACK_IMPORTED_MODULE_2__.handleDelete)(setFrames, frames, setPrevFrameNames, prevFrameNames, anims, setAnims, _helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData, frameName, idx, type);
@@ -20874,8 +21407,7 @@ var App = function App() {
           rainAmount = document.getElementById('rainAmount').value;
         }
         if (isNaN(Number(rainAmount)) || rainAmount.length < 1 || rainColorsSent === 0) {
-          setInputError("Please input a number value and a color");
-          return;
+          return "Please input a number value and a color";
         }
         (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)("R" + rainAmount);
         setTimeout(function () {
@@ -20892,6 +21424,7 @@ var App = function App() {
       setModeDataSending(false);
       setColorChoices([]);
     }
+    return false;
   };
   var handleModeChooseColor = function handleModeChooseColor() {
     var colors = JSON.parse(JSON.stringify(colorChoices));
@@ -20906,89 +21439,42 @@ var App = function App() {
   };
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
     id: "colorApp",
-    children: [!isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_homePage_jsx__WEBPACK_IMPORTED_MODULE_10__["default"], {
+    onMouseDown: function onMouseDown() {
+      return setMouseDown(true);
+    },
+    children: [isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_TopBar_jsx__WEBPACK_IMPORTED_MODULE_10__["default"], {
+      selectedColor: selectedColor
+    }) : null, isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_CreateMode_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], {
+      turnOff: turnOff,
+      callSave: callSave,
+      animPlaying: animPlaying,
+      pixelSending: pixelSending,
+      mouseDown: mouseDown,
+      handleFrameChoice: handleFrameChoice,
+      sendRequests: sendRequests,
+      selectedColor: selectedColor,
+      setSelectedColor: setSelectedColor
+    }) : null, showGallery ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_Gallery_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
+      handleSave: callSave,
+      anims: anims,
+      prevFrameNames: prevFrameNames,
+      frames: frames,
+      handleFrameChoice: handleFrameChoice,
+      handleDelete: callDelete
+    }) : null, !isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_HomePage_jsx__WEBPACK_IMPORTED_MODULE_9__["default"], {
       handleConnect: handleConnect,
       isConnected: isConnected
-    }) : null, drawMode || audioVisualizer || rainMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("button", {
-      style: {
-        'position': 'absolute',
-        'right': '2%',
-        'fontSize': '20px'
-      },
-      onClick: function onClick() {
-        setDrawMode(false);
-        setAudioVisualizer(false);
-        setRainMode(false);
-        if (modeRunning) {
-          handleModeStartStop();
-        }
-        ;
-      },
-      children: "Back"
     }) : null, (pixelSending || modeDataSending) && isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("img", {
       id: "loading",
       src: "./icons/loading.gif"
-    }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
-      id: "app",
-      onMouseDown: function onMouseDown() {
-        return setMouseDown(true);
+    }) : null, isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("button", {
+      id: "gallery-button",
+      onClick: function onClick() {
+        setShowGallery(true);
+        setCreateMode(false);
       },
-      children: [!drawMode && !audioVisualizer && !rainMode && isConnected && !pixelSending && !modeDataSending ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
-        id: "modeChoices",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("button", {
-          onClick: function onClick() {
-            return setDrawMode(true);
-          },
-          children: "Draw Mode"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("button", {
-          onClick: function onClick() {
-            setAudioVisualizer(true);
-          },
-          children: "Audio Visualizer"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("button", {
-          onClick: function onClick() {
-            setRainMode(true);
-          },
-          children: "Rain Mode"
-        })]
-      }) : null, drawMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_drawMode_jsx__WEBPACK_IMPORTED_MODULE_8__["default"], {
-        inputError: inputError,
-        turnOff: turnOff,
-        callSave: callSave,
-        animPlaying: animPlaying,
-        pixelSending: pixelSending
-      }) : null, drawMode || rainMode && !modeDataSending ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_frameChoices_jsx__WEBPACK_IMPORTED_MODULE_6__["default"], {
-        handleSave: callSave,
-        anims: anims,
-        prevFrameNames: prevFrameNames,
-        frames: frames,
-        handleFrameChoice: handleFrameChoice,
-        handleDelete: callDelete
-      }) : null, rainMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_rainController_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], (_jsx2 = {
-        modeRunning: modeRunning,
-        modeDataSending: modeDataSending,
-        curChosenColor: curChosenColor,
-        handleChooseColor: handleModeChooseColor,
-        colorChoices: colorChoices,
-        setCurChosenColor: setCurChosenColor
-      }, _defineProperty(_jsx2, "modeDataSending", modeDataSending), _defineProperty(_jsx2, "setInputError", setInputError), _defineProperty(_jsx2, "handleModeStartStop", handleModeStartStop), _jsx2)) : null, drawMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_matrixButtons_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
-        mouseDown: mouseDown,
-        sendRequests: sendRequests
-      }) : null, audioVisualizer ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_avController_jsx__WEBPACK_IMPORTED_MODULE_9__["default"], {
-        modeRunning: modeRunning,
-        handleChooseColor: handleModeChooseColor,
-        curChosenColor: curChosenColor,
-        modeDataSending: modeDataSending,
-        setCurChosenColor: setCurChosenColor,
-        colorChoices: colorChoices,
-        handleModeStartStop: handleModeStartStop
-      }) : null, inputError ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("div", {
-        style: {
-          "color": "red"
-        },
-        children: inputError
-      }) : null]
-    })]
+      children: "Gallery"
+    }) : null]
   });
 };
 var container = document.getElementById('root');

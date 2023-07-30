@@ -1,22 +1,19 @@
-export const handleSave = (sendData, setFrames, frames, anims, setAnims, setInputError, e, animation, animName = document.getElementById('animName').value) => {
-	setInputError(false);
-	var drawName = document.getElementById('drawName').value;
+export const handleSave = (sendData, setFrames, frames, anims, setAnims, e, animation, frameName) => {
 
-	if (drawName.length > 0 || animName.length > 0) {
+	if (frameName.length > 0) { //Returns string if error otherwise false
 		const regex = /^[a-zA-Z0-9_\-]+$/; // valid characters are letters, numbers, underscores, and dashes
-		if ((!regex.test(drawName) && !animation) || (!regex.test(animName) && animation)) {
+		if ((!regex.test(frameName))) {
 			// the name is invalid
-			setInputError("Invalid character");
-			return;
+			return "Invalid character";
 		}
 		if (animation) {
-			if (!anims.includes(animName)) {
+			if (!anims.includes(frameName)) {
 				var newAnims = JSON.parse(JSON.stringify(anims));
-				newAnims.push(animName);
+				newAnims.push(frameName);
 				setAnims(newAnims);
 			}
-			sendData('A' + animName);
-			return;
+			sendData('A' + frameName);
+			return false;
 		}
 		//Retrieves all matrix colors and adds them to matrix array
 		var columnElements = document.getElementById('buttons').children;
@@ -30,13 +27,14 @@ export const handleSave = (sendData, setFrames, frames, anims, setAnims, setInpu
 				curColumn.push(curColor);
 			}
 		}
-		curFrame[16] = drawName; //Set 16th column to name of frame
+		curFrame[16] = frameName; //Set 16th column to name of frame
 		var newFrames = JSON.parse(JSON.stringify(frames));
 		newFrames.push(curFrame);
 		setFrames(newFrames);
-		sendData('S' + drawName);
+		sendData('S' + frameName);
+    return false;
 	} else {
-		setInputError("Please input a name for your drawing");
+		return "Please input a name for your drawing";
 	}
 };
 
