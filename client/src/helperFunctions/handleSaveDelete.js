@@ -1,21 +1,20 @@
-export const handleSave = (sendData, setFrames, frames, anims, setAnims, setInputError, e, animation, animName = document.getElementById('animName').value) => {
+export const handleSave = (sendData, setFrames, frames, anims, setAnims, setInputError, e, animation, frameName) => {
 	setInputError(false);
-	var drawName = document.getElementById('drawName').value;
 
-	if (drawName.length > 0 || animName.length > 0) {
+	if (frameName.length > 0) {
 		const regex = /^[a-zA-Z0-9_\-]+$/; // valid characters are letters, numbers, underscores, and dashes
-		if ((!regex.test(drawName) && !animation) || (!regex.test(animName) && animation)) {
+		if ((!regex.test(frameName))) {
 			// the name is invalid
 			setInputError("Invalid character");
 			return;
 		}
 		if (animation) {
-			if (!anims.includes(animName)) {
+			if (!anims.includes(frameName)) {
 				var newAnims = JSON.parse(JSON.stringify(anims));
-				newAnims.push(animName);
+				newAnims.push(frameName);
 				setAnims(newAnims);
 			}
-			sendData('A' + animName);
+			sendData('A' + frameName);
 			return;
 		}
 		//Retrieves all matrix colors and adds them to matrix array

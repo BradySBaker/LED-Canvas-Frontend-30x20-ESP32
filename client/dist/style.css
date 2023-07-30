@@ -2,6 +2,8 @@ body {
 	background-color: #121D24;
 }
 
+
+
 .hue-horizontal {
 	height: 1000px;
 }
@@ -91,15 +93,15 @@ body {
 }
 
 #gallery-button {
-  position: absolute;
+  position: fixed;
   border-radius: 10px 10px 0 0;
   border: none;
-  width: 50%;
-  bottom: 0;
   left: 50%;
   transform: translateX(-50%);
   background-color: #4CC2FF;
   font-weight: bold;
-  font-size: 4vw;
-  padding: 10px;
+  font-size: 100%;
+  bottom: 0;
+  padding: 1% 10%;
 }
+

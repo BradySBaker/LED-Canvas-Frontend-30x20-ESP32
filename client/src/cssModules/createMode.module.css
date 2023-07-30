@@ -13,7 +13,7 @@
   border: none;
   padding: 13px 25px;
   font-weight: bold;
-  font-size: 80%;
+  font-size: 13px;
   border-radius: 15px;
   color: #121D24;
 }
@@ -36,9 +36,8 @@
 #preset-color-picker {
   display: flex;
   justify-content: space-between;
-  margin: 0 10px;
+  margin: 5% 10px;
   align-items: center;
-  margin-bottom: 30px;
 }
 
 .button-column {
@@ -56,7 +55,7 @@
   border-radius: 4px;
 }
 
-#buttons {
+.buttons {
 	display: flex;
 	width: 100%;
 	max-width: 500px;
@@ -97,23 +96,54 @@
 
 #save-button {
   display: flex;
-  align-items: center; /* Center items vertically */
-  justify-content: center; /* Center items horizontally */
+  align-items: center;
+  justify-content: center;
   border: none;
-  padding: 5px 2px;
+  padding: 5px 0px;
   font-weight: 600;
-  font-size: 80%;
+  font-size: 70%;
   border-radius: 5px;
-  background-color: #4CC2FF;
+  background-color: #4cff5b;
   color: #121D24;
 }
 
-#save-icon {
-  width: 20%;
-  height: 20%;
-  margin-left: 20%;
+#matrix-widget {
+  margin-bottom: 4%;
 }
 
+#save-icon {
+  width: 15%;
+  height: 15%;
+  margin-left: 10%;
+}
+
+#add-section {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 18%
+}
+
+#add-section div {
+  background-color: #2d6f91;
+  color: white;
+  border-radius: 5px;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  font-weight: bold;
+  margin-left: 5px;
+}
+
+#add-button {
+  background-color: #4cff5b;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  font-weight: bold;
+}
 
 @media screen and (min-aspect-ratio: 1/1) { /* Desktop mode switch*/
   #preset-color-picker {
@@ -123,7 +153,7 @@
     display: block;
     margin-bottom: 4vh;
   }
-  .matrix-widget {
+  #matrix-widget {
     display: inline-block;
     float: left;
     margin-left: 32vw;
@@ -156,22 +186,6 @@
   color: rgb(0, 0, 126);
 }
 
-
-#gallery-button {
-  position: relative;
-  border-radius: 10px 10px 0 0;
-  border: none;
-  width: 50%;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: #4CC2FF;
-  font-weight: bold;
-  font-size: 4vw;
-  padding: 10px;
-}
-
-
 #color-picker-container {
   z-index: 10;
   position: absolute;
@@ -191,6 +205,7 @@
 
 #save-form {
   position: absolute;
+  z-index: 10;
   display: flex;
   background-color: #00ccff7a;
   padding: 10px;

@@ -94,7 +94,10 @@ const App = function() {
 		sendData(`F${frameName}`);
 	};
 
-	const callSave = (e, animation, animName = document.getElementById('animName').value) => {
+	const callSave = (e, animation, frameName) => {
+    if (animation && !frameName) {
+      animName = document.getElementById('drawName').value;
+    }
 		handleSave(sendData, setFrames, frames, anims, setAnims, setInputError, e, animation, animName);
 	};
 
@@ -164,6 +167,7 @@ const App = function() {
       {audioVisualizer ? <AVController modeRunning={modeRunning} handleChooseColor={handleModeChooseColor} curChosenColor={curChosenColor} modeDataSending={modeDataSending} setCurChosenColor={setCurChosenColor} colorChoices={colorChoices} handleModeStartStop={handleModeStartStop}/> : null}
 			{inputError ? <div style={{"color": "red"}}>{inputError}</div>: null}
 		</div> */}
+    <button id='gallery-button'>Gallery</button>
 		</div>
 	)
 }

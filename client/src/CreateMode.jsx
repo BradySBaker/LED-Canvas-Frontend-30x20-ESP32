@@ -9,6 +9,7 @@ const colorOptions = ['#FF0000', '#A020F0', '#FFC0CB', '#0000FF', '#FFFF00', '#0
 
 const CreateMode = ({callSave, animPlaying, turnOff, isLoading, inputError, mouseDown, sendRequests, selectedColor, setSelectedColor}) => {
 
+  const [frameCount, setFrameCount] = useState(0);
   const [selectColor, setSelectColor] = useState(false);
   const [drawMode, setDrawMode] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -28,13 +29,13 @@ const CreateMode = ({callSave, animPlaying, turnOff, isLoading, inputError, mous
 
 	return (
 		<div id={styles['widget']}>
+        {selectColor || saving ? <div id={styles['popup-closer']} onClick={() => {setSelectColor(false); setSaving(false);}}></div> : null}
 				{selectColor ?
-        <>
-          <div id={styles['popup-closer']} onClick={() => setSelectColor(false)}></div>
+
           <div id={styles['color-picker-container']} >
             <HexColorPicker style={{height: '80vw', width: '80vw', maxHeight: '70vh', maxWidth: '700px'}} color={color} onChange={handleColor} />
           </div>
-        </>: null}
+        : null}
       <div id={styles['mode-picker']}>
         <button style={!drawMode ? {'background-color': '#4CC2FF'} : {'background-color': '#7D7D7D'}} onClick={() => setDrawMode(true)}>Drawing Mode</button>
         <button style={drawMode ? {'background-color': '#4CC2FF'} : {'background-color': '#7D7D7D'}} onClick={() => setDrawMode(false)}>Animate Mode</button>
@@ -54,11 +55,16 @@ const CreateMode = ({callSave, animPlaying, turnOff, isLoading, inputError, mous
           : null}
           {saving ?
           <div id={styles['save-form']}>
-            <input type='text' placeholder='name...'/>
-            <div id={styles['checkmark']} />
+            <input  id='drawName' type='text' maxLength='7' placeholder='name...'/>
+            <div id={styles['checkmark']} onClick={(e) => {if (drawMode) {callSave(e)} else {callSave(e, true)}}}/>
           </div>
           : null}
-          {/* onClick={callSave} */}
+          {!drawMode ?
+          <div id={styles['add-section']}>
+            <button id={styles['add-button']} onClick={() => {if (frameCount === 0) {setSaving(true)}}}>Add</button>
+            <div>0</div>
+          </div>
+          :null}
           {/* <input id="drawName" type="text" placeholder="drawing..." maxLength="7" />
           <button onClick={(e) => callSave(e, true)}>Save Frame</button>
           <input id="animName" type="text" placeholder="animation name..." maxLength="7"/>
@@ -71,7 +77,6 @@ const CreateMode = ({callSave, animPlaying, turnOff, isLoading, inputError, mous
         <img src='./icons/color-picker.png' id={styles['color-picker']} onClick={() => setSelectColor(true)}/>
       </div>
       <MatrixButtons mouseDown={mouseDown} sendRequests={sendRequests} selectedColor={selectedColor}/>
-      {/* <button id={styles['gallery-button']}>Gallery</button> */}
       <a href="https://www.flaticon.com/free-icons/color-picker" title="color picker icons" id={styles['credit']}>Color picker icons created by Design Circle - Flaticon</a>
 		</div>
 	);

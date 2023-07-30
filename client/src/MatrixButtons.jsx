@@ -57,7 +57,7 @@ const MatrixButtons = function({mouseDown}) {
 	}
 
 	useEffect(() => {
-		const element = document.getElementById('matrix-widget');
+		const element = document.getElementById('buttons');
 		element.addEventListener('touchmove', handleTouchMove, { passive: false });
 
 		return () => {
@@ -66,8 +66,8 @@ const MatrixButtons = function({mouseDown}) {
 	}, []);
 
 	return (
-    <div id='matrix-widget' className={styles['matrix-widget']}>
-      <div id={styles['buttons']}>
+    <div id={styles['matrix-widget']}>
+      <div id='buttons' className={styles['buttons']}>
 			{buttons}
       </div>
     </div>
