@@ -84,3 +84,28 @@ h2.title {
   height: 25vw;
   margin-bottom: 5px;
 }
+
+#delete-popup {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  z-index: 10;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 30%;
+  color: rgb(255, 100, 100);
+  font-size: 7vw;
+  border-radius: 3px;
+  padding: 5vw 10vw;
+  font-weight: bold;
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.623);
+  white-space: nowrap;
+}
+
+#delete-popup button {
+  background-color: rgb(255, 100, 100);
+  color: white;
+  font-size: 5vw;
+  margin-top: 20px;
+}

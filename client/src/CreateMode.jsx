@@ -69,9 +69,8 @@ const CreateMode = ({callSave, animPlaying, turnOff, pixelSending, mouseDown, se
 
 	return (
 		<div id={styles['widget']}>
-        {selectColor || saving || error ? <div id={styles['popup-closer']} onClick={() => {setSelectColor(false); setSaving(false); setError(false);}}></div> : null}
+        {selectColor || saving || error ? <div id='popup-closer' onClick={() => {setSelectColor(false); setSaving(false); setError(false);}} /> : null}
 				{selectColor ?
-
           <div id={styles['color-picker-container']} >
             <HexColorPicker style={{height: '80vw', width: '80vw', maxHeight: '70vh', maxWidth: '700px'}} color={color} onChange={handleColor} />
           </div>
@@ -119,7 +118,7 @@ const CreateMode = ({callSave, animPlaying, turnOff, pixelSending, mouseDown, se
           {saving ?
           <div id={styles['save-form']}>
             <input  id='frameName' type='text' maxLength='7' placeholder='name...'/>
-            <div id={styles['checkmark']} onClick={handleSaveFrame}/>
+            <div id='checkmark' onClick={handleSaveFrame}/>
           </div>
           : null}
           </div>

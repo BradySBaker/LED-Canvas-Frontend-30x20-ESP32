@@ -124,7 +124,7 @@ var CreateMode = function CreateMode(_ref) {
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
     id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].widget,
     children: [selectColor || saving || error ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
-      id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["popup-closer"],
+      id: "popup-closer",
       onClick: function onClick() {
         setSelectColor(false);
         setSaving(false);
@@ -248,7 +248,7 @@ var CreateMode = function CreateMode(_ref) {
           maxLength: "7",
           placeholder: "name..."
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
-          id: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].checkmark,
+          id: "checkmark",
           onClick: handleSaveFrame
         })]
       }) : null]
@@ -323,6 +323,10 @@ var Gallery = function Gallery(_ref) {
     _useState4 = _slicedToArray(_useState3, 2),
     frameElements = _useState4[0],
     setFrameElements = _useState4[1];
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState6 = _slicedToArray(_useState5, 2),
+    itemToDelete = _useState6[0],
+    setItemToDelete = _useState6[1];
   var createFrames = function createFrames() {
     var newFrames = [];
     frames.forEach(function (curFrame, idx) {
@@ -344,11 +348,12 @@ var Gallery = function Gallery(_ref) {
     });
     setFrameElements(newFrames);
   };
-  var deletePressed = function deletePressed(frameName, idx, type) {
+  var deleteItem = function deleteItem() {
     if (!animPlaying && !modeDataSending) {
-      handleDelete(frameName, idx, type);
+      handleDelete(itemToDelete[0], itemToDelete[1], itemToDelete[2]);
     }
     ;
+    setItemToDelete(false);
   };
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(createFrames, [frames]);
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
@@ -358,7 +363,18 @@ var Gallery = function Gallery(_ref) {
       children: "Drawings"
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
       className: _cssModules_gallery_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].line
-    }), frameElements.length > 0 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h2", {
+    }), itemToDelete ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+      id: "popup-closer",
+      onClick: function onClick() {
+        setItemToDelete(false);
+      }
+    }) : null, itemToDelete ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+      id: _cssModules_gallery_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["delete-popup"],
+      children: ["Are you sure?", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+        onClick: deleteItem,
+        children: "Yes"
+      })]
+    }) : null, frameElements.length > 0 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h2", {
       className: _cssModules_gallery_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].title,
       children: "Current"
     }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
@@ -378,7 +394,7 @@ var Gallery = function Gallery(_ref) {
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
             className: _cssModules_gallery_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["delete"],
             onClick: function onClick() {
-              deletePressed(frames[idx][16], idx);
+              setItemToDelete([frames[idx][16], idx]);
             },
             children: "delete"
           })]
@@ -400,7 +416,7 @@ var Gallery = function Gallery(_ref) {
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
             className: _cssModules_gallery_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["delete"],
             onClick: function onClick() {
-              deletePressed(curName, idx, 'prev');
+              setItemToDelete([curName, idx, 'prev']);
             },
             children: "delete"
           })]
@@ -434,7 +450,7 @@ var Gallery = function Gallery(_ref) {
             children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
               className: _cssModules_gallery_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["delete"],
               onClick: function onClick() {
-                return deletePressed(curName, idx, 'animation');
+                return setItemToDelete([curName, idx, 'animation']);
               },
               children: "delete"
             }), !playClicked ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("img", {
@@ -1273,42 +1289,6 @@ module.exports = function (cssWithMappingToString) {
     }
   };
   return list;
-};
-
-/***/ }),
-
-/***/ "./node_modules/css-loader/dist/runtime/getUrl.js":
-/*!********************************************************!*\
-  !*** ./node_modules/css-loader/dist/runtime/getUrl.js ***!
-  \********************************************************/
-/***/ ((module) => {
-
-"use strict";
-
-
-module.exports = function (url, options) {
-  if (!options) {
-    options = {};
-  }
-  if (!url) {
-    return url;
-  }
-  url = String(url.__esModule ? url.default : url);
-
-  // If url is already wrapped in quotes, remove them
-  if (/^['"].*['"]$/.test(url)) {
-    url = url.slice(1, -1);
-  }
-  if (options.hash) {
-    url += options.hash;
-  }
-
-  // Should url be wrapped?
-  // See https://drafts.csswg.org/css-values-3/#urls
-  if (/["'() \t\n]|(%20)/.test(url) || options.needQuotes) {
-    return "\"".concat(url.replace(/"/g, '\\"').replace(/\n/g, "\\n"), "\"");
-  }
-  return url;
 };
 
 /***/ }),
@@ -20632,17 +20612,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
 /* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/getUrl.js */ "./node_modules/css-loader/dist/runtime/getUrl.js");
-/* harmony import */ var _node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_2__);
 // Imports
 
 
-
-var ___CSS_LOADER_URL_IMPORT_0___ = new URL(/* asset import */ __webpack_require__(/*! data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2724%27 height=%2724%27%3E%3Cpath fill=%27lightgreen%27 d=%27M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8.009 8.009 0 0 1-8 8z%27/%3E%3Cpath fill=%27lightgreen%27 d=%27M16.293 8.293 11 13.586l-2.293-2.293-1.414 1.414L11 16.414l6.707-6.707-1.414-1.414z%27/%3E%3C/svg%3E */ "data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2724%27 height=%2724%27%3E%3Cpath fill=%27lightgreen%27 d=%27M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8.009 8.009 0 0 1-8 8z%27/%3E%3Cpath fill=%27lightgreen%27 d=%27M16.293 8.293 11 13.586l-2.293-2.293-1.414 1.414L11 16.414l6.707-6.707-1.414-1.414z%27/%3E%3C/svg%3E"), __webpack_require__.b);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
-var ___CSS_LOADER_URL_REPLACEMENT_0___ = _node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_2___default()(___CSS_LOADER_URL_IMPORT_0___);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "#usl_yAlxxfZrkdQc2boR {\n  font-family: 'Roboto', sans-serif;\n}\n\n#qDyetfokRCzfrByBexH7 {\n  display: flex;\n  justify-content: space-between;\n  margin: 20px;\n  margin-bottom: 40px;\n}\n\n#WV59dg5u_OJpLiSvfYZT, #bWcDN7yqz2m1ocaJ4f4g {\n  position: absolute;\n  height: 3px;\n  width: 120px;\n  border-radius: 10px;\n  transition: transform 0.3s ease;\n}\n\n#bWcDN7yqz2m1ocaJ4f4g {\n  width: 0;\n  height: 0;\n}\n\n\n.BpEn_XLLHI9JG8PaSTQM {\n\tflex: 1;\n  flex-direction: column;\n  margin: 0;\n}\n\n.BpEn_XLLHI9JG8PaSTQM button {\n\taspect-ratio : 1 / 1;\n  flex-grow: 1;\n  width: 100%;\n\tbackground-color: rgb(0, 0, 0);\n  border: 1px solid white;\n  border-radius: 4px;\n  padding: 0;\n}\n\n.QXf7tIq86ySqUBdobBHQ {\n\tdisplay: flex;\n\twidth: 100%;\n\tmax-width: 600px;\n}\n\n.Chvp2PNTU5bOJT9W0UTB {\n  width: 30px;\n  height: 30px;\n  margin: 0 1.1vw;\n}\n\n#WbPPJemBXhzTgCG_2U81 {\n  width: 30px;\n  height: 30px;\n}\n\n#ykRA0B5UzTurciM72MKl {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  margin-bottom: 20px;\n}\n\n\n#c5hjAmrewVXQxPlsXSJM {\n  width: 40px;\n  height: 40px;\n  margin: 0 5px;\n}\n\n#d7Mu_gXsL3IzSApxiFpS {\n  display: block;\n  transform: rotate(45deg);\n  width: 40px;\n  height: 40px;\n  margin-bottom: 10px;\n}\n\n#NYYDzfkbYC8D9OZJz6RU {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 5px 0px;\n  font-weight: 600;\n  font-size: 70%;\n  background-color: #4cff5b;\n  color: #121D24;\n\n}\n\n#KMr5UbbiWbHl38S34nJw {\n  width: 15%;\n  height: 15%;\n  margin-left: 10%;\n}\n\n#p6lOefaAGmgPjjPGGFqw {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 5px 15px;\n}\n\n#hHWO6oQzjaDzvYkVA3kA {\n  width: 15px;\n  height: 15px;\n}\n\n#p6lOefaAGmgPjjPGGFqw div {\n  background-color: red;\n  border-radius: 5px;\n  width: 15px;\n  height: 15px;\n}\n\n\n#bxNeTtvDNLRtHPQeJ_Fs {\n  display: flex;\n  align-items: center;\n  margin-left: 20px;\n}\n\n#bxNeTtvDNLRtHPQeJ_Fs div {\n  background-color: #2d6f91;\n  color: white;\n  border-radius: 5px;\n  width: 20px;\n  height: 20px;\n  text-align: center;\n  font-weight: bold;\n  margin-left: 5px;\n}\n\n#t8kzB9bkjIXrw_4dvSjj {\n  background-color: #4cff5b;\n  padding: 5px 10px;\n}\n\n#FuUN9yHbY2iJkNkmULIm {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  flex-direction: column;\n}\n\n#jK5GQnyqY53LqQfS7CUA {\n  margin-top: 20px;\n}\n\n\n@media screen and (min-aspect-ratio: 3/2) { /* Desktop mode switch*/\n  #FuUN9yHbY2iJkNkmULIm {\n    flex-direction: row;\n  }\n  #jK5GQnyqY53LqQfS7CUA {\n    order: 0;\n  }\n  #Oa3Upf9OzloKPAdvzWgC {\n    order: 1;\n    margin-left: 20px;\n  }\n  .Chvp2PNTU5bOJT9W0UTB {\n    display: block;\n    margin: 3vh 0;\n  }\n  #ykRA0B5UzTurciM72MKl {\n    margin: 0px 32vw;\n  }\n  #c5hjAmrewVXQxPlsXSJM {\n    margin-left: 32vw;\n  }\n  #qDyetfokRCzfrByBexH7 {\n    margin: 0 40%;\n  }\n  #WV59dg5u_OJpLiSvfYZT {\n    width: 0;\n    height: 0;\n  }\n  #bWcDN7yqz2m1ocaJ4f4g {\n    height: 3px;\n    width: 120px;\n  }\n}\n\n\n#LqNfF5A2BCDzAGCVhiql {\n  position: relative;\n  bottom: 0;\n  font-size: 10px;\n  color: rgb(0, 0, 126);\n}\n\n#_wLpWcqCM76DJ8HLA_13 {\n  z-index: 10;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n}\n\n#jsR_MzAIQvYWtUriy6uG {\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100vw;\n  height: 100vh;\n  background-color: rgba(0, 0, 0, 0.308);\n}\n\n#fr1DuugvzNpOOA0RfyRi {\n  position: absolute;\n  z-index: 10;\n  display: flex;\n  background-color: #00ccff7a;\n  padding: 10px;\n  left: 50%;\n  transform: translateX(-50%);\n  border-radius: 5px;\n}\n\n#O8fg4ai4DCdNKqd7H8gS {\n  width: 35px;\n  height: 35px;\n  background-repeat: no-repeat;\n  background-size: 35px;\n  margin-left: 5px;\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ");\n}\n\n#SzaZ3hlv1errwIZALpjw {\n  z-index: 20;\n  position: absolute;\n  left: 50%;\n  top: 20%;\n  transform: translateX(-50%);\n  color: rgb(255, 255, 255);\n  background-color: rgb(153, 0, 0);\n  font-weight: bold;\n  border-radius: 5px;\n  padding: 5px 5px;\n}", "",{"version":3,"sources":["webpack://./client/src/cssModules/createMode.module.css"],"names":[],"mappings":"AAAA;EACE,iCAAiC;AACnC;;AAEA;EACE,aAAa;EACb,8BAA8B;EAC9B,YAAY;EACZ,mBAAmB;AACrB;;AAEA;EACE,kBAAkB;EAClB,WAAW;EACX,YAAY;EACZ,mBAAmB;EACnB,+BAA+B;AACjC;;AAEA;EACE,QAAQ;EACR,SAAS;AACX;;;AAGA;CACC,OAAO;EACN,sBAAsB;EACtB,SAAS;AACX;;AAEA;CACC,oBAAoB;EACnB,YAAY;EACZ,WAAW;CACZ,8BAA8B;EAC7B,uBAAuB;EACvB,kBAAkB;EAClB,UAAU;AACZ;;AAEA;CACC,aAAa;CACb,WAAW;CACX,gBAAgB;AACjB;;AAEA;EACE,WAAW;EACX,YAAY;EACZ,eAAe;AACjB;;AAEA;EACE,WAAW;EACX,YAAY;AACd;;AAEA;EACE,aAAa;EACb,8BAA8B;EAC9B,mBAAmB;EACnB,mBAAmB;AACrB;;;AAGA;EACE,WAAW;EACX,YAAY;EACZ,aAAa;AACf;;AAEA;EACE,cAAc;EACd,wBAAwB;EACxB,WAAW;EACX,YAAY;EACZ,mBAAmB;AACrB;;AAEA;EACE,aAAa;EACb,mBAAmB;EACnB,uBAAuB;EACvB,gBAAgB;EAChB,gBAAgB;EAChB,cAAc;EACd,yBAAyB;EACzB,cAAc;;AAEhB;;AAEA;EACE,UAAU;EACV,WAAW;EACX,gBAAgB;AAClB;;AAEA;EACE,aAAa;EACb,mBAAmB;EACnB,uBAAuB;EACvB,iBAAiB;AACnB;;AAEA;EACE,WAAW;EACX,YAAY;AACd;;AAEA;EACE,qBAAqB;EACrB,kBAAkB;EAClB,WAAW;EACX,YAAY;AACd;;;AAGA;EACE,aAAa;EACb,mBAAmB;EACnB,iBAAiB;AACnB;;AAEA;EACE,yBAAyB;EACzB,YAAY;EACZ,kBAAkB;EAClB,WAAW;EACX,YAAY;EACZ,kBAAkB;EAClB,iBAAiB;EACjB,gBAAgB;AAClB;;AAEA;EACE,yBAAyB;EACzB,iBAAiB;AACnB;;AAEA;EACE,aAAa;EACb,mBAAmB;EACnB,uBAAuB;EACvB,sBAAsB;AACxB;;AAEA;EACE,gBAAgB;AAClB;;;AAGA,4CAA4C,uBAAuB;EACjE;IACE,mBAAmB;EACrB;EACA;IACE,QAAQ;EACV;EACA;IACE,QAAQ;IACR,iBAAiB;EACnB;EACA;IACE,cAAc;IACd,aAAa;EACf;EACA;IACE,gBAAgB;EAClB;EACA;IACE,iBAAiB;EACnB;EACA;IACE,aAAa;EACf;EACA;IACE,QAAQ;IACR,SAAS;EACX;EACA;IACE,WAAW;IACX,YAAY;EACd;AACF;;;AAGA;EACE,kBAAkB;EAClB,SAAS;EACT,eAAe;EACf,qBAAqB;AACvB;;AAEA;EACE,WAAW;EACX,kBAAkB;EAClB,QAAQ;EACR,SAAS;EACT,gCAAgC;AAClC;;AAEA;EACE,eAAe;EACf,MAAM;EACN,OAAO;EACP,YAAY;EACZ,aAAa;EACb,sCAAsC;AACxC;;AAEA;EACE,kBAAkB;EAClB,WAAW;EACX,aAAa;EACb,2BAA2B;EAC3B,aAAa;EACb,SAAS;EACT,2BAA2B;EAC3B,kBAAkB;AACpB;;AAEA;EACE,WAAW;EACX,YAAY;EACZ,4BAA4B;EAC5B,qBAAqB;EACrB,gBAAgB;EAChB,yDAA2W;AAC7W;;AAEA;EACE,WAAW;EACX,kBAAkB;EAClB,SAAS;EACT,QAAQ;EACR,2BAA2B;EAC3B,yBAAyB;EACzB,gCAAgC;EAChC,iBAAiB;EACjB,kBAAkB;EAClB,gBAAgB;AAClB","sourcesContent":["#widget {\n  font-family: 'Roboto', sans-serif;\n}\n\n#mode-picker {\n  display: flex;\n  justify-content: space-between;\n  margin: 20px;\n  margin-bottom: 40px;\n}\n\n#mode-select-line-mobile, #mode-select-line-desktop {\n  position: absolute;\n  height: 3px;\n  width: 120px;\n  border-radius: 10px;\n  transition: transform 0.3s ease;\n}\n\n#mode-select-line-desktop {\n  width: 0;\n  height: 0;\n}\n\n\n.button-column {\n\tflex: 1;\n  flex-direction: column;\n  margin: 0;\n}\n\n.button-column button {\n\taspect-ratio : 1 / 1;\n  flex-grow: 1;\n  width: 100%;\n\tbackground-color: rgb(0, 0, 0);\n  border: 1px solid white;\n  border-radius: 4px;\n  padding: 0;\n}\n\n.buttons {\n\tdisplay: flex;\n\twidth: 100%;\n\tmax-width: 600px;\n}\n\n.color-buttons {\n  width: 30px;\n  height: 30px;\n  margin: 0 1.1vw;\n}\n\n#color-picker {\n  width: 30px;\n  height: 30px;\n}\n\n#eraser-save-column {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  margin-bottom: 20px;\n}\n\n\n#trash {\n  width: 40px;\n  height: 40px;\n  margin: 0 5px;\n}\n\n#eraser {\n  display: block;\n  transform: rotate(45deg);\n  width: 40px;\n  height: 40px;\n  margin-bottom: 10px;\n}\n\n#save-button {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 5px 0px;\n  font-weight: 600;\n  font-size: 70%;\n  background-color: #4cff5b;\n  color: #121D24;\n\n}\n\n#save-icon {\n  width: 15%;\n  height: 15%;\n  margin-left: 10%;\n}\n\n#start-stop-button {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 5px 15px;\n}\n\n#start-stop-icon {\n  width: 15px;\n  height: 15px;\n}\n\n#start-stop-button div {\n  background-color: red;\n  border-radius: 5px;\n  width: 15px;\n  height: 15px;\n}\n\n\n#add-section {\n  display: flex;\n  align-items: center;\n  margin-left: 20px;\n}\n\n#add-section div {\n  background-color: #2d6f91;\n  color: white;\n  border-radius: 5px;\n  width: 20px;\n  height: 20px;\n  text-align: center;\n  font-weight: bold;\n  margin-left: 5px;\n}\n\n#add-button {\n  background-color: #4cff5b;\n  padding: 5px 10px;\n}\n\n#matrix-color-section {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  flex-direction: column;\n}\n\n#matrix-widget {\n  margin-top: 20px;\n}\n\n\n@media screen and (min-aspect-ratio: 3/2) { /* Desktop mode switch*/\n  #matrix-color-section {\n    flex-direction: row;\n  }\n  #matrix-widget {\n    order: 0;\n  }\n  #preset-color-picker {\n    order: 1;\n    margin-left: 20px;\n  }\n  .color-buttons {\n    display: block;\n    margin: 3vh 0;\n  }\n  #eraser-save-column {\n    margin: 0px 32vw;\n  }\n  #trash {\n    margin-left: 32vw;\n  }\n  #mode-picker {\n    margin: 0 40%;\n  }\n  #mode-select-line-mobile {\n    width: 0;\n    height: 0;\n  }\n  #mode-select-line-desktop {\n    height: 3px;\n    width: 120px;\n  }\n}\n\n\n#credit {\n  position: relative;\n  bottom: 0;\n  font-size: 10px;\n  color: rgb(0, 0, 126);\n}\n\n#color-picker-container {\n  z-index: 10;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n}\n\n#popup-closer {\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100vw;\n  height: 100vh;\n  background-color: rgba(0, 0, 0, 0.308);\n}\n\n#save-form {\n  position: absolute;\n  z-index: 10;\n  display: flex;\n  background-color: #00ccff7a;\n  padding: 10px;\n  left: 50%;\n  transform: translateX(-50%);\n  border-radius: 5px;\n}\n\n#checkmark {\n  width: 35px;\n  height: 35px;\n  background-repeat: no-repeat;\n  background-size: 35px;\n  margin-left: 5px;\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Cpath fill='lightgreen' d='M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8.009 8.009 0 0 1-8 8z'/%3E%3Cpath fill='lightgreen' d='M16.293 8.293 11 13.586l-2.293-2.293-1.414 1.414L11 16.414l6.707-6.707-1.414-1.414z'/%3E%3C/svg%3E\");\n}\n\n#error-pupup {\n  z-index: 20;\n  position: absolute;\n  left: 50%;\n  top: 20%;\n  transform: translateX(-50%);\n  color: rgb(255, 255, 255);\n  background-color: rgb(153, 0, 0);\n  font-weight: bold;\n  border-radius: 5px;\n  padding: 5px 5px;\n}"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, "#usl_yAlxxfZrkdQc2boR {\n  font-family: 'Roboto', sans-serif;\n}\n\n#qDyetfokRCzfrByBexH7 {\n  display: flex;\n  justify-content: space-between;\n  margin: 20px;\n  margin-bottom: 40px;\n}\n\n#WV59dg5u_OJpLiSvfYZT, #bWcDN7yqz2m1ocaJ4f4g {\n  position: absolute;\n  height: 3px;\n  width: 120px;\n  border-radius: 10px;\n  transition: transform 0.3s ease;\n}\n\n#bWcDN7yqz2m1ocaJ4f4g {\n  width: 0;\n  height: 0;\n}\n\n\n.BpEn_XLLHI9JG8PaSTQM {\n\tflex: 1;\n  flex-direction: column;\n  margin: 0;\n}\n\n.BpEn_XLLHI9JG8PaSTQM button {\n\taspect-ratio : 1 / 1;\n  flex-grow: 1;\n  width: 100%;\n\tbackground-color: rgb(0, 0, 0);\n  border: 1px solid white;\n  border-radius: 4px;\n  padding: 0;\n}\n\n.QXf7tIq86ySqUBdobBHQ {\n\tdisplay: flex;\n\twidth: 100%;\n\tmax-width: 600px;\n}\n\n.Chvp2PNTU5bOJT9W0UTB {\n  width: 30px;\n  height: 30px;\n  margin: 0 1.1vw;\n}\n\n#WbPPJemBXhzTgCG_2U81 {\n  width: 30px;\n  height: 30px;\n}\n\n#ykRA0B5UzTurciM72MKl {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  margin-bottom: 20px;\n}\n\n\n#c5hjAmrewVXQxPlsXSJM {\n  width: 40px;\n  height: 40px;\n  margin: 0 5px;\n}\n\n#d7Mu_gXsL3IzSApxiFpS {\n  display: block;\n  transform: rotate(45deg);\n  width: 40px;\n  height: 40px;\n  margin-bottom: 10px;\n}\n\n#NYYDzfkbYC8D9OZJz6RU {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 5px 0px;\n  font-weight: 600;\n  font-size: 70%;\n  background-color: #4cff5b;\n  color: #121D24;\n\n}\n\n#KMr5UbbiWbHl38S34nJw {\n  width: 15%;\n  height: 15%;\n  margin-left: 10%;\n}\n\n#p6lOefaAGmgPjjPGGFqw {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 5px 15px;\n}\n\n#hHWO6oQzjaDzvYkVA3kA {\n  width: 15px;\n  height: 15px;\n}\n\n#p6lOefaAGmgPjjPGGFqw div {\n  background-color: red;\n  border-radius: 5px;\n  width: 15px;\n  height: 15px;\n}\n\n\n#bxNeTtvDNLRtHPQeJ_Fs {\n  display: flex;\n  align-items: center;\n  margin-left: 20px;\n}\n\n#bxNeTtvDNLRtHPQeJ_Fs div {\n  background-color: #2d6f91;\n  color: white;\n  border-radius: 5px;\n  width: 20px;\n  height: 20px;\n  text-align: center;\n  font-weight: bold;\n  margin-left: 5px;\n}\n\n#t8kzB9bkjIXrw_4dvSjj {\n  background-color: #4cff5b;\n  padding: 5px 10px;\n}\n\n#FuUN9yHbY2iJkNkmULIm {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  flex-direction: column;\n}\n\n#jK5GQnyqY53LqQfS7CUA {\n  margin-top: 20px;\n}\n\n\n@media screen and (min-aspect-ratio: 3/2) { /* Desktop mode switch*/\n  #FuUN9yHbY2iJkNkmULIm {\n    flex-direction: row;\n  }\n  #jK5GQnyqY53LqQfS7CUA {\n    order: 0;\n  }\n  #Oa3Upf9OzloKPAdvzWgC {\n    order: 1;\n    margin-left: 20px;\n  }\n  .Chvp2PNTU5bOJT9W0UTB {\n    display: block;\n    margin: 3vh 0;\n  }\n  #ykRA0B5UzTurciM72MKl {\n    margin: 0px 32vw;\n  }\n  #c5hjAmrewVXQxPlsXSJM {\n    margin-left: 32vw;\n  }\n  #qDyetfokRCzfrByBexH7 {\n    margin: 0 40%;\n  }\n  #WV59dg5u_OJpLiSvfYZT {\n    width: 0;\n    height: 0;\n  }\n  #bWcDN7yqz2m1ocaJ4f4g {\n    height: 3px;\n    width: 120px;\n  }\n}\n\n\n#LqNfF5A2BCDzAGCVhiql {\n  position: relative;\n  bottom: 0;\n  font-size: 10px;\n  color: rgb(0, 0, 126);\n}\n\n#_wLpWcqCM76DJ8HLA_13 {\n  z-index: 10;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n}\n\n#fr1DuugvzNpOOA0RfyRi {\n  position: absolute;\n  z-index: 10;\n  display: flex;\n  background-color: #00ccff7a;\n  padding: 10px;\n  left: 50%;\n  transform: translateX(-50%);\n  border-radius: 5px;\n}\n\n#SzaZ3hlv1errwIZALpjw {\n  z-index: 20;\n  position: absolute;\n  left: 50%;\n  top: 20%;\n  transform: translateX(-50%);\n  color: rgb(255, 255, 255);\n  background-color: rgb(153, 0, 0);\n  font-weight: bold;\n  border-radius: 5px;\n  padding: 5px 5px;\n}", "",{"version":3,"sources":["webpack://./client/src/cssModules/createMode.module.css"],"names":[],"mappings":"AAAA;EACE,iCAAiC;AACnC;;AAEA;EACE,aAAa;EACb,8BAA8B;EAC9B,YAAY;EACZ,mBAAmB;AACrB;;AAEA;EACE,kBAAkB;EAClB,WAAW;EACX,YAAY;EACZ,mBAAmB;EACnB,+BAA+B;AACjC;;AAEA;EACE,QAAQ;EACR,SAAS;AACX;;;AAGA;CACC,OAAO;EACN,sBAAsB;EACtB,SAAS;AACX;;AAEA;CACC,oBAAoB;EACnB,YAAY;EACZ,WAAW;CACZ,8BAA8B;EAC7B,uBAAuB;EACvB,kBAAkB;EAClB,UAAU;AACZ;;AAEA;CACC,aAAa;CACb,WAAW;CACX,gBAAgB;AACjB;;AAEA;EACE,WAAW;EACX,YAAY;EACZ,eAAe;AACjB;;AAEA;EACE,WAAW;EACX,YAAY;AACd;;AAEA;EACE,aAAa;EACb,8BAA8B;EAC9B,mBAAmB;EACnB,mBAAmB;AACrB;;;AAGA;EACE,WAAW;EACX,YAAY;EACZ,aAAa;AACf;;AAEA;EACE,cAAc;EACd,wBAAwB;EACxB,WAAW;EACX,YAAY;EACZ,mBAAmB;AACrB;;AAEA;EACE,aAAa;EACb,mBAAmB;EACnB,uBAAuB;EACvB,gBAAgB;EAChB,gBAAgB;EAChB,cAAc;EACd,yBAAyB;EACzB,cAAc;;AAEhB;;AAEA;EACE,UAAU;EACV,WAAW;EACX,gBAAgB;AAClB;;AAEA;EACE,aAAa;EACb,mBAAmB;EACnB,uBAAuB;EACvB,iBAAiB;AACnB;;AAEA;EACE,WAAW;EACX,YAAY;AACd;;AAEA;EACE,qBAAqB;EACrB,kBAAkB;EAClB,WAAW;EACX,YAAY;AACd;;;AAGA;EACE,aAAa;EACb,mBAAmB;EACnB,iBAAiB;AACnB;;AAEA;EACE,yBAAyB;EACzB,YAAY;EACZ,kBAAkB;EAClB,WAAW;EACX,YAAY;EACZ,kBAAkB;EAClB,iBAAiB;EACjB,gBAAgB;AAClB;;AAEA;EACE,yBAAyB;EACzB,iBAAiB;AACnB;;AAEA;EACE,aAAa;EACb,mBAAmB;EACnB,uBAAuB;EACvB,sBAAsB;AACxB;;AAEA;EACE,gBAAgB;AAClB;;;AAGA,4CAA4C,uBAAuB;EACjE;IACE,mBAAmB;EACrB;EACA;IACE,QAAQ;EACV;EACA;IACE,QAAQ;IACR,iBAAiB;EACnB;EACA;IACE,cAAc;IACd,aAAa;EACf;EACA;IACE,gBAAgB;EAClB;EACA;IACE,iBAAiB;EACnB;EACA;IACE,aAAa;EACf;EACA;IACE,QAAQ;IACR,SAAS;EACX;EACA;IACE,WAAW;IACX,YAAY;EACd;AACF;;;AAGA;EACE,kBAAkB;EAClB,SAAS;EACT,eAAe;EACf,qBAAqB;AACvB;;AAEA;EACE,WAAW;EACX,kBAAkB;EAClB,QAAQ;EACR,SAAS;EACT,gCAAgC;AAClC;;AAEA;EACE,kBAAkB;EAClB,WAAW;EACX,aAAa;EACb,2BAA2B;EAC3B,aAAa;EACb,SAAS;EACT,2BAA2B;EAC3B,kBAAkB;AACpB;;AAEA;EACE,WAAW;EACX,kBAAkB;EAClB,SAAS;EACT,QAAQ;EACR,2BAA2B;EAC3B,yBAAyB;EACzB,gCAAgC;EAChC,iBAAiB;EACjB,kBAAkB;EAClB,gBAAgB;AAClB","sourcesContent":["#widget {\n  font-family: 'Roboto', sans-serif;\n}\n\n#mode-picker {\n  display: flex;\n  justify-content: space-between;\n  margin: 20px;\n  margin-bottom: 40px;\n}\n\n#mode-select-line-mobile, #mode-select-line-desktop {\n  position: absolute;\n  height: 3px;\n  width: 120px;\n  border-radius: 10px;\n  transition: transform 0.3s ease;\n}\n\n#mode-select-line-desktop {\n  width: 0;\n  height: 0;\n}\n\n\n.button-column {\n\tflex: 1;\n  flex-direction: column;\n  margin: 0;\n}\n\n.button-column button {\n\taspect-ratio : 1 / 1;\n  flex-grow: 1;\n  width: 100%;\n\tbackground-color: rgb(0, 0, 0);\n  border: 1px solid white;\n  border-radius: 4px;\n  padding: 0;\n}\n\n.buttons {\n\tdisplay: flex;\n\twidth: 100%;\n\tmax-width: 600px;\n}\n\n.color-buttons {\n  width: 30px;\n  height: 30px;\n  margin: 0 1.1vw;\n}\n\n#color-picker {\n  width: 30px;\n  height: 30px;\n}\n\n#eraser-save-column {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  margin-bottom: 20px;\n}\n\n\n#trash {\n  width: 40px;\n  height: 40px;\n  margin: 0 5px;\n}\n\n#eraser {\n  display: block;\n  transform: rotate(45deg);\n  width: 40px;\n  height: 40px;\n  margin-bottom: 10px;\n}\n\n#save-button {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 5px 0px;\n  font-weight: 600;\n  font-size: 70%;\n  background-color: #4cff5b;\n  color: #121D24;\n\n}\n\n#save-icon {\n  width: 15%;\n  height: 15%;\n  margin-left: 10%;\n}\n\n#start-stop-button {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 5px 15px;\n}\n\n#start-stop-icon {\n  width: 15px;\n  height: 15px;\n}\n\n#start-stop-button div {\n  background-color: red;\n  border-radius: 5px;\n  width: 15px;\n  height: 15px;\n}\n\n\n#add-section {\n  display: flex;\n  align-items: center;\n  margin-left: 20px;\n}\n\n#add-section div {\n  background-color: #2d6f91;\n  color: white;\n  border-radius: 5px;\n  width: 20px;\n  height: 20px;\n  text-align: center;\n  font-weight: bold;\n  margin-left: 5px;\n}\n\n#add-button {\n  background-color: #4cff5b;\n  padding: 5px 10px;\n}\n\n#matrix-color-section {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  flex-direction: column;\n}\n\n#matrix-widget {\n  margin-top: 20px;\n}\n\n\n@media screen and (min-aspect-ratio: 3/2) { /* Desktop mode switch*/\n  #matrix-color-section {\n    flex-direction: row;\n  }\n  #matrix-widget {\n    order: 0;\n  }\n  #preset-color-picker {\n    order: 1;\n    margin-left: 20px;\n  }\n  .color-buttons {\n    display: block;\n    margin: 3vh 0;\n  }\n  #eraser-save-column {\n    margin: 0px 32vw;\n  }\n  #trash {\n    margin-left: 32vw;\n  }\n  #mode-picker {\n    margin: 0 40%;\n  }\n  #mode-select-line-mobile {\n    width: 0;\n    height: 0;\n  }\n  #mode-select-line-desktop {\n    height: 3px;\n    width: 120px;\n  }\n}\n\n\n#credit {\n  position: relative;\n  bottom: 0;\n  font-size: 10px;\n  color: rgb(0, 0, 126);\n}\n\n#color-picker-container {\n  z-index: 10;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n}\n\n#save-form {\n  position: absolute;\n  z-index: 10;\n  display: flex;\n  background-color: #00ccff7a;\n  padding: 10px;\n  left: 50%;\n  transform: translateX(-50%);\n  border-radius: 5px;\n}\n\n#error-pupup {\n  z-index: 20;\n  position: absolute;\n  left: 50%;\n  top: 20%;\n  transform: translateX(-50%);\n  color: rgb(255, 255, 255);\n  background-color: rgb(153, 0, 0);\n  font-weight: bold;\n  border-radius: 5px;\n  padding: 5px 5px;\n}"],"sourceRoot":""}]);
 // Exports
 ___CSS_LOADER_EXPORT___.locals = {
 	"widget": "usl_yAlxxfZrkdQc2boR",
@@ -20667,9 +20642,7 @@ ___CSS_LOADER_EXPORT___.locals = {
 	"preset-color-picker": "Oa3Upf9OzloKPAdvzWgC",
 	"credit": "LqNfF5A2BCDzAGCVhiql",
 	"color-picker-container": "_wLpWcqCM76DJ8HLA_13",
-	"popup-closer": "jsR_MzAIQvYWtUriy6uG",
 	"save-form": "fr1DuugvzNpOOA0RfyRi",
-	"checkmark": "O8fg4ai4DCdNKqd7H8gS",
 	"error-pupup": "SzaZ3hlv1errwIZALpjw"
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
@@ -20697,7 +20670,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "#tsTcsdVCGX9nCpJQCNdo {\n}\n\n.iwcjmGknjCTqPR9O2HtU {\n  position: relative;\n  height: 5px;\n  width: 90%;\n  background-color: rgba(255, 255, 255, 0.664);\n  left: 50%;\n  transform: translateX(-50%);\n}\n\n.N5V4YMcrMTCHpFPLTQmI {\n  text-align: center;\n  color: white;\n  margin-bottom: 1vh;\n}\n\nh2.N5V4YMcrMTCHpFPLTQmI {\n  position: relative;\n  width: fit-content;\n  padding: 3px 13px;\n  font-size: 20px;\n  font-weight: 100;\n  background-color: rgba(145, 145, 145, 0.342);\n  margin: auto;\n  margin-bottom: 3vh;\n  margin-top: 1.5vh;\n}\n\n.YCueeDePWDivZMRp7h6p {\n  display: flex;\n  align-items: center;\n  justify-content: space-around;\n  margin-bottom: 1vh;\n}\n\n.Tzy9XcBSNPRoyBB9NrEr {\n  width: 17vw;\n  height: 6vw;\n  margin: 10px;\n  font-size: 3.7vw;\n  text-align: center;\n  padding: 0 0;\n}\n\n.EpaODt7QvX17luL3AX7s {\n  display: block;\n  width: 13vw;\n  height: 4vw;\n  font-size: 3.4vw;\n  padding: 0 0;\n  background-color: #A90000;\n  color: white;\n  font-weight: 100;\n  transform: translateX(4.5vw);\n}\n\n.tM5Kkv1PY49eEkNm0w3v .EpaODt7QvX17luL3AX7s {\n  transform: translateX(2.8vw);\n  display: inline-block;\n}\n\n.tM5Kkv1PY49eEkNm0w3v img {\n  width: 4vw;\n  height: 4vw;\n  margin-left: 3.5vw;\n  transform: translateY(.3vh);\n}\n\n.tM5Kkv1PY49eEkNm0w3v p {\n  display: inline-block;\n  background-color: red;\n  border-radius: 1vw;\n  width: 4vw;\n  height: 4vw;\n  margin: 0 3.5vw;\n  transform: translateY(.3vh);\n}\n\n.pdK2HaNOvHPif6WCOTXb {\n  border-radius: 10px;\n  width: 25vw;\n  height: 25vw;\n  margin-bottom: 5px;\n}\n", "",{"version":3,"sources":["webpack://./client/src/cssModules/gallery.module.css"],"names":[],"mappings":"AAAA;AACA;;AAEA;EACE,kBAAkB;EAClB,WAAW;EACX,UAAU;EACV,4CAA4C;EAC5C,SAAS;EACT,2BAA2B;AAC7B;;AAEA;EACE,kBAAkB;EAClB,YAAY;EACZ,kBAAkB;AACpB;;AAEA;EACE,kBAAkB;EAClB,kBAAkB;EAClB,iBAAiB;EACjB,eAAe;EACf,gBAAgB;EAChB,4CAA4C;EAC5C,YAAY;EACZ,kBAAkB;EAClB,iBAAiB;AACnB;;AAEA;EACE,aAAa;EACb,mBAAmB;EACnB,6BAA6B;EAC7B,kBAAkB;AACpB;;AAEA;EACE,WAAW;EACX,WAAW;EACX,YAAY;EACZ,gBAAgB;EAChB,kBAAkB;EAClB,YAAY;AACd;;AAEA;EACE,cAAc;EACd,WAAW;EACX,WAAW;EACX,gBAAgB;EAChB,YAAY;EACZ,yBAAyB;EACzB,YAAY;EACZ,gBAAgB;EAChB,4BAA4B;AAC9B;;AAEA;EACE,4BAA4B;EAC5B,qBAAqB;AACvB;;AAEA;EACE,UAAU;EACV,WAAW;EACX,kBAAkB;EAClB,2BAA2B;AAC7B;;AAEA;EACE,qBAAqB;EACrB,qBAAqB;EACrB,kBAAkB;EAClB,UAAU;EACV,WAAW;EACX,eAAe;EACf,2BAA2B;AAC7B;;AAEA;EACE,mBAAmB;EACnB,WAAW;EACX,YAAY;EACZ,kBAAkB;AACpB","sourcesContent":["#widget {\n}\n\n.line {\n  position: relative;\n  height: 5px;\n  width: 90%;\n  background-color: rgba(255, 255, 255, 0.664);\n  left: 50%;\n  transform: translateX(-50%);\n}\n\n.title {\n  text-align: center;\n  color: white;\n  margin-bottom: 1vh;\n}\n\nh2.title {\n  position: relative;\n  width: fit-content;\n  padding: 3px 13px;\n  font-size: 20px;\n  font-weight: 100;\n  background-color: rgba(145, 145, 145, 0.342);\n  margin: auto;\n  margin-bottom: 3vh;\n  margin-top: 1.5vh;\n}\n\n.saved-item-list {\n  display: flex;\n  align-items: center;\n  justify-content: space-around;\n  margin-bottom: 1vh;\n}\n\n.saved-item {\n  width: 17vw;\n  height: 6vw;\n  margin: 10px;\n  font-size: 3.7vw;\n  text-align: center;\n  padding: 0 0;\n}\n\n.delete {\n  display: block;\n  width: 13vw;\n  height: 4vw;\n  font-size: 3.4vw;\n  padding: 0 0;\n  background-color: #A90000;\n  color: white;\n  font-weight: 100;\n  transform: translateX(4.5vw);\n}\n\n.animation-item .delete {\n  transform: translateX(2.8vw);\n  display: inline-block;\n}\n\n.animation-item img {\n  width: 4vw;\n  height: 4vw;\n  margin-left: 3.5vw;\n  transform: translateY(.3vh);\n}\n\n.animation-item p {\n  display: inline-block;\n  background-color: red;\n  border-radius: 1vw;\n  width: 4vw;\n  height: 4vw;\n  margin: 0 3.5vw;\n  transform: translateY(.3vh);\n}\n\n.frame {\n  border-radius: 10px;\n  width: 25vw;\n  height: 25vw;\n  margin-bottom: 5px;\n}\n"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, "#tsTcsdVCGX9nCpJQCNdo {\n}\n\n.iwcjmGknjCTqPR9O2HtU {\n  position: relative;\n  height: 5px;\n  width: 90%;\n  background-color: rgba(255, 255, 255, 0.664);\n  left: 50%;\n  transform: translateX(-50%);\n}\n\n.N5V4YMcrMTCHpFPLTQmI {\n  text-align: center;\n  color: white;\n  margin-bottom: 1vh;\n}\n\nh2.N5V4YMcrMTCHpFPLTQmI {\n  position: relative;\n  width: fit-content;\n  padding: 3px 13px;\n  font-size: 20px;\n  font-weight: 100;\n  background-color: rgba(145, 145, 145, 0.342);\n  margin: auto;\n  margin-bottom: 3vh;\n  margin-top: 1.5vh;\n}\n\n.YCueeDePWDivZMRp7h6p {\n  display: flex;\n  align-items: center;\n  justify-content: space-around;\n  margin-bottom: 1vh;\n}\n\n.Tzy9XcBSNPRoyBB9NrEr {\n  width: 17vw;\n  height: 6vw;\n  margin: 10px;\n  font-size: 3.7vw;\n  text-align: center;\n  padding: 0 0;\n}\n\n.EpaODt7QvX17luL3AX7s {\n  display: block;\n  width: 13vw;\n  height: 4vw;\n  font-size: 3.4vw;\n  padding: 0 0;\n  background-color: #A90000;\n  color: white;\n  font-weight: 100;\n  transform: translateX(4.5vw);\n}\n\n.tM5Kkv1PY49eEkNm0w3v .EpaODt7QvX17luL3AX7s {\n  transform: translateX(2.8vw);\n  display: inline-block;\n}\n\n.tM5Kkv1PY49eEkNm0w3v img {\n  width: 4vw;\n  height: 4vw;\n  margin-left: 3.5vw;\n  transform: translateY(.3vh);\n}\n\n.tM5Kkv1PY49eEkNm0w3v p {\n  display: inline-block;\n  background-color: red;\n  border-radius: 1vw;\n  width: 4vw;\n  height: 4vw;\n  margin: 0 3.5vw;\n  transform: translateY(.3vh);\n}\n\n.pdK2HaNOvHPif6WCOTXb {\n  border-radius: 10px;\n  width: 25vw;\n  height: 25vw;\n  margin-bottom: 5px;\n}\n\n#il6rgBP1D04h3TXRWieO {\n  display: flex;\n  flex-direction: column;\n  position: absolute;\n  z-index: 10;\n  left: 50%;\n  transform: translateX(-50%);\n  top: 30%;\n  color: rgb(255, 100, 100);\n  font-size: 7vw;\n  border-radius: 3px;\n  padding: 5vw 10vw;\n  font-weight: bold;\n  text-align: center;\n  background-color: rgba(255, 255, 255, 0.623);\n  white-space: nowrap;\n}\n\n#il6rgBP1D04h3TXRWieO button {\n  background-color: rgb(255, 100, 100);\n  color: white;\n  font-size: 5vw;\n  margin-top: 20px;\n}", "",{"version":3,"sources":["webpack://./client/src/cssModules/gallery.module.css"],"names":[],"mappings":"AAAA;AACA;;AAEA;EACE,kBAAkB;EAClB,WAAW;EACX,UAAU;EACV,4CAA4C;EAC5C,SAAS;EACT,2BAA2B;AAC7B;;AAEA;EACE,kBAAkB;EAClB,YAAY;EACZ,kBAAkB;AACpB;;AAEA;EACE,kBAAkB;EAClB,kBAAkB;EAClB,iBAAiB;EACjB,eAAe;EACf,gBAAgB;EAChB,4CAA4C;EAC5C,YAAY;EACZ,kBAAkB;EAClB,iBAAiB;AACnB;;AAEA;EACE,aAAa;EACb,mBAAmB;EACnB,6BAA6B;EAC7B,kBAAkB;AACpB;;AAEA;EACE,WAAW;EACX,WAAW;EACX,YAAY;EACZ,gBAAgB;EAChB,kBAAkB;EAClB,YAAY;AACd;;AAEA;EACE,cAAc;EACd,WAAW;EACX,WAAW;EACX,gBAAgB;EAChB,YAAY;EACZ,yBAAyB;EACzB,YAAY;EACZ,gBAAgB;EAChB,4BAA4B;AAC9B;;AAEA;EACE,4BAA4B;EAC5B,qBAAqB;AACvB;;AAEA;EACE,UAAU;EACV,WAAW;EACX,kBAAkB;EAClB,2BAA2B;AAC7B;;AAEA;EACE,qBAAqB;EACrB,qBAAqB;EACrB,kBAAkB;EAClB,UAAU;EACV,WAAW;EACX,eAAe;EACf,2BAA2B;AAC7B;;AAEA;EACE,mBAAmB;EACnB,WAAW;EACX,YAAY;EACZ,kBAAkB;AACpB;;AAEA;EACE,aAAa;EACb,sBAAsB;EACtB,kBAAkB;EAClB,WAAW;EACX,SAAS;EACT,2BAA2B;EAC3B,QAAQ;EACR,yBAAyB;EACzB,cAAc;EACd,kBAAkB;EAClB,iBAAiB;EACjB,iBAAiB;EACjB,kBAAkB;EAClB,4CAA4C;EAC5C,mBAAmB;AACrB;;AAEA;EACE,oCAAoC;EACpC,YAAY;EACZ,cAAc;EACd,gBAAgB;AAClB","sourcesContent":["#widget {\n}\n\n.line {\n  position: relative;\n  height: 5px;\n  width: 90%;\n  background-color: rgba(255, 255, 255, 0.664);\n  left: 50%;\n  transform: translateX(-50%);\n}\n\n.title {\n  text-align: center;\n  color: white;\n  margin-bottom: 1vh;\n}\n\nh2.title {\n  position: relative;\n  width: fit-content;\n  padding: 3px 13px;\n  font-size: 20px;\n  font-weight: 100;\n  background-color: rgba(145, 145, 145, 0.342);\n  margin: auto;\n  margin-bottom: 3vh;\n  margin-top: 1.5vh;\n}\n\n.saved-item-list {\n  display: flex;\n  align-items: center;\n  justify-content: space-around;\n  margin-bottom: 1vh;\n}\n\n.saved-item {\n  width: 17vw;\n  height: 6vw;\n  margin: 10px;\n  font-size: 3.7vw;\n  text-align: center;\n  padding: 0 0;\n}\n\n.delete {\n  display: block;\n  width: 13vw;\n  height: 4vw;\n  font-size: 3.4vw;\n  padding: 0 0;\n  background-color: #A90000;\n  color: white;\n  font-weight: 100;\n  transform: translateX(4.5vw);\n}\n\n.animation-item .delete {\n  transform: translateX(2.8vw);\n  display: inline-block;\n}\n\n.animation-item img {\n  width: 4vw;\n  height: 4vw;\n  margin-left: 3.5vw;\n  transform: translateY(.3vh);\n}\n\n.animation-item p {\n  display: inline-block;\n  background-color: red;\n  border-radius: 1vw;\n  width: 4vw;\n  height: 4vw;\n  margin: 0 3.5vw;\n  transform: translateY(.3vh);\n}\n\n.frame {\n  border-radius: 10px;\n  width: 25vw;\n  height: 25vw;\n  margin-bottom: 5px;\n}\n\n#delete-popup {\n  display: flex;\n  flex-direction: column;\n  position: absolute;\n  z-index: 10;\n  left: 50%;\n  transform: translateX(-50%);\n  top: 30%;\n  color: rgb(255, 100, 100);\n  font-size: 7vw;\n  border-radius: 3px;\n  padding: 5vw 10vw;\n  font-weight: bold;\n  text-align: center;\n  background-color: rgba(255, 255, 255, 0.623);\n  white-space: nowrap;\n}\n\n#delete-popup button {\n  background-color: rgb(255, 100, 100);\n  color: white;\n  font-size: 5vw;\n  margin-top: 20px;\n}"],"sourceRoot":""}]);
 // Exports
 ___CSS_LOADER_EXPORT___.locals = {
 	"widget": "tsTcsdVCGX9nCpJQCNdo",
@@ -20707,7 +20680,8 @@ ___CSS_LOADER_EXPORT___.locals = {
 	"saved-item": "Tzy9XcBSNPRoyBB9NrEr",
 	"delete": "EpaODt7QvX17luL3AX7s",
 	"animation-item": "tM5Kkv1PY49eEkNm0w3v",
-	"frame": "pdK2HaNOvHPif6WCOTXb"
+	"frame": "pdK2HaNOvHPif6WCOTXb",
+	"delete-popup": "il6rgBP1D04h3TXRWieO"
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -21371,17 +21345,6 @@ module.exports = styleTagTransform;
 
 /***/ }),
 
-/***/ "data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2724%27 height=%2724%27%3E%3Cpath fill=%27lightgreen%27 d=%27M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8.009 8.009 0 0 1-8 8z%27/%3E%3Cpath fill=%27lightgreen%27 d=%27M16.293 8.293 11 13.586l-2.293-2.293-1.414 1.414L11 16.414l6.707-6.707-1.414-1.414z%27/%3E%3C/svg%3E":
-/*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2724%27 height=%2724%27%3E%3Cpath fill=%27lightgreen%27 d=%27M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8.009 8.009 0 0 1-8 8z%27/%3E%3Cpath fill=%27lightgreen%27 d=%27M16.293 8.293 11 13.586l-2.293-2.293-1.414 1.414L11 16.414l6.707-6.707-1.414-1.414z%27/%3E%3C/svg%3E ***!
-  \**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
-/***/ ((module) => {
-
-"use strict";
-module.exports = "data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2724%27 height=%2724%27%3E%3Cpath fill=%27lightgreen%27 d=%27M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8.009 8.009 0 0 1-8 8z%27/%3E%3Cpath fill=%27lightgreen%27 d=%27M16.293 8.293 11 13.586l-2.293-2.293-1.414 1.414L11 16.414l6.707-6.707-1.414-1.414z%27/%3E%3C/svg%3E";
-
-/***/ }),
-
 /***/ "./node_modules/react-colorful/dist/index.mjs":
 /*!****************************************************!*\
   !*** ./node_modules/react-colorful/dist/index.mjs ***!
@@ -21444,9 +21407,6 @@ function u(){return(u=Object.assign||function(e){for(var r=1;r<arguments.length;
 /******/ 		return module.exports;
 /******/ 	}
 /******/ 	
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = __webpack_modules__;
-/******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
 /******/ 	(() => {
@@ -21495,32 +21455,6 @@ function u(){return(u=Object.assign||function(e){for(var r=1;r<arguments.length;
 /******/ 			if (!module.children) module.children = [];
 /******/ 			return module;
 /******/ 		};
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/jsonp chunk loading */
-/******/ 	(() => {
-/******/ 		__webpack_require__.b = document.baseURI || self.location.href;
-/******/ 		
-/******/ 		// object to store loaded and loading chunks
-/******/ 		// undefined = chunk not loaded, null = chunk preloaded/prefetched
-/******/ 		// [resolve, reject, Promise] = chunk loading, 0 = chunk loaded
-/******/ 		var installedChunks = {
-/******/ 			"main": 0
-/******/ 		};
-/******/ 		
-/******/ 		// no chunk on demand loading
-/******/ 		
-/******/ 		// no prefetching
-/******/ 		
-/******/ 		// no preloaded
-/******/ 		
-/******/ 		// no HMR
-/******/ 		
-/******/ 		// no HMR manifest
-/******/ 		
-/******/ 		// no on chunks loaded
-/******/ 		
-/******/ 		// no jsonp function
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/nonce */
