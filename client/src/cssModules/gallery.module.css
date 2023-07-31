@@ -1,5 +1,4 @@
 #widget {
-
 }
 
 .line {
@@ -14,36 +13,74 @@
 .title {
   text-align: center;
   color: white;
-  margin-bottom: 5;
+  margin-bottom: 1vh;
 }
 
 h2.title {
+  position: relative;
+  width: fit-content;
+  padding: 3px 13px;
   font-size: 20px;
   font-weight: 100;
   background-color: rgba(145, 145, 145, 0.342);
+  margin: auto;
+  margin-bottom: 3vh;
+  margin-top: 1.5vh;
 }
 
 .saved-item-list {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: 10px;
+  justify-content: space-around;
+  margin-bottom: 1vh;
 }
 
 .saved-item {
-  width: 70px;
-  height: 20px;
+  width: 17vw;
+  height: 6vw;
   margin: 10px;
-  font-size: 100%;
+  font-size: 3.7vw;
   text-align: center;
   padding: 0 0;
 }
 
 .delete {
-  transform: translateX(35%);
-  width: 50px;
-  height: 20px;
+  display: block;
+  width: 13vw;
+  height: 4vw;
+  font-size: 3.4vw;
   padding: 0 0;
   background-color: #A90000;
   color: white;
+  font-weight: 100;
+  transform: translateX(4.5vw);
+}
+
+.animation-item .delete {
+  transform: translateX(2.8vw);
+  display: inline-block;
+}
+
+.animation-item img {
+  width: 4vw;
+  height: 4vw;
+  margin-left: 3.5vw;
+  transform: translateY(.3vh);
+}
+
+.animation-item p {
+  display: inline-block;
+  background-color: red;
+  border-radius: 1vw;
+  width: 4vw;
+  height: 4vw;
+  margin: 0 3.5vw;
+  transform: translateY(.3vh);
+}
+
+.frame {
+  border-radius: 10px;
+  width: 25vw;
+  height: 25vw;
+  margin-bottom: 5px;
 }
