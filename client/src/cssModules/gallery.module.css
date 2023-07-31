@@ -22,3 +22,28 @@ h2.title {
   font-weight: 100;
   background-color: rgba(145, 145, 145, 0.342);
 }
+
+.saved-item-list {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.saved-item {
+  width: 70px;
+  height: 20px;
+  margin: 10px;
+  font-size: 100%;
+  text-align: center;
+  padding: 0 0;
+}
+
+.delete {
+  transform: translateX(35%);
+  width: 50px;
+  height: 20px;
+  padding: 0 0;
+  background-color: #A90000;
+  color: white;
+}

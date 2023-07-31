@@ -347,57 +347,56 @@ var Gallery = function Gallery(_ref) {
       children: "Drawings"
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
       className: _cssModules_gallery_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].line
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h2", {
+    }), frameElements.length > 0 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h2", {
       className: _cssModules_gallery_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].title,
       children: "Current"
-    }), frameElements.map(function (curElem, idx) {
-      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-        className: "frameBox",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("canvas", {
-          onClick: function onClick() {
-            handleFrameChoice(frames[idx][16]); /* 16 contains name */
-          },
-          className: "frame",
-          ref: function ref(canvas) {
-            canvas && canvas.getContext("2d").drawImage(curElem, 0, 0);
-          },
-          width: 128,
-          height: 128
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
-          style: {
-            'color': 'red'
-          },
-          onClick: function onClick() {
-            handleDelete(frames[idx][16], idx);
-          },
-          children: "delete"
-        })]
-      });
+    }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+      className: _cssModules_gallery_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["save-item-list"],
+      children: frameElements.map(function (curElem, idx) {
+        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+          className: "frameBox",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("canvas", {
+            onClick: function onClick() {
+              handleFrameChoice(frames[idx][16]); /* 16 contains name */
+            },
+            className: "frame",
+            ref: function ref(canvas) {
+              canvas && canvas.getContext("2d").drawImage(curElem, 0, 0);
+            },
+            width: 128,
+            height: 128
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+            style: _cssModules_gallery_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["delete"],
+            onClick: function onClick() {
+              handleDelete(frames[idx][16], idx);
+            },
+            children: "delete"
+          })]
+        });
+      })
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h2", {
       className: _cssModules_gallery_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].title,
       children: "Saved"
-    }), prevFrameNames.map(function (curName, idx) {
-      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-        className: "prevFrameBox",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
-          style: {
-            'color': 'blue',
-            'fontSize': '15px'
-          },
-          onClick: function onClick() {
-            handleFrameChoice(curName);
-          },
-          children: curName
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
-          style: {
-            'color': 'red'
-          },
-          onClick: function onClick() {
-            handleDelete(curName, idx, 'prev');
-          },
-          children: "delete"
-        })]
-      });
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+      className: _cssModules_gallery_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["saved-item-list"],
+      children: prevFrameNames.map(function (curName, idx) {
+        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+          className: "prevFrameBox",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+            className: _cssModules_gallery_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["saved-item"],
+            onClick: function onClick() {
+              handleFrameChoice(curName);
+            },
+            children: curName
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+            className: _cssModules_gallery_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["delete"],
+            onClick: function onClick() {
+              handleDelete(curName, idx, 'prev');
+            },
+            children: "delete"
+          })]
+        });
+      })
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
       className: _cssModules_gallery_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].line
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h1", {
@@ -409,34 +408,25 @@ var Gallery = function Gallery(_ref) {
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
       className: _cssModules_gallery_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].line
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-      children: "Saved Animations"
-    }), anims.map(function (curName, idx) {
-      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-        className: "prevFrameBox",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
-          style: {
-            'color': 'blue',
-            'fontSize': '15px'
-          },
-          onClick: function onClick() {
-            handleFrameChoice(curName, true);
-          },
-          children: curName
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
-          onClick: function onClick(e) {
-            return handleSave(e, true, curName);
-          },
-          children: "Add"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
-          style: {
-            'color': 'red'
-          },
-          onClick: function onClick() {
-            handleDelete(curName, idx, 'animation');
-          },
-          children: "delete"
-        })]
-      });
+      className: _cssModules_gallery_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["saved-item-list"],
+      children: anims.map(function (curName, idx) {
+        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+          className: "prevFrameBox",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+            className: _cssModules_gallery_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["saved-item"],
+            onClick: function onClick() {
+              handleFrameChoice(curName, true);
+            },
+            children: curName
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+            className: _cssModules_gallery_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["delete"],
+            onClick: function onClick() {
+              handleDelete(curName, idx, 'animation');
+            },
+            children: "delete"
+          })]
+        });
+      })
     })]
   });
 };
@@ -20680,12 +20670,15 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "#tsTcsdVCGX9nCpJQCNdo {\n\n}\n\n.iwcjmGknjCTqPR9O2HtU {\n  position: relative;\n  height: 5px;\n  width: 90%;\n  background-color: rgba(255, 255, 255, 0.664);\n  left: 50%;\n  transform: translateX(-50%);\n}\n\n.N5V4YMcrMTCHpFPLTQmI {\n  text-align: center;\n  color: white;\n  margin-bottom: 5;\n}\n\nh2.N5V4YMcrMTCHpFPLTQmI {\n  font-size: 20px;\n  font-weight: 100;\n  background-color: rgba(145, 145, 145, 0.342);\n}", "",{"version":3,"sources":["webpack://./client/src/cssModules/gallery.module.css"],"names":[],"mappings":"AAAA;;AAEA;;AAEA;EACE,kBAAkB;EAClB,WAAW;EACX,UAAU;EACV,4CAA4C;EAC5C,SAAS;EACT,2BAA2B;AAC7B;;AAEA;EACE,kBAAkB;EAClB,YAAY;EACZ,gBAAgB;AAClB;;AAEA;EACE,eAAe;EACf,gBAAgB;EAChB,4CAA4C;AAC9C","sourcesContent":["#widget {\n\n}\n\n.line {\n  position: relative;\n  height: 5px;\n  width: 90%;\n  background-color: rgba(255, 255, 255, 0.664);\n  left: 50%;\n  transform: translateX(-50%);\n}\n\n.title {\n  text-align: center;\n  color: white;\n  margin-bottom: 5;\n}\n\nh2.title {\n  font-size: 20px;\n  font-weight: 100;\n  background-color: rgba(145, 145, 145, 0.342);\n}"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, "#tsTcsdVCGX9nCpJQCNdo {\n\n}\n\n.iwcjmGknjCTqPR9O2HtU {\n  position: relative;\n  height: 5px;\n  width: 90%;\n  background-color: rgba(255, 255, 255, 0.664);\n  left: 50%;\n  transform: translateX(-50%);\n}\n\n.N5V4YMcrMTCHpFPLTQmI {\n  text-align: center;\n  color: white;\n  margin-bottom: 5;\n}\n\nh2.N5V4YMcrMTCHpFPLTQmI {\n  font-size: 20px;\n  font-weight: 100;\n  background-color: rgba(145, 145, 145, 0.342);\n}\n\n.YCueeDePWDivZMRp7h6p {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  margin-bottom: 10px;\n}\n\n.Tzy9XcBSNPRoyBB9NrEr {\n  width: 70px;\n  height: 20px;\n  margin: 10px;\n  font-size: 100%;\n  text-align: center;\n  padding: 0 0;\n}\n\n.EpaODt7QvX17luL3AX7s {\n  transform: translateX(35%);\n  width: 50px;\n  height: 20px;\n  padding: 0 0;\n  background-color: #A90000;\n  color: white;\n}", "",{"version":3,"sources":["webpack://./client/src/cssModules/gallery.module.css"],"names":[],"mappings":"AAAA;;AAEA;;AAEA;EACE,kBAAkB;EAClB,WAAW;EACX,UAAU;EACV,4CAA4C;EAC5C,SAAS;EACT,2BAA2B;AAC7B;;AAEA;EACE,kBAAkB;EAClB,YAAY;EACZ,gBAAgB;AAClB;;AAEA;EACE,eAAe;EACf,gBAAgB;EAChB,4CAA4C;AAC9C;;AAEA;EACE,aAAa;EACb,mBAAmB;EACnB,8BAA8B;EAC9B,mBAAmB;AACrB;;AAEA;EACE,WAAW;EACX,YAAY;EACZ,YAAY;EACZ,eAAe;EACf,kBAAkB;EAClB,YAAY;AACd;;AAEA;EACE,0BAA0B;EAC1B,WAAW;EACX,YAAY;EACZ,YAAY;EACZ,yBAAyB;EACzB,YAAY;AACd","sourcesContent":["#widget {\n\n}\n\n.line {\n  position: relative;\n  height: 5px;\n  width: 90%;\n  background-color: rgba(255, 255, 255, 0.664);\n  left: 50%;\n  transform: translateX(-50%);\n}\n\n.title {\n  text-align: center;\n  color: white;\n  margin-bottom: 5;\n}\n\nh2.title {\n  font-size: 20px;\n  font-weight: 100;\n  background-color: rgba(145, 145, 145, 0.342);\n}\n\n.saved-item-list {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  margin-bottom: 10px;\n}\n\n.saved-item {\n  width: 70px;\n  height: 20px;\n  margin: 10px;\n  font-size: 100%;\n  text-align: center;\n  padding: 0 0;\n}\n\n.delete {\n  transform: translateX(35%);\n  width: 50px;\n  height: 20px;\n  padding: 0 0;\n  background-color: #A90000;\n  color: white;\n}"],"sourceRoot":""}]);
 // Exports
 ___CSS_LOADER_EXPORT___.locals = {
 	"widget": "tsTcsdVCGX9nCpJQCNdo",
 	"line": "iwcjmGknjCTqPR9O2HtU",
-	"title": "N5V4YMcrMTCHpFPLTQmI"
+	"title": "N5V4YMcrMTCHpFPLTQmI",
+	"saved-item-list": "YCueeDePWDivZMRp7h6p",
+	"saved-item": "Tzy9XcBSNPRoyBB9NrEr",
+	"delete": "EpaODt7QvX17luL3AX7s"
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -21766,11 +21759,16 @@ var App = function App() {
     }) : null, pixelSending || modeDataSending ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("img", {
       id: "loading",
       src: "./icons/loading.gif"
-    }) : null, isConnected && (showCreateMode || showGallery) ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("button", {
+    }) : null, showCreateMode || showGallery ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("button", {
       id: "bottom-button",
       onClick: function onClick() {
-        setShowGallery(true);
-        setshowCreateMode(false);
+        if (showCreateMode) {
+          setShowGallery(true);
+          setShowCreateMode(false);
+        } else {
+          setShowGallery(false);
+          setShowCreateMode(true);
+        }
       },
       children: !showGallery ? 'Gallery' : 'Create'
     }) : null]

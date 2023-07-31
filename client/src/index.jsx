@@ -176,7 +176,7 @@ const App = function() {
       {audioVisualizer ? <AVController modeRunning={modeRunning} handleChooseColor={handleModeChooseColor} curChosenColor={curChosenColor} modeDataSending={modeDataSending} setCurChosenColor={setCurChosenColor} colorChoices={colorChoices} handleModeStartStop={handleModeStartStop}/> : null}
 			{inputError ? <div style={{"color": "red"}}>{inputError}</div>: null}
 		</div> */}
-    {isConnected && (showCreateMode || showGallery) ? <button id='bottom-button' onClick={() => {setShowGallery(true); setshowCreateMode(false);}}>{!showGallery ? 'Gallery' : 'Create'}</button> : null}
+    {showCreateMode || showGallery ? <button id='bottom-button' onClick={() => {if (showCreateMode) {setShowGallery(true); setShowCreateMode(false);} else {setShowGallery(false); setShowCreateMode(true);}}}>{!showGallery ? 'Gallery' : 'Create'}</button> : null}
 		</div>
 	)
 }
