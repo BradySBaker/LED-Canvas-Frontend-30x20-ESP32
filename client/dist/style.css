@@ -1,8 +1,17 @@
 body {
 	background-color: #121D24;
+  overflow-x: hidden;
+  font-family: 'Roboto', sans-serif;
 }
 
-
+button {
+  border: none;
+  background-color: #4CC2FF;
+  border-radius: 5px;
+  font-weight: bold;
+  color: #17252e;
+  padding: 5px 15px;
+}
 
 .hue-horizontal {
 	height: 1000px;
@@ -92,7 +101,7 @@ body {
 	display: block;
 }
 
-#gallery-button {
+#bottom-button {
   position: fixed;
   border-radius: 10px 10px 0 0;
   border: none;

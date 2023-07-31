@@ -8,14 +8,12 @@
 
 #back-button {
   background-color: transparent;
-  border: none;
   margin-right: 20px;
 }
 
 #title {
   color: white;
   display: inline-block;
-  font-family: 'Roboto', sans-serif;
   font-weight: bold;
   font-size: 23px;
   position: absolute;
