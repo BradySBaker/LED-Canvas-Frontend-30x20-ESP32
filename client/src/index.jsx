@@ -29,7 +29,7 @@ window.turnedOn = false;
 window.color = "#FFFFFF";
 
 const App = function() {
-	const [isConnected, setIsConnected] = useState(false);
+	const [isConnected, setIsConnected] = useState(true);
 	const [mouseDown, setMouseDown] = useState(false);
 	const [pixelSending, setPixelSending] = useState(false);
 	const [modeDataSending, setModeDataSending] = useState(false);
@@ -48,7 +48,7 @@ const App = function() {
   const [colorChoices, setColorChoices] = useState([]);
 	const [curChosenColor, setCurChosenColor] = useState(color);
 
-  const [selectedColor, setSelectedColor] = useState(color);setShowCreateMode
+  const [selectedColor, setSelectedColor] = useState(color);
 
   const [connectError, setConnectError] = useState(false);
 
