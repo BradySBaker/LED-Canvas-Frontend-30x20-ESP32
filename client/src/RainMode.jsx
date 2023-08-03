@@ -34,8 +34,8 @@ const RainMode = ({handleModeStartStop, setCurChosenColor, modeDataSending, colo
             {paletteElements}
           </div>
       </div>
-				<div className='picker-container'>
-					<HexColorPicker style={{height: 'calc(90vw * 0.5)'}} color={color} onChange={handleRainColor} />
+				<div id={styles['color-picker-container']}>
+					<HexColorPicker style={{height: '50vw', width: '50vw', maxHeight: '70vh', maxWidth: '700px'}} color={color} onChange={handleRainColor} />
 				</div>
 				<div>
 					{colorChoices.map((curChoice) => {

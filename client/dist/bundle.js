@@ -795,10 +795,13 @@ var RainMode = function RainMode(_ref) {
           children: paletteElements
         })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-        className: "picker-container",
+        id: _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["color-picker-container"],
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_colorful__WEBPACK_IMPORTED_MODULE_3__.HexColorPicker, {
           style: {
-            height: 'calc(90vw * 0.5)'
+            height: '50vw',
+            width: '50vw',
+            maxHeight: '70vh',
+            maxWidth: '700px'
           },
           color: color,
           onChange: handleRainColor
@@ -20775,13 +20778,14 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".ZkP5Fx0RxRyIIy7sUfD3 {\n  width: 50px;\n  height: 30px;\n  margin-right: 10px;\n  border: 1px solid black;\n}\n\n#hWWmYz2aWIR77nZseSpG {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  color: white;\n  background-color: rgba(255, 255, 255, 0.082);\n  border-radius: 5px;\n}\n\n.F7cVhW9BZD5l8yWHzWNm {\n  width: 100px;\n  height: 2px;\n  background-color: rgba(255, 255, 255, 0.644);\n  margin-bottom: 20px;\n}\n\n#dYagxAcOEvlr4ei1y0C6 {\n  display: flex;\n  color: white;\n  margin-bottom: 20px;\n}\n", "",{"version":3,"sources":["webpack://./client/src/cssModules/miscModes.module.css"],"names":[],"mappings":"AAAA;EACE,WAAW;EACX,YAAY;EACZ,kBAAkB;EAClB,uBAAuB;AACzB;;AAEA;EACE,aAAa;EACb,sBAAsB;EACtB,mBAAmB;EACnB,YAAY;EACZ,4CAA4C;EAC5C,kBAAkB;AACpB;;AAEA;EACE,YAAY;EACZ,WAAW;EACX,4CAA4C;EAC5C,mBAAmB;AACrB;;AAEA;EACE,aAAa;EACb,YAAY;EACZ,mBAAmB;AACrB","sourcesContent":[".palette {\n  width: 50px;\n  height: 30px;\n  margin-right: 10px;\n  border: 1px solid black;\n}\n\n#paletteSelector {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  color: white;\n  background-color: rgba(255, 255, 255, 0.082);\n  border-radius: 5px;\n}\n\n.line {\n  width: 100px;\n  height: 2px;\n  background-color: rgba(255, 255, 255, 0.644);\n  margin-bottom: 20px;\n}\n\n#palettes {\n  display: flex;\n  color: white;\n  margin-bottom: 20px;\n}\n"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, ".ZkP5Fx0RxRyIIy7sUfD3 {\n  width: 15vw;\n  height: 10vw;\n  margin-right: 10px;\n  border: 1px solid black;\n}\n\n#hWWmYz2aWIR77nZseSpG {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  color: white;\n  background-color: rgba(255, 255, 255, 0.082);\n  border-radius: 5px;\n}\n\n.F7cVhW9BZD5l8yWHzWNm {\n  width: 100px;\n  height: 2px;\n  background-color: rgba(255, 255, 255, 0.644);\n  margin-bottom: 20px;\n}\n\n#dYagxAcOEvlr4ei1y0C6 {\n  display: flex;\n  color: white;\n  margin-bottom: 20px;\n}\n\n#cqCuaSb_4LJc2HhjUT35 {\n  position: relative;\n  margin: 20px 0;\n  margin-left: 25%;\n}", "",{"version":3,"sources":["webpack://./client/src/cssModules/miscModes.module.css"],"names":[],"mappings":"AAAA;EACE,WAAW;EACX,YAAY;EACZ,kBAAkB;EAClB,uBAAuB;AACzB;;AAEA;EACE,aAAa;EACb,sBAAsB;EACtB,mBAAmB;EACnB,YAAY;EACZ,4CAA4C;EAC5C,kBAAkB;AACpB;;AAEA;EACE,YAAY;EACZ,WAAW;EACX,4CAA4C;EAC5C,mBAAmB;AACrB;;AAEA;EACE,aAAa;EACb,YAAY;EACZ,mBAAmB;AACrB;;AAEA;EACE,kBAAkB;EAClB,cAAc;EACd,gBAAgB;AAClB","sourcesContent":[".palette {\n  width: 15vw;\n  height: 10vw;\n  margin-right: 10px;\n  border: 1px solid black;\n}\n\n#paletteSelector {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  color: white;\n  background-color: rgba(255, 255, 255, 0.082);\n  border-radius: 5px;\n}\n\n.line {\n  width: 100px;\n  height: 2px;\n  background-color: rgba(255, 255, 255, 0.644);\n  margin-bottom: 20px;\n}\n\n#palettes {\n  display: flex;\n  color: white;\n  margin-bottom: 20px;\n}\n\n#color-picker-container {\n  position: relative;\n  margin: 20px 0;\n  margin-left: 25%;\n}"],"sourceRoot":""}]);
 // Exports
 ___CSS_LOADER_EXPORT___.locals = {
 	"palette": "ZkP5Fx0RxRyIIy7sUfD3",
 	"paletteSelector": "hWWmYz2aWIR77nZseSpG",
 	"line": "F7cVhW9BZD5l8yWHzWNm",
-	"palettes": "dYagxAcOEvlr4ei1y0C6"
+	"palettes": "dYagxAcOEvlr4ei1y0C6",
+	"color-picker-container": "cqCuaSb_4LJc2HhjUT35"
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

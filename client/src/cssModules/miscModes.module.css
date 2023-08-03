@@ -1,6 +1,6 @@
 .palette {
-  width: 50px;
-  height: 30px;
+  width: 15vw;
+  height: 10vw;
   margin-right: 10px;
   border: 1px solid black;
 }
@@ -25,4 +25,10 @@
   display: flex;
   color: white;
   margin-bottom: 20px;
+}
+
+#color-picker-container {
+  position: relative;
+  margin: 20px 0;
+  margin-left: 25%;
 }
