@@ -2,7 +2,7 @@ import React from 'react';
 
 import styles from './cssModules/modeSelector.module.css';
 
-const ModeSelector = ({setShowGallery, setShowCreateMode}) => {
+const ModeSelector = ({setShowGallery, setShowCreateMode, setShowRainMode}) => {
   return (
     <div id={styles['widget']}>
       <h1 className={styles['title']}>LED Canvas</h1>
@@ -19,7 +19,7 @@ const ModeSelector = ({setShowGallery, setShowCreateMode}) => {
         </button>
       </div>
       <div id={styles['misc-modes']}>
-        <button>Rain Mode</button>
+        <button onClick={() => setShowRainMode(true)}>Rain Mode</button>
         <button>Audio Visualizer</button>
       </div>
     </div>

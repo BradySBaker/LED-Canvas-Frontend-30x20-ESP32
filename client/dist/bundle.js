@@ -671,7 +671,8 @@ __webpack_require__.r(__webpack_exports__);
 
 var ModeSelector = function ModeSelector(_ref) {
   var setShowGallery = _ref.setShowGallery,
-    setShowCreateMode = _ref.setShowCreateMode;
+    setShowCreateMode = _ref.setShowCreateMode,
+    setShowRainMode = _ref.setShowRainMode;
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
     id: _cssModules_modeSelector_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].widget,
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h1", {
@@ -709,6 +710,9 @@ var ModeSelector = function ModeSelector(_ref) {
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
       id: _cssModules_modeSelector_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["misc-modes"],
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+        onClick: function onClick() {
+          return setShowRainMode(true);
+        },
         children: "Rain Mode"
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
         children: "Audio Visualizer"
@@ -717,6 +721,119 @@ var ModeSelector = function ModeSelector(_ref) {
   });
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ModeSelector);
+
+/***/ }),
+
+/***/ "./client/src/RainMode.jsx":
+/*!*********************************!*\
+  !*** ./client/src/RainMode.jsx ***!
+  \*********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_colorful__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-colorful */ "./node_modules/react-colorful/dist/index.mjs");
+/* harmony import */ var _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./cssModules/miscModes.module.css */ "./client/src/cssModules/miscModes.module.css");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+
+
+var colorPalettes = {
+  redPalette: "rgb(167,0,0) 0% 25%,rgb(255,0,0) 25% 50%,rgb(255,82,82) 50% 75%, rgb(255,186,186) 75% 100%",
+  bluePalette: "rgb(0, 0, 255) 0 33%, rgb(0, 122, 255) 33% 68%, rgb(0, 204, 255) 68% 100%",
+  purplePalette: "rgb(49,0,74)  0% 25%, rgb(76,0,164) 25% 50%, rgb(131,0,196) 50% 75%, rgb(255, 105, 180) 75% 100%",
+  greenPalette: "rgb(0,156,26) 0% 25%, rgb(38,204,0) 25% 50%, rgb(123,227,130) 50% 75%, rgb(210,242,212) 75% 100%"
+};
+var paletteElements = Object.keys(colorPalettes).map(function (curPalette) {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+    className: _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].palette,
+    style: {
+      background: "linear-gradient(to right, ".concat(colorPalettes[curPalette], ")")
+    }
+  });
+});
+var RainMode = function RainMode(_ref) {
+  var handleModeStartStop = _ref.handleModeStartStop,
+    setCurChosenColor = _ref.setCurChosenColor,
+    modeDataSending = _ref.modeDataSending,
+    colorChoices = _ref.colorChoices,
+    handleChooseColor = _ref.handleChooseColor,
+    curChosenColor = _ref.curChosenColor;
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState2 = _slicedToArray(_useState, 2),
+    startClicked = _useState2[0],
+    setStartClicked = _useState2[1];
+  var handleRainColor = function handleRainColor(newColor) {
+    setCurChosenColor(newColor);
+  };
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+    id: "rainController",
+    children: modeDataSending ?
+    /*#__PURE__*/
+    /* Fix me!!!! */
+    (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.Fragment, {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+        id: _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].paletteSelector,
+        children: ["Palettes", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+          className: _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].line
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+          id: _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].palettes,
+          children: paletteElements
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+        className: "picker-container",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_colorful__WEBPACK_IMPORTED_MODULE_3__.HexColorPicker, {
+          style: {
+            height: 'calc(90vw * 0.5)'
+          },
+          color: color,
+          onChange: handleRainColor
+        })
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+        children: colorChoices.map(function (curChoice) {
+          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+            style: {
+              'backgroundColor': curChoice,
+              'width': '100px',
+              'height': '100px'
+            }
+          });
+        })
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+        style: {
+          'color': curChosenColor
+        },
+        onClick: handleChooseColor,
+        children: "Choose Color"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
+        id: "rainAmount",
+        type: "text",
+        placeholder: "1..."
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+        onClick: function onClick(e) {
+          handleModeStartStop(e, true);
+          setStartClicked(!startClicked);
+        },
+        children: !startClicked ? "Start" : "Stop"
+      })]
+    }) : null
+  });
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (RainMode);
 
 /***/ }),
 
@@ -1108,93 +1225,6 @@ function gotCharacteristics(error, characteristics, paramFuncs) {
   paramFuncs.setIsConnected(blueTooth.isConnected());
   // Add a event handler when the device is disconnected
 }
-
-/***/ }),
-
-/***/ "./client/src/rainController.jsx":
-/*!***************************************!*\
-  !*** ./client/src/rainController.jsx ***!
-  \***************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_colorful__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-colorful */ "./node_modules/react-colorful/dist/index.mjs");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
-function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-
-
-
-
-var RainController = function RainController(_ref) {
-  var setInputError = _ref.setInputError,
-    handleModeStartStop = _ref.handleModeStartStop,
-    setCurChosenColor = _ref.setCurChosenColor,
-    modeDataSending = _ref.modeDataSending,
-    colorChoices = _ref.colorChoices,
-    handleChooseColor = _ref.handleChooseColor,
-    curChosenColor = _ref.curChosenColor;
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
-    _useState2 = _slicedToArray(_useState, 2),
-    startClicked = _useState2[0],
-    setStartClicked = _useState2[1];
-  var handleRainColor = function handleRainColor(newColor) {
-    setCurChosenColor(newColor);
-  };
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
-    id: "rainController",
-    children: !modeDataSending ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.Fragment, {
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
-        className: "picker-container",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(react_colorful__WEBPACK_IMPORTED_MODULE_2__.HexColorPicker, {
-          style: {
-            height: 'calc(90vw * 0.5)'
-          },
-          color: color,
-          onChange: handleRainColor
-        })
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
-        children: colorChoices.map(function (curChoice) {
-          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
-            style: {
-              'backgroundColor': curChoice,
-              'width': '100px',
-              'height': '100px'
-            }
-          });
-        })
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
-        style: {
-          'color': curChosenColor
-        },
-        onClick: handleChooseColor,
-        children: "Choose Color"
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
-        id: "rainAmount",
-        type: "text",
-        placeholder: "1..."
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
-        onClick: function onClick(e) {
-          handleModeStartStop(e, true);
-          setStartClicked(!startClicked);
-        },
-        children: !startClicked ? "Start" : "Stop"
-      })]
-    }) : null
-  });
-};
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (RainController);
 
 /***/ }),
 
@@ -20725,6 +20755,39 @@ ___CSS_LOADER_EXPORT___.locals = {
 
 /***/ }),
 
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./client/src/cssModules/miscModes.module.css":
+/*!**********************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./client/src/cssModules/miscModes.module.css ***!
+  \**********************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ "./node_modules/css-loader/dist/runtime/sourceMaps.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+// Imports
+
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, ".ZkP5Fx0RxRyIIy7sUfD3 {\n  width: 50px;\n  height: 30px;\n  margin-right: 10px;\n  border: 1px solid black;\n}\n\n#hWWmYz2aWIR77nZseSpG {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  color: white;\n  background-color: rgba(255, 255, 255, 0.082);\n  border-radius: 5px;\n}\n\n.F7cVhW9BZD5l8yWHzWNm {\n  width: 100px;\n  height: 2px;\n  background-color: rgba(255, 255, 255, 0.644);\n  margin-bottom: 20px;\n}\n\n#dYagxAcOEvlr4ei1y0C6 {\n  display: flex;\n  color: white;\n  margin-bottom: 20px;\n}\n", "",{"version":3,"sources":["webpack://./client/src/cssModules/miscModes.module.css"],"names":[],"mappings":"AAAA;EACE,WAAW;EACX,YAAY;EACZ,kBAAkB;EAClB,uBAAuB;AACzB;;AAEA;EACE,aAAa;EACb,sBAAsB;EACtB,mBAAmB;EACnB,YAAY;EACZ,4CAA4C;EAC5C,kBAAkB;AACpB;;AAEA;EACE,YAAY;EACZ,WAAW;EACX,4CAA4C;EAC5C,mBAAmB;AACrB;;AAEA;EACE,aAAa;EACb,YAAY;EACZ,mBAAmB;AACrB","sourcesContent":[".palette {\n  width: 50px;\n  height: 30px;\n  margin-right: 10px;\n  border: 1px solid black;\n}\n\n#paletteSelector {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  color: white;\n  background-color: rgba(255, 255, 255, 0.082);\n  border-radius: 5px;\n}\n\n.line {\n  width: 100px;\n  height: 2px;\n  background-color: rgba(255, 255, 255, 0.644);\n  margin-bottom: 20px;\n}\n\n#palettes {\n  display: flex;\n  color: white;\n  margin-bottom: 20px;\n}\n"],"sourceRoot":""}]);
+// Exports
+___CSS_LOADER_EXPORT___.locals = {
+	"palette": "ZkP5Fx0RxRyIIy7sUfD3",
+	"paletteSelector": "hWWmYz2aWIR77nZseSpG",
+	"line": "F7cVhW9BZD5l8yWHzWNm",
+	"palettes": "dYagxAcOEvlr4ei1y0C6"
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
 /***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./client/src/cssModules/modeSelector.module.css":
 /*!*************************************************************************************************************************!*\
   !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./client/src/cssModules/modeSelector.module.css ***!
@@ -20957,6 +21020,61 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 
        /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_homePage_module_css__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_homePage_module_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_homePage_module_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+
+
+/***/ }),
+
+/***/ "./client/src/cssModules/miscModes.module.css":
+/*!****************************************************!*\
+  !*** ./client/src/cssModules/miscModes.module.css ***!
+  \****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/styleDomAPI.js */ "./node_modules/style-loader/dist/runtime/styleDomAPI.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/insertBySelector.js */ "./node_modules/style-loader/dist/runtime/insertBySelector.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js */ "./node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/insertStyleElement.js */ "./node_modules/style-loader/dist/runtime/insertStyleElement.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_miscModes_module_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./miscModes.module.css */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./client/src/cssModules/miscModes.module.css");
+
+      
+      
+      
+      
+      
+      
+      
+      
+      
+
+var options = {};
+
+options.styleTagTransform = (_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default());
+options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default());
+
+      options.insert = _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default().bind(null, "head");
+    
+options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
+options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_miscModes_module_css__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+
+
+
+
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_miscModes_module_css__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_miscModes_module_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_2_use_1_miscModes_module_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
 
 /***/ }),
@@ -21477,7 +21595,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _helperFunctions_setupBluetooth__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./helperFunctions/setupBluetooth */ "./client/src/helperFunctions/setupBluetooth.js");
 /* harmony import */ var react_dom_client__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-dom/client */ "./node_modules/react-dom/client.js");
 /* harmony import */ var _Gallery_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Gallery.jsx */ "./client/src/Gallery.jsx");
-/* harmony import */ var _rainController_jsx__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./rainController.jsx */ "./client/src/rainController.jsx");
+/* harmony import */ var _RainMode_jsx__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./RainMode.jsx */ "./client/src/RainMode.jsx");
 /* harmony import */ var _ModeSelector_jsx__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./ModeSelector.jsx */ "./client/src/ModeSelector.jsx");
 /* harmony import */ var _CreateMode_jsx__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./CreateMode.jsx */ "./client/src/CreateMode.jsx");
 /* harmony import */ var _avController_jsx__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./avController.jsx */ "./client/src/avController.jsx");
@@ -21547,10 +21665,10 @@ var App = function App() {
     _useState18 = _slicedToArray(_useState17, 2),
     audioVisualizer = _useState18[0],
     setAudioVisualizer = _useState18[1];
-  var _useState19 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+  var _useState19 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(true),
     _useState20 = _slicedToArray(_useState19, 2),
-    rainMode = _useState20[0],
-    setRainMode = _useState20[1];
+    showRainMode = _useState20[0],
+    setshowRainMode = _useState20[1];
   var _useState21 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
     _useState22 = _slicedToArray(_useState21, 2),
     prevFrameNames = _useState22[0],
@@ -21647,7 +21765,7 @@ var App = function App() {
   var handleModeStartStop = function handleModeStartStop(e, rain, startMode, rainAmount) {
     if (modeRunning && !startMode) {
       setModeDataSending(true);
-      (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)("SM");
+      // sendData("SM"); Fix me!!
       setTimeout(handleModeStartStop, 400);
     } else if (e) {
       if (!modeRunning && rain) {
@@ -21696,15 +21814,16 @@ var App = function App() {
     onMouseDown: function onMouseDown() {
       return setMouseDown(true);
     },
-    children: [showGallery || showCreateMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_TopBar_jsx__WEBPACK_IMPORTED_MODULE_11__["default"], {
+    children: [showGallery || showCreateMode || showRainMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_TopBar_jsx__WEBPACK_IMPORTED_MODULE_11__["default"], {
       selectedColor: selectedColor,
       disableModes: disableModes
     }) : null, !isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_HomePage_jsx__WEBPACK_IMPORTED_MODULE_10__["default"], {
       handleConnect: handleConnect,
       connectError: connectError
-    }) : null, isConnected && !showCreateMode && !showGallery ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_ModeSelector_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    }) : null, isConnected && !showCreateMode && !showGallery && !showRainMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_ModeSelector_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], {
       setShowGallery: setShowGallery,
-      setShowCreateMode: setShowCreateMode
+      setShowCreateMode: setShowCreateMode,
+      setShowRainMode: setShowRainMode
     }) : null, showGallery ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Gallery_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
       animPlaying: animPlaying,
       turnOff: turnOff,
@@ -21725,9 +21844,17 @@ var App = function App() {
       sendRequests: sendRequests,
       selectedColor: selectedColor,
       setSelectedColor: setSelectedColor
-    }) : null, pixelSending || modeDataSending ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("img", {
+    }) : null, !(pixelSending || modeDataSending) ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("img", {
       id: "loading",
       src: "./icons/loading.gif"
+    }) : null, showRainMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_RainMode_jsx__WEBPACK_IMPORTED_MODULE_6__["default"], {
+      modeRunning: modeRunning,
+      curChosenColor: curChosenColor,
+      handleChooseColor: handleModeChooseColor,
+      colorChoices: colorChoices,
+      setCurChosenColor: setCurChosenColor,
+      modeDataSending: modeDataSending,
+      handleModeStartStop: handleModeStartStop
     }) : null, showCreateMode || showGallery ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("button", {
       id: "bottom-button",
       onClick: function onClick() {
