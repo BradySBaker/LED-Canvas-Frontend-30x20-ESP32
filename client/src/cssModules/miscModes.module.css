@@ -32,8 +32,7 @@
 }
 
 #color-picker-container {
-  width: 50vw;
-  max-width: 700px;
+  width: max-content;
   margin: auto;
   margin-top: 25px;
 }
@@ -49,7 +48,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: #4cc3ff86;
+  color: #ffffff5d;
   font-size: 3.5vw;
   font-weight: lighter;
   transform: translateY(-10px);
@@ -74,4 +73,39 @@
   width: 10vw;
   margin-top: 5px;
   margin-bottom: 10px;
+}
+
+#settings button {
+  padding: 5px;
+  font-size: 3.5vw;
+}
+
+#start-button {
+  background-color: #00FF47;
+}
+
+#chosen-colors {
+  display: flex;
+  flex-wrap: wrap;
+  background-color: rgba(255, 255, 255, 0.082);
+  justify-content: space-around;
+  padding-top: 8%;
+}
+
+.chosen-color {
+  width: 15vw;
+  height: 12vw;
+  border-radius: 5px;
+  margin: 5% 5%;
+}
+
+#chosen-colors h2 {
+  position: absolute;
+  width: 100vw;
+  text-align: center;
+  color: white;
+  font-size: 5vw;
+  font-weight: normal;
+  transform: translateY(-180%);
+  text-decoration: underline;
 }

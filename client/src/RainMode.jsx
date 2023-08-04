@@ -40,26 +40,29 @@ const RainMode = ({handleModeStartStop, setCurChosenColor, modeDataSending, colo
           </div>
       </div>
 				<div id={styles['color-picker-container']}>
-					<HexColorPicker style={{height: '50vw', width: '50vw', maxHeight: '70vh', maxWidth: '700px'}} color={color} onChange={handleRainColor} />
+					<HexColorPicker style={{height: '50vw', width: '70vw', maxHeight: '70vh', maxWidth: '700px'}} color={color} onChange={handleRainColor} />
 				</div>
         <div id={styles['settings']}>
-          <button style={{'color': curChosenColor}} onClick={handleChooseColor}>Choose Color</button>
+          <button id={styles['choose-color-button']} style={{'color': curChosenColor}} onClick={handleChooseColor}>Choose Color</button>
           <div className={styles['stacked']} id={styles['background-choices-container']}>
             <p id={styles['background-text']}>Choose a background</p>
             <div id={styles['background-choices']}>Temp Temp Temp</div>
           </div>
           <div className={styles['stacked']}>
-            <p>raindrops</p>
+            <p>Raindrops</p>
             <input className={styles['amount']}  id='rainAmount' type='text' placeholder='1-15...'/>
-            <button onClick={(e) => { handleModeStartStop(e, true); setStartClicked(!startClicked); }}>{!startClicked ? "Start" : "Stop"}</button>
+            <button id={styles['start-button']} onClick={(e) => { handleModeStartStop(e, true); setStartClicked(!startClicked); }}>{!startClicked ? "Start" : "Stop"}</button>
           </div>
         </div>
         <div>
-					{colorChoices.map((curChoice) => {
-						return(
-							<div style={{'backgroundColor': curChoice, 'width': '100px', 'height': '100px'}}></div>
-						)
-					})}
+          <div id={styles['chosen-colors']}>
+          <h2>Chosen Colors</h2>
+            {colorChoices.map((curChoice) => {
+              return(
+                <div className={styles['chosen-color']} style={{'backgroundColor': curChoice}}></div>
+              )
+            })}
+          </div>
 				</div>
 			</> : null}
 		</div>
