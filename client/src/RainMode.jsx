@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 
 import { HexColorPicker } from "react-colorful";
 
@@ -11,21 +11,26 @@ const colorPalettes = {
   greenPalette: "rgb(0,156,26) 0% 25%, rgb(38,204,0) 25% 50%, rgb(123,227,130) 50% 75%, rgb(210,242,212) 75% 100%"
 };
 
-const paletteElements = Object.keys(colorPalettes).map((curPalette) => {
-  return (
-    <div className={styles['palette']} style={{background: `linear-gradient(to right, ${colorPalettes[curPalette]})`}} />
-  );
-});
-
-const RainMode = ({handleModeStartStop, setCurChosenColor, modeDataSending, colorChoices, handleChooseColor, curChosenColor}) => {
+const RainMode = ({handleModeStartStop, setCurChosenColor, modeDataSending, colorChoices, handleChooseColor, curChosenColor, prevFrameNames, frames}) => {
   const [startClicked, setStartClicked] = useState(false);
-	const handleRainColor = (newColor) => {
+
+	const handleRainColor = (newColor, palette) => {
+    if (palette) {
+      console.log(newColor);
+      return;
+    }
 		setCurChosenColor(newColor);
 	};
 
+  const paletteElements = useMemo(() => {
+    return Object.keys(colorPalettes).map((curPalette) => (
+      <div key={curPalette} className={styles['palette']} style={{background: `linear-gradient(to right, ${colorPalettes[curPalette]})`}} onClick={() => handleRainColor(curPalette, true)} />
+    ));
+  }, [colorPalettes]);
+
 	return (
-		<div id='rainController'>
-			{modeDataSending ? /* Fix me!!!! */
+		<div id={styles['widget']}>
+			{modeDataSending ? /* Fix me! */
 			<>
       <div id={styles['paletteSelector']}>
         Palettes
@@ -37,16 +42,25 @@ const RainMode = ({handleModeStartStop, setCurChosenColor, modeDataSending, colo
 				<div id={styles['color-picker-container']}>
 					<HexColorPicker style={{height: '50vw', width: '50vw', maxHeight: '70vh', maxWidth: '700px'}} color={color} onChange={handleRainColor} />
 				</div>
-				<div>
+        <div id={styles['settings']}>
+          <button style={{'color': curChosenColor}} onClick={handleChooseColor}>Choose Color</button>
+          <div className={styles['stacked']} id={styles['background-choices-container']}>
+            <p id={styles['background-text']}>Choose a background</p>
+            <div id={styles['background-choices']}>Temp Temp Temp</div>
+          </div>
+          <div className={styles['stacked']}>
+            <p>raindrops</p>
+            <input className={styles['amount']}  id='rainAmount' type='text' placeholder='1-15...'/>
+            <button onClick={(e) => { handleModeStartStop(e, true); setStartClicked(!startClicked); }}>{!startClicked ? "Start" : "Stop"}</button>
+          </div>
+        </div>
+        <div>
 					{colorChoices.map((curChoice) => {
 						return(
 							<div style={{'backgroundColor': curChoice, 'width': '100px', 'height': '100px'}}></div>
 						)
 					})}
 				</div>
-				<button style={{'color': curChosenColor}} onClick={handleChooseColor}>Choose Color</button>
-				<input id='rainAmount' type='text' placeholder='1...'/>
-				<button onClick={(e) => { handleModeStartStop(e, true); setStartClicked(!startClicked); }}>{!startClicked ? "Start" : "Stop"}</button>
 			</> : null}
 		</div>
 	)

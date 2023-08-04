@@ -758,33 +758,44 @@ var colorPalettes = {
   purplePalette: "rgb(49,0,74)  0% 25%, rgb(76,0,164) 25% 50%, rgb(131,0,196) 50% 75%, rgb(255, 105, 180) 75% 100%",
   greenPalette: "rgb(0,156,26) 0% 25%, rgb(38,204,0) 25% 50%, rgb(123,227,130) 50% 75%, rgb(210,242,212) 75% 100%"
 };
-var paletteElements = Object.keys(colorPalettes).map(function (curPalette) {
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-    className: _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].palette,
-    style: {
-      background: "linear-gradient(to right, ".concat(colorPalettes[curPalette], ")")
-    }
-  });
-});
 var RainMode = function RainMode(_ref) {
   var handleModeStartStop = _ref.handleModeStartStop,
     setCurChosenColor = _ref.setCurChosenColor,
     modeDataSending = _ref.modeDataSending,
     colorChoices = _ref.colorChoices,
     handleChooseColor = _ref.handleChooseColor,
-    curChosenColor = _ref.curChosenColor;
+    curChosenColor = _ref.curChosenColor,
+    prevFrameNames = _ref.prevFrameNames,
+    frames = _ref.frames;
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState2 = _slicedToArray(_useState, 2),
     startClicked = _useState2[0],
     setStartClicked = _useState2[1];
-  var handleRainColor = function handleRainColor(newColor) {
+  var handleRainColor = function handleRainColor(newColor, palette) {
+    if (palette) {
+      console.log(newColor);
+      return;
+    }
     setCurChosenColor(newColor);
   };
+  var paletteElements = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(function () {
+    return Object.keys(colorPalettes).map(function (curPalette) {
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+        className: _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].palette,
+        style: {
+          background: "linear-gradient(to right, ".concat(colorPalettes[curPalette], ")")
+        },
+        onClick: function onClick() {
+          return handleRainColor(curPalette, true);
+        }
+      }, curPalette);
+    });
+  }, [colorPalettes]);
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-    id: "rainController",
+    id: _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].widget,
     children: modeDataSending ?
     /*#__PURE__*/
-    /* Fix me!!!! */
+    /* Fix me! */
     (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.Fragment, {
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
         id: _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].paletteSelector,
@@ -806,6 +817,41 @@ var RainMode = function RainMode(_ref) {
           color: color,
           onChange: handleRainColor
         })
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+        id: _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].settings,
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+          style: {
+            'color': curChosenColor
+          },
+          onClick: handleChooseColor,
+          children: "Choose Color"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+          className: _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].stacked,
+          id: _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["background-choices-container"],
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("p", {
+            id: _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["background-text"],
+            children: "Choose a background"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+            id: _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["background-choices"],
+            children: "Temp Temp Temp"
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+          className: _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].stacked,
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("p", {
+            children: "raindrops"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
+            className: _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].amount,
+            id: "rainAmount",
+            type: "text",
+            placeholder: "1-15..."
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+            onClick: function onClick(e) {
+              handleModeStartStop(e, true);
+              setStartClicked(!startClicked);
+            },
+            children: !startClicked ? "Start" : "Stop"
+          })]
+        })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
         children: colorChoices.map(function (curChoice) {
           return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
@@ -816,22 +862,6 @@ var RainMode = function RainMode(_ref) {
             }
           });
         })
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
-        style: {
-          'color': curChosenColor
-        },
-        onClick: handleChooseColor,
-        children: "Choose Color"
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
-        id: "rainAmount",
-        type: "text",
-        placeholder: "1..."
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
-        onClick: function onClick(e) {
-          handleModeStartStop(e, true);
-          setStartClicked(!startClicked);
-        },
-        children: !startClicked ? "Start" : "Stop"
       })]
     }) : null
   });
@@ -20778,14 +20808,19 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".ZkP5Fx0RxRyIIy7sUfD3 {\n  width: 15vw;\n  height: 10vw;\n  margin-right: 10px;\n  border: 1px solid black;\n}\n\n#hWWmYz2aWIR77nZseSpG {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  color: white;\n  background-color: rgba(255, 255, 255, 0.082);\n  border-radius: 5px;\n}\n\n.F7cVhW9BZD5l8yWHzWNm {\n  width: 100px;\n  height: 2px;\n  background-color: rgba(255, 255, 255, 0.644);\n  margin-bottom: 20px;\n}\n\n#dYagxAcOEvlr4ei1y0C6 {\n  display: flex;\n  color: white;\n  margin-bottom: 20px;\n}\n\n#cqCuaSb_4LJc2HhjUT35 {\n  position: relative;\n  margin: 20px 0;\n  margin-left: 25%;\n}", "",{"version":3,"sources":["webpack://./client/src/cssModules/miscModes.module.css"],"names":[],"mappings":"AAAA;EACE,WAAW;EACX,YAAY;EACZ,kBAAkB;EAClB,uBAAuB;AACzB;;AAEA;EACE,aAAa;EACb,sBAAsB;EACtB,mBAAmB;EACnB,YAAY;EACZ,4CAA4C;EAC5C,kBAAkB;AACpB;;AAEA;EACE,YAAY;EACZ,WAAW;EACX,4CAA4C;EAC5C,mBAAmB;AACrB;;AAEA;EACE,aAAa;EACb,YAAY;EACZ,mBAAmB;AACrB;;AAEA;EACE,kBAAkB;EAClB,cAAc;EACd,gBAAgB;AAClB","sourcesContent":[".palette {\n  width: 15vw;\n  height: 10vw;\n  margin-right: 10px;\n  border: 1px solid black;\n}\n\n#paletteSelector {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  color: white;\n  background-color: rgba(255, 255, 255, 0.082);\n  border-radius: 5px;\n}\n\n.line {\n  width: 100px;\n  height: 2px;\n  background-color: rgba(255, 255, 255, 0.644);\n  margin-bottom: 20px;\n}\n\n#palettes {\n  display: flex;\n  color: white;\n  margin-bottom: 20px;\n}\n\n#color-picker-container {\n  position: relative;\n  margin: 20px 0;\n  margin-left: 25%;\n}"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, "#P4u8eA12R4JtH_498K76 {\n  position: relative;\n}\n\n.ZkP5Fx0RxRyIIy7sUfD3 {\n  width: 15vw;\n  height: 10vw;\n  margin-right: 10px;\n  border: 1px solid black;\n}\n\n#hWWmYz2aWIR77nZseSpG {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  color: white;\n  background-color: rgba(255, 255, 255, 0.082);\n  border-radius: 5px;\n}\n\n.F7cVhW9BZD5l8yWHzWNm {\n  width: 100px;\n  height: 2px;\n  background-color: rgba(255, 255, 255, 0.644);\n  margin-bottom: 20px;\n}\n\n#dYagxAcOEvlr4ei1y0C6 {\n  display: flex;\n  color: white;\n  margin-bottom: 20px;\n}\n\n#cqCuaSb_4LJc2HhjUT35 {\n  width: 50vw;\n  max-width: 700px;\n  margin: auto;\n  margin-top: 25px;\n}\n\n#tKUxHz7goNC3MaBjBKDn {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  margin-top: 20px;\n}\n\n.ertzy2Jsbs4zi48sckmA {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  color: #4cc3ff86;\n  font-size: 3.5vw;\n  font-weight: lighter;\n  transform: translateY(-10px);\n}\n\n.ertzy2Jsbs4zi48sckmA p {\n  text-decoration: underline;\n  margin: 5px;\n}\n\n#LqidT0fHJjsENGEMqPFN {\n  color: white;\n  overflow-x: scroll;\n  white-space: nowrap;\n  background-color: rgba(255, 255, 255, 0.082);\n  max-width: 30vw;\n  font-size: 5vw;\n}\n\n.FyVL5m_l8Md0Af5Kp18a {\n  font-size: 3.5vw;\n  width: 10vw;\n  margin-top: 5px;\n  margin-bottom: 10px;\n}", "",{"version":3,"sources":["webpack://./client/src/cssModules/miscModes.module.css"],"names":[],"mappings":"AAAA;EACE,kBAAkB;AACpB;;AAEA;EACE,WAAW;EACX,YAAY;EACZ,kBAAkB;EAClB,uBAAuB;AACzB;;AAEA;EACE,aAAa;EACb,sBAAsB;EACtB,mBAAmB;EACnB,YAAY;EACZ,4CAA4C;EAC5C,kBAAkB;AACpB;;AAEA;EACE,YAAY;EACZ,WAAW;EACX,4CAA4C;EAC5C,mBAAmB;AACrB;;AAEA;EACE,aAAa;EACb,YAAY;EACZ,mBAAmB;AACrB;;AAEA;EACE,WAAW;EACX,gBAAgB;EAChB,YAAY;EACZ,gBAAgB;AAClB;;AAEA;EACE,aAAa;EACb,8BAA8B;EAC9B,mBAAmB;EACnB,gBAAgB;AAClB;;AAEA;EACE,aAAa;EACb,sBAAsB;EACtB,mBAAmB;EACnB,gBAAgB;EAChB,gBAAgB;EAChB,oBAAoB;EACpB,4BAA4B;AAC9B;;AAEA;EACE,0BAA0B;EAC1B,WAAW;AACb;;AAEA;EACE,YAAY;EACZ,kBAAkB;EAClB,mBAAmB;EACnB,4CAA4C;EAC5C,eAAe;EACf,cAAc;AAChB;;AAEA;EACE,gBAAgB;EAChB,WAAW;EACX,eAAe;EACf,mBAAmB;AACrB","sourcesContent":["#widget {\n  position: relative;\n}\n\n.palette {\n  width: 15vw;\n  height: 10vw;\n  margin-right: 10px;\n  border: 1px solid black;\n}\n\n#paletteSelector {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  color: white;\n  background-color: rgba(255, 255, 255, 0.082);\n  border-radius: 5px;\n}\n\n.line {\n  width: 100px;\n  height: 2px;\n  background-color: rgba(255, 255, 255, 0.644);\n  margin-bottom: 20px;\n}\n\n#palettes {\n  display: flex;\n  color: white;\n  margin-bottom: 20px;\n}\n\n#color-picker-container {\n  width: 50vw;\n  max-width: 700px;\n  margin: auto;\n  margin-top: 25px;\n}\n\n#settings {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  margin-top: 20px;\n}\n\n.stacked {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  color: #4cc3ff86;\n  font-size: 3.5vw;\n  font-weight: lighter;\n  transform: translateY(-10px);\n}\n\n.stacked p {\n  text-decoration: underline;\n  margin: 5px;\n}\n\n#background-choices {\n  color: white;\n  overflow-x: scroll;\n  white-space: nowrap;\n  background-color: rgba(255, 255, 255, 0.082);\n  max-width: 30vw;\n  font-size: 5vw;\n}\n\n.amount {\n  font-size: 3.5vw;\n  width: 10vw;\n  margin-top: 5px;\n  margin-bottom: 10px;\n}"],"sourceRoot":""}]);
 // Exports
 ___CSS_LOADER_EXPORT___.locals = {
+	"widget": "P4u8eA12R4JtH_498K76",
 	"palette": "ZkP5Fx0RxRyIIy7sUfD3",
 	"paletteSelector": "hWWmYz2aWIR77nZseSpG",
 	"line": "F7cVhW9BZD5l8yWHzWNm",
 	"palettes": "dYagxAcOEvlr4ei1y0C6",
-	"color-picker-container": "cqCuaSb_4LJc2HhjUT35"
+	"color-picker-container": "cqCuaSb_4LJc2HhjUT35",
+	"settings": "tKUxHz7goNC3MaBjBKDn",
+	"stacked": "ertzy2Jsbs4zi48sckmA",
+	"background-choices": "LqidT0fHJjsENGEMqPFN",
+	"amount": "FyVL5m_l8Md0Af5Kp18a"
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -21852,6 +21887,8 @@ var App = function App() {
       id: "loading",
       src: "./icons/loading.gif"
     }) : null, showRainMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_RainMode_jsx__WEBPACK_IMPORTED_MODULE_6__["default"], {
+      prevFrameNames: prevFrameNames,
+      frames: frames,
       modeRunning: modeRunning,
       curChosenColor: curChosenColor,
       handleChooseColor: handleModeChooseColor,
