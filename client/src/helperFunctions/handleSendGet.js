@@ -55,7 +55,7 @@ export const handleSendRequests = (setPixelSending, pixelSending) => { //Occurs 
 
 
 export function gotValue(value, setAnims, setPrevFrameNames, setModeDataSending, turnOn) {
-	console.log(value);
+  console.log(value);
 	if (waitingForFrames) {
 		names += value;
 		if (value.includes('~')) {

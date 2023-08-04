@@ -18,6 +18,10 @@ const RainMode = ({handleModeStartStop, modeDataSending, colorChoices, handleMod
   const [chosenColor, setChosenColor] = useState('#FFFFFF');
   const [error, setError] = useState(false);
 
+  useEffect(() => {
+    paletteSent = false;
+  }, [colorChoices]);
+
   const handleChooseColor = (color, palette) => {
     if (colorChoices.length >= 6 || paletteSent) {
       setError("6 colors or one palette max!");
@@ -45,7 +49,7 @@ const RainMode = ({handleModeStartStop, modeDataSending, colorChoices, handleMod
 
 	return (
 		<div id={styles['widget']}>
-			{modeDataSending ? /* Fix me! */
+			{!modeDataSending ? /* Fix me! */
 			<>
       <div id={styles['paletteSelector']}>
         Palettes
@@ -61,7 +65,14 @@ const RainMode = ({handleModeStartStop, modeDataSending, colorChoices, handleMod
           <button id={styles['choose-color-button']} style={{'color': chosenColor}} onClick={() => handleChooseColor(chosenColor)}>Choose Color</button>
           <div className={styles['stacked']} id={styles['background-choices-container']}>
             <p id={styles['background-text']}>Choose a background</p>
-            <div id={styles['background-choices']}>Temp Temp Temp</div>
+            <div id={styles['background-choices']}>
+              {prevFrameNames.map((curFrame) =>
+                <div className={styles['background-choice']}>{curFrame}</div>
+              )}
+              {frames.map((curFrame) =>
+                <div>{curFrame}</div>
+              )}
+            </div>
           </div>
           <div className={styles['stacked']}>
             <p>Raindrops</p>
