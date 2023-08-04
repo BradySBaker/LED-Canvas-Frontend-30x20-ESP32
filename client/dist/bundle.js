@@ -753,47 +753,64 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 var colorPalettes = {
-  redPalette: "rgb(167,0,0) 0% 25%,rgb(255,0,0) 25% 50%,rgb(255,82,82) 50% 75%, rgb(255,186,186) 75% 100%",
-  bluePalette: "rgb(0, 0, 255) 0 33%, rgb(0, 122, 255) 33% 68%, rgb(0, 204, 255) 68% 100%",
-  purplePalette: "rgb(49,0,74)  0% 25%, rgb(76,0,164) 25% 50%, rgb(131,0,196) 50% 75%, rgb(255, 105, 180) 75% 100%",
-  greenPalette: "rgb(0,156,26) 0% 25%, rgb(38,204,0) 25% 50%, rgb(123,227,130) 50% 75%, rgb(210,242,212) 75% 100%"
+  red: ["rgb(167,0,0)", "rgb(255,0,0)", "rgb(255,82,82)", "rgb(255,186,186)"],
+  blue: ["rgb(0, 0, 255)", "rgb(0, 122, 255)", "rgb(0, 204, 255)"],
+  purple: ["rgb(49,0,74)", "rgb(76,0,164)", "rgb(131,0,196)", "rgb(255, 105, 180)"],
+  green: ["rgb(0,156,26)", "rgb(38,204,0)", "rgb(123,227,130)", "rgb(210,242,212)"]
 };
+var paletteSent = false;
 var RainMode = function RainMode(_ref) {
   var handleModeStartStop = _ref.handleModeStartStop,
-    setCurChosenColor = _ref.setCurChosenColor,
     modeDataSending = _ref.modeDataSending,
     colorChoices = _ref.colorChoices,
-    handleChooseColor = _ref.handleChooseColor,
-    curChosenColor = _ref.curChosenColor,
+    handleModeChooseColor = _ref.handleModeChooseColor,
     prevFrameNames = _ref.prevFrameNames,
     frames = _ref.frames;
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState2 = _slicedToArray(_useState, 2),
     startClicked = _useState2[0],
     setStartClicked = _useState2[1];
-  var handleRainColor = function handleRainColor(newColor, palette) {
-    if (palette) {
-      console.log(newColor);
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('#FFFFFF'),
+    _useState4 = _slicedToArray(_useState3, 2),
+    chosenColor = _useState4[0],
+    setChosenColor = _useState4[1];
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState6 = _slicedToArray(_useState5, 2),
+    error = _useState6[0],
+    setError = _useState6[1];
+  var handleChooseColor = function handleChooseColor(color, palette) {
+    if (colorChoices.length >= 6 || paletteSent) {
+      setError("6 colors or one palette max!");
       return;
     }
-    setCurChosenColor(newColor);
+    if (palette) {
+      paletteSent = true;
+    }
+    handleModeChooseColor(color, palette);
   };
   var paletteElements = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(function () {
-    return Object.keys(colorPalettes).map(function (curPalette) {
+    return Object.keys(colorPalettes).map(function (curPaletteKey) {
+      //Color Palette Style Creator
+      var curPalette = colorPalettes[curPaletteKey];
+      var percent = 100 / curPalette.length;
+      curPalette = curPalette.map(function (curColor, idx) {
+        return curColor + idx * percent + '% ' + ((idx + 1) * percent + '%');
+      });
+      curPalette = curPalette.join(',');
       return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
         className: _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].palette,
         style: {
-          background: "linear-gradient(to right, ".concat(colorPalettes[curPalette], ")")
+          background: "linear-gradient(to right, ".concat(curPalette, ")")
         },
         onClick: function onClick() {
-          return handleRainColor(curPalette, true);
+          return handleChooseColor(colorPalettes[curPaletteKey], curPaletteKey);
         }
-      }, curPalette);
+      }, curPaletteKey);
     });
   }, [colorPalettes]);
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
     id: _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].widget,
-    children: modeDataSending ?
+    children: [modeDataSending ?
     /*#__PURE__*/
     /* Fix me! */
     (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.Fragment, {
@@ -815,16 +832,20 @@ var RainMode = function RainMode(_ref) {
             maxWidth: '700px'
           },
           color: color,
-          onChange: handleRainColor
+          onChange: function onChange(color) {
+            return setChosenColor(color);
+          }
         })
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
         id: _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].settings,
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
           id: _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["choose-color-button"],
           style: {
-            'color': curChosenColor
+            'color': chosenColor
           },
-          onClick: handleChooseColor,
+          onClick: function onClick() {
+            return handleChooseColor(chosenColor);
+          },
           children: "Choose Color"
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
           className: _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].stacked,
@@ -865,11 +886,16 @@ var RainMode = function RainMode(_ref) {
               style: {
                 'backgroundColor': curChoice
               }
-            });
+            }, curChoice);
           })]
         })
       })]
-    }) : null
+    }) : null, error ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+      style: {
+        color: 'red'
+      },
+      children: error
+    }) : null]
   });
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (RainMode);
@@ -21670,7 +21696,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-window.rainColorsSent = 0;
 window.ledConnected = false;
 window.modeRunning = true;
 window.framePlayed = false;
@@ -21735,16 +21760,12 @@ var App = function App() {
     setColorChoices = _useState28[1];
   var _useState29 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(color),
     _useState30 = _slicedToArray(_useState29, 2),
-    curChosenColor = _useState30[0],
-    setCurChosenColor = _useState30[1];
-  var _useState31 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(color),
+    selectedColor = _useState30[0],
+    setSelectedColor = _useState30[1];
+  var _useState31 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState32 = _slicedToArray(_useState31, 2),
-    selectedColor = _useState32[0],
-    setSelectedColor = _useState32[1];
-  var _useState33 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
-    _useState34 = _slicedToArray(_useState33, 2),
-    connectError = _useState34[0],
-    setConnectError = _useState34[1];
+    connectError = _useState32[0],
+    setConnectError = _useState32[1];
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     //Mouse up handler
     var handleMouseUp = function handleMouseUp() {
@@ -21821,7 +21842,8 @@ var App = function App() {
         if (!rainAmount) {
           rainAmount = document.getElementById('rainAmount').value;
         }
-        if (isNaN(Number(rainAmount)) || rainAmount.length < 1 || rainColorsSent === 0) {
+        or;
+        if (isNaN(Number(rainAmount)) || rainAmount.length < 1 || colorChoices.length === 0) {
           return "Please input a number value and a color";
         }
         (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)("R" + rainAmount);
@@ -21841,13 +21863,17 @@ var App = function App() {
     }
     return false;
   };
-  var handleModeChooseColor = function handleModeChooseColor() {
+  var handleModeChooseColor = function handleModeChooseColor(chosenColor, palette) {
+    if (palette) {
+      setColorChoices(chosenColor);
+      (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)("CMP" + palette);
+      return;
+    }
     var colors = JSON.parse(JSON.stringify(colorChoices));
-    colors.push(curChosenColor);
+    colors.push(chosenColor);
     setColorChoices(colors);
-    (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)("CM" + curChosenColor.slice(1));
+    (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)("CM" + chosenColor.slice(1));
     setModeDataSending(true);
-    rainColorsSent++;
   };
   var handleConnect = function handleConnect() {
     (0,_helperFunctions_setupBluetooth__WEBPACK_IMPORTED_MODULE_3__["default"])(setIsConnected, turnOn, setAnims, setPrevFrameNames, setModeDataSending, setConnectError);
@@ -21899,10 +21925,8 @@ var App = function App() {
       prevFrameNames: prevFrameNames,
       frames: frames,
       modeRunning: modeRunning,
-      curChosenColor: curChosenColor,
-      handleChooseColor: handleModeChooseColor,
+      handleModeChooseColor: handleModeChooseColor,
       colorChoices: colorChoices,
-      setCurChosenColor: setCurChosenColor,
       modeDataSending: modeDataSending,
       handleModeStartStop: handleModeStartStop
     }) : null, showCreateMode || showGallery ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("button", {
