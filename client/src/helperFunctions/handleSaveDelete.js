@@ -1,5 +1,4 @@
 export const handleSave = (sendData, setFrames, frames, anims, setAnims, e, animation, frameName) => {
-
 	if (frameName.length > 0) { //Returns string if error otherwise false
 		const regex = /^[a-zA-Z0-9_\-]+$/; // valid characters are letters, numbers, underscores, and dashes
 		if ((!regex.test(frameName))) {

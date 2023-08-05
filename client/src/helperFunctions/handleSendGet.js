@@ -23,7 +23,7 @@ export const handleSendRequests = (setPixelSending, pixelSending) => { //Occurs 
 		var toBeSent = '';
 		var positions = 0;
 		if (sendRequests["off"]) {
-			sendData("OFF\n");
+			sendData("OFF");
 			window.sendRequests = {};
 		} else {
 			for (var key in sendRequests) {
@@ -55,7 +55,7 @@ export const handleSendRequests = (setPixelSending, pixelSending) => { //Occurs 
 
 
 export function gotValue(value, setAnims, setPrevFrameNames, setModeDataSending, turnOn) {
-	console.log(value);
+  console.log(value);
 	if (waitingForFrames) {
 		names += value;
 		if (value.includes('~')) {
@@ -86,7 +86,7 @@ export function gotValue(value, setAnims, setPrevFrameNames, setModeDataSending,
 	if (value === 'SM' || value === 'CM') {
 		modeRunning = false;
 		if (!window.turnedOn) {
-			setTimeout(() => sendData("OFF\n"), 100);
+			setTimeout(() => sendData("OFF"), 100);
 		} else {
 			setModeDataSending(false);
 		}

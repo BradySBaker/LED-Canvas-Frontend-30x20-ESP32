@@ -1,12 +1,13 @@
-#widget {
-  font-family: 'Roboto', sans-serif;
-}
-
 #mode-picker {
   display: flex;
   justify-content: space-between;
   margin: 20px;
   margin-bottom: 40px;
+}
+
+#mode-picker button {
+  padding: 10px 20px;
+  font-weight: bold;
 }
 
 #mode-select-line-mobile, #mode-select-line-desktop {
@@ -15,13 +16,13 @@
   width: 120px;
   border-radius: 10px;
   transition: transform 0.3s ease;
+  background-color: #4CC2FF;
 }
 
 #mode-select-line-desktop {
   width: 0;
   height: 0;
 }
-
 
 .button-column {
 	flex: 1;

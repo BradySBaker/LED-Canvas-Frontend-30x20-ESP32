@@ -1,4 +1,4 @@
-import React, { useState, useRef  } from 'react';
+import React, { useState, useRef } from 'react';
 
 import styles from './cssModules/createMode.module.css';
 
@@ -8,7 +8,6 @@ import MatrixButtons from "./MatrixButtons.jsx";
 const colorOptions = ['#FF0000', '#A020F0', '#FFC0CB', '#0000FF', '#FFFF00', '#00FF00', '#FFA500', '#FFFFFF'];
 
 const CreateMode = ({callSave, animPlaying, turnOff, pixelSending, mouseDown, sendRequests, selectedColor, setSelectedColor, handleFrameChoice}) => {
-
   const [frameCount, setFrameCount] = useState(0);
   const [selectColor, setSelectColor] = useState(false);
   const [drawMode, setDrawMode] = useState(true);
@@ -79,7 +78,7 @@ const CreateMode = ({callSave, animPlaying, turnOff, pixelSending, mouseDown, se
         <button style={!drawMode ? {'background-color': '#4CC2FF'} : {'background-color': '#7D7D7D'}} onClick={() => setDrawMode(true)}>Drawing Mode</button>
         <button style={drawMode ? {'background-color': '#4CC2FF'} : {'background-color': '#7D7D7D'}} onClick={() => setDrawMode(false)}>Animate Mode</button>
       </div>
-      <div id={styles['mode-select-line-mobile']} style={drawMode ?  {transform: 'translate(8vw, -35px)'} : {transform: 'translate(55vw, -35px)'}}></div>
+      <div id={styles['mode-select-line-mobile']} style={drawMode ?  {transform: 'translate(7vw, -35px)'} : {transform: 'translate(55vw, -35px)'}}></div>
       <div id={styles['mode-select-line-desktop']} style={drawMode ?  {transform: 'translate(40.1vw, 5px)'} : {transform: 'translate(51vw, 5px)'}}></div>
       <img src='./icons/trash-icon.png' id={styles['trash']} onClick={turnOff}/>
         <div id={styles['eraser-save-column']}>
