@@ -758,15 +758,25 @@ var colorPalettes = {
   green: ["rgb(0, 82, 0)", "rgb(0, 255, 0)", "rgb(102, 255, 102)"],
   purple: ["rgb(60, 0, 90)", "rgb(150, 0, 200)", "rgb(255, 105, 180)"]
 };
-var paletteSent = false;
 var chosenFrame = false;
+var colorsSent = 0;
+var rain = false;
+var raindropSelections = [];
+for (var i = 1; i <= 20; i++) {
+  raindropSelections.push( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("option", {
+    value: i,
+    children: i
+  }));
+}
+;
 var RainMode = function RainMode(_ref) {
   var handleModeStartStop = _ref.handleModeStartStop,
     modeDataSending = _ref.modeDataSending,
     colorChoices = _ref.colorChoices,
     handleModeChooseColor = _ref.handleModeChooseColor,
     prevFrameNames = _ref.prevFrameNames,
-    frames = _ref.frames;
+    frames = _ref.frames,
+    handleFrameChoice = _ref.handleFrameChoice;
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState2 = _slicedToArray(_useState, 2),
     startClicked = _useState2[0],
@@ -779,16 +789,20 @@ var RainMode = function RainMode(_ref) {
     _useState6 = _slicedToArray(_useState5, 2),
     error = _useState6[0],
     setError = _useState6[1];
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    paletteSent = false;
-  }, [colorChoices]);
   var handleChooseColor = function handleChooseColor(color, palette) {
-    if (colorChoices.length >= 6 || paletteSent) {
-      setError("6 colors or one palette max!");
+    if (modeRunning) {
+      setError("Stop to select color!");
       return;
     }
+    if (colorsSent >= 6) {
+      setError("6 colors or 1 palette max");
+      return;
+    } else {
+      setError("");
+    }
+    colorsSent++;
     if (palette) {
-      paletteSent = true;
+      colorsSent = 6;
     }
     handleModeChooseColor(color, palette);
   };
@@ -819,6 +833,24 @@ var RainMode = function RainMode(_ref) {
     }
     e.target.style.backgroundColor = 'blue';
     chosenFrame = curFrame;
+    if (modeRunning) {
+      handleFrameChoice(curFrame);
+    }
+  };
+  var handleReset = function handleReset() {
+    handleModeStartStop(false, false, false, false, false, true);
+    setError(false);
+    colorsSent = 0;
+  };
+  var startStopClicked = function startStopClicked(e, chosenFrame) {
+    var error = handleModeStartStop(e, true, chosenFrame);
+    if (error) {
+      setError(error);
+      return;
+    }
+    setStartClicked(!startClicked);
+    colorsSent = 0;
+    setError(false);
   };
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
     id: _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].widget,
@@ -886,22 +918,21 @@ var RainMode = function RainMode(_ref) {
           className: _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].stacked,
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("p", {
             children: "Raindrops"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("select", {
             className: _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].amount,
             id: "rainAmount",
-            type: "text",
-            placeholder: "1-15..."
+            size: "3",
+            children: raindropSelections
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
             id: _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["start-button"],
             onClick: function onClick(e) {
-              handleModeStartStop(e, true, chosenFrame);
-              setStartClicked(!startClicked);
+              startStopClicked(e, chosenFrame);
             },
             children: !startClicked ? "Start" : "Stop"
           })]
         })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
           id: _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["chosen-colors"],
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h2", {
             children: "Chosen Colors"
@@ -913,7 +944,14 @@ var RainMode = function RainMode(_ref) {
               }
             }, curChoice);
           })]
-        })
+        }), colorChoices.length !== 0 && !startClicked ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+          style: {
+            "float": 'right',
+            color: 'red'
+          },
+          onClick: handleReset,
+          children: "Reset"
+        }) : null]
       })]
     }) : null, error ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
       style: {
@@ -20789,7 +20827,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "#tsTcsdVCGX9nCpJQCNdo {\n}\n\n.iwcjmGknjCTqPR9O2HtU {\n  position: relative;\n  height: 5px;\n  width: 90%;\n  background-color: rgba(255, 255, 255, 0.664);\n  left: 50%;\n  transform: translateX(-50%);\n}\n\n.N5V4YMcrMTCHpFPLTQmI {\n  text-align: center;\n  color: white;\n  margin-bottom: 1vh;\n}\n\nh2.N5V4YMcrMTCHpFPLTQmI {\n  position: relative;\n  width: fit-content;\n  padding: 3px 13px;\n  font-size: 20px;\n  font-weight: 100;\n  background-color: rgba(145, 145, 145, 0.342);\n  margin: auto;\n  margin-bottom: 3vh;\n  margin-top: 1.5vh;\n}\n\n.YCueeDePWDivZMRp7h6p {\n  display: flex;\n  align-items: center;\n  justify-content: space-around;\n  margin-bottom: 1vh;\n}\n\n.Tzy9XcBSNPRoyBB9NrEr {\n  width: 17vw;\n  height: 6vw;\n  margin: 10px;\n  font-size: 3.7vw;\n  text-align: center;\n  padding: 0 0;\n}\n\n.EpaODt7QvX17luL3AX7s {\n  display: block;\n  width: 13vw;\n  height: 4vw;\n  font-size: 3.4vw;\n  padding: 0 0;\n  background-color: #A90000;\n  color: white;\n  font-weight: 100;\n  transform: translateX(4.5vw);\n}\n\n.tM5Kkv1PY49eEkNm0w3v .EpaODt7QvX17luL3AX7s {\n  transform: translateX(2.8vw);\n  display: inline-block;\n}\n\n.tM5Kkv1PY49eEkNm0w3v img {\n  width: 4vw;\n  height: 4vw;\n  margin-left: 3.5vw;\n  transform: translateY(.3vh);\n}\n\n.tM5Kkv1PY49eEkNm0w3v p {\n  display: inline-block;\n  background-color: red;\n  border-radius: 1vw;\n  width: 4vw;\n  height: 4vw;\n  margin: 0 3.5vw;\n  transform: translateY(.3vh);\n}\n\n.pdK2HaNOvHPif6WCOTXb {\n  border-radius: 10px;\n  width: 25vw;\n  height: 25vw;\n  margin-bottom: 5px;\n}\n\n#il6rgBP1D04h3TXRWieO {\n  display: flex;\n  flex-direction: column;\n  position: absolute;\n  z-index: 10;\n  left: 50%;\n  transform: translateX(-50%);\n  top: 30%;\n  color: rgb(255, 100, 100);\n  font-size: 7vw;\n  border-radius: 3px;\n  padding: 5vw 10vw;\n  font-weight: bold;\n  text-align: center;\n  background-color: rgba(255, 255, 255, 0.623);\n  white-space: nowrap;\n}\n\n#il6rgBP1D04h3TXRWieO button {\n  background-color: rgb(255, 100, 100);\n  color: white;\n  font-size: 5vw;\n  margin-top: 20px;\n}", "",{"version":3,"sources":["webpack://./client/src/cssModules/gallery.module.css"],"names":[],"mappings":"AAAA;AACA;;AAEA;EACE,kBAAkB;EAClB,WAAW;EACX,UAAU;EACV,4CAA4C;EAC5C,SAAS;EACT,2BAA2B;AAC7B;;AAEA;EACE,kBAAkB;EAClB,YAAY;EACZ,kBAAkB;AACpB;;AAEA;EACE,kBAAkB;EAClB,kBAAkB;EAClB,iBAAiB;EACjB,eAAe;EACf,gBAAgB;EAChB,4CAA4C;EAC5C,YAAY;EACZ,kBAAkB;EAClB,iBAAiB;AACnB;;AAEA;EACE,aAAa;EACb,mBAAmB;EACnB,6BAA6B;EAC7B,kBAAkB;AACpB;;AAEA;EACE,WAAW;EACX,WAAW;EACX,YAAY;EACZ,gBAAgB;EAChB,kBAAkB;EAClB,YAAY;AACd;;AAEA;EACE,cAAc;EACd,WAAW;EACX,WAAW;EACX,gBAAgB;EAChB,YAAY;EACZ,yBAAyB;EACzB,YAAY;EACZ,gBAAgB;EAChB,4BAA4B;AAC9B;;AAEA;EACE,4BAA4B;EAC5B,qBAAqB;AACvB;;AAEA;EACE,UAAU;EACV,WAAW;EACX,kBAAkB;EAClB,2BAA2B;AAC7B;;AAEA;EACE,qBAAqB;EACrB,qBAAqB;EACrB,kBAAkB;EAClB,UAAU;EACV,WAAW;EACX,eAAe;EACf,2BAA2B;AAC7B;;AAEA;EACE,mBAAmB;EACnB,WAAW;EACX,YAAY;EACZ,kBAAkB;AACpB;;AAEA;EACE,aAAa;EACb,sBAAsB;EACtB,kBAAkB;EAClB,WAAW;EACX,SAAS;EACT,2BAA2B;EAC3B,QAAQ;EACR,yBAAyB;EACzB,cAAc;EACd,kBAAkB;EAClB,iBAAiB;EACjB,iBAAiB;EACjB,kBAAkB;EAClB,4CAA4C;EAC5C,mBAAmB;AACrB;;AAEA;EACE,oCAAoC;EACpC,YAAY;EACZ,cAAc;EACd,gBAAgB;AAClB","sourcesContent":["#widget {\n}\n\n.line {\n  position: relative;\n  height: 5px;\n  width: 90%;\n  background-color: rgba(255, 255, 255, 0.664);\n  left: 50%;\n  transform: translateX(-50%);\n}\n\n.title {\n  text-align: center;\n  color: white;\n  margin-bottom: 1vh;\n}\n\nh2.title {\n  position: relative;\n  width: fit-content;\n  padding: 3px 13px;\n  font-size: 20px;\n  font-weight: 100;\n  background-color: rgba(145, 145, 145, 0.342);\n  margin: auto;\n  margin-bottom: 3vh;\n  margin-top: 1.5vh;\n}\n\n.saved-item-list {\n  display: flex;\n  align-items: center;\n  justify-content: space-around;\n  margin-bottom: 1vh;\n}\n\n.saved-item {\n  width: 17vw;\n  height: 6vw;\n  margin: 10px;\n  font-size: 3.7vw;\n  text-align: center;\n  padding: 0 0;\n}\n\n.delete {\n  display: block;\n  width: 13vw;\n  height: 4vw;\n  font-size: 3.4vw;\n  padding: 0 0;\n  background-color: #A90000;\n  color: white;\n  font-weight: 100;\n  transform: translateX(4.5vw);\n}\n\n.animation-item .delete {\n  transform: translateX(2.8vw);\n  display: inline-block;\n}\n\n.animation-item img {\n  width: 4vw;\n  height: 4vw;\n  margin-left: 3.5vw;\n  transform: translateY(.3vh);\n}\n\n.animation-item p {\n  display: inline-block;\n  background-color: red;\n  border-radius: 1vw;\n  width: 4vw;\n  height: 4vw;\n  margin: 0 3.5vw;\n  transform: translateY(.3vh);\n}\n\n.frame {\n  border-radius: 10px;\n  width: 25vw;\n  height: 25vw;\n  margin-bottom: 5px;\n}\n\n#delete-popup {\n  display: flex;\n  flex-direction: column;\n  position: absolute;\n  z-index: 10;\n  left: 50%;\n  transform: translateX(-50%);\n  top: 30%;\n  color: rgb(255, 100, 100);\n  font-size: 7vw;\n  border-radius: 3px;\n  padding: 5vw 10vw;\n  font-weight: bold;\n  text-align: center;\n  background-color: rgba(255, 255, 255, 0.623);\n  white-space: nowrap;\n}\n\n#delete-popup button {\n  background-color: rgb(255, 100, 100);\n  color: white;\n  font-size: 5vw;\n  margin-top: 20px;\n}"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, "#tsTcsdVCGX9nCpJQCNdo {\n}\n\n.iwcjmGknjCTqPR9O2HtU {\n  position: relative;\n  height: 5px;\n  width: 90%;\n  background-color: rgba(255, 255, 255, 0.664);\n  left: 50%;\n  transform: translateX(-50%);\n}\n\n.N5V4YMcrMTCHpFPLTQmI {\n  text-align: center;\n  color: white;\n  margin-bottom: 1vh;\n}\n\nh2.N5V4YMcrMTCHpFPLTQmI {\n  position: relative;\n  width: fit-content;\n  padding: 3px 13px;\n  font-size: 20px;\n  font-weight: 100;\n  background-color: rgba(145, 145, 145, 0.342);\n  margin: auto;\n  margin-bottom: 3vh;\n  margin-top: 1.5vh;\n}\n\n.YCueeDePWDivZMRp7h6p {\n  display: flex;\n  align-items: center;\n  justify-content: space-around;\n  margin-bottom: 1vh;\n}\n\n.Tzy9XcBSNPRoyBB9NrEr {\n  width: 17vw;\n  height: 6vw;\n  margin: 10px;\n  font-size: 3.7vw;\n  text-align: center;\n  padding: 0 0;\n}\n\n.EpaODt7QvX17luL3AX7s {\n  display: block;\n  width: 13vw;\n  height: 4vw;\n  font-size: 3.4vw;\n  padding: 0 0;\n  background-color: #A90000;\n  color: white;\n  font-weight: 100;\n  transform: translateX(4.5vw);\n}\n\n.tM5Kkv1PY49eEkNm0w3v .EpaODt7QvX17luL3AX7s {\n  transform: translateX(2.8vw);\n  display: inline-block;\n}\n\n.tM5Kkv1PY49eEkNm0w3v img {\n  width: 4vw;\n  height: 4vw;\n  margin-left: 3.5vw;\n  transform: translateY(.3vh);\n}\n\n.tM5Kkv1PY49eEkNm0w3v p {\n  display: inline-block;\n  background-color: red;\n  border-radius: 1vw;\n  width: 4vw;\n  height: 4vw;\n  margin: 0 3.5vw;\n  transform: translateY(.3vh);\n}\n\n.pdK2HaNOvHPif6WCOTXb {\n  border-radius: 10px;\n  width: 25vw;\n  height: 25vw;\n  margin-bottom: 5px;\n}\n\n#il6rgBP1D04h3TXRWieO {\n  display: flex;\n  flex-direction: column;\n  position: absolute;\n  z-index: 10;\n  left: 50%;\n  transform: translateX(-50%);\n  top: 30%;\n  color: rgb(255, 100, 100);\n  font-size: 7vw;\n  border-radius: 3px;\n  padding: 5vw 10vw;\n  font-weight: bold;\n  text-align: center;\n  background-color: rgba(224, 224, 224, 0.877);\n  white-space: nowrap;\n}\n\n#il6rgBP1D04h3TXRWieO button {\n  background-color: rgb(255, 100, 100);\n  color: white;\n  font-size: 5vw;\n  margin-top: 20px;\n}", "",{"version":3,"sources":["webpack://./client/src/cssModules/gallery.module.css"],"names":[],"mappings":"AAAA;AACA;;AAEA;EACE,kBAAkB;EAClB,WAAW;EACX,UAAU;EACV,4CAA4C;EAC5C,SAAS;EACT,2BAA2B;AAC7B;;AAEA;EACE,kBAAkB;EAClB,YAAY;EACZ,kBAAkB;AACpB;;AAEA;EACE,kBAAkB;EAClB,kBAAkB;EAClB,iBAAiB;EACjB,eAAe;EACf,gBAAgB;EAChB,4CAA4C;EAC5C,YAAY;EACZ,kBAAkB;EAClB,iBAAiB;AACnB;;AAEA;EACE,aAAa;EACb,mBAAmB;EACnB,6BAA6B;EAC7B,kBAAkB;AACpB;;AAEA;EACE,WAAW;EACX,WAAW;EACX,YAAY;EACZ,gBAAgB;EAChB,kBAAkB;EAClB,YAAY;AACd;;AAEA;EACE,cAAc;EACd,WAAW;EACX,WAAW;EACX,gBAAgB;EAChB,YAAY;EACZ,yBAAyB;EACzB,YAAY;EACZ,gBAAgB;EAChB,4BAA4B;AAC9B;;AAEA;EACE,4BAA4B;EAC5B,qBAAqB;AACvB;;AAEA;EACE,UAAU;EACV,WAAW;EACX,kBAAkB;EAClB,2BAA2B;AAC7B;;AAEA;EACE,qBAAqB;EACrB,qBAAqB;EACrB,kBAAkB;EAClB,UAAU;EACV,WAAW;EACX,eAAe;EACf,2BAA2B;AAC7B;;AAEA;EACE,mBAAmB;EACnB,WAAW;EACX,YAAY;EACZ,kBAAkB;AACpB;;AAEA;EACE,aAAa;EACb,sBAAsB;EACtB,kBAAkB;EAClB,WAAW;EACX,SAAS;EACT,2BAA2B;EAC3B,QAAQ;EACR,yBAAyB;EACzB,cAAc;EACd,kBAAkB;EAClB,iBAAiB;EACjB,iBAAiB;EACjB,kBAAkB;EAClB,4CAA4C;EAC5C,mBAAmB;AACrB;;AAEA;EACE,oCAAoC;EACpC,YAAY;EACZ,cAAc;EACd,gBAAgB;AAClB","sourcesContent":["#widget {\n}\n\n.line {\n  position: relative;\n  height: 5px;\n  width: 90%;\n  background-color: rgba(255, 255, 255, 0.664);\n  left: 50%;\n  transform: translateX(-50%);\n}\n\n.title {\n  text-align: center;\n  color: white;\n  margin-bottom: 1vh;\n}\n\nh2.title {\n  position: relative;\n  width: fit-content;\n  padding: 3px 13px;\n  font-size: 20px;\n  font-weight: 100;\n  background-color: rgba(145, 145, 145, 0.342);\n  margin: auto;\n  margin-bottom: 3vh;\n  margin-top: 1.5vh;\n}\n\n.saved-item-list {\n  display: flex;\n  align-items: center;\n  justify-content: space-around;\n  margin-bottom: 1vh;\n}\n\n.saved-item {\n  width: 17vw;\n  height: 6vw;\n  margin: 10px;\n  font-size: 3.7vw;\n  text-align: center;\n  padding: 0 0;\n}\n\n.delete {\n  display: block;\n  width: 13vw;\n  height: 4vw;\n  font-size: 3.4vw;\n  padding: 0 0;\n  background-color: #A90000;\n  color: white;\n  font-weight: 100;\n  transform: translateX(4.5vw);\n}\n\n.animation-item .delete {\n  transform: translateX(2.8vw);\n  display: inline-block;\n}\n\n.animation-item img {\n  width: 4vw;\n  height: 4vw;\n  margin-left: 3.5vw;\n  transform: translateY(.3vh);\n}\n\n.animation-item p {\n  display: inline-block;\n  background-color: red;\n  border-radius: 1vw;\n  width: 4vw;\n  height: 4vw;\n  margin: 0 3.5vw;\n  transform: translateY(.3vh);\n}\n\n.frame {\n  border-radius: 10px;\n  width: 25vw;\n  height: 25vw;\n  margin-bottom: 5px;\n}\n\n#delete-popup {\n  display: flex;\n  flex-direction: column;\n  position: absolute;\n  z-index: 10;\n  left: 50%;\n  transform: translateX(-50%);\n  top: 30%;\n  color: rgb(255, 100, 100);\n  font-size: 7vw;\n  border-radius: 3px;\n  padding: 5vw 10vw;\n  font-weight: bold;\n  text-align: center;\n  background-color: rgba(224, 224, 224, 0.877);\n  white-space: nowrap;\n}\n\n#delete-popup button {\n  background-color: rgb(255, 100, 100);\n  color: white;\n  font-size: 5vw;\n  margin-top: 20px;\n}"],"sourceRoot":""}]);
 // Exports
 ___CSS_LOADER_EXPORT___.locals = {
 	"widget": "tsTcsdVCGX9nCpJQCNdo",
@@ -20865,7 +20903,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "#P4u8eA12R4JtH_498K76 {\n  position: relative;\n}\n\n.ZkP5Fx0RxRyIIy7sUfD3 {\n  width: 15vw;\n  height: 10vw;\n  margin-right: 10px;\n  border: 1px solid black;\n}\n\n#hWWmYz2aWIR77nZseSpG {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  color: white;\n  background-color: rgba(255, 255, 255, 0.082);\n  border-radius: 5px;\n}\n\n.F7cVhW9BZD5l8yWHzWNm {\n  width: 100px;\n  height: 2px;\n  background-color: rgba(255, 255, 255, 0.644);\n  margin-bottom: 20px;\n}\n\n#dYagxAcOEvlr4ei1y0C6 {\n  display: flex;\n  color: white;\n  margin-bottom: 20px;\n}\n\n#cqCuaSb_4LJc2HhjUT35 {\n  width: max-content;\n  margin: auto;\n  margin-top: 25px;\n}\n\n#tKUxHz7goNC3MaBjBKDn {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  margin-top: 20px;\n}\n\n.ertzy2Jsbs4zi48sckmA {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  color: #ffffff5d;\n  font-size: 3.5vw;\n  font-weight: lighter;\n  transform: translateY(-10px);\n}\n\n.ertzy2Jsbs4zi48sckmA p {\n  text-decoration: underline;\n  margin: 5px;\n}\n\n#LqidT0fHJjsENGEMqPFN {\n  color: white;\n  overflow-x: scroll;\n  overflow-y: hidden;\n  white-space: nowrap;\n  background-color: rgba(255, 255, 255, 0.082);\n  max-width: 30vw;\n  height: 8vw;\n  user-select: none;\n}\n\n.buW2px4qyCiZkoWtPnYC {\n  display: inline-block;\n  font-size: 4.8vw;\n  margin: 0 10px;\n  background-color: rgba(95, 158, 160, 0.548);\n  border-radius: 5px;\n  padding: 3px 5px;\n}\n\n.FyVL5m_l8Md0Af5Kp18a {\n  font-size: 3.5vw;\n  width: 10vw;\n  margin-top: 5px;\n  margin-bottom: 10px;\n}\n\n#tKUxHz7goNC3MaBjBKDn button {\n  padding: 5px;\n  font-size: 3.5vw;\n}\n\n#FokkI3Rxnkx2XTBH2zDV {\n  background-color: #00FF47;\n}\n\n#EjxiqugjXAILRl4LtRbK {\n  display: flex;\n  flex-wrap: wrap;\n  background-color: rgba(255, 255, 255, 0.082);\n  justify-content: space-around;\n  padding-top: 8%;\n}\n\n.zzra6sCBnI4YSTjtL2xa {\n  width: 15vw;\n  height: 12vw;\n  border-radius: 5px;\n  margin: 5% 5%;\n}\n\n#EjxiqugjXAILRl4LtRbK h2 {\n  position: absolute;\n  width: 100vw;\n  text-align: center;\n  color: white;\n  font-size: 5vw;\n  font-weight: normal;\n  transform: translateY(-180%);\n  text-decoration: underline;\n}", "",{"version":3,"sources":["webpack://./client/src/cssModules/miscModes.module.css"],"names":[],"mappings":"AAAA;EACE,kBAAkB;AACpB;;AAEA;EACE,WAAW;EACX,YAAY;EACZ,kBAAkB;EAClB,uBAAuB;AACzB;;AAEA;EACE,aAAa;EACb,sBAAsB;EACtB,mBAAmB;EACnB,YAAY;EACZ,4CAA4C;EAC5C,kBAAkB;AACpB;;AAEA;EACE,YAAY;EACZ,WAAW;EACX,4CAA4C;EAC5C,mBAAmB;AACrB;;AAEA;EACE,aAAa;EACb,YAAY;EACZ,mBAAmB;AACrB;;AAEA;EACE,kBAAkB;EAClB,YAAY;EACZ,gBAAgB;AAClB;;AAEA;EACE,aAAa;EACb,8BAA8B;EAC9B,mBAAmB;EACnB,gBAAgB;AAClB;;AAEA;EACE,aAAa;EACb,sBAAsB;EACtB,mBAAmB;EACnB,gBAAgB;EAChB,gBAAgB;EAChB,oBAAoB;EACpB,4BAA4B;AAC9B;;AAEA;EACE,0BAA0B;EAC1B,WAAW;AACb;;AAEA;EACE,YAAY;EACZ,kBAAkB;EAClB,kBAAkB;EAClB,mBAAmB;EACnB,4CAA4C;EAC5C,eAAe;EACf,WAAW;EACX,iBAAiB;AACnB;;AAEA;EACE,qBAAqB;EACrB,gBAAgB;EAChB,cAAc;EACd,2CAA2C;EAC3C,kBAAkB;EAClB,gBAAgB;AAClB;;AAEA;EACE,gBAAgB;EAChB,WAAW;EACX,eAAe;EACf,mBAAmB;AACrB;;AAEA;EACE,YAAY;EACZ,gBAAgB;AAClB;;AAEA;EACE,yBAAyB;AAC3B;;AAEA;EACE,aAAa;EACb,eAAe;EACf,4CAA4C;EAC5C,6BAA6B;EAC7B,eAAe;AACjB;;AAEA;EACE,WAAW;EACX,YAAY;EACZ,kBAAkB;EAClB,aAAa;AACf;;AAEA;EACE,kBAAkB;EAClB,YAAY;EACZ,kBAAkB;EAClB,YAAY;EACZ,cAAc;EACd,mBAAmB;EACnB,4BAA4B;EAC5B,0BAA0B;AAC5B","sourcesContent":["#widget {\n  position: relative;\n}\n\n.palette {\n  width: 15vw;\n  height: 10vw;\n  margin-right: 10px;\n  border: 1px solid black;\n}\n\n#paletteSelector {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  color: white;\n  background-color: rgba(255, 255, 255, 0.082);\n  border-radius: 5px;\n}\n\n.line {\n  width: 100px;\n  height: 2px;\n  background-color: rgba(255, 255, 255, 0.644);\n  margin-bottom: 20px;\n}\n\n#palettes {\n  display: flex;\n  color: white;\n  margin-bottom: 20px;\n}\n\n#color-picker-container {\n  width: max-content;\n  margin: auto;\n  margin-top: 25px;\n}\n\n#settings {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  margin-top: 20px;\n}\n\n.stacked {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  color: #ffffff5d;\n  font-size: 3.5vw;\n  font-weight: lighter;\n  transform: translateY(-10px);\n}\n\n.stacked p {\n  text-decoration: underline;\n  margin: 5px;\n}\n\n#background-choices {\n  color: white;\n  overflow-x: scroll;\n  overflow-y: hidden;\n  white-space: nowrap;\n  background-color: rgba(255, 255, 255, 0.082);\n  max-width: 30vw;\n  height: 8vw;\n  user-select: none;\n}\n\n.background-choice {\n  display: inline-block;\n  font-size: 4.8vw;\n  margin: 0 10px;\n  background-color: rgba(95, 158, 160, 0.548);\n  border-radius: 5px;\n  padding: 3px 5px;\n}\n\n.amount {\n  font-size: 3.5vw;\n  width: 10vw;\n  margin-top: 5px;\n  margin-bottom: 10px;\n}\n\n#settings button {\n  padding: 5px;\n  font-size: 3.5vw;\n}\n\n#start-button {\n  background-color: #00FF47;\n}\n\n#chosen-colors {\n  display: flex;\n  flex-wrap: wrap;\n  background-color: rgba(255, 255, 255, 0.082);\n  justify-content: space-around;\n  padding-top: 8%;\n}\n\n.chosen-color {\n  width: 15vw;\n  height: 12vw;\n  border-radius: 5px;\n  margin: 5% 5%;\n}\n\n#chosen-colors h2 {\n  position: absolute;\n  width: 100vw;\n  text-align: center;\n  color: white;\n  font-size: 5vw;\n  font-weight: normal;\n  transform: translateY(-180%);\n  text-decoration: underline;\n}"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, "#P4u8eA12R4JtH_498K76 {\n  position: relative;\n}\n\n.ZkP5Fx0RxRyIIy7sUfD3 {\n  width: 15vw;\n  height: 10vw;\n  margin-right: 10px;\n  border: 1px solid black;\n}\n\n#hWWmYz2aWIR77nZseSpG {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  color: white;\n  background-color: rgba(255, 255, 255, 0.082);\n  border-radius: 5px;\n}\n\n.F7cVhW9BZD5l8yWHzWNm {\n  width: 100px;\n  height: 2px;\n  background-color: rgba(255, 255, 255, 0.644);\n  margin-bottom: 20px;\n}\n\n#dYagxAcOEvlr4ei1y0C6 {\n  display: flex;\n  color: white;\n  margin-bottom: 20px;\n}\n\n#cqCuaSb_4LJc2HhjUT35 {\n  width: max-content;\n  margin: auto;\n  margin-top: 25px;\n}\n\n#tKUxHz7goNC3MaBjBKDn {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  margin-top: 20px;\n}\n\n.ertzy2Jsbs4zi48sckmA {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  color: #ffffff5d;\n  font-size: 3.5vw;\n  font-weight: lighter;\n  transform: translateY(-10px);\n}\n\n.ertzy2Jsbs4zi48sckmA p {\n  text-decoration: underline;\n  margin: 5px;\n}\n\n#LqidT0fHJjsENGEMqPFN {\n  color: white;\n  overflow-x: scroll;\n  overflow-y: hidden;\n  white-space: nowrap;\n  background-color: rgba(255, 255, 255, 0.082);\n  max-width: 30vw;\n  height: 8vw;\n  user-select: none;\n}\n\n.buW2px4qyCiZkoWtPnYC {\n  display: inline-block;\n  font-size: 4.8vw;\n  margin: 0 10px;\n  background-color: rgba(95, 158, 160, 0.548);\n  border-radius: 5px;\n  padding: 3px 5px;\n}\n\n.FyVL5m_l8Md0Af5Kp18a {\n  width: 10vw;\n  margin-top: 5px;\n  margin-bottom: 10px;\n}\n\n#tKUxHz7goNC3MaBjBKDn button {\n  padding: 5px;\n  font-size: 3.5vw;\n}\n\n#FokkI3Rxnkx2XTBH2zDV {\n  background-color: #00FF47;\n}\n\n#EjxiqugjXAILRl4LtRbK {\n  display: flex;\n  flex-wrap: wrap;\n  background-color: rgba(255, 255, 255, 0.082);\n  justify-content: space-around;\n  padding-top: 8%;\n}\n\n.zzra6sCBnI4YSTjtL2xa {\n  width: 15vw;\n  height: 12vw;\n  border-radius: 5px;\n  margin: 5% 5%;\n}\n\n#EjxiqugjXAILRl4LtRbK h2 {\n  position: absolute;\n  width: 100vw;\n  text-align: center;\n  color: white;\n  font-size: 5vw;\n  font-weight: normal;\n  transform: translateY(-180%);\n  text-decoration: underline;\n}", "",{"version":3,"sources":["webpack://./client/src/cssModules/miscModes.module.css"],"names":[],"mappings":"AAAA;EACE,kBAAkB;AACpB;;AAEA;EACE,WAAW;EACX,YAAY;EACZ,kBAAkB;EAClB,uBAAuB;AACzB;;AAEA;EACE,aAAa;EACb,sBAAsB;EACtB,mBAAmB;EACnB,YAAY;EACZ,4CAA4C;EAC5C,kBAAkB;AACpB;;AAEA;EACE,YAAY;EACZ,WAAW;EACX,4CAA4C;EAC5C,mBAAmB;AACrB;;AAEA;EACE,aAAa;EACb,YAAY;EACZ,mBAAmB;AACrB;;AAEA;EACE,kBAAkB;EAClB,YAAY;EACZ,gBAAgB;AAClB;;AAEA;EACE,aAAa;EACb,8BAA8B;EAC9B,mBAAmB;EACnB,gBAAgB;AAClB;;AAEA;EACE,aAAa;EACb,sBAAsB;EACtB,mBAAmB;EACnB,gBAAgB;EAChB,gBAAgB;EAChB,oBAAoB;EACpB,4BAA4B;AAC9B;;AAEA;EACE,0BAA0B;EAC1B,WAAW;AACb;;AAEA;EACE,YAAY;EACZ,kBAAkB;EAClB,kBAAkB;EAClB,mBAAmB;EACnB,4CAA4C;EAC5C,eAAe;EACf,WAAW;EACX,iBAAiB;AACnB;;AAEA;EACE,qBAAqB;EACrB,gBAAgB;EAChB,cAAc;EACd,2CAA2C;EAC3C,kBAAkB;EAClB,gBAAgB;AAClB;;AAEA;EACE,WAAW;EACX,eAAe;EACf,mBAAmB;AACrB;;AAEA;EACE,YAAY;EACZ,gBAAgB;AAClB;;AAEA;EACE,yBAAyB;AAC3B;;AAEA;EACE,aAAa;EACb,eAAe;EACf,4CAA4C;EAC5C,6BAA6B;EAC7B,eAAe;AACjB;;AAEA;EACE,WAAW;EACX,YAAY;EACZ,kBAAkB;EAClB,aAAa;AACf;;AAEA;EACE,kBAAkB;EAClB,YAAY;EACZ,kBAAkB;EAClB,YAAY;EACZ,cAAc;EACd,mBAAmB;EACnB,4BAA4B;EAC5B,0BAA0B;AAC5B","sourcesContent":["#widget {\n  position: relative;\n}\n\n.palette {\n  width: 15vw;\n  height: 10vw;\n  margin-right: 10px;\n  border: 1px solid black;\n}\n\n#paletteSelector {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  color: white;\n  background-color: rgba(255, 255, 255, 0.082);\n  border-radius: 5px;\n}\n\n.line {\n  width: 100px;\n  height: 2px;\n  background-color: rgba(255, 255, 255, 0.644);\n  margin-bottom: 20px;\n}\n\n#palettes {\n  display: flex;\n  color: white;\n  margin-bottom: 20px;\n}\n\n#color-picker-container {\n  width: max-content;\n  margin: auto;\n  margin-top: 25px;\n}\n\n#settings {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  margin-top: 20px;\n}\n\n.stacked {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  color: #ffffff5d;\n  font-size: 3.5vw;\n  font-weight: lighter;\n  transform: translateY(-10px);\n}\n\n.stacked p {\n  text-decoration: underline;\n  margin: 5px;\n}\n\n#background-choices {\n  color: white;\n  overflow-x: scroll;\n  overflow-y: hidden;\n  white-space: nowrap;\n  background-color: rgba(255, 255, 255, 0.082);\n  max-width: 30vw;\n  height: 8vw;\n  user-select: none;\n}\n\n.background-choice {\n  display: inline-block;\n  font-size: 4.8vw;\n  margin: 0 10px;\n  background-color: rgba(95, 158, 160, 0.548);\n  border-radius: 5px;\n  padding: 3px 5px;\n}\n\n.amount {\n  width: 10vw;\n  margin-top: 5px;\n  margin-bottom: 10px;\n}\n\n#settings button {\n  padding: 5px;\n  font-size: 3.5vw;\n}\n\n#start-button {\n  background-color: #00FF47;\n}\n\n#chosen-colors {\n  display: flex;\n  flex-wrap: wrap;\n  background-color: rgba(255, 255, 255, 0.082);\n  justify-content: space-around;\n  padding-top: 8%;\n}\n\n.chosen-color {\n  width: 15vw;\n  height: 12vw;\n  border-radius: 5px;\n  margin: 5% 5%;\n}\n\n#chosen-colors h2 {\n  position: absolute;\n  width: 100vw;\n  text-align: center;\n  color: white;\n  font-size: 5vw;\n  font-weight: normal;\n  transform: translateY(-180%);\n  text-decoration: underline;\n}"],"sourceRoot":""}]);
 // Exports
 ___CSS_LOADER_EXPORT___.locals = {
 	"widget": "P4u8eA12R4JtH_498K76",
@@ -21768,7 +21806,7 @@ var App = function App() {
     _useState20 = _slicedToArray(_useState19, 2),
     showRainMode = _useState20[0],
     setShowRainMode = _useState20[1];
-  var _useState21 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(['hello', 'jake', 'john', 'jack', 'jane', 'josh']),
+  var _useState21 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
     _useState22 = _slicedToArray(_useState21, 2),
     prevFrameNames = _useState22[0],
     setPrevFrameNames = _useState22[1];
@@ -21857,16 +21895,24 @@ var App = function App() {
   };
 
   //Rain/Audio Visaulizer handler for off and on
-  var handleModeStartStop = function handleModeStartStop(e, rain, chosenFrame, startMode, rainAmount) {
-    if (modeRunning && !startMode) {
+  var handleModeStartStop = function handleModeStartStop(e, rain, chosenFrame, startMode, rainAmount, reset) {
+    if (modeRunning && !startMode || reset) {
       setModeDataSending(true);
       (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)("SM");
       setTimeout(handleModeStartStop, 400);
     } else if (e) {
       if (!modeRunning && rain) {
-        setModeDataSending(true);
+        if (colorChoices.length === 0) {
+          return "Please input a color";
+        }
         if (!rainAmount) {
           rainAmount = document.getElementById('rainAmount').value;
+          if (rainAmount.length === 0) {
+            return "Please input a raindrop amount";
+          } else if (isNaN(Number(rainAmount))) {
+            return "Please input a number";
+          }
+          ;
           rainAmount = rainAmount.length === 1 ? '0' + rainAmount : rainAmount;
         }
         if (isNaN(Number(rainAmount)) || rainAmount.length < 1 || colorChoices.length === 0) {
@@ -21877,6 +21923,7 @@ var App = function App() {
         } else {
           (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)("R" + rainAmount);
         }
+        setModeDataSending(true);
         setTimeout(function () {
           handleModeStartStop(true, true, chosenFrame, true, rainAmount);
         }, 400);
@@ -21955,6 +22002,7 @@ var App = function App() {
     }) : null, showRainMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_RainMode_jsx__WEBPACK_IMPORTED_MODULE_6__["default"], {
       prevFrameNames: prevFrameNames,
       frames: frames,
+      handleFrameChoice: handleFrameChoice,
       modeRunning: modeRunning,
       handleModeChooseColor: handleModeChooseColor,
       colorChoices: colorChoices,

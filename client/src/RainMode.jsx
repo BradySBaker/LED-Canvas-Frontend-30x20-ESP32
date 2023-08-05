@@ -11,25 +11,35 @@ const colorPalettes = {
   purple: ["rgb(60, 0, 90)", "rgb(150, 0, 200)", "rgb(255, 105, 180)"]
 };
 
-var paletteSent = false;
 var chosenFrame = false;
+var colorsSent = 0;
+var rain = false;
 
-const RainMode = ({handleModeStartStop, modeDataSending, colorChoices, handleModeChooseColor, prevFrameNames, frames}) => {
+const raindropSelections = [];
+
+for (var i = 1; i <= 20; i++) {
+  raindropSelections.push(<option value={i}>{i}</option>);
+};
+
+const RainMode = ({handleModeStartStop, modeDataSending, colorChoices, handleModeChooseColor, prevFrameNames, frames, handleFrameChoice}) => {
   const [startClicked, setStartClicked] = useState(false);
   const [chosenColor, setChosenColor] = useState('#FFFFFF');
   const [error, setError] = useState(false);
 
-  useEffect(() => {
-    paletteSent = false;
-  }, [colorChoices]);
-
   const handleChooseColor = (color, palette) => {
-    if (colorChoices.length >= 6 || paletteSent) {
-      setError("6 colors or one palette max!");
+    if (modeRunning) {
+      setError("Stop to select color!");
       return;
     }
+    if (colorsSent >= 6) {
+      setError("6 colors or 1 palette max");
+      return;
+    } else {
+      setError("");
+    }
+    colorsSent++;
     if (palette) {
-      paletteSent = true;
+      colorsSent = 6;
     }
     handleModeChooseColor(color, palette);
   };
@@ -56,6 +66,26 @@ const RainMode = ({handleModeStartStop, modeDataSending, colorChoices, handleMod
     }
     e.target.style.backgroundColor = 'blue';
     chosenFrame = curFrame;
+    if (modeRunning) {
+      handleFrameChoice(curFrame);
+    }
+  };
+
+  const handleReset = () => {
+    handleModeStartStop(false, false, false, false, false, true);
+    setError(false);
+    colorsSent = 0;
+  };
+
+  const startStopClicked = (e, chosenFrame) => {
+    const error = handleModeStartStop(e, true, chosenFrame);
+    if (error) {
+      setError(error);
+      return;
+    }
+    setStartClicked(!startClicked);
+    colorsSent = 0;
+    setError(false);
   };
 
 	return (
@@ -85,10 +115,12 @@ const RainMode = ({handleModeStartStop, modeDataSending, colorChoices, handleMod
               )}
             </div>
           </div>
-          <div className={styles['stacked']}>
+           <div className={styles['stacked']}>
             <p>Raindrops</p>
-            <input className={styles['amount']}  id='rainAmount' type='text' placeholder='1-15...'/>
-            <button id={styles['start-button']} onClick={(e) => { handleModeStartStop(e, true, chosenFrame); setStartClicked(!startClicked); }}>{!startClicked ? "Start" : "Stop"}</button>
+            <select className={styles['amount']}  id='rainAmount' size="3">
+              {raindropSelections}
+            </select>
+            <button id={styles['start-button']} onClick={(e) => {startStopClicked(e, chosenFrame); }}>{!startClicked ? "Start" : "Stop"}</button>
           </div>
         </div>
         <div>
@@ -100,6 +132,7 @@ const RainMode = ({handleModeStartStop, modeDataSending, colorChoices, handleMod
               )
             })}
           </div>
+          {colorChoices.length !== 0 && !startClicked ? <button style={{float: 'right', color: 'red'}} onClick={handleReset}>Reset</button> : null}
 				</div>
 			</> : null}
       {error ? <div style={{color: 'red'}}>{error}</div> : null}

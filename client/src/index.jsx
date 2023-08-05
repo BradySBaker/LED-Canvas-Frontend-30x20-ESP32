@@ -38,7 +38,7 @@ const App = function() {
 	const [audioVisualizer, setAudioVisualizer] = useState(false);
 	const [showRainMode, setShowRainMode] = useState(false);
 
-	const [prevFrameNames, setPrevFrameNames] = useState(['hello', 'jake', 'john', 'jack', 'jane', 'josh']);
+	const [prevFrameNames, setPrevFrameNames] = useState([]);
 	const [anims, setAnims] = useState([]);
 	const [animPlaying, setAnimPlaying] = useState(false);
 
@@ -47,6 +47,7 @@ const App = function() {
   const [selectedColor, setSelectedColor] = useState(color);
 
   const [connectError, setConnectError] = useState(false);
+
 
   useEffect(() => { //Mouse up handler
     const handleMouseUp = () => {
@@ -108,16 +109,23 @@ const App = function() {
 	};
 
 	//Rain/Audio Visaulizer handler for off and on
-	const handleModeStartStop = (e, rain, chosenFrame, startMode, rainAmount) => {
-		if (modeRunning && !startMode) {
+	const handleModeStartStop = (e, rain, chosenFrame, startMode, rainAmount, reset) => {
+		if ((modeRunning && !startMode) || reset) {
       setModeDataSending(true);
 			sendData("SM");
 			setTimeout(handleModeStartStop, 400);
 		} else if (e) {
 			if (!modeRunning && rain) {
-        setModeDataSending(true);
+        if (colorChoices.length === 0) {
+          return "Please input a color";
+        }
 				if (!rainAmount) {
 					rainAmount = document.getElementById('rainAmount').value;
+          if (rainAmount.length === 0) {
+            return "Please input a raindrop amount";
+          } else if (isNaN(Number(rainAmount))) {
+            return "Please input a number";
+          };
           rainAmount = rainAmount.length === 1 ? '0' + rainAmount : rainAmount;
 				}
 				if (isNaN(Number(rainAmount)) || rainAmount.length < 1 || colorChoices.length === 0) {
@@ -128,6 +136,7 @@ const App = function() {
         } else {
           sendData("R" + rainAmount);
         }
+        setModeDataSending(true);
 				setTimeout(() => {handleModeStartStop(true, true, chosenFrame, true, rainAmount)}, 400);
 			} else if(!modeRunning) { //Audio visualizer
         sendData("HAV");
@@ -172,7 +181,7 @@ const App = function() {
       {showCreateMode ? <CreateMode turnOff={turnOff} callSave={callSave} animPlaying={animPlaying} pixelSending={pixelSending} mouseDown={mouseDown} handleFrameChoice={handleFrameChoice} sendRequests={sendRequests} selectedColor={selectedColor} setSelectedColor={setSelectedColor}/> : null}
       {(pixelSending || modeDataSending) ? <img id='loading' src='./icons/loading.gif'></img> : null}
 
-			{showRainMode ? <RainMode prevFrameNames={prevFrameNames} frames={frames} modeRunning={modeRunning} handleModeChooseColor={handleModeChooseColor} colorChoices={colorChoices} modeDataSending={modeDataSending} handleModeStartStop={handleModeStartStop}/> : null}
+			{showRainMode ? <RainMode prevFrameNames={prevFrameNames} frames={frames} handleFrameChoice={handleFrameChoice} modeRunning={modeRunning} handleModeChooseColor={handleModeChooseColor} colorChoices={colorChoices} modeDataSending={modeDataSending} handleModeStartStop={handleModeStartStop}/> : null}
       {/* {audioVisualizer ? <AVController modeRunning={modeRunning} handleChooseColor={handleModeChooseColor} curChosenColor={curChosenColor} modeDataSending={modeDataSending} setCurChosenColor={setCurChosenColor} colorChoices={colorChoices} handleModeStartStop={handleModeStartStop}/> : null} */}
 
     {showCreateMode || showGallery || showRainMode ? <button id='bottom-button' onClick={() => {if (showCreateMode) {setShowCreateMode(false); setShowGallery(true);} else {setShowGallery(false); setShowRainMode(false); setShowCreateMode(true);}}}>{showCreateMode ? 'Gallery' : 'Create'}</button> : null}
