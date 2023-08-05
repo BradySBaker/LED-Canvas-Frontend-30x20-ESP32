@@ -38,7 +38,7 @@ const App = function() {
 	const [audioVisualizer, setAudioVisualizer] = useState(false);
 	const [showRainMode, setShowRainMode] = useState(false);
 
-	const [prevFrameNames, setPrevFrameNames] = useState([]);
+	const [prevFrameNames, setPrevFrameNames] = useState(['hello', 'jake', 'john', 'jack', 'jane', 'josh']);
 	const [anims, setAnims] = useState([]);
 	const [animPlaying, setAnimPlaying] = useState(false);
 

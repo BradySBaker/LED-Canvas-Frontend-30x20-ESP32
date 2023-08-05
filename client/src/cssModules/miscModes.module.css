@@ -62,15 +62,21 @@
 #background-choices {
   color: white;
   overflow-x: scroll;
+  overflow-y: hidden;
   white-space: nowrap;
   background-color: rgba(255, 255, 255, 0.082);
   max-width: 30vw;
-  max-height: 5vw;
+  height: 8vw;
+  user-select: none;
 }
 
 .background-choice {
   display: inline-block;
-  font-size: 5vw;
+  font-size: 4.8vw;
+  margin: 0 10px;
+  background-color: rgba(95, 158, 160, 0.548);
+  border-radius: 5px;
+  padding: 3px 5px;
 }
 
 .amount {

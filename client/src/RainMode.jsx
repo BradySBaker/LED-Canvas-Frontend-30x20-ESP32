@@ -48,9 +48,19 @@ const RainMode = ({handleModeStartStop, modeDataSending, colorChoices, handleMod
     });
   }, [colorPalettes]);
 
+  const handleBackgroundChoice = (e, curFrame) => {
+    var backgroundChoices = e.target.parentNode.children;
+
+    for (var i = 0; i < backgroundChoices.length; i++) {
+      backgroundChoices[i].style.backgroundColor = 'rgba(95, 158, 160, 0.548)';
+    }
+    e.target.style.backgroundColor = 'blue';
+    chosenFrame = curFrame;
+  };
+
 	return (
 		<div id={styles['widget']}>
-			{!modeDataSending ? /* Fix me! */
+			{!modeDataSending ?
 			<>
       <div id={styles['paletteSelector']}>
         Palettes
@@ -68,10 +78,10 @@ const RainMode = ({handleModeStartStop, modeDataSending, colorChoices, handleMod
             <p id={styles['background-text']}>Choose a background</p>
             <div id={styles['background-choices']}>
               {prevFrameNames.map((curFrame) =>
-                <div className={styles['background-choice']} onClick={() => chosenFrame = curFrame}>{curFrame}</div>
+                <div className={styles['background-choice']} onClick={(e) => handleBackgroundChoice(e, curFrame)}>{curFrame}</div>
               )}
               {frames.map((curFrame) =>
-                <div>{curFrame}</div>
+                <div className={styles['background-choice']} onClick={(e) => handleBackgroundChoice(e, curFrame[16])}>{curFrame[16]}</div>
               )}
             </div>
           </div>
