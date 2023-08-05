@@ -753,12 +753,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 var colorPalettes = {
-  red: ["rgb(167,0,0)", "rgb(255,0,0)", "rgb(255,82,82)", "rgb(255,186,186)"],
-  blue: ["rgb(0, 0, 255)", "rgb(0, 122, 255)", "rgb(0, 204, 255)"],
-  purple: ["rgb(49,0,74)", "rgb(76,0,164)", "rgb(131,0,196)", "rgb(255, 105, 180)"],
-  green: ["rgb(0,156,26)", "rgb(38,204,0)", "rgb(123,227,130)", "rgb(210,242,212)"]
+  red: ["rgb(82, 0, 0)", "rgb(255, 0, 0)", "rgb(255, 150, 150)"],
+  blue: ["rgb(0, 0, 102)", "rgb(0, 0, 255)", "rgb(0, 153, 255)"],
+  green: ["rgb(0, 82, 0)", "rgb(0, 255, 0)", "rgb(102, 255, 102)"],
+  purple: ["rgb(60, 0, 90)", "rgb(150, 0, 200)", "rgb(255, 105, 180)"]
 };
 var paletteSent = false;
+var chosenFrame = false;
 var RainMode = function RainMode(_ref) {
   var handleModeStartStop = _ref.handleModeStartStop,
     modeDataSending = _ref.modeDataSending,
@@ -861,6 +862,9 @@ var RainMode = function RainMode(_ref) {
             children: [prevFrameNames.map(function (curFrame) {
               return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
                 className: _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["background-choice"],
+                onClick: function onClick() {
+                  return chosenFrame = curFrame;
+                },
                 children: curFrame
               });
             }), frames.map(function (curFrame) {
@@ -881,7 +885,7 @@ var RainMode = function RainMode(_ref) {
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
             id: _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["start-button"],
             onClick: function onClick(e) {
-              handleModeStartStop(e, true);
+              handleModeStartStop(e, true, chosenFrame);
               setStartClicked(!startClicked);
             },
             children: !startClicked ? "Start" : "Stop"
@@ -1143,7 +1147,7 @@ var handleSendRequests = function handleSendRequests(setPixelSending, pixelSendi
     var toBeSent = '';
     var positions = 0;
     if (sendRequests["off"]) {
-      sendData("OFF\n");
+      sendData("OFF");
       window.sendRequests = {};
     } else {
       for (var key in sendRequests) {
@@ -1208,7 +1212,7 @@ function gotValue(value, setAnims, setPrevFrameNames, setModeDataSending, turnOn
     modeRunning = false;
     if (!window.turnedOn) {
       setTimeout(function () {
-        return sendData("OFF\n");
+        return sendData("OFF");
       }, 100);
     } else {
       setModeDataSending(false);
@@ -21844,7 +21848,7 @@ var App = function App() {
   };
 
   //Rain/Audio Visaulizer handler for off and on
-  var handleModeStartStop = function handleModeStartStop(e, rain, startMode, rainAmount) {
+  var handleModeStartStop = function handleModeStartStop(e, rain, chosenFrame, startMode, rainAmount) {
     if (modeRunning && !startMode) {
       setModeDataSending(true);
       (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)("SM");
@@ -21854,19 +21858,24 @@ var App = function App() {
         setModeDataSending(true);
         if (!rainAmount) {
           rainAmount = document.getElementById('rainAmount').value;
+          rainAmount = rainAmount.length === 1 ? '0' + rainAmount : rainAmount;
         }
         if (isNaN(Number(rainAmount)) || rainAmount.length < 1 || colorChoices.length === 0) {
           return "Please input a number value and a color";
         }
-        (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)("R" + rainAmount);
+        if (chosenFrame) {
+          (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)("R" + rainAmount + chosenFrame);
+        } else {
+          (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)("R" + rainAmount);
+        }
         setTimeout(function () {
-          handleModeStartStop(true, true, true, rainAmount);
+          handleModeStartStop(true, true, chosenFrame, true, rainAmount);
         }, 400);
       } else if (!modeRunning) {
         //Audio visualizer
         (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)("HAV");
         setTimeout(function () {
-          handleModeStartStop(true, false, true, rainAmount);
+          handleModeStartStop(true, false, chosenFrame, true, rainAmount);
         }, 400);
       }
     } else {

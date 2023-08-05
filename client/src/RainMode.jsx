@@ -5,13 +5,14 @@ import { HexColorPicker } from "react-colorful";
 import styles from './cssModules/miscModes.module.css';
 
 const colorPalettes = {
-  red: ["rgb(167,0,0)" ,"rgb(255,0,0)","rgb(255,82,82)", "rgb(255,186,186)"],
-  blue: ["rgb(0, 0, 255)", "rgb(0, 122, 255)", "rgb(0, 204, 255)"],
-  purple: ["rgb(49,0,74)", "rgb(76,0,164)", "rgb(131,0,196)", "rgb(255, 105, 180)"],
-  green: ["rgb(0,156,26)", "rgb(38,204,0)", "rgb(123,227,130)", "rgb(210,242,212)"]
+  red: ["rgb(82, 0, 0)", "rgb(255, 0, 0)", "rgb(255, 150, 150)"],
+  blue: ["rgb(0, 0, 102)", "rgb(0, 0, 255)", "rgb(0, 153, 255)"],
+  green: ["rgb(0, 82, 0)", "rgb(0, 255, 0)", "rgb(102, 255, 102)"],
+  purple: ["rgb(60, 0, 90)", "rgb(150, 0, 200)", "rgb(255, 105, 180)"]
 };
 
 var paletteSent = false;
+var chosenFrame = false;
 
 const RainMode = ({handleModeStartStop, modeDataSending, colorChoices, handleModeChooseColor, prevFrameNames, frames}) => {
   const [startClicked, setStartClicked] = useState(false);
@@ -67,7 +68,7 @@ const RainMode = ({handleModeStartStop, modeDataSending, colorChoices, handleMod
             <p id={styles['background-text']}>Choose a background</p>
             <div id={styles['background-choices']}>
               {prevFrameNames.map((curFrame) =>
-                <div className={styles['background-choice']}>{curFrame}</div>
+                <div className={styles['background-choice']} onClick={() => chosenFrame = curFrame}>{curFrame}</div>
               )}
               {frames.map((curFrame) =>
                 <div>{curFrame}</div>
@@ -77,7 +78,7 @@ const RainMode = ({handleModeStartStop, modeDataSending, colorChoices, handleMod
           <div className={styles['stacked']}>
             <p>Raindrops</p>
             <input className={styles['amount']}  id='rainAmount' type='text' placeholder='1-15...'/>
-            <button id={styles['start-button']} onClick={(e) => { handleModeStartStop(e, true); setStartClicked(!startClicked); }}>{!startClicked ? "Start" : "Stop"}</button>
+            <button id={styles['start-button']} onClick={(e) => { handleModeStartStop(e, true, chosenFrame); setStartClicked(!startClicked); }}>{!startClicked ? "Start" : "Stop"}</button>
           </div>
         </div>
         <div>

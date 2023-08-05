@@ -108,7 +108,7 @@ const App = function() {
 	};
 
 	//Rain/Audio Visaulizer handler for off and on
-	const handleModeStartStop = (e, rain, startMode, rainAmount) => {
+	const handleModeStartStop = (e, rain, chosenFrame, startMode, rainAmount) => {
 		if (modeRunning && !startMode) {
       setModeDataSending(true);
 			sendData("SM");
@@ -117,16 +117,21 @@ const App = function() {
 			if (!modeRunning && rain) {
         setModeDataSending(true);
 				if (!rainAmount) {
-					rainAmount = document.getElementById('rainAmount').value
+					rainAmount = document.getElementById('rainAmount').value;
+          rainAmount = rainAmount.length === 1 ? '0' + rainAmount : rainAmount;
 				}
 				if (isNaN(Number(rainAmount)) || rainAmount.length < 1 || colorChoices.length === 0) {
 					return "Please input a number value and a color";
 				}
-				sendData("R" + rainAmount);
-				setTimeout(() => {handleModeStartStop(true, true, true, rainAmount)}, 400);
+        if (chosenFrame) {
+          sendData("R" + rainAmount + chosenFrame);
+        } else {
+          sendData("R" + rainAmount);
+        }
+				setTimeout(() => {handleModeStartStop(true, true, chosenFrame, true, rainAmount)}, 400);
 			} else if(!modeRunning) { //Audio visualizer
         sendData("HAV");
-				setTimeout(() => {handleModeStartStop(true, false, true, rainAmount)}, 400);
+				setTimeout(() => {handleModeStartStop(true, false, chosenFrame, true, rainAmount)}, 400);
       }
 		} else {
       setModeDataSending(false);
