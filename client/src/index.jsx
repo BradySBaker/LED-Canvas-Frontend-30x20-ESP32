@@ -26,7 +26,7 @@ window.turnedOn = false;
 window.color = "#FFFFFF";
 
 const App = function() {
-	const [isConnected, setIsConnected] = useState(false);
+	const [isConnected, setIsConnected] = useState(true);
 	const [mouseDown, setMouseDown] = useState(false);
 	const [pixelSending, setPixelSending] = useState(false);
 	const [modeDataSending, setModeDataSending] = useState(false);
@@ -35,7 +35,7 @@ const App = function() {
 
 	const [showCreateMode, setShowCreateMode] = useState(false);
   const [showGallery, setShowGallery] = useState(false);
-	const [audioVisualizer, setAudioVisualizer] = useState(false);
+	const [showAudioVisualizer, setShowAudioVisualizer] = useState(true);
 	const [showRainMode, setShowRainMode] = useState(false);
 
 	const [prevFrameNames, setPrevFrameNames] = useState([]);
@@ -111,6 +111,7 @@ const App = function() {
 	//Rain/Audio Visaulizer handler for off and on
 	const handleModeStartStop = (e, rain, chosenFrame, startMode, rainAmount, reset) => {
 		if ((modeRunning && !startMode) || reset) {
+      setColorChoices([]);
       setModeDataSending(true);
 			sendData("SM");
 			setTimeout(handleModeStartStop, 400);
@@ -169,22 +170,23 @@ const App = function() {
     setShowCreateMode(false);
     setShowGallery(false);
     setShowRainMode(false);
+    setShowAudioVisualizer(false);
     turnOff();
   };
 
 	return (
 		<div id='colorApp' onMouseDown={() => setMouseDown(true)} >
-      {showGallery || showCreateMode || showRainMode ? <TopBar selectedColor={selectedColor} disableModes={disableModes}/> : null}
+      {showGallery || showCreateMode || showRainMode || showAudioVisualizer ? <TopBar selectedColor={selectedColor} disableModes={disableModes}/> : null}
       {!isConnected ? <HomePage handleConnect={handleConnect} connectError={connectError}/> :  null}
-      {isConnected && !showCreateMode && !showGallery && !showRainMode ? <ModeSelector setShowGallery={setShowGallery} setShowCreateMode={setShowCreateMode} setShowRainMode={setShowRainMode}/> : null}
+      {isConnected && !showCreateMode && !showGallery && !showRainMode && !showAudioVisualizer ? <ModeSelector setShowAudioVisualizer={setShowAudioVisualizer} setShowGallery={setShowGallery} setShowCreateMode={setShowCreateMode} setShowRainMode={setShowRainMode}/> : null}
       {showGallery ?  <Gallery animPlaying={animPlaying} turnOff={turnOff} handleSave={callSave} modeDataSending={modeDataSending} anims={anims} prevFrameNames={prevFrameNames} frames={frames} handleFrameChoice={handleFrameChoice} handleDelete={callDelete}/> : null}
       {showCreateMode ? <CreateMode turnOff={turnOff} callSave={callSave} animPlaying={animPlaying} pixelSending={pixelSending} mouseDown={mouseDown} handleFrameChoice={handleFrameChoice} sendRequests={sendRequests} selectedColor={selectedColor} setSelectedColor={setSelectedColor}/> : null}
       {(pixelSending || modeDataSending) ? <img id='loading' src='./icons/loading.gif'></img> : null}
 
 			{showRainMode ? <RainMode prevFrameNames={prevFrameNames} frames={frames} handleFrameChoice={handleFrameChoice} modeRunning={modeRunning} handleModeChooseColor={handleModeChooseColor} colorChoices={colorChoices} modeDataSending={modeDataSending} handleModeStartStop={handleModeStartStop}/> : null}
-      {/* {audioVisualizer ? <AVController modeRunning={modeRunning} handleChooseColor={handleModeChooseColor} curChosenColor={curChosenColor} modeDataSending={modeDataSending} setCurChosenColor={setCurChosenColor} colorChoices={colorChoices} handleModeStartStop={handleModeStartStop}/> : null} */}
+      {showAudioVisualizer ? <AVController modeRunning={modeRunning} handleModeChooseColor={handleModeChooseColor} modeDataSending={modeDataSending} colorChoices={colorChoices} handleModeStartStop={handleModeStartStop}/> : null}
 
-    {showCreateMode || showGallery || showRainMode ? <button id='bottom-button' onClick={() => {if (showCreateMode) {setShowCreateMode(false); setShowGallery(true);} else {setShowGallery(false); setShowRainMode(false); setShowCreateMode(true);}}}>{showCreateMode ? 'Gallery' : 'Create'}</button> : null}
+    {showCreateMode || showGallery || showRainMode || showAudioVisualizer ? <button id='bottom-button' onClick={() => {if (showCreateMode) {setShowCreateMode(false); setShowGallery(true);} else {setShowAudioVisualizer(false); setShowGallery(false); setShowRainMode(false); setShowCreateMode(true);}}}>{showCreateMode ? 'Gallery' : 'Create'}</button> : null}
 		</div>
 	)
 }

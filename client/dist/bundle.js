@@ -672,7 +672,8 @@ __webpack_require__.r(__webpack_exports__);
 var ModeSelector = function ModeSelector(_ref) {
   var setShowGallery = _ref.setShowGallery,
     setShowCreateMode = _ref.setShowCreateMode,
-    setShowRainMode = _ref.setShowRainMode;
+    setShowRainMode = _ref.setShowRainMode,
+    setShowAudioVisualizer = _ref.setShowAudioVisualizer;
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
     id: _cssModules_modeSelector_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].widget,
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h1", {
@@ -715,6 +716,9 @@ var ModeSelector = function ModeSelector(_ref) {
         },
         children: "Rain Mode"
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+        onClick: function onClick() {
+          return setShowAudioVisualizer(true);
+        },
         children: "Audio Visualizer"
       })]
     })]
@@ -864,7 +868,7 @@ var RainMode = function RainMode(_ref) {
           children: paletteElements
         })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-        id: _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["color-picker-container"],
+        className: _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["color-picker-container"],
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_colorful__WEBPACK_IMPORTED_MODULE_3__.HexColorPicker, {
           style: {
             height: '50vw',
@@ -878,7 +882,7 @@ var RainMode = function RainMode(_ref) {
           }
         })
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-        id: _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].settings,
+        className: _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].settings,
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
           id: _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["choose-color-button"],
           style: {
@@ -924,7 +928,7 @@ var RainMode = function RainMode(_ref) {
             size: "3",
             children: raindropSelections
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
-            id: _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["start-button"],
+            className: _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["start-button"],
             onClick: function onClick(e) {
               startStopClicked(e, chosenFrame);
             },
@@ -933,7 +937,7 @@ var RainMode = function RainMode(_ref) {
         })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-          id: _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["chosen-colors"],
+          className: _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["chosen-colors"],
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h2", {
             children: "Chosen Colors"
           }), colorChoices.map(function (curChoice) {
@@ -1022,8 +1026,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_colorful__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-colorful */ "./node_modules/react-colorful/dist/index.mjs");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react_colorful__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-colorful */ "./node_modules/react-colorful/dist/index.mjs");
+/* harmony import */ var _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./cssModules/miscModes.module.css */ "./client/src/cssModules/miscModes.module.css");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -1035,57 +1040,91 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
 var AVController = function AVController(_ref) {
-  var handleChooseColor = _ref.handleChooseColor,
-    setCurChosenColor = _ref.setCurChosenColor,
+  var modeRunning = _ref.modeRunning,
+    handleModeChooseColor = _ref.handleModeChooseColor,
     modeDataSending = _ref.modeDataSending,
     colorChoices = _ref.colorChoices,
-    handleModeStartStop = _ref.handleModeStartStop,
-    curChosenColor = _ref.curChosenColor;
+    handleModeStartStop = _ref.handleModeStartStop;
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState2 = _slicedToArray(_useState, 2),
     startClicked = _useState2[0],
     setStartClicked = _useState2[1];
-  var handleAVColor = function handleAVColor(newColor) {
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('#FFFFFF'),
+    _useState4 = _slicedToArray(_useState3, 2),
+    chosenColor = _useState4[0],
+    setChosenColor = _useState4[1];
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState6 = _slicedToArray(_useState5, 2),
+    error = _useState6[0],
+    setError = _useState6[1];
+  var handleReset = function handleReset() {
+    handleModeStartStop(false, false, false, false, false, true);
+    setError(false);
+  };
+  var chooseColorPressed = function chooseColorPressed() {
     if (colorChoices.length < 2) {
-      setCurChosenColor(newColor);
+      handleModeChooseColor(chosenColor);
     }
   };
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
     id: "avController",
-    children: !modeDataSending ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.Fragment, {
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
-        className: "picker-container",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(react_colorful__WEBPACK_IMPORTED_MODULE_2__.HexColorPicker, {
+    children: modeDataSending ?
+    /*#__PURE__*/
+    /* Fix me */
+    (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.Fragment, {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+        className: _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["color-picker-container"],
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_colorful__WEBPACK_IMPORTED_MODULE_3__.HexColorPicker, {
           style: {
-            height: 'calc(90vw * 0.5)'
+            height: '50vw',
+            width: '70vw',
+            maxHeight: '70vh',
+            maxWidth: '700px'
           },
           color: color,
-          onChange: handleAVColor
+          onChange: function onChange(newColor) {
+            return setChosenColor(newColor);
+          }
         })
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
-        children: colorChoices.map(function (curChoice) {
-          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+        className: _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].settings,
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+          style: {
+            'color': chosenColor
+          },
+          onClick: chooseColorPressed,
+          children: "Choose Color"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+          className: _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["start-button"],
+          onClick: function onClick(e) {
+            handleModeStartStop(e, false);
+            setStartClicked(!startClicked);
+          },
+          children: !startClicked ? "Start" : "Stop"
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+        className: _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["chosen-colors"],
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h2", {
+          children: "Chosen Colors"
+        }), colorChoices.map(function (curChoice) {
+          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
             style: {
               'backgroundColor': curChoice,
               'width': '100px',
               'height': '100px'
             }
           });
-        })
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
+        })]
+      }), colorChoices.length !== 0 && !startClicked ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
         style: {
-          'color': curChosenColor
+          "float": 'right',
+          color: 'red'
         },
-        onClick: handleChooseColor,
-        children: "Choose Color"
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
-        onClick: function onClick(e) {
-          handleModeStartStop(e, false);
-          setStartClicked(!startClicked);
-        },
-        children: !startClicked ? "Start" : "Stop"
-      })]
+        onClick: handleReset,
+        children: "Reset"
+      }) : null]
     }) : null
   });
 };
@@ -20903,7 +20942,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "#P4u8eA12R4JtH_498K76 {\n  position: relative;\n}\n\n.ZkP5Fx0RxRyIIy7sUfD3 {\n  width: 15vw;\n  height: 10vw;\n  margin-right: 10px;\n  border: 1px solid black;\n}\n\n#hWWmYz2aWIR77nZseSpG {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  color: white;\n  background-color: rgba(255, 255, 255, 0.082);\n  border-radius: 5px;\n}\n\n.F7cVhW9BZD5l8yWHzWNm {\n  width: 100px;\n  height: 2px;\n  background-color: rgba(255, 255, 255, 0.644);\n  margin-bottom: 20px;\n}\n\n#dYagxAcOEvlr4ei1y0C6 {\n  display: flex;\n  color: white;\n  margin-bottom: 20px;\n}\n\n#cqCuaSb_4LJc2HhjUT35 {\n  width: max-content;\n  margin: auto;\n  margin-top: 25px;\n}\n\n#tKUxHz7goNC3MaBjBKDn {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  margin-top: 20px;\n}\n\n.ertzy2Jsbs4zi48sckmA {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  color: #ffffff5d;\n  font-size: 3.5vw;\n  font-weight: lighter;\n  transform: translateY(-10px);\n}\n\n.ertzy2Jsbs4zi48sckmA p {\n  text-decoration: underline;\n  margin: 5px;\n}\n\n#LqidT0fHJjsENGEMqPFN {\n  color: white;\n  overflow-x: scroll;\n  overflow-y: hidden;\n  white-space: nowrap;\n  background-color: rgba(255, 255, 255, 0.082);\n  max-width: 30vw;\n  height: 8vw;\n  user-select: none;\n}\n\n.buW2px4qyCiZkoWtPnYC {\n  display: inline-block;\n  font-size: 4.8vw;\n  margin: 0 10px;\n  background-color: rgba(95, 158, 160, 0.548);\n  border-radius: 5px;\n  padding: 3px 5px;\n}\n\n.FyVL5m_l8Md0Af5Kp18a {\n  width: 10vw;\n  margin-top: 5px;\n  margin-bottom: 10px;\n}\n\n#tKUxHz7goNC3MaBjBKDn button {\n  padding: 5px;\n  font-size: 3.5vw;\n}\n\n#FokkI3Rxnkx2XTBH2zDV {\n  background-color: #00FF47;\n}\n\n#EjxiqugjXAILRl4LtRbK {\n  display: flex;\n  flex-wrap: wrap;\n  background-color: rgba(255, 255, 255, 0.082);\n  justify-content: space-around;\n  padding-top: 8%;\n}\n\n.zzra6sCBnI4YSTjtL2xa {\n  width: 15vw;\n  height: 12vw;\n  border-radius: 5px;\n  margin: 5% 5%;\n}\n\n#EjxiqugjXAILRl4LtRbK h2 {\n  position: absolute;\n  width: 100vw;\n  text-align: center;\n  color: white;\n  font-size: 5vw;\n  font-weight: normal;\n  transform: translateY(-180%);\n  text-decoration: underline;\n}", "",{"version":3,"sources":["webpack://./client/src/cssModules/miscModes.module.css"],"names":[],"mappings":"AAAA;EACE,kBAAkB;AACpB;;AAEA;EACE,WAAW;EACX,YAAY;EACZ,kBAAkB;EAClB,uBAAuB;AACzB;;AAEA;EACE,aAAa;EACb,sBAAsB;EACtB,mBAAmB;EACnB,YAAY;EACZ,4CAA4C;EAC5C,kBAAkB;AACpB;;AAEA;EACE,YAAY;EACZ,WAAW;EACX,4CAA4C;EAC5C,mBAAmB;AACrB;;AAEA;EACE,aAAa;EACb,YAAY;EACZ,mBAAmB;AACrB;;AAEA;EACE,kBAAkB;EAClB,YAAY;EACZ,gBAAgB;AAClB;;AAEA;EACE,aAAa;EACb,8BAA8B;EAC9B,mBAAmB;EACnB,gBAAgB;AAClB;;AAEA;EACE,aAAa;EACb,sBAAsB;EACtB,mBAAmB;EACnB,gBAAgB;EAChB,gBAAgB;EAChB,oBAAoB;EACpB,4BAA4B;AAC9B;;AAEA;EACE,0BAA0B;EAC1B,WAAW;AACb;;AAEA;EACE,YAAY;EACZ,kBAAkB;EAClB,kBAAkB;EAClB,mBAAmB;EACnB,4CAA4C;EAC5C,eAAe;EACf,WAAW;EACX,iBAAiB;AACnB;;AAEA;EACE,qBAAqB;EACrB,gBAAgB;EAChB,cAAc;EACd,2CAA2C;EAC3C,kBAAkB;EAClB,gBAAgB;AAClB;;AAEA;EACE,WAAW;EACX,eAAe;EACf,mBAAmB;AACrB;;AAEA;EACE,YAAY;EACZ,gBAAgB;AAClB;;AAEA;EACE,yBAAyB;AAC3B;;AAEA;EACE,aAAa;EACb,eAAe;EACf,4CAA4C;EAC5C,6BAA6B;EAC7B,eAAe;AACjB;;AAEA;EACE,WAAW;EACX,YAAY;EACZ,kBAAkB;EAClB,aAAa;AACf;;AAEA;EACE,kBAAkB;EAClB,YAAY;EACZ,kBAAkB;EAClB,YAAY;EACZ,cAAc;EACd,mBAAmB;EACnB,4BAA4B;EAC5B,0BAA0B;AAC5B","sourcesContent":["#widget {\n  position: relative;\n}\n\n.palette {\n  width: 15vw;\n  height: 10vw;\n  margin-right: 10px;\n  border: 1px solid black;\n}\n\n#paletteSelector {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  color: white;\n  background-color: rgba(255, 255, 255, 0.082);\n  border-radius: 5px;\n}\n\n.line {\n  width: 100px;\n  height: 2px;\n  background-color: rgba(255, 255, 255, 0.644);\n  margin-bottom: 20px;\n}\n\n#palettes {\n  display: flex;\n  color: white;\n  margin-bottom: 20px;\n}\n\n#color-picker-container {\n  width: max-content;\n  margin: auto;\n  margin-top: 25px;\n}\n\n#settings {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  margin-top: 20px;\n}\n\n.stacked {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  color: #ffffff5d;\n  font-size: 3.5vw;\n  font-weight: lighter;\n  transform: translateY(-10px);\n}\n\n.stacked p {\n  text-decoration: underline;\n  margin: 5px;\n}\n\n#background-choices {\n  color: white;\n  overflow-x: scroll;\n  overflow-y: hidden;\n  white-space: nowrap;\n  background-color: rgba(255, 255, 255, 0.082);\n  max-width: 30vw;\n  height: 8vw;\n  user-select: none;\n}\n\n.background-choice {\n  display: inline-block;\n  font-size: 4.8vw;\n  margin: 0 10px;\n  background-color: rgba(95, 158, 160, 0.548);\n  border-radius: 5px;\n  padding: 3px 5px;\n}\n\n.amount {\n  width: 10vw;\n  margin-top: 5px;\n  margin-bottom: 10px;\n}\n\n#settings button {\n  padding: 5px;\n  font-size: 3.5vw;\n}\n\n#start-button {\n  background-color: #00FF47;\n}\n\n#chosen-colors {\n  display: flex;\n  flex-wrap: wrap;\n  background-color: rgba(255, 255, 255, 0.082);\n  justify-content: space-around;\n  padding-top: 8%;\n}\n\n.chosen-color {\n  width: 15vw;\n  height: 12vw;\n  border-radius: 5px;\n  margin: 5% 5%;\n}\n\n#chosen-colors h2 {\n  position: absolute;\n  width: 100vw;\n  text-align: center;\n  color: white;\n  font-size: 5vw;\n  font-weight: normal;\n  transform: translateY(-180%);\n  text-decoration: underline;\n}"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, "#P4u8eA12R4JtH_498K76 {\n  position: relative;\n}\n\n.ZkP5Fx0RxRyIIy7sUfD3 {\n  width: 15vw;\n  height: 10vw;\n  margin-right: 10px;\n  border: 1px solid black;\n}\n\n#hWWmYz2aWIR77nZseSpG {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  color: white;\n  background-color: rgba(255, 255, 255, 0.082);\n  border-radius: 5px;\n}\n\n.F7cVhW9BZD5l8yWHzWNm {\n  width: 100px;\n  height: 2px;\n  background-color: rgba(255, 255, 255, 0.644);\n  margin-bottom: 20px;\n}\n\n#dYagxAcOEvlr4ei1y0C6 {\n  display: flex;\n  color: white;\n  margin-bottom: 20px;\n}\n\n.cqCuaSb_4LJc2HhjUT35 {\n  width: max-content;\n  margin: auto;\n  margin-top: 25px;\n}\n\n.tKUxHz7goNC3MaBjBKDn {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  margin-top: 20px;\n}\n\n.ertzy2Jsbs4zi48sckmA {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  color: #ffffff5d;\n  font-size: 3.5vw;\n  font-weight: lighter;\n  transform: translateY(-10px);\n}\n\n.ertzy2Jsbs4zi48sckmA p {\n  text-decoration: underline;\n  margin: 5px;\n}\n\n#LqidT0fHJjsENGEMqPFN {\n  color: white;\n  overflow-x: scroll;\n  overflow-y: hidden;\n  white-space: nowrap;\n  background-color: rgba(255, 255, 255, 0.082);\n  max-width: 30vw;\n  height: 8vw;\n  user-select: none;\n}\n\n.buW2px4qyCiZkoWtPnYC {\n  display: inline-block;\n  font-size: 4.8vw;\n  margin: 0 10px;\n  background-color: rgba(95, 158, 160, 0.548);\n  border-radius: 5px;\n  padding: 3px 5px;\n}\n\n.FyVL5m_l8Md0Af5Kp18a {\n  width: 10vw;\n  margin-top: 5px;\n  margin-bottom: 10px;\n}\n\n.tKUxHz7goNC3MaBjBKDn button {\n  padding: 5px;\n  font-size: 3.5vw;\n}\n\n.FokkI3Rxnkx2XTBH2zDV {\n  background-color: #00FF47;\n}\n\n.EjxiqugjXAILRl4LtRbK {\n  display: flex;\n  flex-wrap: wrap;\n  background-color: rgba(255, 255, 255, 0.082);\n  justify-content: space-around;\n  padding-top: 8%;\n}\n\n.zzra6sCBnI4YSTjtL2xa {\n  width: 15vw;\n  height: 12vw;\n  border-radius: 5px;\n  margin: 5% 5%;\n}\n\n.EjxiqugjXAILRl4LtRbK h2 {\n  position: absolute;\n  width: 100vw;\n  text-align: center;\n  color: white;\n  font-size: 5vw;\n  font-weight: normal;\n  transform: translateY(-180%);\n  text-decoration: underline;\n}", "",{"version":3,"sources":["webpack://./client/src/cssModules/miscModes.module.css"],"names":[],"mappings":"AAAA;EACE,kBAAkB;AACpB;;AAEA;EACE,WAAW;EACX,YAAY;EACZ,kBAAkB;EAClB,uBAAuB;AACzB;;AAEA;EACE,aAAa;EACb,sBAAsB;EACtB,mBAAmB;EACnB,YAAY;EACZ,4CAA4C;EAC5C,kBAAkB;AACpB;;AAEA;EACE,YAAY;EACZ,WAAW;EACX,4CAA4C;EAC5C,mBAAmB;AACrB;;AAEA;EACE,aAAa;EACb,YAAY;EACZ,mBAAmB;AACrB;;AAEA;EACE,kBAAkB;EAClB,YAAY;EACZ,gBAAgB;AAClB;;AAEA;EACE,aAAa;EACb,8BAA8B;EAC9B,mBAAmB;EACnB,gBAAgB;AAClB;;AAEA;EACE,aAAa;EACb,sBAAsB;EACtB,mBAAmB;EACnB,gBAAgB;EAChB,gBAAgB;EAChB,oBAAoB;EACpB,4BAA4B;AAC9B;;AAEA;EACE,0BAA0B;EAC1B,WAAW;AACb;;AAEA;EACE,YAAY;EACZ,kBAAkB;EAClB,kBAAkB;EAClB,mBAAmB;EACnB,4CAA4C;EAC5C,eAAe;EACf,WAAW;EACX,iBAAiB;AACnB;;AAEA;EACE,qBAAqB;EACrB,gBAAgB;EAChB,cAAc;EACd,2CAA2C;EAC3C,kBAAkB;EAClB,gBAAgB;AAClB;;AAEA;EACE,WAAW;EACX,eAAe;EACf,mBAAmB;AACrB;;AAEA;EACE,YAAY;EACZ,gBAAgB;AAClB;;AAEA;EACE,yBAAyB;AAC3B;;AAEA;EACE,aAAa;EACb,eAAe;EACf,4CAA4C;EAC5C,6BAA6B;EAC7B,eAAe;AACjB;;AAEA;EACE,WAAW;EACX,YAAY;EACZ,kBAAkB;EAClB,aAAa;AACf;;AAEA;EACE,kBAAkB;EAClB,YAAY;EACZ,kBAAkB;EAClB,YAAY;EACZ,cAAc;EACd,mBAAmB;EACnB,4BAA4B;EAC5B,0BAA0B;AAC5B","sourcesContent":["#widget {\n  position: relative;\n}\n\n.palette {\n  width: 15vw;\n  height: 10vw;\n  margin-right: 10px;\n  border: 1px solid black;\n}\n\n#paletteSelector {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  color: white;\n  background-color: rgba(255, 255, 255, 0.082);\n  border-radius: 5px;\n}\n\n.line {\n  width: 100px;\n  height: 2px;\n  background-color: rgba(255, 255, 255, 0.644);\n  margin-bottom: 20px;\n}\n\n#palettes {\n  display: flex;\n  color: white;\n  margin-bottom: 20px;\n}\n\n.color-picker-container {\n  width: max-content;\n  margin: auto;\n  margin-top: 25px;\n}\n\n.settings {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  margin-top: 20px;\n}\n\n.stacked {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  color: #ffffff5d;\n  font-size: 3.5vw;\n  font-weight: lighter;\n  transform: translateY(-10px);\n}\n\n.stacked p {\n  text-decoration: underline;\n  margin: 5px;\n}\n\n#background-choices {\n  color: white;\n  overflow-x: scroll;\n  overflow-y: hidden;\n  white-space: nowrap;\n  background-color: rgba(255, 255, 255, 0.082);\n  max-width: 30vw;\n  height: 8vw;\n  user-select: none;\n}\n\n.background-choice {\n  display: inline-block;\n  font-size: 4.8vw;\n  margin: 0 10px;\n  background-color: rgba(95, 158, 160, 0.548);\n  border-radius: 5px;\n  padding: 3px 5px;\n}\n\n.amount {\n  width: 10vw;\n  margin-top: 5px;\n  margin-bottom: 10px;\n}\n\n.settings button {\n  padding: 5px;\n  font-size: 3.5vw;\n}\n\n.start-button {\n  background-color: #00FF47;\n}\n\n.chosen-colors {\n  display: flex;\n  flex-wrap: wrap;\n  background-color: rgba(255, 255, 255, 0.082);\n  justify-content: space-around;\n  padding-top: 8%;\n}\n\n.chosen-color {\n  width: 15vw;\n  height: 12vw;\n  border-radius: 5px;\n  margin: 5% 5%;\n}\n\n.chosen-colors h2 {\n  position: absolute;\n  width: 100vw;\n  text-align: center;\n  color: white;\n  font-size: 5vw;\n  font-weight: normal;\n  transform: translateY(-180%);\n  text-decoration: underline;\n}"],"sourceRoot":""}]);
 // Exports
 ___CSS_LOADER_EXPORT___.locals = {
 	"widget": "P4u8eA12R4JtH_498K76",
@@ -21766,7 +21805,7 @@ window.framePlayed = false;
 window.turnedOn = false;
 window.color = "#FFFFFF";
 var App = function App() {
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(true),
     _useState2 = _slicedToArray(_useState, 2),
     isConnected = _useState2[0],
     setIsConnected = _useState2[1];
@@ -21798,10 +21837,10 @@ var App = function App() {
     _useState16 = _slicedToArray(_useState15, 2),
     showGallery = _useState16[0],
     setShowGallery = _useState16[1];
-  var _useState17 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+  var _useState17 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(true),
     _useState18 = _slicedToArray(_useState17, 2),
-    audioVisualizer = _useState18[0],
-    setAudioVisualizer = _useState18[1];
+    showAudioVisualizer = _useState18[0],
+    setShowAudioVisualizer = _useState18[1];
   var _useState19 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState20 = _slicedToArray(_useState19, 2),
     showRainMode = _useState20[0],
@@ -21897,6 +21936,7 @@ var App = function App() {
   //Rain/Audio Visaulizer handler for off and on
   var handleModeStartStop = function handleModeStartStop(e, rain, chosenFrame, startMode, rainAmount, reset) {
     if (modeRunning && !startMode || reset) {
+      setColorChoices([]);
       setModeDataSending(true);
       (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)("SM");
       setTimeout(handleModeStartStop, 400);
@@ -21959,6 +21999,7 @@ var App = function App() {
     setShowCreateMode(false);
     setShowGallery(false);
     setShowRainMode(false);
+    setShowAudioVisualizer(false);
     turnOff();
   };
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
@@ -21966,13 +22007,14 @@ var App = function App() {
     onMouseDown: function onMouseDown() {
       return setMouseDown(true);
     },
-    children: [showGallery || showCreateMode || showRainMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_TopBar_jsx__WEBPACK_IMPORTED_MODULE_11__["default"], {
+    children: [showGallery || showCreateMode || showRainMode || showAudioVisualizer ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_TopBar_jsx__WEBPACK_IMPORTED_MODULE_11__["default"], {
       selectedColor: selectedColor,
       disableModes: disableModes
     }) : null, !isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_HomePage_jsx__WEBPACK_IMPORTED_MODULE_10__["default"], {
       handleConnect: handleConnect,
       connectError: connectError
-    }) : null, isConnected && !showCreateMode && !showGallery && !showRainMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_ModeSelector_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    }) : null, isConnected && !showCreateMode && !showGallery && !showRainMode && !showAudioVisualizer ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_ModeSelector_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], {
+      setShowAudioVisualizer: setShowAudioVisualizer,
       setShowGallery: setShowGallery,
       setShowCreateMode: setShowCreateMode,
       setShowRainMode: setShowRainMode
@@ -22008,13 +22050,20 @@ var App = function App() {
       colorChoices: colorChoices,
       modeDataSending: modeDataSending,
       handleModeStartStop: handleModeStartStop
-    }) : null, showCreateMode || showGallery || showRainMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("button", {
+    }) : null, showAudioVisualizer ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_avController_jsx__WEBPACK_IMPORTED_MODULE_9__["default"], {
+      modeRunning: modeRunning,
+      handleModeChooseColor: handleModeChooseColor,
+      modeDataSending: modeDataSending,
+      colorChoices: colorChoices,
+      handleModeStartStop: handleModeStartStop
+    }) : null, showCreateMode || showGallery || showRainMode || showAudioVisualizer ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("button", {
       id: "bottom-button",
       onClick: function onClick() {
         if (showCreateMode) {
           setShowCreateMode(false);
           setShowGallery(true);
         } else {
+          setShowAudioVisualizer(false);
           setShowGallery(false);
           setShowRainMode(false);
           setShowCreateMode(true);
