@@ -1,6 +1,132 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./client/src/AVMode.jsx":
+/*!*******************************!*\
+  !*** ./client/src/AVMode.jsx ***!
+  \*******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_colorful__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-colorful */ "./node_modules/react-colorful/dist/index.mjs");
+/* harmony import */ var _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./cssModules/miscModes.module.css */ "./client/src/cssModules/miscModes.module.css");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+
+
+var AVMode = function AVMode(_ref) {
+  var modeRunning = _ref.modeRunning,
+    handleModeChooseColor = _ref.handleModeChooseColor,
+    modeDataSending = _ref.modeDataSending,
+    colorChoices = _ref.colorChoices,
+    handleModeStartStop = _ref.handleModeStartStop;
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState2 = _slicedToArray(_useState, 2),
+    startClicked = _useState2[0],
+    setStartClicked = _useState2[1];
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('#FFFFFF'),
+    _useState4 = _slicedToArray(_useState3, 2),
+    chosenColor = _useState4[0],
+    setChosenColor = _useState4[1];
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState6 = _slicedToArray(_useState5, 2),
+    error = _useState6[0],
+    setError = _useState6[1];
+  var handleReset = function handleReset() {
+    handleModeStartStop(false, false, false, false, false, true);
+    setError(false);
+  };
+  var chooseColorPressed = function chooseColorPressed() {
+    if (colorChoices.length < 2) {
+      handleModeChooseColor(chosenColor);
+      return;
+    }
+    setError("2 Colors Max!");
+  };
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+    id: "AVMode",
+    children: [!modeDataSending ?
+    /*#__PURE__*/
+    /* Fix me */
+    (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.Fragment, {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+        className: _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["color-picker-container"],
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_colorful__WEBPACK_IMPORTED_MODULE_3__.HexColorPicker, {
+          style: {
+            height: '50vw',
+            width: '70vw',
+            maxHeight: '70vh',
+            maxWidth: '700px'
+          },
+          color: color,
+          onChange: function onChange(newColor) {
+            return setChosenColor(newColor);
+          }
+        })
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+        className: _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].settings,
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+          style: {
+            'color': chosenColor
+          },
+          onClick: chooseColorPressed,
+          children: "Choose Color"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+          className: _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["start-button"],
+          onClick: function onClick(e) {
+            handleModeStartStop(e, false);
+            setStartClicked(!startClicked);
+          },
+          children: !startClicked ? "Start" : "Stop"
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+        className: _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["chosen-colors"],
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h2", {
+          children: "Chosen Colors"
+        }), colorChoices.map(function (curChoice) {
+          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+            style: {
+              'backgroundColor': curChoice,
+              'width': '100px',
+              'height': '100px'
+            }
+          });
+        })]
+      }), colorChoices.length !== 0 && !startClicked ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+        style: {
+          "float": 'right',
+          color: 'red'
+        },
+        onClick: handleReset,
+        children: "Reset"
+      }) : null]
+    }) : null, error ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+      style: {
+        color: 'red'
+      },
+      children: error
+    }) : null]
+  });
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (AVMode);
+
+/***/ }),
+
 /***/ "./client/src/CreateMode.jsx":
 /*!***********************************!*\
   !*** ./client/src/CreateMode.jsx ***!
@@ -673,7 +799,7 @@ var ModeSelector = function ModeSelector(_ref) {
   var setShowGallery = _ref.setShowGallery,
     setShowCreateMode = _ref.setShowCreateMode,
     setShowRainMode = _ref.setShowRainMode,
-    setShowAudioVisualizer = _ref.setShowAudioVisualizer;
+    setShowAVMode = _ref.setShowAVMode;
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
     id: _cssModules_modeSelector_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].widget,
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h1", {
@@ -717,7 +843,7 @@ var ModeSelector = function ModeSelector(_ref) {
         children: "Rain Mode"
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
         onClick: function onClick() {
-          return setShowAudioVisualizer(true);
+          return setShowAVMode(true);
         },
         children: "Audio Visualizer"
       })]
@@ -1010,125 +1136,6 @@ var TopBar = function TopBar(_ref) {
   });
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (TopBar);
-
-/***/ }),
-
-/***/ "./client/src/avController.jsx":
-/*!*************************************!*\
-  !*** ./client/src/avController.jsx ***!
-  \*************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_colorful__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-colorful */ "./node_modules/react-colorful/dist/index.mjs");
-/* harmony import */ var _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./cssModules/miscModes.module.css */ "./client/src/cssModules/miscModes.module.css");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
-function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-
-
-
-
-
-var AVController = function AVController(_ref) {
-  var modeRunning = _ref.modeRunning,
-    handleModeChooseColor = _ref.handleModeChooseColor,
-    modeDataSending = _ref.modeDataSending,
-    colorChoices = _ref.colorChoices,
-    handleModeStartStop = _ref.handleModeStartStop;
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
-    _useState2 = _slicedToArray(_useState, 2),
-    startClicked = _useState2[0],
-    setStartClicked = _useState2[1];
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('#FFFFFF'),
-    _useState4 = _slicedToArray(_useState3, 2),
-    chosenColor = _useState4[0],
-    setChosenColor = _useState4[1];
-  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
-    _useState6 = _slicedToArray(_useState5, 2),
-    error = _useState6[0],
-    setError = _useState6[1];
-  var handleReset = function handleReset() {
-    handleModeStartStop(false, false, false, false, false, true);
-    setError(false);
-  };
-  var chooseColorPressed = function chooseColorPressed() {
-    if (colorChoices.length < 2) {
-      handleModeChooseColor(chosenColor);
-    }
-  };
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-    id: "avController",
-    children: modeDataSending ?
-    /*#__PURE__*/
-    /* Fix me */
-    (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.Fragment, {
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-        className: _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["color-picker-container"],
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_colorful__WEBPACK_IMPORTED_MODULE_3__.HexColorPicker, {
-          style: {
-            height: '50vw',
-            width: '70vw',
-            maxHeight: '70vh',
-            maxWidth: '700px'
-          },
-          color: color,
-          onChange: function onChange(newColor) {
-            return setChosenColor(newColor);
-          }
-        })
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-        className: _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].settings,
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
-          style: {
-            'color': chosenColor
-          },
-          onClick: chooseColorPressed,
-          children: "Choose Color"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
-          className: _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["start-button"],
-          onClick: function onClick(e) {
-            handleModeStartStop(e, false);
-            setStartClicked(!startClicked);
-          },
-          children: !startClicked ? "Start" : "Stop"
-        })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-        className: _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["chosen-colors"],
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h2", {
-          children: "Chosen Colors"
-        }), colorChoices.map(function (curChoice) {
-          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-            style: {
-              'backgroundColor': curChoice,
-              'width': '100px',
-              'height': '100px'
-            }
-          });
-        })]
-      }), colorChoices.length !== 0 && !startClicked ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
-        style: {
-          "float": 'right',
-          color: 'red'
-        },
-        onClick: handleReset,
-        children: "Reset"
-      }) : null]
-    }) : null
-  });
-};
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (AVController);
 
 /***/ }),
 
@@ -21775,7 +21782,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _RainMode_jsx__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./RainMode.jsx */ "./client/src/RainMode.jsx");
 /* harmony import */ var _ModeSelector_jsx__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./ModeSelector.jsx */ "./client/src/ModeSelector.jsx");
 /* harmony import */ var _CreateMode_jsx__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./CreateMode.jsx */ "./client/src/CreateMode.jsx");
-/* harmony import */ var _avController_jsx__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./avController.jsx */ "./client/src/avController.jsx");
+/* harmony import */ var _AVMode_jsx__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./AVMode.jsx */ "./client/src/AVMode.jsx");
 /* harmony import */ var _HomePage_jsx__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./HomePage.jsx */ "./client/src/HomePage.jsx");
 /* harmony import */ var _TopBar_jsx__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./TopBar.jsx */ "./client/src/TopBar.jsx");
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
@@ -21805,7 +21812,7 @@ window.framePlayed = false;
 window.turnedOn = false;
 window.color = "#FFFFFF";
 var App = function App() {
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(true),
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState2 = _slicedToArray(_useState, 2),
     isConnected = _useState2[0],
     setIsConnected = _useState2[1];
@@ -21837,10 +21844,10 @@ var App = function App() {
     _useState16 = _slicedToArray(_useState15, 2),
     showGallery = _useState16[0],
     setShowGallery = _useState16[1];
-  var _useState17 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(true),
+  var _useState17 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState18 = _slicedToArray(_useState17, 2),
-    showAudioVisualizer = _useState18[0],
-    setShowAudioVisualizer = _useState18[1];
+    showAVMode = _useState18[0],
+    setShowAVMode = _useState18[1];
   var _useState19 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState20 = _slicedToArray(_useState19, 2),
     showRainMode = _useState20[0],
@@ -21999,7 +22006,8 @@ var App = function App() {
     setShowCreateMode(false);
     setShowGallery(false);
     setShowRainMode(false);
-    setShowAudioVisualizer(false);
+    setShowAVMode(false);
+    handleModeStartStop();
     turnOff();
   };
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
@@ -22007,14 +22015,14 @@ var App = function App() {
     onMouseDown: function onMouseDown() {
       return setMouseDown(true);
     },
-    children: [showGallery || showCreateMode || showRainMode || showAudioVisualizer ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_TopBar_jsx__WEBPACK_IMPORTED_MODULE_11__["default"], {
+    children: [showGallery || showCreateMode || showRainMode || showAVMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_TopBar_jsx__WEBPACK_IMPORTED_MODULE_11__["default"], {
       selectedColor: selectedColor,
       disableModes: disableModes
     }) : null, !isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_HomePage_jsx__WEBPACK_IMPORTED_MODULE_10__["default"], {
       handleConnect: handleConnect,
       connectError: connectError
-    }) : null, isConnected && !showCreateMode && !showGallery && !showRainMode && !showAudioVisualizer ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_ModeSelector_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], {
-      setShowAudioVisualizer: setShowAudioVisualizer,
+    }) : null, isConnected && !showCreateMode && !showGallery && !showRainMode && !showAVMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_ModeSelector_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], {
+      setShowAVMode: setShowAVMode,
       setShowGallery: setShowGallery,
       setShowCreateMode: setShowCreateMode,
       setShowRainMode: setShowRainMode
@@ -22050,20 +22058,20 @@ var App = function App() {
       colorChoices: colorChoices,
       modeDataSending: modeDataSending,
       handleModeStartStop: handleModeStartStop
-    }) : null, showAudioVisualizer ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_avController_jsx__WEBPACK_IMPORTED_MODULE_9__["default"], {
+    }) : null, showAVMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_AVMode_jsx__WEBPACK_IMPORTED_MODULE_9__["default"], {
       modeRunning: modeRunning,
       handleModeChooseColor: handleModeChooseColor,
       modeDataSending: modeDataSending,
       colorChoices: colorChoices,
       handleModeStartStop: handleModeStartStop
-    }) : null, showCreateMode || showGallery || showRainMode || showAudioVisualizer ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("button", {
+    }) : null, showCreateMode || showGallery || showRainMode || showAVMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("button", {
       id: "bottom-button",
       onClick: function onClick() {
         if (showCreateMode) {
           setShowCreateMode(false);
           setShowGallery(true);
         } else {
-          setShowAudioVisualizer(false);
+          setShowAVMode(false);
           setShowGallery(false);
           setShowRainMode(false);
           setShowCreateMode(true);

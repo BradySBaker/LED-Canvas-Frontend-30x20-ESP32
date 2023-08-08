@@ -4,7 +4,7 @@ import { HexColorPicker } from "react-colorful";
 
 import styles from './cssModules/miscModes.module.css';
 
-const AVController = ({modeRunning,  handleModeChooseColor, modeDataSending,  colorChoices, handleModeStartStop}) => {
+const AVMode = ({modeRunning,  handleModeChooseColor, modeDataSending,  colorChoices, handleModeStartStop}) => {
   const [startClicked, setStartClicked] = useState(false);
   const [chosenColor, setChosenColor] = useState('#FFFFFF');
   const [error, setError] = useState(false);
@@ -17,12 +17,14 @@ const AVController = ({modeRunning,  handleModeChooseColor, modeDataSending,  co
   const chooseColorPressed = () => {
     if (colorChoices.length < 2) {
       handleModeChooseColor(chosenColor);
+      return;
     }
+    setError("2 Colors Max!");
   };
 
   return (
-		<div id='avController'>
-			{modeDataSending ? /* Fix me */
+		<div id='AVMode'>
+			{!modeDataSending ? /* Fix me */
 			<>
 				<div className={styles['color-picker-container']}>
 					<HexColorPicker style={{height: '50vw', width: '70vw', maxHeight: '70vh', maxWidth: '700px'}} color={color} onChange={(newColor) => setChosenColor(newColor)} />
@@ -41,8 +43,9 @@ const AVController = ({modeRunning,  handleModeChooseColor, modeDataSending,  co
 				</div>
         {colorChoices.length !== 0 && !startClicked ? <button style={{float: 'right', color: 'red'}} onClick={handleReset}>Reset</button> : null}
 			</> : null}
+      {error ? <div style={{color: 'red'}}>{error}</div> : null}
 		</div>
   )
 };
 
-export default AVController;
+export default AVMode;
