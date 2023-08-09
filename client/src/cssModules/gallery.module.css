@@ -114,5 +114,5 @@ h2.title {
 #slider-container {
   position: absolute;
   left: 50%;
-  transform: translate(-50%, 10px);
+  transform: translate(-50%, -10px);
 }
