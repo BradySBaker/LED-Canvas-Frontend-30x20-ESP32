@@ -1,5 +1,5 @@
 #widget {
-  margin: 10px 0 15px 0;
+  margin: 30px 0 40px 0;
 }
 #button-icon {
   width: 23px;
@@ -18,5 +18,12 @@
   font-size: 23px;
   position: absolute;
   left: 50%;
+  transform: translateX(-50%);
+}
+
+#slider {
+  position: absolute;
+  left: 50%;
+  top: 60px;
   transform: translate(-50%);
 }

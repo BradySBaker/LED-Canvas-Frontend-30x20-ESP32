@@ -58,11 +58,11 @@ var AVMode = function AVMode(_ref) {
     setError(false);
   };
   var chooseColorPressed = function chooseColorPressed() {
-    if (colorChoices.length < 2) {
+    if (colorChoices.length < 2 || colorChoices.length < 3 && pixelFall) {
       handleModeChooseColor(chosenColor);
       return;
     }
-    setError("2 Colors Max!");
+    setError(colorChoices.length + " colors max!");
   };
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
     id: "AVMode",
@@ -104,7 +104,8 @@ var AVMode = function AVMode(_ref) {
           className: _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["start-button"],
           onClick: function onClick(e) {
             handleModeStartStop({
-              e: true
+              e: true,
+              pixelFall: pixelFall
             });
             setStartClicked(!startClicked);
           },
@@ -114,7 +115,10 @@ var AVMode = function AVMode(_ref) {
         className: _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["chosen-colors"],
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h2", {
           children: "Chosen Colors"
-        }), colorChoices.map(function (curChoice) {
+        }), colorChoices.map(function (curChoice, idx) {
+          if (!pixelFall && idx > 1) {
+            return;
+          }
           return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
             style: {
               'backgroundColor': curChoice,
@@ -898,12 +902,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-var colorPalettes = {
-  red: ["rgb(82, 0, 0)", "rgb(255, 0, 0)", "rgb(255, 150, 150)"],
-  blue: ["rgb(0, 0, 102)", "rgb(0, 0, 255)", "rgb(0, 153, 255)"],
-  green: ["rgb(0, 82, 0)", "rgb(0, 255, 0)", "rgb(102, 255, 102)"],
-  purple: ["rgb(60, 0, 90)", "rgb(150, 0, 200)", "rgb(255, 105, 180)"]
-};
 var chosenFrame = false;
 var colorsSent = 0;
 var rain = false;
@@ -1132,13 +1130,30 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _cssModules_topBar_module_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./cssModules/topBar.module.css */ "./client/src/cssModules/topBar.module.css");
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
 
 var TopBar = function TopBar(_ref) {
   var selectedColor = _ref.selectedColor,
-    disableModes = _ref.disableModes;
+    disableModes = _ref.disableModes,
+    sendData = _ref.sendData,
+    allowBrightness = _ref.allowBrightness;
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(100),
+    _useState2 = _slicedToArray(_useState, 2),
+    brightness = _useState2[0],
+    setBrightness = _useState2[1];
+  var handleChange = function handleChange(e) {
+    ledBrightness = e.target.value;
+    setBrightness(ledBrightness);
+    window.sendRequests["brightness"] = "B" + ledBrightness;
+  };
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
     id: _cssModules_topBar_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].widget,
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
@@ -1151,10 +1166,19 @@ var TopBar = function TopBar(_ref) {
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
       id: _cssModules_topBar_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].title,
       style: {
-        color: selectedColor
+        color: selectedColor,
+        opacity: brightness / 100
       },
       children: "LED Canvas"
-    })]
+    }), allowBrightness ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
+      id: _cssModules_topBar_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].slider,
+      type: "range",
+      min: 1,
+      max: 100,
+      defaultValue: brightness,
+      onMouseUp: handleChange,
+      onTouchEnd: handleChange
+    }) : null]
   });
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (TopBar);
@@ -1266,11 +1290,11 @@ var handleSendRequests = function handleSendRequests(setPixelSending, pixelSendi
       window.sendRequests = {};
     } else {
       for (var key in sendRequests) {
-        if (key === 'color' && positions === 0) {
+        if ((key === 'color' || key === 'brightness') && positions === 0) {
           sendData(sendRequests[key]);
-          delete sendRequests['color'];
+          delete sendRequests[key];
           break;
-        } else if (key === 'color') {
+        } else if (key === 'color' === 'brightness') {
           sendData(toBeSent);
           toBeSent = '';
           break;
@@ -21052,13 +21076,14 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "#ukNaG7WgEOPayQqF4iCO {\n  margin: 10px 0 15px 0;\n}\n#PsD4LjbKBRDoIOJvrBzj {\n  width: 23px;\n  height: 23px;\n}\n\n#cKSqDjqmnqzP9GzqH9qJ {\n  background-color: transparent;\n  margin-right: 20px;\n}\n\n#PEujSb5Dve5aTvab0e5q {\n  color: white;\n  display: inline-block;\n  font-weight: bold;\n  font-size: 23px;\n  position: absolute;\n  left: 50%;\n  transform: translate(-50%);\n}", "",{"version":3,"sources":["webpack://./client/src/cssModules/topBar.module.css"],"names":[],"mappings":"AAAA;EACE,qBAAqB;AACvB;AACA;EACE,WAAW;EACX,YAAY;AACd;;AAEA;EACE,6BAA6B;EAC7B,kBAAkB;AACpB;;AAEA;EACE,YAAY;EACZ,qBAAqB;EACrB,iBAAiB;EACjB,eAAe;EACf,kBAAkB;EAClB,SAAS;EACT,0BAA0B;AAC5B","sourcesContent":["#widget {\n  margin: 10px 0 15px 0;\n}\n#button-icon {\n  width: 23px;\n  height: 23px;\n}\n\n#back-button {\n  background-color: transparent;\n  margin-right: 20px;\n}\n\n#title {\n  color: white;\n  display: inline-block;\n  font-weight: bold;\n  font-size: 23px;\n  position: absolute;\n  left: 50%;\n  transform: translate(-50%);\n}"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, "#ukNaG7WgEOPayQqF4iCO {\n  margin: 30px 0 40px 0;\n}\n#PsD4LjbKBRDoIOJvrBzj {\n  width: 23px;\n  height: 23px;\n}\n\n#cKSqDjqmnqzP9GzqH9qJ {\n  background-color: transparent;\n  margin-right: 20px;\n}\n\n#PEujSb5Dve5aTvab0e5q {\n  color: white;\n  display: inline-block;\n  font-weight: bold;\n  font-size: 23px;\n  position: absolute;\n  left: 50%;\n  transform: translateX(-50%);\n}\n\n#xzNTESMtVrIOaHXl83Te {\n  position: absolute;\n  left: 50%;\n  top: 60px;\n  transform: translate(-50%);\n}", "",{"version":3,"sources":["webpack://./client/src/cssModules/topBar.module.css"],"names":[],"mappings":"AAAA;EACE,qBAAqB;AACvB;AACA;EACE,WAAW;EACX,YAAY;AACd;;AAEA;EACE,6BAA6B;EAC7B,kBAAkB;AACpB;;AAEA;EACE,YAAY;EACZ,qBAAqB;EACrB,iBAAiB;EACjB,eAAe;EACf,kBAAkB;EAClB,SAAS;EACT,2BAA2B;AAC7B;;AAEA;EACE,kBAAkB;EAClB,SAAS;EACT,SAAS;EACT,0BAA0B;AAC5B","sourcesContent":["#widget {\n  margin: 30px 0 40px 0;\n}\n#button-icon {\n  width: 23px;\n  height: 23px;\n}\n\n#back-button {\n  background-color: transparent;\n  margin-right: 20px;\n}\n\n#title {\n  color: white;\n  display: inline-block;\n  font-weight: bold;\n  font-size: 23px;\n  position: absolute;\n  left: 50%;\n  transform: translateX(-50%);\n}\n\n#slider {\n  position: absolute;\n  left: 50%;\n  top: 60px;\n  transform: translate(-50%);\n}"],"sourceRoot":""}]);
 // Exports
 ___CSS_LOADER_EXPORT___.locals = {
 	"widget": "ukNaG7WgEOPayQqF4iCO",
 	"button-icon": "PsD4LjbKBRDoIOJvrBzj",
 	"back-button": "cKSqDjqmnqzP9GzqH9qJ",
-	"title": "PEujSb5Dve5aTvab0e5q"
+	"title": "PEujSb5Dve5aTvab0e5q",
+	"slider": "xzNTESMtVrIOaHXl83Te"
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -21833,6 +21858,13 @@ window.modeRunning = true;
 window.framePlayed = false;
 window.turnedOn = false;
 window.color = "#FFFFFF";
+window.ledBrightness = 100;
+window.colorPalettes = {
+  red: ["rgb(82, 0, 0)", "rgb(255, 0, 0)", "rgb(255, 150, 150)"],
+  blue: ["rgb(0, 0, 102)", "rgb(0, 0, 255)", "rgb(0, 153, 255)"],
+  green: ["rgb(0, 82, 0)", "rgb(0, 255, 0)", "rgb(102, 255, 102)"],
+  purple: ["rgb(60, 0, 90)", "rgb(150, 0, 200)", "rgb(255, 105, 180)"]
+};
 var App = function App() {
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState2 = _slicedToArray(_useState, 2),
@@ -21874,30 +21906,34 @@ var App = function App() {
     _useState20 = _slicedToArray(_useState19, 2),
     showRainMode = _useState20[0],
     setShowRainMode = _useState20[1];
-  var _useState21 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+  var _useState21 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(true),
     _useState22 = _slicedToArray(_useState21, 2),
-    prevFrameNames = _useState22[0],
-    setPrevFrameNames = _useState22[1];
+    allowBrightness = _useState22[0],
+    setAllowBrightness = _useState22[1];
   var _useState23 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
     _useState24 = _slicedToArray(_useState23, 2),
-    anims = _useState24[0],
-    setAnims = _useState24[1];
-  var _useState25 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    prevFrameNames = _useState24[0],
+    setPrevFrameNames = _useState24[1];
+  var _useState25 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
     _useState26 = _slicedToArray(_useState25, 2),
-    animPlaying = _useState26[0],
-    setAnimPlaying = _useState26[1];
-  var _useState27 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+    anims = _useState26[0],
+    setAnims = _useState26[1];
+  var _useState27 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState28 = _slicedToArray(_useState27, 2),
-    colorChoices = _useState28[0],
-    setColorChoices = _useState28[1];
-  var _useState29 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(color),
+    animPlaying = _useState28[0],
+    setAnimPlaying = _useState28[1];
+  var _useState29 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
     _useState30 = _slicedToArray(_useState29, 2),
-    selectedColor = _useState30[0],
-    setSelectedColor = _useState30[1];
-  var _useState31 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    colorChoices = _useState30[0],
+    setColorChoices = _useState30[1];
+  var _useState31 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(color),
     _useState32 = _slicedToArray(_useState31, 2),
-    connectError = _useState32[0],
-    setConnectError = _useState32[1];
+    selectedColor = _useState32[0],
+    setSelectedColor = _useState32[1];
+  var _useState33 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState34 = _slicedToArray(_useState33, 2),
+    connectError = _useState34[0],
+    setConnectError = _useState34[1];
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     //Mouse up handler
     var handleMouseUp = function handleMouseUp() {
@@ -21969,12 +22005,16 @@ var App = function App() {
       chosenFrame = _ref.chosenFrame,
       startMode = _ref.startMode,
       rainAmount = _ref.rainAmount,
-      reset = _ref.reset;
+      reset = _ref.reset,
+      pixelFall = _ref.pixelFall;
+    setAllowBrightness(false);
     if (modeRunning && !startMode || reset) {
       setColorChoices([]);
       setModeDataSending(true);
       (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)("SM");
-      setTimeout(handleModeStartStop, 400);
+      setTimeout(function () {
+        return handleModeStartStop({});
+      }, 400);
     } else if (e) {
       if (!modeRunning && rain) {
         if (colorChoices.length === 0) {
@@ -21993,11 +22033,8 @@ var App = function App() {
         if (isNaN(Number(rainAmount)) || rainAmount.length < 1 || colorChoices.length === 0) {
           return "Please input a number value and a color";
         }
-        if (chosenFrame) {
-          (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)("R" + rainAmount + chosenFrame);
-        } else {
-          (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)("R" + rainAmount);
-        }
+        var signal = chosenFrame ? "R" + rainAmount + chosenFrame : "R" + rainAmount;
+        (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)(signal);
         setModeDataSending(true);
         setTimeout(function () {
           handleModeStartStop({
@@ -22010,7 +22047,8 @@ var App = function App() {
         }, 400);
       } else if (!modeRunning) {
         //Audio visualizer
-        (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)("HAV");
+        var _signal = pixelFall ? "HAV1" : "HAV";
+        (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)(_signal);
         setTimeout(function () {
           handleModeStartStop({
             e: true,
@@ -22021,6 +22059,7 @@ var App = function App() {
         }, 400);
       }
     } else {
+      setAllowBrightness(true);
       setModeDataSending(false);
       setColorChoices([]);
     }
@@ -22046,7 +22085,7 @@ var App = function App() {
     setShowGallery(false);
     setShowRainMode(false);
     setShowAVMode(false);
-    handleModeStartStop();
+    handleModeStartStop({});
     turnOff();
   };
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
@@ -22055,6 +22094,8 @@ var App = function App() {
       return setMouseDown(true);
     },
     children: [showGallery || showCreateMode || showRainMode || showAVMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_TopBar_jsx__WEBPACK_IMPORTED_MODULE_11__["default"], {
+      allowBrightness: allowBrightness,
+      sendData: _helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData,
       selectedColor: selectedColor,
       disableModes: disableModes
     }) : null, !isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_HomePage_jsx__WEBPACK_IMPORTED_MODULE_10__["default"], {
