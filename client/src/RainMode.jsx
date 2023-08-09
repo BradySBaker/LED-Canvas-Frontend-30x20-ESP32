@@ -72,13 +72,13 @@ const RainMode = ({handleModeStartStop, modeDataSending, colorChoices, handleMod
   };
 
   const handleReset = () => {
-    handleModeStartStop(false, false, false, false, false, true);
+    handleModeStartStop({reset: true});
     setError(false);
     colorsSent = 0;
   };
 
   const startStopClicked = (e, chosenFrame) => {
-    const error = handleModeStartStop(e, true, chosenFrame);
+    const error = handleModeStartStop({e: true, rain: true, chosenFrame});
     if (error) {
       setError(error);
       return;
@@ -99,10 +99,10 @@ const RainMode = ({handleModeStartStop, modeDataSending, colorChoices, handleMod
             {paletteElements}
           </div>
       </div>
-				<div id={styles['color-picker-container']}>
-					<HexColorPicker style={{height: '50vw', width: '70vw', maxHeight: '70vh', maxWidth: '700px'}} color={color} onChange={(color) => setChosenColor(color)} />
+				<div className={styles['color-picker-container']}>
+					<HexColorPicker style={{height: '50vw', width: '70vw', maxHeight: '70vh', maxWidth: '700px'}} color={chosenColor} onChange={(color) => setChosenColor(color)} />
 				</div>
-        <div id={styles['settings']}>
+        <div className={styles['settings']}>
           <button id={styles['choose-color-button']} style={{'color': chosenColor}} onClick={() => handleChooseColor(chosenColor)}>Choose Color</button>
           <div className={styles['stacked']} id={styles['background-choices-container']}>
             <p id={styles['background-text']}>Choose a background</p>
@@ -120,11 +120,11 @@ const RainMode = ({handleModeStartStop, modeDataSending, colorChoices, handleMod
             <select className={styles['amount']}  id='rainAmount' size="3">
               {raindropSelections}
             </select>
-            <button id={styles['start-button']} onClick={(e) => {startStopClicked(e, chosenFrame); }}>{!startClicked ? "Start" : "Stop"}</button>
+            <button className={styles['start-button']} onClick={(e) => {startStopClicked(e, chosenFrame); }}>{!startClicked ? "Start" : "Stop"}</button>
           </div>
         </div>
         <div>
-          <div id={styles['chosen-colors']}>
+          <div className={styles['chosen-colors']}>
           <h2>Chosen Colors</h2>
             {colorChoices.map((curChoice) => {
               return(

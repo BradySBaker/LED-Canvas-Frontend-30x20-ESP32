@@ -31,13 +31,13 @@
   margin-bottom: 20px;
 }
 
-#color-picker-container {
+.color-picker-container {
   width: max-content;
   margin: auto;
   margin-top: 25px;
 }
 
-#settings {
+.settings {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -85,16 +85,16 @@
   margin-bottom: 10px;
 }
 
-#settings button {
+.settings button {
   padding: 5px;
   font-size: 3.5vw;
 }
 
-#start-button {
+.start-button {
   background-color: #00FF47;
 }
 
-#chosen-colors {
+.chosen-colors {
   display: flex;
   flex-wrap: wrap;
   background-color: rgba(255, 255, 255, 0.082);
@@ -109,7 +109,7 @@
   margin: 5% 5%;
 }
 
-#chosen-colors h2 {
+.chosen-colors h2 {
   position: absolute;
   width: 100vw;
   text-align: center;

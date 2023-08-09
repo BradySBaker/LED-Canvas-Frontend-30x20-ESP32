@@ -10,7 +10,7 @@ import Gallery from "./Gallery.jsx";
 import RainMode from "./RainMode.jsx";
 import ModeSelector from "./ModeSelector.jsx";
 import CreateMode from "./CreateMode.jsx";
-import AVController from "./avController.jsx";
+import AVMode from "./AVMode.jsx";
 
 
 import HomePage from "./HomePage.jsx";
@@ -35,7 +35,7 @@ const App = function() {
 
 	const [showCreateMode, setShowCreateMode] = useState(false);
   const [showGallery, setShowGallery] = useState(false);
-	const [audioVisualizer, setAudioVisualizer] = useState(false);
+	const [showAVMode, setShowAVMode] = useState(false);
 	const [showRainMode, setShowRainMode] = useState(false);
 
 	const [prevFrameNames, setPrevFrameNames] = useState([]);
@@ -62,7 +62,7 @@ const App = function() {
   }, []);
 
 	useEffect(() => handleSendRequests(setPixelSending, pixelSending), []); //On start
-	useEffect(() => {if (isConnected === true) {handleModeStartStop()}}, [isConnected]) //On connect
+	useEffect(() => {if (isConnected === true) {handleModeStartStop({})}}, [isConnected]) //On connect
 
 	function turnOn() {
 		setTimeout(() => {sendData("names");}, 100);
@@ -109,8 +109,9 @@ const App = function() {
 	};
 
 	//Rain/Audio Visaulizer handler for off and on
-	const handleModeStartStop = (e, rain, chosenFrame, startMode, rainAmount, reset) => {
+	const handleModeStartStop = ({e, rain, chosenFrame, startMode, rainAmount, reset}) => {
 		if ((modeRunning && !startMode) || reset) {
+      setColorChoices([]);
       setModeDataSending(true);
 			sendData("SM");
 			setTimeout(handleModeStartStop, 400);
@@ -137,10 +138,10 @@ const App = function() {
           sendData("R" + rainAmount);
         }
         setModeDataSending(true);
-				setTimeout(() => {handleModeStartStop(true, true, chosenFrame, true, rainAmount)}, 400);
+				setTimeout(() => {handleModeStartStop({e: true, rain: true, chosenFrame, startMode: true, rainAmount})}, 400);
 			} else if(!modeRunning) { //Audio visualizer
         sendData("HAV");
-				setTimeout(() => {handleModeStartStop(true, false, chosenFrame, true, rainAmount)}, 400);
+				setTimeout(() => {handleModeStartStop({e: true, chosenFrame, startMode: true, rainAmount})}, 400);
       }
 		} else {
       setModeDataSending(false);
@@ -148,6 +149,7 @@ const App = function() {
     }
     return false;
 	};
+
   const handleModeChooseColor = (chosenColor, palette) => {
     if (palette) {
       setColorChoices(chosenColor);
@@ -169,22 +171,24 @@ const App = function() {
     setShowCreateMode(false);
     setShowGallery(false);
     setShowRainMode(false);
+    setShowAVMode(false);
+    handleModeStartStop();
     turnOff();
   };
 
 	return (
 		<div id='colorApp' onMouseDown={() => setMouseDown(true)} >
-      {showGallery || showCreateMode || showRainMode ? <TopBar selectedColor={selectedColor} disableModes={disableModes}/> : null}
+      {showGallery || showCreateMode || showRainMode || showAVMode ? <TopBar selectedColor={selectedColor} disableModes={disableModes}/> : null}
       {!isConnected ? <HomePage handleConnect={handleConnect} connectError={connectError}/> :  null}
-      {isConnected && !showCreateMode && !showGallery && !showRainMode ? <ModeSelector setShowGallery={setShowGallery} setShowCreateMode={setShowCreateMode} setShowRainMode={setShowRainMode}/> : null}
+      {isConnected && !showCreateMode && !showGallery && !showRainMode && !showAVMode ? <ModeSelector setShowAVMode={setShowAVMode} setShowGallery={setShowGallery} setShowCreateMode={setShowCreateMode} setShowRainMode={setShowRainMode}/> : null}
       {showGallery ?  <Gallery animPlaying={animPlaying} turnOff={turnOff} handleSave={callSave} modeDataSending={modeDataSending} anims={anims} prevFrameNames={prevFrameNames} frames={frames} handleFrameChoice={handleFrameChoice} handleDelete={callDelete}/> : null}
       {showCreateMode ? <CreateMode turnOff={turnOff} callSave={callSave} animPlaying={animPlaying} pixelSending={pixelSending} mouseDown={mouseDown} handleFrameChoice={handleFrameChoice} sendRequests={sendRequests} selectedColor={selectedColor} setSelectedColor={setSelectedColor}/> : null}
       {(pixelSending || modeDataSending) ? <img id='loading' src='./icons/loading.gif'></img> : null}
 
 			{showRainMode ? <RainMode prevFrameNames={prevFrameNames} frames={frames} handleFrameChoice={handleFrameChoice} modeRunning={modeRunning} handleModeChooseColor={handleModeChooseColor} colorChoices={colorChoices} modeDataSending={modeDataSending} handleModeStartStop={handleModeStartStop}/> : null}
-      {/* {audioVisualizer ? <AVController modeRunning={modeRunning} handleChooseColor={handleModeChooseColor} curChosenColor={curChosenColor} modeDataSending={modeDataSending} setCurChosenColor={setCurChosenColor} colorChoices={colorChoices} handleModeStartStop={handleModeStartStop}/> : null} */}
+      {showAVMode ? <AVMode modeRunning={modeRunning} handleModeChooseColor={handleModeChooseColor} modeDataSending={modeDataSending} colorChoices={colorChoices} handleModeStartStop={handleModeStartStop}/> : null}
 
-    {showCreateMode || showGallery || showRainMode ? <button id='bottom-button' onClick={() => {if (showCreateMode) {setShowCreateMode(false); setShowGallery(true);} else {setShowGallery(false); setShowRainMode(false); setShowCreateMode(true);}}}>{showCreateMode ? 'Gallery' : 'Create'}</button> : null}
+    {showCreateMode || showGallery || showRainMode || showAVMode ? <button id='bottom-button' onClick={() => {if (showCreateMode) {setShowCreateMode(false); setShowGallery(true);} else {setShowAVMode(false); setShowGallery(false); setShowRainMode(false); setShowCreateMode(true);}}}>{showCreateMode ? 'Gallery' : 'Create'}</button> : null}
 		</div>
 	)
 }
