@@ -2,10 +2,18 @@ import React, {useState, useEffect} from 'react';
 
 import styles from './cssModules/gallery.module.css';
 
+import Slider from './Slider.jsx';
+
 const Gallery = ({frames, handleFrameChoice, prevFrameNames, handleDelete, anims, handleSave, modeDataSending, animPlaying, turnOff}) => {
   const [playClicked, setPlayClicked] = useState(false);
 	const [frameElements, setFrameElements] = useState([]);
   const [itemToDelete, setItemToDelete] = useState(false);
+  const [animationSpeed, setAnimationSpeed] = useState(5);
+
+  const animationSpeedChange = (e) => {
+    const speed = e.target.value;
+    setAnimationSpeed(speed);
+  };
 
 	const createFrames = () => {
 		var newFrames = [];
@@ -73,14 +81,17 @@ const Gallery = ({frames, handleFrameChoice, prevFrameNames, handleDelete, anims
       <div className={styles['line']} />
       <h1 className={styles['title']} style={{marginTop: '80px'}}>Animations</h1>
       <div className={styles['line']} />
+      <div id={styles['slider-container']}>
+        {!playClicked ? <Slider max={5} min={1} handleChange={animationSpeedChange} defaultValue={5}/> : null}
+      </div>
       <div className={styles['saved-item-list']}>
       {anims.map((curName, idx) => {
 				return(
 					<div className={styles['animation-item']}>
-            <button className={styles['saved-item']} onClick={() => {if (!modeDataSending && !animPlaying) {setPlayClicked(true); handleFrameChoice(curName, true);}}}>{curName}</button>
+            <button className={styles['saved-item']} onClick={() => {if (!modeDataSending && !animPlaying) {setPlayClicked(true); handleFrameChoice(curName, true, animationSpeed);}}}>{curName}</button>
             <div>
               <button className={styles['delete']} onClick={() => setItemToDelete([curName, idx, 'animation'])}>delete</button>
-              {!playClicked ? <img onClick={() => {if (!modeDataSending) {setPlayClicked(true); handleFrameChoice(curName, true);}}} src='./icons/play-icon.png'/> : <p onClick={(e) => {setPlayClicked(false); turnOff(e, true);}}/>}
+              {!playClicked ? <img onClick={() => {if (!modeDataSending) {setPlayClicked(true); handleFrameChoice(curName, true, animationSpeed);}}} src='./icons/play-icon.png'/> : <p onClick={(e) => {setPlayClicked(false); turnOff(e, true); setAnimationSpeed(5);}}/>}
             </div>
 					</div>
 				)

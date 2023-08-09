@@ -27,11 +27,11 @@ export const handleSendRequests = (setPixelSending, pixelSending) => { //Occurs 
 			window.sendRequests = {};
 		} else {
 			for (var key in sendRequests) {
-				if (key === 'color' && positions === 0) {
+				if ((key === 'color' || key === 'brightness') && positions === 0) {
 					sendData(sendRequests[key]);
-					delete sendRequests['color'];
+					delete sendRequests[key];
 					break;
-				} else if (key === 'color') {
+				} else if (key === 'color' === 'brightness') {
 					sendData(toBeSent);
 					toBeSent = '';
 					break;

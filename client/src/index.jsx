@@ -25,6 +25,15 @@ window.turnedOn = false;
 
 window.color = "#FFFFFF";
 
+window.ledBrightness = 100;
+
+window.colorPalettes = {
+  red: ["rgb(82, 0, 0)", "rgb(255, 0, 0)", "rgb(255, 150, 150)"],
+  blue: ["rgb(0, 0, 102)", "rgb(0, 0, 255)", "rgb(0, 153, 255)"],
+  green: ["rgb(0, 82, 0)", "rgb(0, 255, 0)", "rgb(102, 255, 102)"],
+  purple: ["rgb(60, 0, 90)", "rgb(150, 0, 200)", "rgb(255, 105, 180)"]
+};
+
 const App = function() {
 	const [isConnected, setIsConnected] = useState(false);
 	const [mouseDown, setMouseDown] = useState(false);
@@ -37,6 +46,8 @@ const App = function() {
   const [showGallery, setShowGallery] = useState(false);
 	const [showAVMode, setShowAVMode] = useState(false);
 	const [showRainMode, setShowRainMode] = useState(false);
+
+  const [allowBrightness, setAllowBrightness] = useState(true);
 
 	const [prevFrameNames, setPrevFrameNames] = useState([]);
 	const [anims, setAnims] = useState([]);
@@ -81,7 +92,7 @@ const App = function() {
 		}
 	}
 
-	const handleFrameChoice = (frameName, animation) => {
+	const handleFrameChoice = (frameName, animation, speed) => {
 		if (modeRunning && !framePlayed) {
 			setModeDataSending(true);
 			sendData(`F${frameName}`);
@@ -94,7 +105,7 @@ const App = function() {
 		}
 		if (animation) {
 			setAnimPlaying(true);
-			sendData(`I${frameName}`);
+			sendData('I' + speed + frameName);
 			return;
 		}
 		sendData(`F${frameName}`);
@@ -109,12 +120,13 @@ const App = function() {
 	};
 
 	//Rain/Audio Visaulizer handler for off and on
-	const handleModeStartStop = ({e, rain, chosenFrame, startMode, rainAmount, reset}) => {
+	const handleModeStartStop = ({e, rain, chosenFrame, startMode, rainAmount, reset, pixelFall}) => {
+    setAllowBrightness(false);
 		if ((modeRunning && !startMode) || reset) {
       setColorChoices([]);
       setModeDataSending(true);
 			sendData("SM");
-			setTimeout(handleModeStartStop, 400);
+			setTimeout(() => handleModeStartStop({}), 400);
 		} else if (e) {
 			if (!modeRunning && rain) {
         if (colorChoices.length === 0) {
@@ -132,18 +144,17 @@ const App = function() {
 				if (isNaN(Number(rainAmount)) || rainAmount.length < 1 || colorChoices.length === 0) {
 					return "Please input a number value and a color";
 				}
-        if (chosenFrame) {
-          sendData("R" + rainAmount + chosenFrame);
-        } else {
-          sendData("R" + rainAmount);
-        }
+        let signal = chosenFrame ? "R" + rainAmount + chosenFrame : "R" + rainAmount;
+        sendData(signal);
         setModeDataSending(true);
 				setTimeout(() => {handleModeStartStop({e: true, rain: true, chosenFrame, startMode: true, rainAmount})}, 400);
 			} else if(!modeRunning) { //Audio visualizer
-        sendData("HAV");
+        let signal = pixelFall ? "HAV1" : "HAV";
+        sendData(signal);
 				setTimeout(() => {handleModeStartStop({e: true, chosenFrame, startMode: true, rainAmount})}, 400);
       }
 		} else {
+      setAllowBrightness(true);
       setModeDataSending(false);
       setColorChoices([]);
     }
@@ -172,13 +183,13 @@ const App = function() {
     setShowGallery(false);
     setShowRainMode(false);
     setShowAVMode(false);
-    handleModeStartStop();
+    handleModeStartStop({});
     turnOff();
   };
 
 	return (
 		<div id='colorApp' onMouseDown={() => setMouseDown(true)} >
-      {showGallery || showCreateMode || showRainMode || showAVMode ? <TopBar selectedColor={selectedColor} disableModes={disableModes}/> : null}
+      {showGallery || showCreateMode || showRainMode || showAVMode ? <TopBar allowBrightness={allowBrightness} sendData={sendData} selectedColor={selectedColor} disableModes={disableModes}/> : null}
       {!isConnected ? <HomePage handleConnect={handleConnect} connectError={connectError}/> :  null}
       {isConnected && !showCreateMode && !showGallery && !showRainMode && !showAVMode ? <ModeSelector setShowAVMode={setShowAVMode} setShowGallery={setShowGallery} setShowCreateMode={setShowCreateMode} setShowRainMode={setShowRainMode}/> : null}
       {showGallery ?  <Gallery animPlaying={animPlaying} turnOff={turnOff} handleSave={callSave} modeDataSending={modeDataSending} anims={anims} prevFrameNames={prevFrameNames} frames={frames} handleFrameChoice={handleFrameChoice} handleDelete={callDelete}/> : null}

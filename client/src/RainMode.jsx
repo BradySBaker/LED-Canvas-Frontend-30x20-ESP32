@@ -4,13 +4,6 @@ import { HexColorPicker } from "react-colorful";
 
 import styles from './cssModules/miscModes.module.css';
 
-const colorPalettes = {
-  red: ["rgb(82, 0, 0)", "rgb(255, 0, 0)", "rgb(255, 150, 150)"],
-  blue: ["rgb(0, 0, 102)", "rgb(0, 0, 255)", "rgb(0, 153, 255)"],
-  green: ["rgb(0, 82, 0)", "rgb(0, 255, 0)", "rgb(102, 255, 102)"],
-  purple: ["rgb(60, 0, 90)", "rgb(150, 0, 200)", "rgb(255, 105, 180)"]
-};
-
 var chosenFrame = false;
 var colorsSent = 0;
 var rain = false;

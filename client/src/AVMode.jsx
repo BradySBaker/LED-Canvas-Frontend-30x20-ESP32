@@ -16,11 +16,11 @@ const AVMode = ({modeRunning,  handleModeChooseColor, modeDataSending,  colorCho
   };
 
   const chooseColorPressed = () => {
-    if (colorChoices.length < 2) {
+    if ((colorChoices.length < 2) || (colorChoices.length < 3 && pixelFall)) {
       handleModeChooseColor(chosenColor);
       return;
     }
-    setError("2 Colors Max!");
+    setError(colorChoices.length + " colors max!");
   };
 
 
@@ -34,11 +34,14 @@ const AVMode = ({modeRunning,  handleModeChooseColor, modeDataSending,  colorCho
         <div className={styles['settings']}>
           <button style={{'color': chosenColor}} onClick={chooseColorPressed}>Choose Color</button>
           <button style={pixelFall ? {backgroundColor: 'blue'} : {}} onClick={() => setPixelFall(!pixelFall)}>PixelFall</button>
-				  <button className={styles['start-button']} onClick={(e) => { handleModeStartStop({e: true}); setStartClicked(!startClicked) }}>{!startClicked ? "Start" : "Stop"}</button>
+				  <button className={styles['start-button']} onClick={(e) => { handleModeStartStop({e: true, pixelFall}); setStartClicked(!startClicked) }}>{!startClicked ? "Start" : "Stop"}</button>
         </div>
 				<div className={styles['chosen-colors']}>
           <h2>Chosen Colors</h2>
-					{colorChoices.map((curChoice) => {
+					{colorChoices.map((curChoice,  idx) => {
+            if (!pixelFall && idx > 1) {
+              return;
+            }
 						return(
 							<div style={{'backgroundColor': curChoice, 'width': '100px', 'height': '100px'}}></div>
 						)

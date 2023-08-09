@@ -4,6 +4,8 @@ import styles from './cssModules/createMode.module.css';
 
 import { HexColorPicker } from "react-colorful";
 import MatrixButtons from "./MatrixButtons.jsx";
+import Slider from './Slider.jsx';
+
 
 const colorOptions = ['#FF0000', '#A020F0', '#FFC0CB', '#0000FF', '#FFFF00', '#00FF00', '#FFA500', '#FFFFFF'];
 
@@ -15,6 +17,13 @@ const CreateMode = ({callSave, animPlaying, turnOff, pixelSending, mouseDown, se
   const [currentAnimFrame, setCurrentAnimFrame] = useState(false);
   const [playClicked, setPlayClicked] = useState(false);
   const [error, setError] = useState(false);
+  const [animationSpeed, setAnimationSpeed] = useState(5);
+
+  const animationSpeedChange = (e) => {
+    const speed = e.target.value;
+    setAnimationSpeed(speed);
+  };
+
 
 
 	const handleColor = (newColor) => {
@@ -97,10 +106,15 @@ const CreateMode = ({callSave, animPlaying, turnOff, pixelSending, mouseDown, se
           </div>
           : null}
           {!drawMode && frameCount > 1 && !playClicked ?
-          <button id={styles['start-stop-button']} onClick={() => {if(!pixelSending) {handleFrameChoice(currentAnimFrame, true); setPlayClicked(true)}}}>
+          <>
+            <button id={styles['start-stop-button']} onClick={() => {if(!pixelSending) {handleFrameChoice(currentAnimFrame, true, animationSpeed); setPlayClicked(true)}}}>
             Play
             <img src='./icons/animation-icon.png' id={styles['start-stop-icon']} />
-            </button>
+          </button>
+          <div id={styles['slider-container']}>
+            {!playClicked ? <Slider max={5} min={1} handleChange={animationSpeedChange} defaultValue={5}/> : null}
+          </div>
+          </>
           : null }
           {playClicked ?
           <button id={styles['start-stop-button']}  onClick={(e) => {if(!pixelSending) {turnOff(e); setPlayClicked(false)}}}>
