@@ -92,7 +92,7 @@ const App = function() {
 		}
 	}
 
-	const handleFrameChoice = (frameName, animation) => {
+	const handleFrameChoice = (frameName, animation, speed) => {
 		if (modeRunning && !framePlayed) {
 			setModeDataSending(true);
 			sendData(`F${frameName}`);
@@ -105,7 +105,7 @@ const App = function() {
 		}
 		if (animation) {
 			setAnimPlaying(true);
-			sendData(`I${frameName}`);
+			sendData('I' + speed + frameName);
 			return;
 		}
 		sendData(`F${frameName}`);

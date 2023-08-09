@@ -8,6 +8,7 @@
   background-color: rgba(255, 255, 255, 0.664);
   left: 50%;
   transform: translateX(-50%);
+  margin-bottom: 20px;
 }
 
 .title {
@@ -108,4 +109,10 @@ h2.title {
   color: white;
   font-size: 5vw;
   margin-top: 20px;
+}
+
+#slider-container {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 10px);
 }

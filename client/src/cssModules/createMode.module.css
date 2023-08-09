@@ -224,3 +224,9 @@
   border-radius: 5px;
   padding: 5px 5px;
 }
+
+#slider-container {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 15px)
+}
