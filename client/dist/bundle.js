@@ -45,10 +45,16 @@ var AVMode = function AVMode(_ref) {
     setChosenColor = _useState4[1];
   var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState6 = _slicedToArray(_useState5, 2),
-    error = _useState6[0],
-    setError = _useState6[1];
+    pixelFall = _useState6[0],
+    setPixelFall = _useState6[1];
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState8 = _slicedToArray(_useState7, 2),
+    error = _useState8[0],
+    setError = _useState8[1];
   var handleReset = function handleReset() {
-    handleModeStartStop(false, false, false, false, false, true);
+    handleModeStartStop({
+      reset: true
+    });
     setError(false);
   };
   var chooseColorPressed = function chooseColorPressed() {
@@ -73,7 +79,7 @@ var AVMode = function AVMode(_ref) {
             maxHeight: '70vh',
             maxWidth: '700px'
           },
-          color: color,
+          color: chosenColor,
           onChange: function onChange(newColor) {
             return setChosenColor(newColor);
           }
@@ -87,9 +93,19 @@ var AVMode = function AVMode(_ref) {
           onClick: chooseColorPressed,
           children: "Choose Color"
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+          style: pixelFall ? {
+            backgroundColor: 'blue'
+          } : {},
+          onClick: function onClick() {
+            return setPixelFall(!pixelFall);
+          },
+          children: "PixelFall"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
           className: _cssModules_miscModes_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["start-button"],
           onClick: function onClick(e) {
-            handleModeStartStop(e, false);
+            handleModeStartStop({
+              e: true
+            });
             setStartClicked(!startClicked);
           },
           children: !startClicked ? "Start" : "Stop"
@@ -968,12 +984,18 @@ var RainMode = function RainMode(_ref) {
     }
   };
   var handleReset = function handleReset() {
-    handleModeStartStop(false, false, false, false, false, true);
+    handleModeStartStop({
+      reset: true
+    });
     setError(false);
     colorsSent = 0;
   };
   var startStopClicked = function startStopClicked(e, chosenFrame) {
-    var error = handleModeStartStop(e, true, chosenFrame);
+    var error = handleModeStartStop({
+      e: true,
+      rain: true,
+      chosenFrame: chosenFrame
+    });
     if (error) {
       setError(error);
       return;
@@ -1002,7 +1024,7 @@ var RainMode = function RainMode(_ref) {
             maxHeight: '70vh',
             maxWidth: '700px'
           },
-          color: color,
+          color: chosenColor,
           onChange: function onChange(color) {
             return setChosenColor(color);
           }
@@ -21891,7 +21913,7 @@ var App = function App() {
   }, []); //On start
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     if (isConnected === true) {
-      handleModeStartStop();
+      handleModeStartStop({});
     }
   }, [isConnected]); //On connect
 
@@ -21941,7 +21963,13 @@ var App = function App() {
   };
 
   //Rain/Audio Visaulizer handler for off and on
-  var handleModeStartStop = function handleModeStartStop(e, rain, chosenFrame, startMode, rainAmount, reset) {
+  var handleModeStartStop = function handleModeStartStop(_ref) {
+    var e = _ref.e,
+      rain = _ref.rain,
+      chosenFrame = _ref.chosenFrame,
+      startMode = _ref.startMode,
+      rainAmount = _ref.rainAmount,
+      reset = _ref.reset;
     if (modeRunning && !startMode || reset) {
       setColorChoices([]);
       setModeDataSending(true);
@@ -21972,13 +22000,24 @@ var App = function App() {
         }
         setModeDataSending(true);
         setTimeout(function () {
-          handleModeStartStop(true, true, chosenFrame, true, rainAmount);
+          handleModeStartStop({
+            e: true,
+            rain: true,
+            chosenFrame: chosenFrame,
+            startMode: true,
+            rainAmount: rainAmount
+          });
         }, 400);
       } else if (!modeRunning) {
         //Audio visualizer
         (0,_helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData)("HAV");
         setTimeout(function () {
-          handleModeStartStop(true, false, chosenFrame, true, rainAmount);
+          handleModeStartStop({
+            e: true,
+            chosenFrame: chosenFrame,
+            startMode: true,
+            rainAmount: rainAmount
+          });
         }, 400);
       }
     } else {

@@ -7,10 +7,11 @@ import styles from './cssModules/miscModes.module.css';
 const AVMode = ({modeRunning,  handleModeChooseColor, modeDataSending,  colorChoices, handleModeStartStop}) => {
   const [startClicked, setStartClicked] = useState(false);
   const [chosenColor, setChosenColor] = useState('#FFFFFF');
+  const [pixelFall, setPixelFall] = useState(false);
   const [error, setError] = useState(false);
 
   const handleReset = () => {
-    handleModeStartStop(false, false, false, false, false, true);
+    handleModeStartStop({reset: true});
     setError(false);
   };
 
@@ -22,16 +23,18 @@ const AVMode = ({modeRunning,  handleModeChooseColor, modeDataSending,  colorCho
     setError("2 Colors Max!");
   };
 
+
   return (
 		<div id='AVMode'>
 			{!modeDataSending ? /* Fix me */
 			<>
 				<div className={styles['color-picker-container']}>
-					<HexColorPicker style={{height: '50vw', width: '70vw', maxHeight: '70vh', maxWidth: '700px'}} color={color} onChange={(newColor) => setChosenColor(newColor)} />
+					<HexColorPicker style={{height: '50vw', width: '70vw', maxHeight: '70vh', maxWidth: '700px'}} color={chosenColor} onChange={(newColor) => setChosenColor(newColor)} />
 				</div>
         <div className={styles['settings']}>
           <button style={{'color': chosenColor}} onClick={chooseColorPressed}>Choose Color</button>
-				  <button className={styles['start-button']} onClick={(e) => { handleModeStartStop(e, false); setStartClicked(!startClicked) }}>{!startClicked ? "Start" : "Stop"}</button>
+          <button style={pixelFall ? {backgroundColor: 'blue'} : {}} onClick={() => setPixelFall(!pixelFall)}>PixelFall</button>
+				  <button className={styles['start-button']} onClick={(e) => { handleModeStartStop({e: true}); setStartClicked(!startClicked) }}>{!startClicked ? "Start" : "Stop"}</button>
         </div>
 				<div className={styles['chosen-colors']}>
           <h2>Chosen Colors</h2>

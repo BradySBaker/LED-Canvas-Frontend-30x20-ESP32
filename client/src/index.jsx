@@ -62,7 +62,7 @@ const App = function() {
   }, []);
 
 	useEffect(() => handleSendRequests(setPixelSending, pixelSending), []); //On start
-	useEffect(() => {if (isConnected === true) {handleModeStartStop()}}, [isConnected]) //On connect
+	useEffect(() => {if (isConnected === true) {handleModeStartStop({})}}, [isConnected]) //On connect
 
 	function turnOn() {
 		setTimeout(() => {sendData("names");}, 100);
@@ -109,7 +109,7 @@ const App = function() {
 	};
 
 	//Rain/Audio Visaulizer handler for off and on
-	const handleModeStartStop = (e, rain, chosenFrame, startMode, rainAmount, reset) => {
+	const handleModeStartStop = ({e, rain, chosenFrame, startMode, rainAmount, reset}) => {
 		if ((modeRunning && !startMode) || reset) {
       setColorChoices([]);
       setModeDataSending(true);
@@ -138,10 +138,10 @@ const App = function() {
           sendData("R" + rainAmount);
         }
         setModeDataSending(true);
-				setTimeout(() => {handleModeStartStop(true, true, chosenFrame, true, rainAmount)}, 400);
+				setTimeout(() => {handleModeStartStop({e: true, rain: true, chosenFrame, startMode: true, rainAmount})}, 400);
 			} else if(!modeRunning) { //Audio visualizer
         sendData("HAV");
-				setTimeout(() => {handleModeStartStop(true, false, chosenFrame, true, rainAmount)}, 400);
+				setTimeout(() => {handleModeStartStop({e: true, chosenFrame, startMode: true, rainAmount})}, 400);
       }
 		} else {
       setModeDataSending(false);
@@ -149,7 +149,7 @@ const App = function() {
     }
     return false;
 	};
-  
+
   const handleModeChooseColor = (chosenColor, palette) => {
     if (palette) {
       setColorChoices(chosenColor);
