@@ -775,8 +775,8 @@ var MatrixButtons = function MatrixButtons(_ref) {
     var x = 0;
     var divMatrix = [];
     var curButtons = [];
-    while (y < 16) {
-      if (x === 16) {
+    while (y < 30) {
+      if (x === 10) {
         x = 0;
         y++;
         divMatrix.push( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
@@ -784,9 +784,6 @@ var MatrixButtons = function MatrixButtons(_ref) {
           children: curButtons
         }, y));
         curButtons = [];
-        if (y === 16) {
-          break;
-        }
       }
       curButtons.push( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
         id: "".concat(x, ",").concat(y),
@@ -1394,8 +1391,7 @@ var handleSendRequests = function handleSendRequests(setPixelSending, pixelSendi
     return handleSendRequests(setPixelSending, pixelSending);
   }, 20);
 };
-function gotValue(value, setAnims, setPrevFrameNames, setModeDataSending, turnOn) {
-  console.log(value);
+function gotValue(value, setAnims, setPrevFrameNames, setModeDataSending, turnOn, blueTooth) {
   if (waitingForFrames) {
     names += value;
     if (value.includes('~')) {
@@ -1502,6 +1498,11 @@ function onDisconnected() {
   ledConnected = false;
   setIsConnected(false);
 }
+window.addEventListener('beforeunload', function (event) {
+  if (isConnected) {
+    blueTooth.disconnect();
+  }
+});
 
 // A function that will be called once got characteristics
 function gotCharacteristics(error, characteristics, paramFuncs) {
@@ -1513,7 +1514,7 @@ function gotCharacteristics(error, characteristics, paramFuncs) {
   }
   window.blueToothCharacteristic = characteristics[0];
   blueTooth.startNotifications(window.blueToothCharacteristic, function (value) {
-    return (0,_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.gotValue)(value, paramFuncs.setAnims, paramFuncs.setPrevFrameNames, paramFuncs.setModeDataSending, paramFuncs.turnOn);
+    return (0,_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.gotValue)(value, paramFuncs.setAnims, paramFuncs.setPrevFrameNames, paramFuncs.setModeDataSending, paramFuncs.turnOn, blueTooth);
   }, 'string')["catch"](function (err) {
     return console.log('error = ', err);
   });

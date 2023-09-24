@@ -17,6 +17,12 @@ function onDisconnected() {
 	setIsConnected(false);
 }
 
+window.addEventListener('beforeunload', function (event) {
+  if (isConnected) {
+    blueTooth.disconnect();
+  }
+});
+
 // A function that will be called once got characteristics
 function gotCharacteristics(error, characteristics, paramFuncs) {
 paramFuncs.setModeDataSending(false);
@@ -28,7 +34,7 @@ paramFuncs.setModeDataSending(false);
 
   window.blueToothCharacteristic = characteristics[0];
 
-  blueTooth.startNotifications(window.blueToothCharacteristic, (value) => gotValue(value, paramFuncs.setAnims, paramFuncs.setPrevFrameNames, paramFuncs.setModeDataSending, paramFuncs.turnOn), 'string').catch((err) => console.log('error = ', err))
+  blueTooth.startNotifications(window.blueToothCharacteristic, (value) => gotValue(value, paramFuncs.setAnims, paramFuncs.setPrevFrameNames, paramFuncs.setModeDataSending, paramFuncs.turnOn, blueTooth), 'string').catch((err) => console.log('error = ', err))
   blueTooth.onDisconnected(() => onDisconnected(paramFuncs.setIsConnected));
   ledConnected = blueTooth.isConnected();
   paramFuncs.setIsConnected(blueTooth.isConnected());

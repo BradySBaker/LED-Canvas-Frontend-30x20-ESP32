@@ -54,8 +54,7 @@ export const handleSendRequests = (setPixelSending, pixelSending) => { //Occurs 
 };
 
 
-export function gotValue(value, setAnims, setPrevFrameNames, setModeDataSending, turnOn) {
-  console.log(value);
+export function gotValue(value, setAnims, setPrevFrameNames, setModeDataSending, turnOn, blueTooth) {
 	if (waitingForFrames) {
 		names += value;
 		if (value.includes('~')) {
