@@ -1494,7 +1494,7 @@ function connectToBle(setIsConnected, turnOn, setAnims, setPrevFrameNames, setMo
     setModeDataSending: setModeDataSending,
     setConnectError: setConnectError
   };
-  blueTooth.connect('0000ffe0-0000-1000-8000-00805f9b34fb', function (error, characteristics) {
+  blueTooth.connect('12345678-1234-5678-1234-56789abcdef0', function (error, characteristics) {
     return gotCharacteristics(error, characteristics, paramFuncs);
   });
 }
@@ -1514,7 +1514,9 @@ function gotCharacteristics(error, characteristics, paramFuncs) {
   window.blueToothCharacteristic = characteristics[0];
   blueTooth.startNotifications(window.blueToothCharacteristic, function (value) {
     return (0,_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.gotValue)(value, paramFuncs.setAnims, paramFuncs.setPrevFrameNames, paramFuncs.setModeDataSending, paramFuncs.turnOn);
-  }, 'string');
+  }, 'string')["catch"](function (err) {
+    return console.log('error = ', err);
+  });
   blueTooth.onDisconnected(function () {
     return onDisconnected(paramFuncs.setIsConnected);
   });
