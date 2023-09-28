@@ -771,29 +771,29 @@ var MatrixButtons = function MatrixButtons(_ref) {
     }
   }
   var createButtons = function createButtons() {
-    var y = 0;
     var x = 0;
+    var y = 0;
     var divMatrix = [];
     var curButtons = [];
-    while (y < 30) {
-      if (x === 10) {
-        x = 0;
-        y++;
+    while (x < window.WIDTH) {
+      if (y === window.HEIGHT) {
+        y = 0;
+        x++;
         divMatrix.push( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-          className: "".concat(y, " ").concat(_cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["button-column"]),
+          className: "".concat(x, " ").concat(_cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["button-column"]),
           children: curButtons
-        }, y));
+        }, x));
         curButtons = [];
       }
       curButtons.push( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
-        id: "".concat(x, ",").concat(y),
+        id: "".concat(y, ",").concat(x),
         className: _cssModules_createMode_module_css__WEBPACK_IMPORTED_MODULE_1__["default"]["matrix-button"],
         onMouseDown: function onMouseDown(e) {
           handleDraw(e, true);
         },
         onMouseEnter: handleDraw
-      }, x));
-      x++;
+      }, y));
+      y++;
     }
     setButtons(divMatrix);
   };
@@ -801,9 +801,9 @@ var MatrixButtons = function MatrixButtons(_ref) {
   function handleTouchMove(e) {
     e.preventDefault();
     var touch = e.touches[0];
-    var x = touch.clientX;
-    var y = touch.clientY;
-    var button = document.elementFromPoint(x, y);
+    var y = touch.clientX;
+    var x = touch.clientY;
+    var button = document.elementFromPoint(y, x);
     if (!button || !button.id) {
       return;
     }
@@ -21941,6 +21941,8 @@ window.framePlayed = false;
 window.turnedOn = false;
 window.color = "#FFFFFF";
 window.ledBrightness = 100;
+window.WIDTH = 30;
+window.HEIGHT = 20;
 window.colorPalettes = {
   red: ["rgb(82, 0, 0)", "rgb(255, 0, 0)", "rgb(255, 150, 150)"],
   blue: ["rgb(0, 0, 102)", "rgb(0, 0, 255)", "rgb(0, 153, 255)"],
@@ -22047,9 +22049,9 @@ var App = function App() {
     if (animation) {
       return;
     }
-    for (var x = 0; x < 16; x++) {
-      for (var y = 0; y < 16; y++) {
-        document.getElementById("".concat(x, ",").concat(y)).style.backgroundColor = 'black';
+    for (var x = 0; x < WIDTH; x++) {
+      for (var y = 0; y < HEIGHT; y++) {
+        document.getElementById("".concat(y, ",").concat(x)).style.backgroundColor = 'black';
       }
     }
   }

@@ -21,19 +21,19 @@ const MatrixButtons = function({mouseDown}) {
 	}
 
 	const createButtons = () => {
-		var y = 0;
 		var x = 0;
+		var y = 0;
 		var divMatrix = [];
 		var curButtons = [];
-		while (y < 30) {
-			if (x === 10) {
-				x = 0;
-				y++;
-				divMatrix.push(<div key={y} className={`${y} ${styles['button-column']}`} >{curButtons}</div>)
+		while (x < window.WIDTH) {
+			if (y === window.HEIGHT) {
+				y = 0;
+				x++;
+				divMatrix.push(<div key={x} className={`${x} ${styles['button-column']}`} >{curButtons}</div>)
 				curButtons = [];
 			}
-			curButtons.push(<button id={`${x},${y}`} className={styles['matrix-button']} key={x} onMouseDown={(e) => {handleDraw(e, true)}} onMouseEnter={handleDraw}></button>);
-			x++;
+			curButtons.push(<button id={`${y},${x}`} className={styles['matrix-button']} key={y} onMouseDown={(e) => {handleDraw(e, true)}} onMouseEnter={handleDraw}></button>);
+			y++;
 		}
 		setButtons(divMatrix);
 	};
@@ -43,9 +43,9 @@ const MatrixButtons = function({mouseDown}) {
 	function handleTouchMove(e) {
 		e.preventDefault();
 		const touch = e.touches[0];
-		const x = touch.clientX;
-		const y = touch.clientY;
-		const button = document.elementFromPoint(x, y);
+		const y = touch.clientX;
+		const x = touch.clientY;
+		const button = document.elementFromPoint(y, x);
     if (!button || !button.id) {
       return;
     }

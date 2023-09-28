@@ -27,6 +27,9 @@ window.color = "#FFFFFF";
 
 window.ledBrightness = 100;
 
+window.WIDTH = 30;
+window.HEIGHT = 20;
+
 window.colorPalettes = {
   red: ["rgb(82, 0, 0)", "rgb(255, 0, 0)", "rgb(255, 150, 150)"],
   blue: ["rgb(0, 0, 102)", "rgb(0, 0, 255)", "rgb(0, 153, 255)"],
@@ -85,9 +88,9 @@ const App = function() {
     if (animation) {
       return;
     }
-		for (var x = 0; x < 16; x++) {
-			for (var y = 0; y < 16; y++) {
-				document.getElementById(`${x},${y}`).style.backgroundColor = 'black';
+		for (var x = 0; x < WIDTH; x++) {
+			for (var y = 0; y < HEIGHT; y++) {
+				document.getElementById(`${y},${x}`).style.backgroundColor = 'black';
 			}
 		}
 	}
