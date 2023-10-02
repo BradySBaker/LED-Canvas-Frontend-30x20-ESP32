@@ -1392,6 +1392,7 @@ var handleSendRequests = function handleSendRequests(setPixelSending, pixelSendi
   }, 20);
 };
 function gotValue(value, setAnims, setPrevFrameNames, setModeDataSending, turnOn, blueTooth) {
+  console.log(value);
   if (waitingForFrames) {
     names += value;
     if (value.includes('~')) {
@@ -1446,7 +1447,7 @@ function gotValue(value, setAnims, setPrevFrameNames, setModeDataSending, turnOn
 function sendData(command) {
   justSent = command;
   sending = true;
-  var inputValue = command + '\r';
+  var inputValue = command;
   if (!("TextEncoder" in window)) {
     console.log("Sorry, this browser does not support TextEncoder...");
   }

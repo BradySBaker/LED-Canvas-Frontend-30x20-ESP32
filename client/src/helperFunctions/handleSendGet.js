@@ -55,6 +55,7 @@ export const handleSendRequests = (setPixelSending, pixelSending) => { //Occurs 
 
 
 export function gotValue(value, setAnims, setPrevFrameNames, setModeDataSending, turnOn, blueTooth) {
+  console.log(value);
 	if (waitingForFrames) {
 		names += value;
 		if (value.includes('~')) {
@@ -106,7 +107,7 @@ export function gotValue(value, setAnims, setPrevFrameNames, setModeDataSending,
 export function sendData(command) {
   justSent = command;
 	sending = true;
-  const inputValue = command + '\r';
+  const inputValue = command;
   if (!("TextEncoder" in window)) {
     console.log("Sorry, this browser does not support TextEncoder...");
   }
