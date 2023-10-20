@@ -40,3 +40,4 @@ paramFuncs.setModeDataSending(false);
   paramFuncs.setIsConnected(blueTooth.isConnected());
   // Add a event handler when the device is disconnected
 }
+//
