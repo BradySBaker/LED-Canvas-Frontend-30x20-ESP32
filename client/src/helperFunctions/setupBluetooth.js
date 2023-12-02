@@ -22,7 +22,7 @@ window.addEventListener('beforeunload', function (event) {
     blueTooth.disconnect();
   }
 });
-
+//
 // A function that will be called once got characteristics
 function gotCharacteristics(error, characteristics, paramFuncs) {
 paramFuncs.setModeDataSending(false);
