@@ -7,7 +7,7 @@ export default function connectToBle(setIsConnected, turnOn, setAnims, setPrevFr
   setConnectError(false);
   setModeDataSending(true);
 	var paramFuncs = {setIsConnected, turnOn, setAnims, setPrevFrameNames, setModeDataSending, setConnectError};
-	blueTooth.connect('12345678-1234-5678-1234-56789abcdef0', (error, characteristics) => gotCharacteristics(error, characteristics, paramFuncs));
+	blueTooth.connect('0000ffe0-0000-1000-8000-00805f9b34fb', (error, characteristics) => gotCharacteristics(error, characteristics, paramFuncs));
 }
 
 

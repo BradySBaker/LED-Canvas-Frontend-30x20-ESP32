@@ -1491,7 +1491,7 @@ function connectToBle(setIsConnected, turnOn, setAnims, setPrevFrameNames, setMo
     setModeDataSending: setModeDataSending,
     setConnectError: setConnectError
   };
-  blueTooth.connect('12345678-1234-5678-1234-56789abcdef0', function (error, characteristics) {
+  blueTooth.connect('0000ffe0-0000-1000-8000-00805f9b34fb', function (error, characteristics) {
     return gotCharacteristics(error, characteristics, paramFuncs);
   });
 }
@@ -1526,6 +1526,7 @@ function gotCharacteristics(error, characteristics, paramFuncs) {
   paramFuncs.setIsConnected(blueTooth.isConnected());
   // Add a event handler when the device is disconnected
 }
+//
 
 /***/ }),
 
