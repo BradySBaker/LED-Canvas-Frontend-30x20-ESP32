@@ -25,6 +25,8 @@ window.addEventListener('beforeunload', function (event) {
 
 // A function that will be called once got characteristics
 function gotCharacteristics(error, characteristics, paramFuncs) {
+  console.log('Discovered characteristic: ',characteristics);
+
 paramFuncs.setModeDataSending(false);
   if (error) {
     console.log('error: ', error);

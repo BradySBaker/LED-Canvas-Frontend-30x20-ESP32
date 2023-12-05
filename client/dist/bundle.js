@@ -1348,6 +1348,7 @@ var handleSendRequests = function handleSendRequests(setPixelSending, pixelSendi
   //Occurs every 20ms
   sendingTimer++;
   if (sendingTimer >= 550) {
+    console.log("occured");
     sending = false;
   }
   if (Object.keys(sendRequests).length === 0) {
@@ -1392,8 +1393,13 @@ var handleSendRequests = function handleSendRequests(setPixelSending, pixelSendi
   }, 20);
 };
 function gotValue(value, setAnims, setPrevFrameNames, setModeDataSending, turnOn, blueTooth) {
-  console.log(value);
+  console.log('recieved', value);
   if (waitingForFrames) {
+    if (value.includes('�')) {
+      names = '';
+      sendData('names');
+      return;
+    }
     names += value;
     if (value.includes('~')) {
       waitingForFrames = false;
@@ -1430,7 +1436,7 @@ function gotValue(value, setAnims, setPrevFrameNames, setModeDataSending, turnOn
     } else {
       setModeDataSending(false);
     }
-  } else if (value === "RAIN" || value === "HAV") {
+  } else if (value.includes("RAIN") || value === "HAV") {
     setModeDataSending(false);
     modeRunning = true;
   }
@@ -1447,7 +1453,7 @@ function gotValue(value, setAnims, setPrevFrameNames, setModeDataSending, turnOn
 function sendData(command) {
   justSent = command;
   sending = true;
-  var inputValue = command;
+  var inputValue = command + '\r';
   if (!("TextEncoder" in window)) {
     console.log("Sorry, this browser does not support TextEncoder...");
   }
@@ -1507,6 +1513,7 @@ window.addEventListener('beforeunload', function (event) {
 
 // A function that will be called once got characteristics
 function gotCharacteristics(error, characteristics, paramFuncs) {
+  console.log('Discovered characteristic: ', characteristics);
   paramFuncs.setModeDataSending(false);
   if (error) {
     console.log('error: ', error);

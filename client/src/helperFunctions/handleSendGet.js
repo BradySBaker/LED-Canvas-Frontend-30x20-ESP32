@@ -11,6 +11,7 @@ var justSent;
 export const handleSendRequests = (setPixelSending, pixelSending) => { //Occurs every 20ms
 	sendingTimer++;
 	if (sendingTimer >= 550) {
+    console.log("occured");
 		sending = false;
 	}
 	if (Object.keys(sendRequests).length === 0) {
@@ -55,8 +56,13 @@ export const handleSendRequests = (setPixelSending, pixelSending) => { //Occurs 
 
 
 export function gotValue(value, setAnims, setPrevFrameNames, setModeDataSending, turnOn, blueTooth) {
-  console.log(value);
+  console.log('recieved', value);
 	if (waitingForFrames) {
+    if (value.includes('�')) {
+      names = '';
+      sendData('names');
+      return;
+    }
 		names += value;
 		if (value.includes('~')) {
 			waitingForFrames = false;
@@ -90,7 +96,7 @@ export function gotValue(value, setAnims, setPrevFrameNames, setModeDataSending,
 		} else {
 			setModeDataSending(false);
 		}
-	} else if (value === "RAIN" || value === "HAV") {
+	} else if (value.includes("RAIN") || value === "HAV") {
 		setModeDataSending(false);
 		modeRunning = true;
 	}
@@ -107,7 +113,7 @@ export function gotValue(value, setAnims, setPrevFrameNames, setModeDataSending,
 export function sendData(command) {
   justSent = command;
 	sending = true;
-  const inputValue = command;
+  const inputValue = command + '\r';
   if (!("TextEncoder" in window)) {
     console.log("Sorry, this browser does not support TextEncoder...");
   }
