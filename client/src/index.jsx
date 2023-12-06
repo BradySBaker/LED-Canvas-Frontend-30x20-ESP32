@@ -11,6 +11,7 @@ import RainMode from "./RainMode.jsx";
 import ModeSelector from "./ModeSelector.jsx";
 import CreateMode from "./CreateMode.jsx";
 import AVMode from "./AVMode.jsx";
+import ImportMode from "./ImportMode.jsx";
 
 
 import HomePage from "./HomePage.jsx";
@@ -49,6 +50,7 @@ const App = function() {
   const [showGallery, setShowGallery] = useState(false);
 	const [showAVMode, setShowAVMode] = useState(false);
 	const [showRainMode, setShowRainMode] = useState(false);
+  const [showImportMode, setShowImportMode] = useState(false);
 
   const [allowBrightness, setAllowBrightness] = useState(true);
 
@@ -194,9 +196,10 @@ const App = function() {
 		<div id='colorApp' onMouseDown={() => setMouseDown(true)} >
       {showGallery || showCreateMode || showRainMode || showAVMode ? <TopBar allowBrightness={allowBrightness} sendData={sendData} selectedColor={selectedColor} disableModes={disableModes}/> : null}
       {!isConnected ? <HomePage handleConnect={handleConnect} connectError={connectError}/> :  null}
-      {isConnected && !showCreateMode && !showGallery && !showRainMode && !showAVMode ? <ModeSelector setShowAVMode={setShowAVMode} setShowGallery={setShowGallery} setShowCreateMode={setShowCreateMode} setShowRainMode={setShowRainMode}/> : null}
+      {isConnected && !showCreateMode && !showGallery && !showRainMode && !showAVMode && !showImportMode ? <ModeSelector setShowAVMode={setShowAVMode} setShowGallery={setShowGallery} setShowCreateMode={setShowCreateMode} setShowRainMode={setShowRainMode} setShowImportMode={setShowImportMode}/> : null}
       {showGallery ?  <Gallery animPlaying={animPlaying} turnOff={turnOff} handleSave={callSave} modeDataSending={modeDataSending} anims={anims} prevFrameNames={prevFrameNames} frames={frames} handleFrameChoice={handleFrameChoice} handleDelete={callDelete}/> : null}
-      {showCreateMode ? <CreateMode turnOff={turnOff} callSave={callSave} animPlaying={animPlaying} pixelSending={pixelSending} mouseDown={mouseDown} handleFrameChoice={handleFrameChoice} sendRequests={sendRequests} selectedColor={selectedColor} setSelectedColor={setSelectedColor}/> : null}
+      {showCreateMode ? <CreateMode turnOff={turnOff} callSave={callSave} animPlaying={animPlaying} pixelSending={pixelSending} mouseDown={mouseDown} handleFrameChoice={handleFrameChoice} selectedColor={selectedColor} setSelectedColor={setSelectedColor}/> : null}
+      {showImportMode ? <ImportMode /> : null}
       {(pixelSending || modeDataSending) ? <img id='loading' src='./icons/loading.gif'></img> : null}
 
 			{showRainMode ? <RainMode prevFrameNames={prevFrameNames} frames={frames} handleFrameChoice={handleFrameChoice} modeRunning={modeRunning} handleModeChooseColor={handleModeChooseColor} colorChoices={colorChoices} modeDataSending={modeDataSending} handleModeStartStop={handleModeStartStop}/> : null}

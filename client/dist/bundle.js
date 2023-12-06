@@ -232,7 +232,7 @@ var CreateMode = function CreateMode(_ref) {
     }
     setSelectedColor(newColor); //For visual elements
     window.color = newColor; //For color buttons
-    sendRequests['color'] = "C".concat(newColor.slice(1));
+    window.sendRequests['color'] = "C".concat(newColor.slice(1));
   };
   var colorButtons = colorOptions.map(function (curColor, idx) {
     return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
@@ -432,7 +432,6 @@ var CreateMode = function CreateMode(_ref) {
         })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_MatrixButtons_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
         mouseDown: mouseDown,
-        sendRequests: sendRequests,
         selectedColor: selectedColor
       })]
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("a", {
@@ -727,6 +726,139 @@ var HomePage = function HomePage(_ref) {
 
 /***/ }),
 
+/***/ "./client/src/ImportMode.jsx":
+/*!***********************************!*\
+  !*** ./client/src/ImportMode.jsx ***!
+  \***********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var color_thief_react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! color-thief-react */ "./node_modules/color-thief-react/lib/index.js");
+/* harmony import */ var omggif__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! omggif */ "./node_modules/omggif/omggif.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return exports; }; var exports = {}, Op = Object.prototype, hasOwn = Op.hasOwnProperty, defineProperty = Object.defineProperty || function (obj, key, desc) { obj[key] = desc.value; }, $Symbol = "function" == typeof Symbol ? Symbol : {}, iteratorSymbol = $Symbol.iterator || "@@iterator", asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator", toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag"; function define(obj, key, value) { return Object.defineProperty(obj, key, { value: value, enumerable: !0, configurable: !0, writable: !0 }), obj[key]; } try { define({}, ""); } catch (err) { define = function define(obj, key, value) { return obj[key] = value; }; } function wrap(innerFn, outerFn, self, tryLocsList) { var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator, generator = Object.create(protoGenerator.prototype), context = new Context(tryLocsList || []); return defineProperty(generator, "_invoke", { value: makeInvokeMethod(innerFn, self, context) }), generator; } function tryCatch(fn, obj, arg) { try { return { type: "normal", arg: fn.call(obj, arg) }; } catch (err) { return { type: "throw", arg: err }; } } exports.wrap = wrap; var ContinueSentinel = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var IteratorPrototype = {}; define(IteratorPrototype, iteratorSymbol, function () { return this; }); var getProto = Object.getPrototypeOf, NativeIteratorPrototype = getProto && getProto(getProto(values([]))); NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype); var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype); function defineIteratorMethods(prototype) { ["next", "throw", "return"].forEach(function (method) { define(prototype, method, function (arg) { return this._invoke(method, arg); }); }); } function AsyncIterator(generator, PromiseImpl) { function invoke(method, arg, resolve, reject) { var record = tryCatch(generator[method], generator, arg); if ("throw" !== record.type) { var result = record.arg, value = result.value; return value && "object" == _typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) { invoke("next", value, resolve, reject); }, function (err) { invoke("throw", err, resolve, reject); }) : PromiseImpl.resolve(value).then(function (unwrapped) { result.value = unwrapped, resolve(result); }, function (error) { return invoke("throw", error, resolve, reject); }); } reject(record.arg); } var previousPromise; defineProperty(this, "_invoke", { value: function value(method, arg) { function callInvokeWithMethodAndArg() { return new PromiseImpl(function (resolve, reject) { invoke(method, arg, resolve, reject); }); } return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); } }); } function makeInvokeMethod(innerFn, self, context) { var state = "suspendedStart"; return function (method, arg) { if ("executing" === state) throw new Error("Generator is already running"); if ("completed" === state) { if ("throw" === method) throw arg; return doneResult(); } for (context.method = method, context.arg = arg;;) { var delegate = context.delegate; if (delegate) { var delegateResult = maybeInvokeDelegate(delegate, context); if (delegateResult) { if (delegateResult === ContinueSentinel) continue; return delegateResult; } } if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) { if ("suspendedStart" === state) throw state = "completed", context.arg; context.dispatchException(context.arg); } else "return" === context.method && context.abrupt("return", context.arg); state = "executing"; var record = tryCatch(innerFn, self, context); if ("normal" === record.type) { if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue; return { value: record.arg, done: context.done }; } "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg); } }; } function maybeInvokeDelegate(delegate, context) { var methodName = context.method, method = delegate.iterator[methodName]; if (undefined === method) return context.delegate = null, "throw" === methodName && delegate.iterator["return"] && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method) || "return" !== methodName && (context.method = "throw", context.arg = new TypeError("The iterator does not provide a '" + methodName + "' method")), ContinueSentinel; var record = tryCatch(method, delegate.iterator, context.arg); if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel; var info = record.arg; return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel); } function pushTryEntry(locs) { var entry = { tryLoc: locs[0] }; 1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry); } function resetTryEntry(entry) { var record = entry.completion || {}; record.type = "normal", delete record.arg, entry.completion = record; } function Context(tryLocsList) { this.tryEntries = [{ tryLoc: "root" }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0); } function values(iterable) { if (iterable) { var iteratorMethod = iterable[iteratorSymbol]; if (iteratorMethod) return iteratorMethod.call(iterable); if ("function" == typeof iterable.next) return iterable; if (!isNaN(iterable.length)) { var i = -1, next = function next() { for (; ++i < iterable.length;) if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next; return next.value = undefined, next.done = !0, next; }; return next.next = next; } } return { next: doneResult }; } function doneResult() { return { value: undefined, done: !0 }; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, defineProperty(Gp, "constructor", { value: GeneratorFunctionPrototype, configurable: !0 }), defineProperty(GeneratorFunctionPrototype, "constructor", { value: GeneratorFunction, configurable: !0 }), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) { var ctor = "function" == typeof genFun && genFun.constructor; return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name)); }, exports.mark = function (genFun) { return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun; }, exports.awrap = function (arg) { return { __await: arg }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function () { return this; }), exports.AsyncIterator = AsyncIterator, exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) { void 0 === PromiseImpl && (PromiseImpl = Promise); var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl); return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then(function (result) { return result.done ? result.value : iter.next(); }); }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function () { return this; }), define(Gp, "toString", function () { return "[object Generator]"; }), exports.keys = function (val) { var object = Object(val), keys = []; for (var key in object) keys.push(key); return keys.reverse(), function next() { for (; keys.length;) { var key = keys.pop(); if (key in object) return next.value = key, next.done = !1, next; } return next.done = !0, next; }; }, exports.values = values, Context.prototype = { constructor: Context, reset: function reset(skipTempReset) { if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined); }, stop: function stop() { this.done = !0; var rootRecord = this.tryEntries[0].completion; if ("throw" === rootRecord.type) throw rootRecord.arg; return this.rval; }, dispatchException: function dispatchException(exception) { if (this.done) throw exception; var context = this; function handle(loc, caught) { return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught; } for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i], record = entry.completion; if ("root" === entry.tryLoc) return handle("end"); if (entry.tryLoc <= this.prev) { var hasCatch = hasOwn.call(entry, "catchLoc"), hasFinally = hasOwn.call(entry, "finallyLoc"); if (hasCatch && hasFinally) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } else if (hasCatch) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); } else { if (!hasFinally) throw new Error("try statement without catch or finally"); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } } } }, abrupt: function abrupt(type, arg) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) { var finallyEntry = entry; break; } } finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null); var record = finallyEntry ? finallyEntry.completion : {}; return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record); }, complete: function complete(record, afterLoc) { if ("throw" === record.type) throw record.arg; return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel; }, finish: function finish(finallyLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel; } }, "catch": function _catch(tryLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc === tryLoc) { var record = entry.completion; if ("throw" === record.type) { var thrown = record.arg; resetTryEntry(entry); } return thrown; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(iterable, resultName, nextLoc) { return this.delegate = { iterator: values(iterable), resultName: resultName, nextLoc: nextLoc }, "next" === this.method && (this.arg = undefined), ContinueSentinel; } }, exports; }
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+
+
+
+
+var ImportMode = function ImportMode() {
+  var handleFileChange = function handleFileChange(e) {
+    var file = e.target.files[0];
+    if (file) {
+      var reader = new FileReader();
+      reader.onload = function () {
+        extractColors(reader.result, file.type === 'image/gif');
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+  var extractFrameData = function extractFrameData(img) {
+    var canvas = document.createElement('canvas');
+    canvas.width = img.width;
+    canvas.height = img.height;
+    var context = canvas.getContext('2d');
+    context.clearRect(0, 0, window.WIDTH, window.HEIGHT);
+    context.drawImage(img, 0, 0, window.WIDTH, window.HEIGHT);
+    var frameData = context.getImageData(0, 0, window.WIDTH, window.HEIGHT).data;
+    var hexColors = [];
+    for (var j = 0; j < frameData.length; j += 4) {
+      var hex = rgbToHex(frameData[j], frameData[j + 1], frameData[j + 2]);
+      hexColors.push(hex);
+    }
+    return hexColors;
+  };
+  var extractGifFrames = /*#__PURE__*/function () {
+    var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(gifUrl) {
+      var response, blob, arrayBuffer, intArray, reader, frames;
+      return _regeneratorRuntime().wrap(function _callee$(_context) {
+        while (1) switch (_context.prev = _context.next) {
+          case 0:
+            _context.prev = 0;
+            _context.next = 3;
+            return fetch(gifUrl);
+          case 3:
+            response = _context.sent;
+            _context.next = 6;
+            return response.blob();
+          case 6:
+            blob = _context.sent;
+            _context.next = 9;
+            return blob.arrayBuffer();
+          case 9:
+            arrayBuffer = _context.sent;
+            intArray = new Uint8Array(arrayBuffer);
+            reader = new omggif__WEBPACK_IMPORTED_MODULE_2__.GifReader(intArray);
+            frames = new Array(reader.numFrames()).fill(0).map(function (_, k) {
+              var image = new ImageData(reader.width, reader.height);
+              reader.decodeAndBlitFrameRGBA(k, image.data);
+
+              // Convert pixel data to an array of hexadecimal values
+              var hexArray = [];
+              for (var i = 0; i < image.data.length; i += 4) {
+                var hex = rgbToHex(image.data[i], image.data[i + 1], image.data[i + 2]);
+                hexArray.push(hex);
+              }
+              return hexArray;
+            });
+            return _context.abrupt("return", frames);
+          case 16:
+            _context.prev = 16;
+            _context.t0 = _context["catch"](0);
+            console.error('Error loading GIF frames:', _context.t0);
+            throw _context.t0;
+          case 20:
+          case "end":
+            return _context.stop();
+        }
+      }, _callee, null, [[0, 16]]);
+    }));
+    return function extractGifFrames(_x) {
+      return _ref.apply(this, arguments);
+    };
+  }();
+  var extractColors = function extractColors(imageData, isGif) {
+    window.sendRequests['importName'] = document.getElementById('imageName').value;
+    if (!isGif) {
+      var img = new Image();
+      img.src = imageData;
+      img.onload = function () {
+        window.sendRequests['import'] = extractFrameData(img);
+      };
+    } else {
+      extractGifFrames(imageData).then(function (frames) {
+        console.log(frames);
+      });
+    }
+  };
+  var rgbToHex = function rgbToHex(r, g, b) {
+    return "".concat((1 << 24 | r << 16 | g << 8 | b).toString(16).slice(1));
+  };
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+      type: "text",
+      placeholder: "Input Name",
+      id: "imageName"
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+      type: "file",
+      onChange: handleFileChange,
+      accept: "image/*"
+    })]
+  });
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ImportMode);
+
+/***/ }),
+
 /***/ "./client/src/MatrixButtons.jsx":
 /*!**************************************!*\
   !*** ./client/src/MatrixButtons.jsx ***!
@@ -856,7 +988,8 @@ var ModeSelector = function ModeSelector(_ref) {
   var setShowGallery = _ref.setShowGallery,
     setShowCreateMode = _ref.setShowCreateMode,
     setShowRainMode = _ref.setShowRainMode,
-    setShowAVMode = _ref.setShowAVMode;
+    setShowAVMode = _ref.setShowAVMode,
+    setShowImportMode = _ref.setShowImportMode;
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
     id: _cssModules_modeSelector_module_css__WEBPACK_IMPORTED_MODULE_1__["default"].widget,
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h1", {
@@ -898,6 +1031,11 @@ var ModeSelector = function ModeSelector(_ref) {
           return setShowRainMode(true);
         },
         children: "Rain Mode"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+        onClick: function onClick() {
+          return setShowImportMode(true);
+        },
+        children: "Import"
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
         onClick: function onClick() {
           return setShowAVMode(true);
@@ -1344,6 +1482,7 @@ window.waitingForFrames = false;
 var sendingTimer = 0;
 var names = "";
 var justSent;
+var importHexSent = 0;
 var handleSendRequests = function handleSendRequests(setPixelSending, pixelSending) {
   //Occurs every 20ms
   sendingTimer++;
@@ -1363,6 +1502,16 @@ var handleSendRequests = function handleSendRequests(setPixelSending, pixelSendi
     if (sendRequests["off"]) {
       sendData("OFF");
       window.sendRequests = {};
+    } else if (sendRequests['importName']) {
+      sendData('X' + sendRequests['importName']);
+      delete sendRequests['importName'];
+    } else if (sendRequests['import']) {
+      sendData('X' + sendRequests['import'][importHexSent] + ',' + sendRequests['import'][importHexSent + 1]);
+      importHexSent += 2;
+      if (importHexSent === sendRequests['import'].length) {
+        delete sendRequests['import'];
+        importHexSent = 0;
+      }
     } else {
       for (var key in sendRequests) {
         if ((key === 'color' || key === 'brightness') && positions === 0) {
@@ -1537,6 +1686,2057 @@ function gotCharacteristics(error, characteristics, paramFuncs) {
 
 /***/ }),
 
+/***/ "./node_modules/color-thief-react/lib/Color/Color.component.js":
+/*!*********************************************************************!*\
+  !*** ./node_modules/color-thief-react/lib/Color/Color.component.js ***!
+  \*********************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+var tslib_1 = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+var React = tslib_1.__importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+var useColor_1 = tslib_1.__importDefault(__webpack_require__(/*! ./useColor */ "./node_modules/color-thief-react/lib/Color/useColor.js"));
+function Color(_a) {
+  var src = _a.src,
+    format = _a.format,
+    _b = _a.crossOrigin,
+    crossOrigin = _b === void 0 ? undefined : _b,
+    _c = _a.quality,
+    quality = _c === void 0 ? 10 : _c,
+    children = _a.children;
+  var state = useColor_1.default(src, format, {
+    crossOrigin: crossOrigin,
+    quality: quality
+  });
+  return React.createElement(React.Fragment, null, children(state));
+}
+exports["default"] = Color;
+
+/***/ }),
+
+/***/ "./node_modules/color-thief-react/lib/Color/useColor.js":
+/*!**************************************************************!*\
+  !*** ./node_modules/color-thief-react/lib/Color/useColor.js ***!
+  \**************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+var tslib_1 = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+var React = tslib_1.__importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+var use_current_effect_1 = __webpack_require__(/*! use-current-effect */ "./node_modules/color-thief-react/node_modules/use-current-effect/dist/index.js");
+var utils_1 = __webpack_require__(/*! ../utils */ "./node_modules/color-thief-react/lib/utils/index.js");
+/**
+ * React Hook to use get color from img url
+ */
+function useColor(imgSrc, format, options) {
+  if (options === void 0) {
+    options = {};
+  }
+  var _a = options.crossOrigin,
+    crossOrigin = _a === void 0 ? null : _a,
+    _b = options.quality,
+    quality = _b === void 0 ? 10 : _b;
+  var _c = React.useReducer(utils_1.reducer, utils_1.initialReducerState),
+    state = _c[0],
+    dispatch = _c[1];
+  use_current_effect_1.useCurrentEffect(function (isCurrent) {
+    dispatch({
+      type: 'start',
+      payload: null
+    });
+    utils_1.getPredominantColorFromImgURL(imgSrc, format, crossOrigin, quality).then(function (color) {
+      if (isCurrent()) {
+        dispatch({
+          type: 'resolve',
+          payload: color
+        });
+      }
+    }).catch(function (ex) {
+      if (isCurrent()) {
+        dispatch({
+          type: 'reject',
+          payload: ex
+        });
+      }
+    });
+  }, [imgSrc]);
+  return state;
+}
+exports["default"] = useColor;
+
+/***/ }),
+
+/***/ "./node_modules/color-thief-react/lib/Palette/Palette.component.js":
+/*!*************************************************************************!*\
+  !*** ./node_modules/color-thief-react/lib/Palette/Palette.component.js ***!
+  \*************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+var tslib_1 = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+var React = tslib_1.__importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+var usePalette_1 = tslib_1.__importDefault(__webpack_require__(/*! ./usePalette */ "./node_modules/color-thief-react/lib/Palette/usePalette.js"));
+function Palette(_a) {
+  var src = _a.src,
+    _b = _a.colorCount,
+    colorCount = _b === void 0 ? 2 : _b,
+    format = _a.format,
+    _c = _a.crossOrigin,
+    crossOrigin = _c === void 0 ? undefined : _c,
+    _d = _a.quality,
+    quality = _d === void 0 ? 10 : _d,
+    children = _a.children;
+  var state = usePalette_1.default(src, colorCount, format, {
+    crossOrigin: crossOrigin,
+    quality: quality
+  });
+  return React.createElement(React.Fragment, null, children(state));
+}
+exports["default"] = Palette;
+
+/***/ }),
+
+/***/ "./node_modules/color-thief-react/lib/Palette/usePalette.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/color-thief-react/lib/Palette/usePalette.js ***!
+  \******************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+var tslib_1 = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+var React = tslib_1.__importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+var use_current_effect_1 = __webpack_require__(/*! use-current-effect */ "./node_modules/color-thief-react/node_modules/use-current-effect/dist/index.js");
+var utils_1 = __webpack_require__(/*! ../utils */ "./node_modules/color-thief-react/lib/utils/index.js");
+/**
+ * React Hook to get palette color from img url
+ */
+function usePalette(imgSrc, colorCount, format, options) {
+  if (colorCount === void 0) {
+    colorCount = 2;
+  }
+  if (options === void 0) {
+    options = {};
+  }
+  var _a = options.crossOrigin,
+    crossOrigin = _a === void 0 ? null : _a,
+    _b = options.quality,
+    quality = _b === void 0 ? 10 : _b;
+  var _c = React.useReducer(utils_1.reducer, utils_1.initialReducerState),
+    state = _c[0],
+    dispatch = _c[1];
+  use_current_effect_1.useCurrentEffect(function (isCurrent) {
+    dispatch({
+      type: 'start',
+      payload: null
+    });
+    utils_1.getColorsPaletteFromImgUrl(imgSrc, colorCount, format, crossOrigin, quality).then(function (color) {
+      if (isCurrent()) {
+        dispatch({
+          type: 'resolve',
+          payload: color
+        });
+      }
+    }).catch(function (ex) {
+      if (isCurrent()) {
+        dispatch({
+          type: 'reject',
+          payload: ex
+        });
+      }
+    });
+  }, [imgSrc]);
+  return state;
+}
+exports["default"] = usePalette;
+
+/***/ }),
+
+/***/ "./node_modules/color-thief-react/lib/index.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/color-thief-react/lib/index.js ***!
+  \*****************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.getPalette = exports.usePalette = exports.Palette = exports.getColor = exports.Color = exports.useColor = void 0;
+var tslib_1 = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+var Color_component_1 = tslib_1.__importDefault(__webpack_require__(/*! ./Color/Color.component */ "./node_modules/color-thief-react/lib/Color/Color.component.js"));
+exports.Color = Color_component_1.default;
+var useColor_1 = tslib_1.__importDefault(__webpack_require__(/*! ./Color/useColor */ "./node_modules/color-thief-react/lib/Color/useColor.js"));
+exports.useColor = useColor_1.default;
+var getColorsPaletteFromImgUrl_1 = tslib_1.__importDefault(__webpack_require__(/*! ./utils/getColorsPaletteFromImgUrl */ "./node_modules/color-thief-react/lib/utils/getColorsPaletteFromImgUrl.js"));
+exports.getPalette = getColorsPaletteFromImgUrl_1.default;
+var Palette_component_1 = tslib_1.__importDefault(__webpack_require__(/*! ./Palette/Palette.component */ "./node_modules/color-thief-react/lib/Palette/Palette.component.js"));
+exports.Palette = Palette_component_1.default;
+var usePalette_1 = tslib_1.__importDefault(__webpack_require__(/*! ./Palette/usePalette */ "./node_modules/color-thief-react/lib/Palette/usePalette.js"));
+exports.usePalette = usePalette_1.default;
+var getPredominantColorFromImgURL_1 = tslib_1.__importDefault(__webpack_require__(/*! ./utils/getPredominantColorFromImgURL */ "./node_modules/color-thief-react/lib/utils/getPredominantColorFromImgURL.js"));
+exports.getColor = getPredominantColorFromImgURL_1.default;
+exports["default"] = Color_component_1.default;
+
+/***/ }),
+
+/***/ "./node_modules/color-thief-react/lib/utils/formatHex.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/color-thief-react/lib/utils/formatHex.js ***!
+  \***************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+/**
+ * Formats a hex into something consumable by css
+ */
+function formatHex(hex) {
+  return "#" + hex.toLowerCase();
+}
+exports["default"] = formatHex;
+
+/***/ }),
+
+/***/ "./node_modules/color-thief-react/lib/utils/formatRGB.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/color-thief-react/lib/utils/formatRGB.js ***!
+  \***************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+var tslib_1 = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+var color_convert_1 = tslib_1.__importDefault(__webpack_require__(/*! color-convert */ "./node_modules/color-thief-react/node_modules/color-convert/index.js"));
+var rgbStringfy_1 = tslib_1.__importDefault(__webpack_require__(/*! ./rgbStringfy */ "./node_modules/color-thief-react/lib/utils/rgbStringfy.js"));
+var hslStringfy_1 = tslib_1.__importDefault(__webpack_require__(/*! ./hslStringfy */ "./node_modules/color-thief-react/lib/utils/hslStringfy.js"));
+var formatHex_1 = tslib_1.__importDefault(__webpack_require__(/*! ./formatHex */ "./node_modules/color-thief-react/lib/utils/formatHex.js"));
+/**
+ * Transform a RGB Array to another color format
+ */
+function formatRGB(arrayRGB, format) {
+  var responses = {
+    rgbString: function () {
+      return rgbStringfy_1.default.apply(void 0, arrayRGB);
+    },
+    hex: function () {
+      var _a;
+      return formatHex_1.default((_a = color_convert_1.default.rgb).hex.apply(_a, arrayRGB));
+    },
+    rgbArray: function () {
+      return arrayRGB;
+    },
+    hslString: function () {
+      var _a;
+      return hslStringfy_1.default((_a = color_convert_1.default.rgb).hsl.apply(_a, arrayRGB));
+    },
+    hslArray: function () {
+      var _a;
+      return (_a = color_convert_1.default.rgb).hsl.apply(_a, arrayRGB);
+    },
+    keyword: function () {
+      var _a;
+      return (_a = color_convert_1.default.rgb).keyword.apply(_a, arrayRGB);
+    }
+  };
+  return responses[format]();
+}
+exports["default"] = formatRGB;
+
+/***/ }),
+
+/***/ "./node_modules/color-thief-react/lib/utils/getColorsPaletteFromImgUrl.js":
+/*!********************************************************************************!*\
+  !*** ./node_modules/color-thief-react/lib/utils/getColorsPaletteFromImgUrl.js ***!
+  \********************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+var tslib_1 = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+var color_thief_umd_js_1 = tslib_1.__importDefault(__webpack_require__(/*! colorthief/dist/color-thief.umd.js */ "./node_modules/colorthief/dist/color-thief.umd.js"));
+var _1 = __webpack_require__(/*! . */ "./node_modules/color-thief-react/lib/utils/index.js");
+/**
+ * Get a list of colors from img url
+ */
+function getColorsPaletteFromImgUrl(imgUrl, colorCount, format, crossOrigin, quality) {
+  if (colorCount === void 0) {
+    colorCount = 2;
+  }
+  if (crossOrigin === void 0) {
+    crossOrigin = null;
+  }
+  if (quality === void 0) {
+    quality = 10;
+  }
+  return tslib_1.__awaiter(this, void 0, void 0, function () {
+    var img, cf, arrayRGB;
+    return tslib_1.__generator(this, function (_a) {
+      switch (_a.label) {
+        case 0:
+          return [4 /*yield*/, _1.loadImage(imgUrl, crossOrigin)];
+        case 1:
+          img = _a.sent();
+          cf = new color_thief_umd_js_1.default();
+          arrayRGB = cf.getPalette(img, colorCount, quality);
+          return [2 /*return*/, arrayRGB.map(function (color) {
+            return _1.formatRGB(color, format);
+          })];
+      }
+    });
+  });
+}
+exports["default"] = getColorsPaletteFromImgUrl;
+
+/***/ }),
+
+/***/ "./node_modules/color-thief-react/lib/utils/getPredominantColorFromImgURL.js":
+/*!***********************************************************************************!*\
+  !*** ./node_modules/color-thief-react/lib/utils/getPredominantColorFromImgURL.js ***!
+  \***********************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+var tslib_1 = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+var color_thief_umd_js_1 = tslib_1.__importDefault(__webpack_require__(/*! colorthief/dist/color-thief.umd.js */ "./node_modules/colorthief/dist/color-thief.umd.js"));
+var _1 = __webpack_require__(/*! . */ "./node_modules/color-thief-react/lib/utils/index.js");
+function getPredominantColorFromImgURL(imgSrc, format, crossOrigin, quality) {
+  if (crossOrigin === void 0) {
+    crossOrigin = null;
+  }
+  if (quality === void 0) {
+    quality = 10;
+  }
+  return tslib_1.__awaiter(this, void 0, void 0, function () {
+    var img, ct, arrayRGB;
+    return tslib_1.__generator(this, function (_a) {
+      switch (_a.label) {
+        case 0:
+          return [4 /*yield*/, _1.loadImage(imgSrc, crossOrigin)];
+        case 1:
+          img = _a.sent();
+          ct = new color_thief_umd_js_1.default();
+          arrayRGB = ct.getColor(img, quality);
+          return [2 /*return*/, _1.formatRGB(arrayRGB, format)];
+      }
+    });
+  });
+}
+exports["default"] = getPredominantColorFromImgURL;
+
+/***/ }),
+
+/***/ "./node_modules/color-thief-react/lib/utils/hslStringfy.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/color-thief-react/lib/utils/hslStringfy.js ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+/**
+ * Put HSL into a string
+ */
+function hslStringfy(hsl) {
+  return "hsl(" + hsl[0] + ", " + hsl[1] + "%, " + hsl[2] + "%)";
+}
+exports["default"] = hslStringfy;
+
+/***/ }),
+
+/***/ "./node_modules/color-thief-react/lib/utils/index.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/color-thief-react/lib/utils/index.js ***!
+  \***********************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.loadImage = exports.getPredominantColorFromImgURL = exports.rgbStringfy = exports.getColorsPaletteFromImgUrl = exports.formatRGB = exports.reducer = exports.initialReducerState = void 0;
+var initialReducerState_1 = __webpack_require__(/*! ./initialReducerState */ "./node_modules/color-thief-react/lib/utils/initialReducerState.js");
+Object.defineProperty(exports, "initialReducerState", ({
+  enumerable: true,
+  get: function () {
+    return __importDefault(initialReducerState_1).default;
+  }
+}));
+var reducer_1 = __webpack_require__(/*! ./reducer */ "./node_modules/color-thief-react/lib/utils/reducer.js");
+Object.defineProperty(exports, "reducer", ({
+  enumerable: true,
+  get: function () {
+    return __importDefault(reducer_1).default;
+  }
+}));
+var formatRGB_1 = __webpack_require__(/*! ./formatRGB */ "./node_modules/color-thief-react/lib/utils/formatRGB.js");
+Object.defineProperty(exports, "formatRGB", ({
+  enumerable: true,
+  get: function () {
+    return __importDefault(formatRGB_1).default;
+  }
+}));
+var getColorsPaletteFromImgUrl_1 = __webpack_require__(/*! ./getColorsPaletteFromImgUrl */ "./node_modules/color-thief-react/lib/utils/getColorsPaletteFromImgUrl.js");
+Object.defineProperty(exports, "getColorsPaletteFromImgUrl", ({
+  enumerable: true,
+  get: function () {
+    return __importDefault(getColorsPaletteFromImgUrl_1).default;
+  }
+}));
+var rgbStringfy_1 = __webpack_require__(/*! ./rgbStringfy */ "./node_modules/color-thief-react/lib/utils/rgbStringfy.js");
+Object.defineProperty(exports, "rgbStringfy", ({
+  enumerable: true,
+  get: function () {
+    return __importDefault(rgbStringfy_1).default;
+  }
+}));
+var getPredominantColorFromImgURL_1 = __webpack_require__(/*! ./getPredominantColorFromImgURL */ "./node_modules/color-thief-react/lib/utils/getPredominantColorFromImgURL.js");
+Object.defineProperty(exports, "getPredominantColorFromImgURL", ({
+  enumerable: true,
+  get: function () {
+    return __importDefault(getPredominantColorFromImgURL_1).default;
+  }
+}));
+var loadImage_1 = __webpack_require__(/*! ./loadImage */ "./node_modules/color-thief-react/lib/utils/loadImage.js");
+Object.defineProperty(exports, "loadImage", ({
+  enumerable: true,
+  get: function () {
+    return __importDefault(loadImage_1).default;
+  }
+}));
+
+/***/ }),
+
+/***/ "./node_modules/color-thief-react/lib/utils/initialReducerState.js":
+/*!*************************************************************************!*\
+  !*** ./node_modules/color-thief-react/lib/utils/initialReducerState.js ***!
+  \*************************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+var initialReducerState = {
+  loading: true,
+  data: undefined,
+  error: undefined
+};
+exports["default"] = initialReducerState;
+
+/***/ }),
+
+/***/ "./node_modules/color-thief-react/lib/utils/loadImage.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/color-thief-react/lib/utils/loadImage.js ***!
+  \***************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+/**
+ * Load a image in a promise
+ */
+function loadImage(url, crossOrigin) {
+  if (crossOrigin === void 0) {
+    crossOrigin = null;
+  }
+  return new Promise(function (resolve, reject) {
+    var img = new Image();
+    img.addEventListener('load', function () {
+      resolve(img);
+    });
+    img.addEventListener('error', function () {
+      reject(new Error("Color Thief React | Failed to load image URL: " + url));
+    });
+    img.crossOrigin = crossOrigin;
+    img.src = url;
+  });
+}
+exports["default"] = loadImage;
+
+/***/ }),
+
+/***/ "./node_modules/color-thief-react/lib/utils/reducer.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/color-thief-react/lib/utils/reducer.js ***!
+  \*************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+var tslib_1 = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+var initialReducerState_1 = tslib_1.__importDefault(__webpack_require__(/*! ./initialReducerState */ "./node_modules/color-thief-react/lib/utils/initialReducerState.js"));
+function reducer(state, action) {
+  var responses = {
+    start: function () {
+      return initialReducerState_1.default;
+    },
+    resolve: function () {
+      return tslib_1.__assign(tslib_1.__assign({}, state), {
+        data: action.payload,
+        loading: false
+      });
+    },
+    reject: function () {
+      return tslib_1.__assign(tslib_1.__assign({}, state), {
+        error: action.payload,
+        loading: false
+      });
+    }
+  };
+  return responses[action.type]();
+}
+exports["default"] = reducer;
+
+/***/ }),
+
+/***/ "./node_modules/color-thief-react/lib/utils/rgbStringfy.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/color-thief-react/lib/utils/rgbStringfy.js ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+/**
+ * Put RGB into a string
+ */
+function rgbStringfy(r, g, b) {
+  return "rgb(" + r + ", " + g + ", " + b + ")";
+}
+exports["default"] = rgbStringfy;
+
+/***/ }),
+
+/***/ "./node_modules/color-thief-react/node_modules/color-convert/conversions.js":
+/*!**********************************************************************************!*\
+  !*** ./node_modules/color-thief-react/node_modules/color-convert/conversions.js ***!
+  \**********************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+/* MIT license */
+/* eslint-disable no-mixed-operators */
+const cssKeywords = __webpack_require__(/*! color-name */ "./node_modules/color-thief-react/node_modules/color-name/index.js");
+
+// NOTE: conversions should only return primitive values (i.e. arrays, or
+//       values that give correct `typeof` results).
+//       do not use box values types (i.e. Number(), String(), etc.)
+
+const reverseKeywords = {};
+for (const key of Object.keys(cssKeywords)) {
+  reverseKeywords[cssKeywords[key]] = key;
+}
+const convert = {
+  rgb: {
+    channels: 3,
+    labels: 'rgb'
+  },
+  hsl: {
+    channels: 3,
+    labels: 'hsl'
+  },
+  hsv: {
+    channels: 3,
+    labels: 'hsv'
+  },
+  hwb: {
+    channels: 3,
+    labels: 'hwb'
+  },
+  cmyk: {
+    channels: 4,
+    labels: 'cmyk'
+  },
+  xyz: {
+    channels: 3,
+    labels: 'xyz'
+  },
+  lab: {
+    channels: 3,
+    labels: 'lab'
+  },
+  lch: {
+    channels: 3,
+    labels: 'lch'
+  },
+  hex: {
+    channels: 1,
+    labels: ['hex']
+  },
+  keyword: {
+    channels: 1,
+    labels: ['keyword']
+  },
+  ansi16: {
+    channels: 1,
+    labels: ['ansi16']
+  },
+  ansi256: {
+    channels: 1,
+    labels: ['ansi256']
+  },
+  hcg: {
+    channels: 3,
+    labels: ['h', 'c', 'g']
+  },
+  apple: {
+    channels: 3,
+    labels: ['r16', 'g16', 'b16']
+  },
+  gray: {
+    channels: 1,
+    labels: ['gray']
+  }
+};
+module.exports = convert;
+
+// Hide .channels and .labels properties
+for (const model of Object.keys(convert)) {
+  if (!('channels' in convert[model])) {
+    throw new Error('missing channels property: ' + model);
+  }
+  if (!('labels' in convert[model])) {
+    throw new Error('missing channel labels property: ' + model);
+  }
+  if (convert[model].labels.length !== convert[model].channels) {
+    throw new Error('channel and label counts mismatch: ' + model);
+  }
+  const {
+    channels,
+    labels
+  } = convert[model];
+  delete convert[model].channels;
+  delete convert[model].labels;
+  Object.defineProperty(convert[model], 'channels', {
+    value: channels
+  });
+  Object.defineProperty(convert[model], 'labels', {
+    value: labels
+  });
+}
+convert.rgb.hsl = function (rgb) {
+  const r = rgb[0] / 255;
+  const g = rgb[1] / 255;
+  const b = rgb[2] / 255;
+  const min = Math.min(r, g, b);
+  const max = Math.max(r, g, b);
+  const delta = max - min;
+  let h;
+  let s;
+  if (max === min) {
+    h = 0;
+  } else if (r === max) {
+    h = (g - b) / delta;
+  } else if (g === max) {
+    h = 2 + (b - r) / delta;
+  } else if (b === max) {
+    h = 4 + (r - g) / delta;
+  }
+  h = Math.min(h * 60, 360);
+  if (h < 0) {
+    h += 360;
+  }
+  const l = (min + max) / 2;
+  if (max === min) {
+    s = 0;
+  } else if (l <= 0.5) {
+    s = delta / (max + min);
+  } else {
+    s = delta / (2 - max - min);
+  }
+  return [h, s * 100, l * 100];
+};
+convert.rgb.hsv = function (rgb) {
+  let rdif;
+  let gdif;
+  let bdif;
+  let h;
+  let s;
+  const r = rgb[0] / 255;
+  const g = rgb[1] / 255;
+  const b = rgb[2] / 255;
+  const v = Math.max(r, g, b);
+  const diff = v - Math.min(r, g, b);
+  const diffc = function (c) {
+    return (v - c) / 6 / diff + 1 / 2;
+  };
+  if (diff === 0) {
+    h = 0;
+    s = 0;
+  } else {
+    s = diff / v;
+    rdif = diffc(r);
+    gdif = diffc(g);
+    bdif = diffc(b);
+    if (r === v) {
+      h = bdif - gdif;
+    } else if (g === v) {
+      h = 1 / 3 + rdif - bdif;
+    } else if (b === v) {
+      h = 2 / 3 + gdif - rdif;
+    }
+    if (h < 0) {
+      h += 1;
+    } else if (h > 1) {
+      h -= 1;
+    }
+  }
+  return [h * 360, s * 100, v * 100];
+};
+convert.rgb.hwb = function (rgb) {
+  const r = rgb[0];
+  const g = rgb[1];
+  let b = rgb[2];
+  const h = convert.rgb.hsl(rgb)[0];
+  const w = 1 / 255 * Math.min(r, Math.min(g, b));
+  b = 1 - 1 / 255 * Math.max(r, Math.max(g, b));
+  return [h, w * 100, b * 100];
+};
+convert.rgb.cmyk = function (rgb) {
+  const r = rgb[0] / 255;
+  const g = rgb[1] / 255;
+  const b = rgb[2] / 255;
+  const k = Math.min(1 - r, 1 - g, 1 - b);
+  const c = (1 - r - k) / (1 - k) || 0;
+  const m = (1 - g - k) / (1 - k) || 0;
+  const y = (1 - b - k) / (1 - k) || 0;
+  return [c * 100, m * 100, y * 100, k * 100];
+};
+function comparativeDistance(x, y) {
+  /*
+  	See https://en.m.wikipedia.org/wiki/Euclidean_distance#Squared_Euclidean_distance
+  */
+  return (x[0] - y[0]) ** 2 + (x[1] - y[1]) ** 2 + (x[2] - y[2]) ** 2;
+}
+convert.rgb.keyword = function (rgb) {
+  const reversed = reverseKeywords[rgb];
+  if (reversed) {
+    return reversed;
+  }
+  let currentClosestDistance = Infinity;
+  let currentClosestKeyword;
+  for (const keyword of Object.keys(cssKeywords)) {
+    const value = cssKeywords[keyword];
+
+    // Compute comparative distance
+    const distance = comparativeDistance(rgb, value);
+
+    // Check if its less, if so set as closest
+    if (distance < currentClosestDistance) {
+      currentClosestDistance = distance;
+      currentClosestKeyword = keyword;
+    }
+  }
+  return currentClosestKeyword;
+};
+convert.keyword.rgb = function (keyword) {
+  return cssKeywords[keyword];
+};
+convert.rgb.xyz = function (rgb) {
+  let r = rgb[0] / 255;
+  let g = rgb[1] / 255;
+  let b = rgb[2] / 255;
+
+  // Assume sRGB
+  r = r > 0.04045 ? ((r + 0.055) / 1.055) ** 2.4 : r / 12.92;
+  g = g > 0.04045 ? ((g + 0.055) / 1.055) ** 2.4 : g / 12.92;
+  b = b > 0.04045 ? ((b + 0.055) / 1.055) ** 2.4 : b / 12.92;
+  const x = r * 0.4124 + g * 0.3576 + b * 0.1805;
+  const y = r * 0.2126 + g * 0.7152 + b * 0.0722;
+  const z = r * 0.0193 + g * 0.1192 + b * 0.9505;
+  return [x * 100, y * 100, z * 100];
+};
+convert.rgb.lab = function (rgb) {
+  const xyz = convert.rgb.xyz(rgb);
+  let x = xyz[0];
+  let y = xyz[1];
+  let z = xyz[2];
+  x /= 95.047;
+  y /= 100;
+  z /= 108.883;
+  x = x > 0.008856 ? x ** (1 / 3) : 7.787 * x + 16 / 116;
+  y = y > 0.008856 ? y ** (1 / 3) : 7.787 * y + 16 / 116;
+  z = z > 0.008856 ? z ** (1 / 3) : 7.787 * z + 16 / 116;
+  const l = 116 * y - 16;
+  const a = 500 * (x - y);
+  const b = 200 * (y - z);
+  return [l, a, b];
+};
+convert.hsl.rgb = function (hsl) {
+  const h = hsl[0] / 360;
+  const s = hsl[1] / 100;
+  const l = hsl[2] / 100;
+  let t2;
+  let t3;
+  let val;
+  if (s === 0) {
+    val = l * 255;
+    return [val, val, val];
+  }
+  if (l < 0.5) {
+    t2 = l * (1 + s);
+  } else {
+    t2 = l + s - l * s;
+  }
+  const t1 = 2 * l - t2;
+  const rgb = [0, 0, 0];
+  for (let i = 0; i < 3; i++) {
+    t3 = h + 1 / 3 * -(i - 1);
+    if (t3 < 0) {
+      t3++;
+    }
+    if (t3 > 1) {
+      t3--;
+    }
+    if (6 * t3 < 1) {
+      val = t1 + (t2 - t1) * 6 * t3;
+    } else if (2 * t3 < 1) {
+      val = t2;
+    } else if (3 * t3 < 2) {
+      val = t1 + (t2 - t1) * (2 / 3 - t3) * 6;
+    } else {
+      val = t1;
+    }
+    rgb[i] = val * 255;
+  }
+  return rgb;
+};
+convert.hsl.hsv = function (hsl) {
+  const h = hsl[0];
+  let s = hsl[1] / 100;
+  let l = hsl[2] / 100;
+  let smin = s;
+  const lmin = Math.max(l, 0.01);
+  l *= 2;
+  s *= l <= 1 ? l : 2 - l;
+  smin *= lmin <= 1 ? lmin : 2 - lmin;
+  const v = (l + s) / 2;
+  const sv = l === 0 ? 2 * smin / (lmin + smin) : 2 * s / (l + s);
+  return [h, sv * 100, v * 100];
+};
+convert.hsv.rgb = function (hsv) {
+  const h = hsv[0] / 60;
+  const s = hsv[1] / 100;
+  let v = hsv[2] / 100;
+  const hi = Math.floor(h) % 6;
+  const f = h - Math.floor(h);
+  const p = 255 * v * (1 - s);
+  const q = 255 * v * (1 - s * f);
+  const t = 255 * v * (1 - s * (1 - f));
+  v *= 255;
+  switch (hi) {
+    case 0:
+      return [v, t, p];
+    case 1:
+      return [q, v, p];
+    case 2:
+      return [p, v, t];
+    case 3:
+      return [p, q, v];
+    case 4:
+      return [t, p, v];
+    case 5:
+      return [v, p, q];
+  }
+};
+convert.hsv.hsl = function (hsv) {
+  const h = hsv[0];
+  const s = hsv[1] / 100;
+  const v = hsv[2] / 100;
+  const vmin = Math.max(v, 0.01);
+  let sl;
+  let l;
+  l = (2 - s) * v;
+  const lmin = (2 - s) * vmin;
+  sl = s * vmin;
+  sl /= lmin <= 1 ? lmin : 2 - lmin;
+  sl = sl || 0;
+  l /= 2;
+  return [h, sl * 100, l * 100];
+};
+
+// http://dev.w3.org/csswg/css-color/#hwb-to-rgb
+convert.hwb.rgb = function (hwb) {
+  const h = hwb[0] / 360;
+  let wh = hwb[1] / 100;
+  let bl = hwb[2] / 100;
+  const ratio = wh + bl;
+  let f;
+
+  // Wh + bl cant be > 1
+  if (ratio > 1) {
+    wh /= ratio;
+    bl /= ratio;
+  }
+  const i = Math.floor(6 * h);
+  const v = 1 - bl;
+  f = 6 * h - i;
+  if ((i & 0x01) !== 0) {
+    f = 1 - f;
+  }
+  const n = wh + f * (v - wh); // Linear interpolation
+
+  let r;
+  let g;
+  let b;
+  /* eslint-disable max-statements-per-line,no-multi-spaces */
+  switch (i) {
+    default:
+    case 6:
+    case 0:
+      r = v;
+      g = n;
+      b = wh;
+      break;
+    case 1:
+      r = n;
+      g = v;
+      b = wh;
+      break;
+    case 2:
+      r = wh;
+      g = v;
+      b = n;
+      break;
+    case 3:
+      r = wh;
+      g = n;
+      b = v;
+      break;
+    case 4:
+      r = n;
+      g = wh;
+      b = v;
+      break;
+    case 5:
+      r = v;
+      g = wh;
+      b = n;
+      break;
+  }
+  /* eslint-enable max-statements-per-line,no-multi-spaces */
+
+  return [r * 255, g * 255, b * 255];
+};
+convert.cmyk.rgb = function (cmyk) {
+  const c = cmyk[0] / 100;
+  const m = cmyk[1] / 100;
+  const y = cmyk[2] / 100;
+  const k = cmyk[3] / 100;
+  const r = 1 - Math.min(1, c * (1 - k) + k);
+  const g = 1 - Math.min(1, m * (1 - k) + k);
+  const b = 1 - Math.min(1, y * (1 - k) + k);
+  return [r * 255, g * 255, b * 255];
+};
+convert.xyz.rgb = function (xyz) {
+  const x = xyz[0] / 100;
+  const y = xyz[1] / 100;
+  const z = xyz[2] / 100;
+  let r;
+  let g;
+  let b;
+  r = x * 3.2406 + y * -1.5372 + z * -0.4986;
+  g = x * -0.9689 + y * 1.8758 + z * 0.0415;
+  b = x * 0.0557 + y * -0.2040 + z * 1.0570;
+
+  // Assume sRGB
+  r = r > 0.0031308 ? 1.055 * r ** (1.0 / 2.4) - 0.055 : r * 12.92;
+  g = g > 0.0031308 ? 1.055 * g ** (1.0 / 2.4) - 0.055 : g * 12.92;
+  b = b > 0.0031308 ? 1.055 * b ** (1.0 / 2.4) - 0.055 : b * 12.92;
+  r = Math.min(Math.max(0, r), 1);
+  g = Math.min(Math.max(0, g), 1);
+  b = Math.min(Math.max(0, b), 1);
+  return [r * 255, g * 255, b * 255];
+};
+convert.xyz.lab = function (xyz) {
+  let x = xyz[0];
+  let y = xyz[1];
+  let z = xyz[2];
+  x /= 95.047;
+  y /= 100;
+  z /= 108.883;
+  x = x > 0.008856 ? x ** (1 / 3) : 7.787 * x + 16 / 116;
+  y = y > 0.008856 ? y ** (1 / 3) : 7.787 * y + 16 / 116;
+  z = z > 0.008856 ? z ** (1 / 3) : 7.787 * z + 16 / 116;
+  const l = 116 * y - 16;
+  const a = 500 * (x - y);
+  const b = 200 * (y - z);
+  return [l, a, b];
+};
+convert.lab.xyz = function (lab) {
+  const l = lab[0];
+  const a = lab[1];
+  const b = lab[2];
+  let x;
+  let y;
+  let z;
+  y = (l + 16) / 116;
+  x = a / 500 + y;
+  z = y - b / 200;
+  const y2 = y ** 3;
+  const x2 = x ** 3;
+  const z2 = z ** 3;
+  y = y2 > 0.008856 ? y2 : (y - 16 / 116) / 7.787;
+  x = x2 > 0.008856 ? x2 : (x - 16 / 116) / 7.787;
+  z = z2 > 0.008856 ? z2 : (z - 16 / 116) / 7.787;
+  x *= 95.047;
+  y *= 100;
+  z *= 108.883;
+  return [x, y, z];
+};
+convert.lab.lch = function (lab) {
+  const l = lab[0];
+  const a = lab[1];
+  const b = lab[2];
+  let h;
+  const hr = Math.atan2(b, a);
+  h = hr * 360 / 2 / Math.PI;
+  if (h < 0) {
+    h += 360;
+  }
+  const c = Math.sqrt(a * a + b * b);
+  return [l, c, h];
+};
+convert.lch.lab = function (lch) {
+  const l = lch[0];
+  const c = lch[1];
+  const h = lch[2];
+  const hr = h / 360 * 2 * Math.PI;
+  const a = c * Math.cos(hr);
+  const b = c * Math.sin(hr);
+  return [l, a, b];
+};
+convert.rgb.ansi16 = function (args, saturation = null) {
+  const [r, g, b] = args;
+  let value = saturation === null ? convert.rgb.hsv(args)[2] : saturation; // Hsv -> ansi16 optimization
+
+  value = Math.round(value / 50);
+  if (value === 0) {
+    return 30;
+  }
+  let ansi = 30 + (Math.round(b / 255) << 2 | Math.round(g / 255) << 1 | Math.round(r / 255));
+  if (value === 2) {
+    ansi += 60;
+  }
+  return ansi;
+};
+convert.hsv.ansi16 = function (args) {
+  // Optimization here; we already know the value and don't need to get
+  // it converted for us.
+  return convert.rgb.ansi16(convert.hsv.rgb(args), args[2]);
+};
+convert.rgb.ansi256 = function (args) {
+  const r = args[0];
+  const g = args[1];
+  const b = args[2];
+
+  // We use the extended greyscale palette here, with the exception of
+  // black and white. normal palette only has 4 greyscale shades.
+  if (r === g && g === b) {
+    if (r < 8) {
+      return 16;
+    }
+    if (r > 248) {
+      return 231;
+    }
+    return Math.round((r - 8) / 247 * 24) + 232;
+  }
+  const ansi = 16 + 36 * Math.round(r / 255 * 5) + 6 * Math.round(g / 255 * 5) + Math.round(b / 255 * 5);
+  return ansi;
+};
+convert.ansi16.rgb = function (args) {
+  let color = args % 10;
+
+  // Handle greyscale
+  if (color === 0 || color === 7) {
+    if (args > 50) {
+      color += 3.5;
+    }
+    color = color / 10.5 * 255;
+    return [color, color, color];
+  }
+  const mult = (~~(args > 50) + 1) * 0.5;
+  const r = (color & 1) * mult * 255;
+  const g = (color >> 1 & 1) * mult * 255;
+  const b = (color >> 2 & 1) * mult * 255;
+  return [r, g, b];
+};
+convert.ansi256.rgb = function (args) {
+  // Handle greyscale
+  if (args >= 232) {
+    const c = (args - 232) * 10 + 8;
+    return [c, c, c];
+  }
+  args -= 16;
+  let rem;
+  const r = Math.floor(args / 36) / 5 * 255;
+  const g = Math.floor((rem = args % 36) / 6) / 5 * 255;
+  const b = rem % 6 / 5 * 255;
+  return [r, g, b];
+};
+convert.rgb.hex = function (args) {
+  const integer = ((Math.round(args[0]) & 0xFF) << 16) + ((Math.round(args[1]) & 0xFF) << 8) + (Math.round(args[2]) & 0xFF);
+  const string = integer.toString(16).toUpperCase();
+  return '000000'.substring(string.length) + string;
+};
+convert.hex.rgb = function (args) {
+  const match = args.toString(16).match(/[a-f0-9]{6}|[a-f0-9]{3}/i);
+  if (!match) {
+    return [0, 0, 0];
+  }
+  let colorString = match[0];
+  if (match[0].length === 3) {
+    colorString = colorString.split('').map(char => {
+      return char + char;
+    }).join('');
+  }
+  const integer = parseInt(colorString, 16);
+  const r = integer >> 16 & 0xFF;
+  const g = integer >> 8 & 0xFF;
+  const b = integer & 0xFF;
+  return [r, g, b];
+};
+convert.rgb.hcg = function (rgb) {
+  const r = rgb[0] / 255;
+  const g = rgb[1] / 255;
+  const b = rgb[2] / 255;
+  const max = Math.max(Math.max(r, g), b);
+  const min = Math.min(Math.min(r, g), b);
+  const chroma = max - min;
+  let grayscale;
+  let hue;
+  if (chroma < 1) {
+    grayscale = min / (1 - chroma);
+  } else {
+    grayscale = 0;
+  }
+  if (chroma <= 0) {
+    hue = 0;
+  } else if (max === r) {
+    hue = (g - b) / chroma % 6;
+  } else if (max === g) {
+    hue = 2 + (b - r) / chroma;
+  } else {
+    hue = 4 + (r - g) / chroma;
+  }
+  hue /= 6;
+  hue %= 1;
+  return [hue * 360, chroma * 100, grayscale * 100];
+};
+convert.hsl.hcg = function (hsl) {
+  const s = hsl[1] / 100;
+  const l = hsl[2] / 100;
+  const c = l < 0.5 ? 2.0 * s * l : 2.0 * s * (1.0 - l);
+  let f = 0;
+  if (c < 1.0) {
+    f = (l - 0.5 * c) / (1.0 - c);
+  }
+  return [hsl[0], c * 100, f * 100];
+};
+convert.hsv.hcg = function (hsv) {
+  const s = hsv[1] / 100;
+  const v = hsv[2] / 100;
+  const c = s * v;
+  let f = 0;
+  if (c < 1.0) {
+    f = (v - c) / (1 - c);
+  }
+  return [hsv[0], c * 100, f * 100];
+};
+convert.hcg.rgb = function (hcg) {
+  const h = hcg[0] / 360;
+  const c = hcg[1] / 100;
+  const g = hcg[2] / 100;
+  if (c === 0.0) {
+    return [g * 255, g * 255, g * 255];
+  }
+  const pure = [0, 0, 0];
+  const hi = h % 1 * 6;
+  const v = hi % 1;
+  const w = 1 - v;
+  let mg = 0;
+
+  /* eslint-disable max-statements-per-line */
+  switch (Math.floor(hi)) {
+    case 0:
+      pure[0] = 1;
+      pure[1] = v;
+      pure[2] = 0;
+      break;
+    case 1:
+      pure[0] = w;
+      pure[1] = 1;
+      pure[2] = 0;
+      break;
+    case 2:
+      pure[0] = 0;
+      pure[1] = 1;
+      pure[2] = v;
+      break;
+    case 3:
+      pure[0] = 0;
+      pure[1] = w;
+      pure[2] = 1;
+      break;
+    case 4:
+      pure[0] = v;
+      pure[1] = 0;
+      pure[2] = 1;
+      break;
+    default:
+      pure[0] = 1;
+      pure[1] = 0;
+      pure[2] = w;
+  }
+  /* eslint-enable max-statements-per-line */
+
+  mg = (1.0 - c) * g;
+  return [(c * pure[0] + mg) * 255, (c * pure[1] + mg) * 255, (c * pure[2] + mg) * 255];
+};
+convert.hcg.hsv = function (hcg) {
+  const c = hcg[1] / 100;
+  const g = hcg[2] / 100;
+  const v = c + g * (1.0 - c);
+  let f = 0;
+  if (v > 0.0) {
+    f = c / v;
+  }
+  return [hcg[0], f * 100, v * 100];
+};
+convert.hcg.hsl = function (hcg) {
+  const c = hcg[1] / 100;
+  const g = hcg[2] / 100;
+  const l = g * (1.0 - c) + 0.5 * c;
+  let s = 0;
+  if (l > 0.0 && l < 0.5) {
+    s = c / (2 * l);
+  } else if (l >= 0.5 && l < 1.0) {
+    s = c / (2 * (1 - l));
+  }
+  return [hcg[0], s * 100, l * 100];
+};
+convert.hcg.hwb = function (hcg) {
+  const c = hcg[1] / 100;
+  const g = hcg[2] / 100;
+  const v = c + g * (1.0 - c);
+  return [hcg[0], (v - c) * 100, (1 - v) * 100];
+};
+convert.hwb.hcg = function (hwb) {
+  const w = hwb[1] / 100;
+  const b = hwb[2] / 100;
+  const v = 1 - b;
+  const c = v - w;
+  let g = 0;
+  if (c < 1) {
+    g = (v - c) / (1 - c);
+  }
+  return [hwb[0], c * 100, g * 100];
+};
+convert.apple.rgb = function (apple) {
+  return [apple[0] / 65535 * 255, apple[1] / 65535 * 255, apple[2] / 65535 * 255];
+};
+convert.rgb.apple = function (rgb) {
+  return [rgb[0] / 255 * 65535, rgb[1] / 255 * 65535, rgb[2] / 255 * 65535];
+};
+convert.gray.rgb = function (args) {
+  return [args[0] / 100 * 255, args[0] / 100 * 255, args[0] / 100 * 255];
+};
+convert.gray.hsl = function (args) {
+  return [0, 0, args[0]];
+};
+convert.gray.hsv = convert.gray.hsl;
+convert.gray.hwb = function (gray) {
+  return [0, 100, gray[0]];
+};
+convert.gray.cmyk = function (gray) {
+  return [0, 0, 0, gray[0]];
+};
+convert.gray.lab = function (gray) {
+  return [gray[0], 0, 0];
+};
+convert.gray.hex = function (gray) {
+  const val = Math.round(gray[0] / 100 * 255) & 0xFF;
+  const integer = (val << 16) + (val << 8) + val;
+  const string = integer.toString(16).toUpperCase();
+  return '000000'.substring(string.length) + string;
+};
+convert.rgb.gray = function (rgb) {
+  const val = (rgb[0] + rgb[1] + rgb[2]) / 3;
+  return [val / 255 * 100];
+};
+
+/***/ }),
+
+/***/ "./node_modules/color-thief-react/node_modules/color-convert/index.js":
+/*!****************************************************************************!*\
+  !*** ./node_modules/color-thief-react/node_modules/color-convert/index.js ***!
+  \****************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+const conversions = __webpack_require__(/*! ./conversions */ "./node_modules/color-thief-react/node_modules/color-convert/conversions.js");
+const route = __webpack_require__(/*! ./route */ "./node_modules/color-thief-react/node_modules/color-convert/route.js");
+const convert = {};
+const models = Object.keys(conversions);
+function wrapRaw(fn) {
+  const wrappedFn = function (...args) {
+    const arg0 = args[0];
+    if (arg0 === undefined || arg0 === null) {
+      return arg0;
+    }
+    if (arg0.length > 1) {
+      args = arg0;
+    }
+    return fn(args);
+  };
+
+  // Preserve .conversion property if there is one
+  if ('conversion' in fn) {
+    wrappedFn.conversion = fn.conversion;
+  }
+  return wrappedFn;
+}
+function wrapRounded(fn) {
+  const wrappedFn = function (...args) {
+    const arg0 = args[0];
+    if (arg0 === undefined || arg0 === null) {
+      return arg0;
+    }
+    if (arg0.length > 1) {
+      args = arg0;
+    }
+    const result = fn(args);
+
+    // We're assuming the result is an array here.
+    // see notice in conversions.js; don't use box types
+    // in conversion functions.
+    if (typeof result === 'object') {
+      for (let len = result.length, i = 0; i < len; i++) {
+        result[i] = Math.round(result[i]);
+      }
+    }
+    return result;
+  };
+
+  // Preserve .conversion property if there is one
+  if ('conversion' in fn) {
+    wrappedFn.conversion = fn.conversion;
+  }
+  return wrappedFn;
+}
+models.forEach(fromModel => {
+  convert[fromModel] = {};
+  Object.defineProperty(convert[fromModel], 'channels', {
+    value: conversions[fromModel].channels
+  });
+  Object.defineProperty(convert[fromModel], 'labels', {
+    value: conversions[fromModel].labels
+  });
+  const routes = route(fromModel);
+  const routeModels = Object.keys(routes);
+  routeModels.forEach(toModel => {
+    const fn = routes[toModel];
+    convert[fromModel][toModel] = wrapRounded(fn);
+    convert[fromModel][toModel].raw = wrapRaw(fn);
+  });
+});
+module.exports = convert;
+
+/***/ }),
+
+/***/ "./node_modules/color-thief-react/node_modules/color-convert/route.js":
+/*!****************************************************************************!*\
+  !*** ./node_modules/color-thief-react/node_modules/color-convert/route.js ***!
+  \****************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+const conversions = __webpack_require__(/*! ./conversions */ "./node_modules/color-thief-react/node_modules/color-convert/conversions.js");
+
+/*
+	This function routes a model to all other models.
+
+	all functions that are routed have a property `.conversion` attached
+	to the returned synthetic function. This property is an array
+	of strings, each with the steps in between the 'from' and 'to'
+	color models (inclusive).
+
+	conversions that are not possible simply are not included.
+*/
+
+function buildGraph() {
+  const graph = {};
+  // https://jsperf.com/object-keys-vs-for-in-with-closure/3
+  const models = Object.keys(conversions);
+  for (let len = models.length, i = 0; i < len; i++) {
+    graph[models[i]] = {
+      // http://jsperf.com/1-vs-infinity
+      // micro-opt, but this is simple.
+      distance: -1,
+      parent: null
+    };
+  }
+  return graph;
+}
+
+// https://en.wikipedia.org/wiki/Breadth-first_search
+function deriveBFS(fromModel) {
+  const graph = buildGraph();
+  const queue = [fromModel]; // Unshift -> queue -> pop
+
+  graph[fromModel].distance = 0;
+  while (queue.length) {
+    const current = queue.pop();
+    const adjacents = Object.keys(conversions[current]);
+    for (let len = adjacents.length, i = 0; i < len; i++) {
+      const adjacent = adjacents[i];
+      const node = graph[adjacent];
+      if (node.distance === -1) {
+        node.distance = graph[current].distance + 1;
+        node.parent = current;
+        queue.unshift(adjacent);
+      }
+    }
+  }
+  return graph;
+}
+function link(from, to) {
+  return function (args) {
+    return to(from(args));
+  };
+}
+function wrapConversion(toModel, graph) {
+  const path = [graph[toModel].parent, toModel];
+  let fn = conversions[graph[toModel].parent][toModel];
+  let cur = graph[toModel].parent;
+  while (graph[cur].parent) {
+    path.unshift(graph[cur].parent);
+    fn = link(conversions[graph[cur].parent][cur], fn);
+    cur = graph[cur].parent;
+  }
+  fn.conversion = path;
+  return fn;
+}
+module.exports = function (fromModel) {
+  const graph = deriveBFS(fromModel);
+  const conversion = {};
+  const models = Object.keys(graph);
+  for (let len = models.length, i = 0; i < len; i++) {
+    const toModel = models[i];
+    const node = graph[toModel];
+    if (node.parent === null) {
+      // No possible conversion, or this node is the source model.
+      continue;
+    }
+    conversion[toModel] = wrapConversion(toModel, graph);
+  }
+  return conversion;
+};
+
+/***/ }),
+
+/***/ "./node_modules/color-thief-react/node_modules/color-name/index.js":
+/*!*************************************************************************!*\
+  !*** ./node_modules/color-thief-react/node_modules/color-name/index.js ***!
+  \*************************************************************************/
+/***/ ((module) => {
+
+"use strict";
+
+
+module.exports = {
+  "aliceblue": [240, 248, 255],
+  "antiquewhite": [250, 235, 215],
+  "aqua": [0, 255, 255],
+  "aquamarine": [127, 255, 212],
+  "azure": [240, 255, 255],
+  "beige": [245, 245, 220],
+  "bisque": [255, 228, 196],
+  "black": [0, 0, 0],
+  "blanchedalmond": [255, 235, 205],
+  "blue": [0, 0, 255],
+  "blueviolet": [138, 43, 226],
+  "brown": [165, 42, 42],
+  "burlywood": [222, 184, 135],
+  "cadetblue": [95, 158, 160],
+  "chartreuse": [127, 255, 0],
+  "chocolate": [210, 105, 30],
+  "coral": [255, 127, 80],
+  "cornflowerblue": [100, 149, 237],
+  "cornsilk": [255, 248, 220],
+  "crimson": [220, 20, 60],
+  "cyan": [0, 255, 255],
+  "darkblue": [0, 0, 139],
+  "darkcyan": [0, 139, 139],
+  "darkgoldenrod": [184, 134, 11],
+  "darkgray": [169, 169, 169],
+  "darkgreen": [0, 100, 0],
+  "darkgrey": [169, 169, 169],
+  "darkkhaki": [189, 183, 107],
+  "darkmagenta": [139, 0, 139],
+  "darkolivegreen": [85, 107, 47],
+  "darkorange": [255, 140, 0],
+  "darkorchid": [153, 50, 204],
+  "darkred": [139, 0, 0],
+  "darksalmon": [233, 150, 122],
+  "darkseagreen": [143, 188, 143],
+  "darkslateblue": [72, 61, 139],
+  "darkslategray": [47, 79, 79],
+  "darkslategrey": [47, 79, 79],
+  "darkturquoise": [0, 206, 209],
+  "darkviolet": [148, 0, 211],
+  "deeppink": [255, 20, 147],
+  "deepskyblue": [0, 191, 255],
+  "dimgray": [105, 105, 105],
+  "dimgrey": [105, 105, 105],
+  "dodgerblue": [30, 144, 255],
+  "firebrick": [178, 34, 34],
+  "floralwhite": [255, 250, 240],
+  "forestgreen": [34, 139, 34],
+  "fuchsia": [255, 0, 255],
+  "gainsboro": [220, 220, 220],
+  "ghostwhite": [248, 248, 255],
+  "gold": [255, 215, 0],
+  "goldenrod": [218, 165, 32],
+  "gray": [128, 128, 128],
+  "green": [0, 128, 0],
+  "greenyellow": [173, 255, 47],
+  "grey": [128, 128, 128],
+  "honeydew": [240, 255, 240],
+  "hotpink": [255, 105, 180],
+  "indianred": [205, 92, 92],
+  "indigo": [75, 0, 130],
+  "ivory": [255, 255, 240],
+  "khaki": [240, 230, 140],
+  "lavender": [230, 230, 250],
+  "lavenderblush": [255, 240, 245],
+  "lawngreen": [124, 252, 0],
+  "lemonchiffon": [255, 250, 205],
+  "lightblue": [173, 216, 230],
+  "lightcoral": [240, 128, 128],
+  "lightcyan": [224, 255, 255],
+  "lightgoldenrodyellow": [250, 250, 210],
+  "lightgray": [211, 211, 211],
+  "lightgreen": [144, 238, 144],
+  "lightgrey": [211, 211, 211],
+  "lightpink": [255, 182, 193],
+  "lightsalmon": [255, 160, 122],
+  "lightseagreen": [32, 178, 170],
+  "lightskyblue": [135, 206, 250],
+  "lightslategray": [119, 136, 153],
+  "lightslategrey": [119, 136, 153],
+  "lightsteelblue": [176, 196, 222],
+  "lightyellow": [255, 255, 224],
+  "lime": [0, 255, 0],
+  "limegreen": [50, 205, 50],
+  "linen": [250, 240, 230],
+  "magenta": [255, 0, 255],
+  "maroon": [128, 0, 0],
+  "mediumaquamarine": [102, 205, 170],
+  "mediumblue": [0, 0, 205],
+  "mediumorchid": [186, 85, 211],
+  "mediumpurple": [147, 112, 219],
+  "mediumseagreen": [60, 179, 113],
+  "mediumslateblue": [123, 104, 238],
+  "mediumspringgreen": [0, 250, 154],
+  "mediumturquoise": [72, 209, 204],
+  "mediumvioletred": [199, 21, 133],
+  "midnightblue": [25, 25, 112],
+  "mintcream": [245, 255, 250],
+  "mistyrose": [255, 228, 225],
+  "moccasin": [255, 228, 181],
+  "navajowhite": [255, 222, 173],
+  "navy": [0, 0, 128],
+  "oldlace": [253, 245, 230],
+  "olive": [128, 128, 0],
+  "olivedrab": [107, 142, 35],
+  "orange": [255, 165, 0],
+  "orangered": [255, 69, 0],
+  "orchid": [218, 112, 214],
+  "palegoldenrod": [238, 232, 170],
+  "palegreen": [152, 251, 152],
+  "paleturquoise": [175, 238, 238],
+  "palevioletred": [219, 112, 147],
+  "papayawhip": [255, 239, 213],
+  "peachpuff": [255, 218, 185],
+  "peru": [205, 133, 63],
+  "pink": [255, 192, 203],
+  "plum": [221, 160, 221],
+  "powderblue": [176, 224, 230],
+  "purple": [128, 0, 128],
+  "rebeccapurple": [102, 51, 153],
+  "red": [255, 0, 0],
+  "rosybrown": [188, 143, 143],
+  "royalblue": [65, 105, 225],
+  "saddlebrown": [139, 69, 19],
+  "salmon": [250, 128, 114],
+  "sandybrown": [244, 164, 96],
+  "seagreen": [46, 139, 87],
+  "seashell": [255, 245, 238],
+  "sienna": [160, 82, 45],
+  "silver": [192, 192, 192],
+  "skyblue": [135, 206, 235],
+  "slateblue": [106, 90, 205],
+  "slategray": [112, 128, 144],
+  "slategrey": [112, 128, 144],
+  "snow": [255, 250, 250],
+  "springgreen": [0, 255, 127],
+  "steelblue": [70, 130, 180],
+  "tan": [210, 180, 140],
+  "teal": [0, 128, 128],
+  "thistle": [216, 191, 216],
+  "tomato": [255, 99, 71],
+  "turquoise": [64, 224, 208],
+  "violet": [238, 130, 238],
+  "wheat": [245, 222, 179],
+  "white": [255, 255, 255],
+  "whitesmoke": [245, 245, 245],
+  "yellow": [255, 255, 0],
+  "yellowgreen": [154, 205, 50]
+};
+
+/***/ }),
+
+/***/ "./node_modules/color-thief-react/node_modules/use-current-effect/dist/index.js":
+/*!**************************************************************************************!*\
+  !*** ./node_modules/color-thief-react/node_modules/use-current-effect/dist/index.js ***!
+  \**************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+function __export(m) {
+  for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+exports.__esModule = true;
+__export(__webpack_require__(/*! ./useCurrentEffect */ "./node_modules/color-thief-react/node_modules/use-current-effect/dist/useCurrentEffect.js"));
+__export(__webpack_require__(/*! ./useCurrentCallback */ "./node_modules/color-thief-react/node_modules/use-current-effect/dist/useCurrentCallback.js"));
+
+/***/ }),
+
+/***/ "./node_modules/color-thief-react/node_modules/use-current-effect/dist/useCurrentCallback.js":
+/*!***************************************************************************************************!*\
+  !*** ./node_modules/color-thief-react/node_modules/use-current-effect/dist/useCurrentCallback.js ***!
+  \***************************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+exports.__esModule = true;
+var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+function useCurrentCallback(callbackFactory, deps) {
+  var isCurrent = true;
+  var currentCheck = function () {
+    return isCurrent;
+  };
+  react_1.useEffect(function () {
+    return function () {
+      isCurrent = false;
+    };
+  }, deps);
+  return react_1.useCallback(callbackFactory(currentCheck), deps);
+}
+exports.useCurrentCallback = useCurrentCallback;
+
+/***/ }),
+
+/***/ "./node_modules/color-thief-react/node_modules/use-current-effect/dist/useCurrentEffect.js":
+/*!*************************************************************************************************!*\
+  !*** ./node_modules/color-thief-react/node_modules/use-current-effect/dist/useCurrentEffect.js ***!
+  \*************************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+exports.__esModule = true;
+var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+function useCurrentEffect(callback, deps) {
+  react_1.useEffect(function () {
+    var isCurrent = true;
+    var currentCheck = function () {
+      return isCurrent;
+    };
+    var cleanup = callback(currentCheck);
+    return function () {
+      isCurrent = false;
+      cleanup && cleanup();
+    };
+  }, deps);
+}
+exports.useCurrentEffect = useCurrentEffect;
+
+/***/ }),
+
+/***/ "./node_modules/colorthief/dist/color-thief.umd.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/colorthief/dist/color-thief.umd.js ***!
+  \*********************************************************/
+/***/ (function(module) {
+
+!function (t, r) {
+   true ? module.exports = r() : 0;
+}(this, function () {
+  if (!t) var t = {
+    map: function (t, r) {
+      var n = {};
+      return r ? t.map(function (t, o) {
+        return n.index = o, r.call(n, t);
+      }) : t.slice();
+    },
+    naturalOrder: function (t, r) {
+      return t < r ? -1 : t > r ? 1 : 0;
+    },
+    sum: function (t, r) {
+      var n = {};
+      return t.reduce(r ? function (t, o, e) {
+        return n.index = e, t + r.call(n, o);
+      } : function (t, r) {
+        return t + r;
+      }, 0);
+    },
+    max: function (r, n) {
+      return Math.max.apply(null, n ? t.map(r, n) : r);
+    }
+  };
+  var r = function () {
+      var r = 5,
+        n = 8 - r,
+        o = 1e3;
+      function e(t, n, o) {
+        return (t << 2 * r) + (n << r) + o;
+      }
+      function i(t) {
+        var r = [],
+          n = !1;
+        function o() {
+          r.sort(t), n = !0;
+        }
+        return {
+          push: function (t) {
+            r.push(t), n = !1;
+          },
+          peek: function (t) {
+            return n || o(), void 0 === t && (t = r.length - 1), r[t];
+          },
+          pop: function () {
+            return n || o(), r.pop();
+          },
+          size: function () {
+            return r.length;
+          },
+          map: function (t) {
+            return r.map(t);
+          },
+          debug: function () {
+            return n || o(), r;
+          }
+        };
+      }
+      function u(t, r, n, o, e, i, u) {
+        this.r1 = t, this.r2 = r, this.g1 = n, this.g2 = o, this.b1 = e, this.b2 = i, this.histo = u;
+      }
+      function a() {
+        this.vboxes = new i(function (r, n) {
+          return t.naturalOrder(r.vbox.count() * r.vbox.volume(), n.vbox.count() * n.vbox.volume());
+        });
+      }
+      function s(r, n) {
+        if (n.count()) {
+          var o = n.r2 - n.r1 + 1,
+            i = n.g2 - n.g1 + 1,
+            u = t.max([o, i, n.b2 - n.b1 + 1]);
+          if (1 == n.count()) return [n.copy()];
+          var a,
+            s,
+            h,
+            c,
+            f = 0,
+            v = [],
+            l = [];
+          if (u == o) for (a = n.r1; a <= n.r2; a++) {
+            for (c = 0, s = n.g1; s <= n.g2; s++) for (h = n.b1; h <= n.b2; h++) c += r[e(a, s, h)] || 0;
+            v[a] = f += c;
+          } else if (u == i) for (a = n.g1; a <= n.g2; a++) {
+            for (c = 0, s = n.r1; s <= n.r2; s++) for (h = n.b1; h <= n.b2; h++) c += r[e(s, a, h)] || 0;
+            v[a] = f += c;
+          } else for (a = n.b1; a <= n.b2; a++) {
+            for (c = 0, s = n.r1; s <= n.r2; s++) for (h = n.g1; h <= n.g2; h++) c += r[e(s, h, a)] || 0;
+            v[a] = f += c;
+          }
+          return v.forEach(function (t, r) {
+            l[r] = f - t;
+          }), function (t) {
+            var r,
+              o,
+              e,
+              i,
+              u,
+              s = t + "1",
+              h = t + "2",
+              c = 0;
+            for (a = n[s]; a <= n[h]; a++) if (v[a] > f / 2) {
+              for (e = n.copy(), i = n.copy(), u = (r = a - n[s]) <= (o = n[h] - a) ? Math.min(n[h] - 1, ~~(a + o / 2)) : Math.max(n[s], ~~(a - 1 - r / 2)); !v[u];) u++;
+              for (c = l[u]; !c && v[u - 1];) c = l[--u];
+              return e[h] = u, i[s] = e[h] + 1, [e, i];
+            }
+          }(u == o ? "r" : u == i ? "g" : "b");
+        }
+      }
+      return u.prototype = {
+        volume: function (t) {
+          return this._volume && !t || (this._volume = (this.r2 - this.r1 + 1) * (this.g2 - this.g1 + 1) * (this.b2 - this.b1 + 1)), this._volume;
+        },
+        count: function (t) {
+          var r = this.histo;
+          if (!this._count_set || t) {
+            var n,
+              o,
+              i,
+              u = 0;
+            for (n = this.r1; n <= this.r2; n++) for (o = this.g1; o <= this.g2; o++) for (i = this.b1; i <= this.b2; i++) u += r[e(n, o, i)] || 0;
+            this._count = u, this._count_set = !0;
+          }
+          return this._count;
+        },
+        copy: function () {
+          return new u(this.r1, this.r2, this.g1, this.g2, this.b1, this.b2, this.histo);
+        },
+        avg: function (t) {
+          var n = this.histo;
+          if (!this._avg || t) {
+            var o,
+              i,
+              u,
+              a,
+              s = 0,
+              h = 1 << 8 - r,
+              c = 0,
+              f = 0,
+              v = 0;
+            for (i = this.r1; i <= this.r2; i++) for (u = this.g1; u <= this.g2; u++) for (a = this.b1; a <= this.b2; a++) s += o = n[e(i, u, a)] || 0, c += o * (i + .5) * h, f += o * (u + .5) * h, v += o * (a + .5) * h;
+            this._avg = s ? [~~(c / s), ~~(f / s), ~~(v / s)] : [~~(h * (this.r1 + this.r2 + 1) / 2), ~~(h * (this.g1 + this.g2 + 1) / 2), ~~(h * (this.b1 + this.b2 + 1) / 2)];
+          }
+          return this._avg;
+        },
+        contains: function (t) {
+          var r = t[0] >> n;
+          return gval = t[1] >> n, bval = t[2] >> n, r >= this.r1 && r <= this.r2 && gval >= this.g1 && gval <= this.g2 && bval >= this.b1 && bval <= this.b2;
+        }
+      }, a.prototype = {
+        push: function (t) {
+          this.vboxes.push({
+            vbox: t,
+            color: t.avg()
+          });
+        },
+        palette: function () {
+          return this.vboxes.map(function (t) {
+            return t.color;
+          });
+        },
+        size: function () {
+          return this.vboxes.size();
+        },
+        map: function (t) {
+          for (var r = this.vboxes, n = 0; n < r.size(); n++) if (r.peek(n).vbox.contains(t)) return r.peek(n).color;
+          return this.nearest(t);
+        },
+        nearest: function (t) {
+          for (var r, n, o, e = this.vboxes, i = 0; i < e.size(); i++) ((n = Math.sqrt(Math.pow(t[0] - e.peek(i).color[0], 2) + Math.pow(t[1] - e.peek(i).color[1], 2) + Math.pow(t[2] - e.peek(i).color[2], 2))) < r || void 0 === r) && (r = n, o = e.peek(i).color);
+          return o;
+        },
+        forcebw: function () {
+          var r = this.vboxes;
+          r.sort(function (r, n) {
+            return t.naturalOrder(t.sum(r.color), t.sum(n.color));
+          });
+          var n = r[0].color;
+          n[0] < 5 && n[1] < 5 && n[2] < 5 && (r[0].color = [0, 0, 0]);
+          var o = r.length - 1,
+            e = r[o].color;
+          e[0] > 251 && e[1] > 251 && e[2] > 251 && (r[o].color = [255, 255, 255]);
+        }
+      }, {
+        quantize: function (h, c) {
+          if (!h.length || c < 2 || c > 256) return !1;
+          var f = function (t) {
+            var o,
+              i = new Array(1 << 3 * r);
+            return t.forEach(function (t) {
+              o = e(t[0] >> n, t[1] >> n, t[2] >> n), i[o] = (i[o] || 0) + 1;
+            }), i;
+          }(h);
+          f.forEach(function () {});
+          var v = function (t, r) {
+              var o,
+                e,
+                i,
+                a = 1e6,
+                s = 0,
+                h = 1e6,
+                c = 0,
+                f = 1e6,
+                v = 0;
+              return t.forEach(function (t) {
+                (o = t[0] >> n) < a ? a = o : o > s && (s = o), (e = t[1] >> n) < h ? h = e : e > c && (c = e), (i = t[2] >> n) < f ? f = i : i > v && (v = i);
+              }), new u(a, s, h, c, f, v, r);
+            }(h, f),
+            l = new i(function (r, n) {
+              return t.naturalOrder(r.count(), n.count());
+            });
+          function g(t, r) {
+            for (var n, e = t.size(), i = 0; i < o;) {
+              if (e >= r) return;
+              if (i++ > o) return;
+              if ((n = t.pop()).count()) {
+                var u = s(f, n),
+                  a = u[0],
+                  h = u[1];
+                if (!a) return;
+                t.push(a), h && (t.push(h), e++);
+              } else t.push(n), i++;
+            }
+          }
+          l.push(v), g(l, .75 * c);
+          for (var p = new i(function (r, n) {
+            return t.naturalOrder(r.count() * r.volume(), n.count() * n.volume());
+          }); l.size();) p.push(l.pop());
+          g(p, c);
+          for (var d = new a(); p.size();) d.push(p.pop());
+          return d;
+        }
+      };
+    }().quantize,
+    n = function (t) {
+      this.canvas = document.createElement("canvas"), this.context = this.canvas.getContext("2d"), this.width = this.canvas.width = t.naturalWidth, this.height = this.canvas.height = t.naturalHeight, this.context.drawImage(t, 0, 0, this.width, this.height);
+    };
+  n.prototype.getImageData = function () {
+    return this.context.getImageData(0, 0, this.width, this.height);
+  };
+  var o = function () {};
+  return o.prototype.getColor = function (t, r) {
+    return void 0 === r && (r = 10), this.getPalette(t, 5, r)[0];
+  }, o.prototype.getPalette = function (t, o, e) {
+    var i = function (t) {
+        var r = t.colorCount,
+          n = t.quality;
+        if (void 0 !== r && Number.isInteger(r)) {
+          if (1 === r) throw new Error("colorCount should be between 2 and 20. To get one color, call getColor() instead of getPalette()");
+          r = Math.max(r, 2), r = Math.min(r, 20);
+        } else r = 10;
+        return (void 0 === n || !Number.isInteger(n) || n < 1) && (n = 10), {
+          colorCount: r,
+          quality: n
+        };
+      }({
+        colorCount: o,
+        quality: e
+      }),
+      u = new n(t),
+      a = function (t, r, n) {
+        for (var o = t, e = [], i = 0, u = void 0, a = void 0, s = void 0, h = void 0, c = void 0; i < r; i += n) a = o[0 + (u = 4 * i)], s = o[u + 1], h = o[u + 2], (void 0 === (c = o[u + 3]) || c >= 125) && (a > 250 && s > 250 && h > 250 || e.push([a, s, h]));
+        return e;
+      }(u.getImageData().data, u.width * u.height, i.quality),
+      s = r(a, i.colorCount);
+    return s ? s.palette() : null;
+  }, o.prototype.getColorFromUrl = function (t, r, n) {
+    var o = this,
+      e = document.createElement("img");
+    e.addEventListener("load", function () {
+      var i = o.getPalette(e, 5, n);
+      r(i[0], t);
+    }), e.src = t;
+  }, o.prototype.getImageData = function (t, r) {
+    var n = new XMLHttpRequest();
+    n.open("GET", t, !0), n.responseType = "arraybuffer", n.onload = function () {
+      if (200 == this.status) {
+        var t = new Uint8Array(this.response);
+        i = t.length;
+        for (var n = new Array(i), o = 0; o < t.length; o++) n[o] = String.fromCharCode(t[o]);
+        var e = n.join(""),
+          u = window.btoa(e);
+        r("data:image/png;base64," + u);
+      }
+    }, n.send();
+  }, o.prototype.getColorAsync = function (t, r, n) {
+    var o = this;
+    this.getImageData(t, function (t) {
+      var e = document.createElement("img");
+      e.addEventListener("load", function () {
+        var t = o.getPalette(e, 5, n);
+        r(t[0], this);
+      }), e.src = t;
+    });
+  }, o;
+});
+
+/***/ }),
+
 /***/ "./node_modules/css-loader/dist/runtime/api.js":
 /*!*****************************************************!*\
   !*** ./node_modules/css-loader/dist/runtime/api.js ***!
@@ -1655,6 +3855,815 @@ module.exports = function (item) {
   }
   return [content].join("\n");
 };
+
+/***/ }),
+
+/***/ "./node_modules/omggif/omggif.js":
+/*!***************************************!*\
+  !*** ./node_modules/omggif/omggif.js ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+// (c) Dean McNamee <dean@gmail.com>, 2013.
+//
+// https://github.com/deanm/omggif
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+// sell copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+// IN THE SOFTWARE.
+//
+// omggif is a JavaScript implementation of a GIF 89a encoder and decoder,
+// including animation and compression.  It does not rely on any specific
+// underlying system, so should run in the browser, Node, or Plask.
+
+
+
+function GifWriter(buf, width, height, gopts) {
+  var p = 0;
+  var gopts = gopts === undefined ? {} : gopts;
+  var loop_count = gopts.loop === undefined ? null : gopts.loop;
+  var global_palette = gopts.palette === undefined ? null : gopts.palette;
+  if (width <= 0 || height <= 0 || width > 65535 || height > 65535) throw new Error("Width/Height invalid.");
+  function check_palette_and_num_colors(palette) {
+    var num_colors = palette.length;
+    if (num_colors < 2 || num_colors > 256 || num_colors & num_colors - 1) {
+      throw new Error("Invalid code/color length, must be power of 2 and 2 .. 256.");
+    }
+    return num_colors;
+  }
+
+  // - Header.
+  buf[p++] = 0x47;
+  buf[p++] = 0x49;
+  buf[p++] = 0x46; // GIF
+  buf[p++] = 0x38;
+  buf[p++] = 0x39;
+  buf[p++] = 0x61; // 89a
+
+  // Handling of Global Color Table (palette) and background index.
+  var gp_num_colors_pow2 = 0;
+  var background = 0;
+  if (global_palette !== null) {
+    var gp_num_colors = check_palette_and_num_colors(global_palette);
+    while (gp_num_colors >>= 1) ++gp_num_colors_pow2;
+    gp_num_colors = 1 << gp_num_colors_pow2;
+    --gp_num_colors_pow2;
+    if (gopts.background !== undefined) {
+      background = gopts.background;
+      if (background >= gp_num_colors) throw new Error("Background index out of range.");
+      // The GIF spec states that a background index of 0 should be ignored, so
+      // this is probably a mistake and you really want to set it to another
+      // slot in the palette.  But actually in the end most browsers, etc end
+      // up ignoring this almost completely (including for dispose background).
+      if (background === 0) throw new Error("Background index explicitly passed as 0.");
+    }
+  }
+
+  // - Logical Screen Descriptor.
+  // NOTE(deanm): w/h apparently ignored by implementations, but set anyway.
+  buf[p++] = width & 0xff;
+  buf[p++] = width >> 8 & 0xff;
+  buf[p++] = height & 0xff;
+  buf[p++] = height >> 8 & 0xff;
+  // NOTE: Indicates 0-bpp original color resolution (unused?).
+  buf[p++] = (global_palette !== null ? 0x80 : 0) |
+  // Global Color Table Flag.
+  gp_num_colors_pow2; // NOTE: No sort flag (unused?).
+  buf[p++] = background; // Background Color Index.
+  buf[p++] = 0; // Pixel aspect ratio (unused?).
+
+  // - Global Color Table
+  if (global_palette !== null) {
+    for (var i = 0, il = global_palette.length; i < il; ++i) {
+      var rgb = global_palette[i];
+      buf[p++] = rgb >> 16 & 0xff;
+      buf[p++] = rgb >> 8 & 0xff;
+      buf[p++] = rgb & 0xff;
+    }
+  }
+  if (loop_count !== null) {
+    // Netscape block for looping.
+    if (loop_count < 0 || loop_count > 65535) throw new Error("Loop count invalid.");
+    // Extension code, label, and length.
+    buf[p++] = 0x21;
+    buf[p++] = 0xff;
+    buf[p++] = 0x0b;
+    // NETSCAPE2.0
+    buf[p++] = 0x4e;
+    buf[p++] = 0x45;
+    buf[p++] = 0x54;
+    buf[p++] = 0x53;
+    buf[p++] = 0x43;
+    buf[p++] = 0x41;
+    buf[p++] = 0x50;
+    buf[p++] = 0x45;
+    buf[p++] = 0x32;
+    buf[p++] = 0x2e;
+    buf[p++] = 0x30;
+    // Sub-block
+    buf[p++] = 0x03;
+    buf[p++] = 0x01;
+    buf[p++] = loop_count & 0xff;
+    buf[p++] = loop_count >> 8 & 0xff;
+    buf[p++] = 0x00; // Terminator.
+  }
+
+  var ended = false;
+  this.addFrame = function (x, y, w, h, indexed_pixels, opts) {
+    if (ended === true) {
+      --p;
+      ended = false;
+    } // Un-end.
+
+    opts = opts === undefined ? {} : opts;
+
+    // TODO(deanm): Bounds check x, y.  Do they need to be within the virtual
+    // canvas width/height, I imagine?
+    if (x < 0 || y < 0 || x > 65535 || y > 65535) throw new Error("x/y invalid.");
+    if (w <= 0 || h <= 0 || w > 65535 || h > 65535) throw new Error("Width/Height invalid.");
+    if (indexed_pixels.length < w * h) throw new Error("Not enough pixels for the frame size.");
+    var using_local_palette = true;
+    var palette = opts.palette;
+    if (palette === undefined || palette === null) {
+      using_local_palette = false;
+      palette = global_palette;
+    }
+    if (palette === undefined || palette === null) throw new Error("Must supply either a local or global palette.");
+    var num_colors = check_palette_and_num_colors(palette);
+
+    // Compute the min_code_size (power of 2), destroying num_colors.
+    var min_code_size = 0;
+    while (num_colors >>= 1) ++min_code_size;
+    num_colors = 1 << min_code_size; // Now we can easily get it back.
+
+    var delay = opts.delay === undefined ? 0 : opts.delay;
+
+    // From the spec:
+    //     0 -   No disposal specified. The decoder is
+    //           not required to take any action.
+    //     1 -   Do not dispose. The graphic is to be left
+    //           in place.
+    //     2 -   Restore to background color. The area used by the
+    //           graphic must be restored to the background color.
+    //     3 -   Restore to previous. The decoder is required to
+    //           restore the area overwritten by the graphic with
+    //           what was there prior to rendering the graphic.
+    //  4-7 -    To be defined.
+    // NOTE(deanm): Dispose background doesn't really work, apparently most
+    // browsers ignore the background palette index and clear to transparency.
+    var disposal = opts.disposal === undefined ? 0 : opts.disposal;
+    if (disposal < 0 || disposal > 3)
+      // 4-7 is reserved.
+      throw new Error("Disposal out of range.");
+    var use_transparency = false;
+    var transparent_index = 0;
+    if (opts.transparent !== undefined && opts.transparent !== null) {
+      use_transparency = true;
+      transparent_index = opts.transparent;
+      if (transparent_index < 0 || transparent_index >= num_colors) throw new Error("Transparent color index.");
+    }
+    if (disposal !== 0 || use_transparency || delay !== 0) {
+      // - Graphics Control Extension
+      buf[p++] = 0x21;
+      buf[p++] = 0xf9; // Extension / Label.
+      buf[p++] = 4; // Byte size.
+
+      buf[p++] = disposal << 2 | (use_transparency === true ? 1 : 0);
+      buf[p++] = delay & 0xff;
+      buf[p++] = delay >> 8 & 0xff;
+      buf[p++] = transparent_index; // Transparent color index.
+      buf[p++] = 0; // Block Terminator.
+    }
+
+    // - Image Descriptor
+    buf[p++] = 0x2c; // Image Seperator.
+    buf[p++] = x & 0xff;
+    buf[p++] = x >> 8 & 0xff; // Left.
+    buf[p++] = y & 0xff;
+    buf[p++] = y >> 8 & 0xff; // Top.
+    buf[p++] = w & 0xff;
+    buf[p++] = w >> 8 & 0xff;
+    buf[p++] = h & 0xff;
+    buf[p++] = h >> 8 & 0xff;
+    // NOTE: No sort flag (unused?).
+    // TODO(deanm): Support interlace.
+    buf[p++] = using_local_palette === true ? 0x80 | min_code_size - 1 : 0;
+
+    // - Local Color Table
+    if (using_local_palette === true) {
+      for (var i = 0, il = palette.length; i < il; ++i) {
+        var rgb = palette[i];
+        buf[p++] = rgb >> 16 & 0xff;
+        buf[p++] = rgb >> 8 & 0xff;
+        buf[p++] = rgb & 0xff;
+      }
+    }
+    p = GifWriterOutputLZWCodeStream(buf, p, min_code_size < 2 ? 2 : min_code_size, indexed_pixels);
+    return p;
+  };
+  this.end = function () {
+    if (ended === false) {
+      buf[p++] = 0x3b; // Trailer.
+      ended = true;
+    }
+    return p;
+  };
+  this.getOutputBuffer = function () {
+    return buf;
+  };
+  this.setOutputBuffer = function (v) {
+    buf = v;
+  };
+  this.getOutputBufferPosition = function () {
+    return p;
+  };
+  this.setOutputBufferPosition = function (v) {
+    p = v;
+  };
+}
+
+// Main compression routine, palette indexes -> LZW code stream.
+// |index_stream| must have at least one entry.
+function GifWriterOutputLZWCodeStream(buf, p, min_code_size, index_stream) {
+  buf[p++] = min_code_size;
+  var cur_subblock = p++; // Pointing at the length field.
+
+  var clear_code = 1 << min_code_size;
+  var code_mask = clear_code - 1;
+  var eoi_code = clear_code + 1;
+  var next_code = eoi_code + 1;
+  var cur_code_size = min_code_size + 1; // Number of bits per code.
+  var cur_shift = 0;
+  // We have at most 12-bit codes, so we should have to hold a max of 19
+  // bits here (and then we would write out).
+  var cur = 0;
+  function emit_bytes_to_buffer(bit_block_size) {
+    while (cur_shift >= bit_block_size) {
+      buf[p++] = cur & 0xff;
+      cur >>= 8;
+      cur_shift -= 8;
+      if (p === cur_subblock + 256) {
+        // Finished a subblock.
+        buf[cur_subblock] = 255;
+        cur_subblock = p++;
+      }
+    }
+  }
+  function emit_code(c) {
+    cur |= c << cur_shift;
+    cur_shift += cur_code_size;
+    emit_bytes_to_buffer(8);
+  }
+
+  // I am not an expert on the topic, and I don't want to write a thesis.
+  // However, it is good to outline here the basic algorithm and the few data
+  // structures and optimizations here that make this implementation fast.
+  // The basic idea behind LZW is to build a table of previously seen runs
+  // addressed by a short id (herein called output code).  All data is
+  // referenced by a code, which represents one or more values from the
+  // original input stream.  All input bytes can be referenced as the same
+  // value as an output code.  So if you didn't want any compression, you
+  // could more or less just output the original bytes as codes (there are
+  // some details to this, but it is the idea).  In order to achieve
+  // compression, values greater then the input range (codes can be up to
+  // 12-bit while input only 8-bit) represent a sequence of previously seen
+  // inputs.  The decompressor is able to build the same mapping while
+  // decoding, so there is always a shared common knowledge between the
+  // encoding and decoder, which is also important for "timing" aspects like
+  // how to handle variable bit width code encoding.
+  //
+  // One obvious but very important consequence of the table system is there
+  // is always a unique id (at most 12-bits) to map the runs.  'A' might be
+  // 4, then 'AA' might be 10, 'AAA' 11, 'AAAA' 12, etc.  This relationship
+  // can be used for an effecient lookup strategy for the code mapping.  We
+  // need to know if a run has been seen before, and be able to map that run
+  // to the output code.  Since we start with known unique ids (input bytes),
+  // and then from those build more unique ids (table entries), we can
+  // continue this chain (almost like a linked list) to always have small
+  // integer values that represent the current byte chains in the encoder.
+  // This means instead of tracking the input bytes (AAAABCD) to know our
+  // current state, we can track the table entry for AAAABC (it is guaranteed
+  // to exist by the nature of the algorithm) and the next character D.
+  // Therefor the tuple of (table_entry, byte) is guaranteed to also be
+  // unique.  This allows us to create a simple lookup key for mapping input
+  // sequences to codes (table indices) without having to store or search
+  // any of the code sequences.  So if 'AAAA' has a table entry of 12, the
+  // tuple of ('AAAA', K) for any input byte K will be unique, and can be our
+  // key.  This leads to a integer value at most 20-bits, which can always
+  // fit in an SMI value and be used as a fast sparse array / object key.
+
+  // Output code for the current contents of the index buffer.
+  var ib_code = index_stream[0] & code_mask; // Load first input index.
+  var code_table = {}; // Key'd on our 20-bit "tuple".
+
+  emit_code(clear_code); // Spec says first code should be a clear code.
+
+  // First index already loaded, process the rest of the stream.
+  for (var i = 1, il = index_stream.length; i < il; ++i) {
+    var k = index_stream[i] & code_mask;
+    var cur_key = ib_code << 8 | k; // (prev, k) unique tuple.
+    var cur_code = code_table[cur_key]; // buffer + k.
+
+    // Check if we have to create a new code table entry.
+    if (cur_code === undefined) {
+      // We don't have buffer + k.
+      // Emit index buffer (without k).
+      // This is an inline version of emit_code, because this is the core
+      // writing routine of the compressor (and V8 cannot inline emit_code
+      // because it is a closure here in a different context).  Additionally
+      // we can call emit_byte_to_buffer less often, because we can have
+      // 30-bits (from our 31-bit signed SMI), and we know our codes will only
+      // be 12-bits, so can safely have 18-bits there without overflow.
+      // emit_code(ib_code);
+      cur |= ib_code << cur_shift;
+      cur_shift += cur_code_size;
+      while (cur_shift >= 8) {
+        buf[p++] = cur & 0xff;
+        cur >>= 8;
+        cur_shift -= 8;
+        if (p === cur_subblock + 256) {
+          // Finished a subblock.
+          buf[cur_subblock] = 255;
+          cur_subblock = p++;
+        }
+      }
+      if (next_code === 4096) {
+        // Table full, need a clear.
+        emit_code(clear_code);
+        next_code = eoi_code + 1;
+        cur_code_size = min_code_size + 1;
+        code_table = {};
+      } else {
+        // Table not full, insert a new entry.
+        // Increase our variable bit code sizes if necessary.  This is a bit
+        // tricky as it is based on "timing" between the encoding and
+        // decoder.  From the encoders perspective this should happen after
+        // we've already emitted the index buffer and are about to create the
+        // first table entry that would overflow our current code bit size.
+        if (next_code >= 1 << cur_code_size) ++cur_code_size;
+        code_table[cur_key] = next_code++; // Insert into code table.
+      }
+
+      ib_code = k; // Index buffer to single input k.
+    } else {
+      ib_code = cur_code; // Index buffer to sequence in code table.
+    }
+  }
+
+  emit_code(ib_code); // There will still be something in the index buffer.
+  emit_code(eoi_code); // End Of Information.
+
+  // Flush / finalize the sub-blocks stream to the buffer.
+  emit_bytes_to_buffer(1);
+
+  // Finish the sub-blocks, writing out any unfinished lengths and
+  // terminating with a sub-block of length 0.  If we have already started
+  // but not yet used a sub-block it can just become the terminator.
+  if (cur_subblock + 1 === p) {
+    // Started but unused.
+    buf[cur_subblock] = 0;
+  } else {
+    // Started and used, write length and additional terminator block.
+    buf[cur_subblock] = p - cur_subblock - 1;
+    buf[p++] = 0;
+  }
+  return p;
+}
+function GifReader(buf) {
+  var p = 0;
+
+  // - Header (GIF87a or GIF89a).
+  if (buf[p++] !== 0x47 || buf[p++] !== 0x49 || buf[p++] !== 0x46 || buf[p++] !== 0x38 || (buf[p++] + 1 & 0xfd) !== 0x38 || buf[p++] !== 0x61) {
+    throw new Error("Invalid GIF 87a/89a header.");
+  }
+
+  // - Logical Screen Descriptor.
+  var width = buf[p++] | buf[p++] << 8;
+  var height = buf[p++] | buf[p++] << 8;
+  var pf0 = buf[p++]; // <Packed Fields>.
+  var global_palette_flag = pf0 >> 7;
+  var num_global_colors_pow2 = pf0 & 0x7;
+  var num_global_colors = 1 << num_global_colors_pow2 + 1;
+  var background = buf[p++];
+  buf[p++]; // Pixel aspect ratio (unused?).
+
+  var global_palette_offset = null;
+  var global_palette_size = null;
+  if (global_palette_flag) {
+    global_palette_offset = p;
+    global_palette_size = num_global_colors;
+    p += num_global_colors * 3; // Seek past palette.
+  }
+
+  var no_eof = true;
+  var frames = [];
+  var delay = 0;
+  var transparent_index = null;
+  var disposal = 0; // 0 - No disposal specified.
+  var loop_count = null;
+  this.width = width;
+  this.height = height;
+  while (no_eof && p < buf.length) {
+    switch (buf[p++]) {
+      case 0x21:
+        // Graphics Control Extension Block
+        switch (buf[p++]) {
+          case 0xff:
+            // Application specific block
+            // Try if it's a Netscape block (with animation loop counter).
+            if (buf[p] !== 0x0b ||
+            // 21 FF already read, check block size.
+            // NETSCAPE2.0
+            buf[p + 1] == 0x4e && buf[p + 2] == 0x45 && buf[p + 3] == 0x54 && buf[p + 4] == 0x53 && buf[p + 5] == 0x43 && buf[p + 6] == 0x41 && buf[p + 7] == 0x50 && buf[p + 8] == 0x45 && buf[p + 9] == 0x32 && buf[p + 10] == 0x2e && buf[p + 11] == 0x30 &&
+            // Sub-block
+            buf[p + 12] == 0x03 && buf[p + 13] == 0x01 && buf[p + 16] == 0) {
+              p += 14;
+              loop_count = buf[p++] | buf[p++] << 8;
+              p++; // Skip terminator.
+            } else {
+              // We don't know what it is, just try to get past it.
+              p += 12;
+              while (true) {
+                // Seek through subblocks.
+                var block_size = buf[p++];
+                // Bad block size (ex: undefined from an out of bounds read).
+                if (!(block_size >= 0)) throw Error("Invalid block size");
+                if (block_size === 0) break; // 0 size is terminator
+                p += block_size;
+              }
+            }
+            break;
+          case 0xf9:
+            // Graphics Control Extension
+            if (buf[p++] !== 0x4 || buf[p + 4] !== 0) throw new Error("Invalid graphics extension block.");
+            var pf1 = buf[p++];
+            delay = buf[p++] | buf[p++] << 8;
+            transparent_index = buf[p++];
+            if ((pf1 & 1) === 0) transparent_index = null;
+            disposal = pf1 >> 2 & 0x7;
+            p++; // Skip terminator.
+            break;
+          case 0xfe:
+            // Comment Extension.
+            while (true) {
+              // Seek through subblocks.
+              var block_size = buf[p++];
+              // Bad block size (ex: undefined from an out of bounds read).
+              if (!(block_size >= 0)) throw Error("Invalid block size");
+              if (block_size === 0) break; // 0 size is terminator
+              // console.log(buf.slice(p, p+block_size).toString('ascii'));
+              p += block_size;
+            }
+            break;
+          default:
+            throw new Error("Unknown graphic control label: 0x" + buf[p - 1].toString(16));
+        }
+        break;
+      case 0x2c:
+        // Image Descriptor.
+        var x = buf[p++] | buf[p++] << 8;
+        var y = buf[p++] | buf[p++] << 8;
+        var w = buf[p++] | buf[p++] << 8;
+        var h = buf[p++] | buf[p++] << 8;
+        var pf2 = buf[p++];
+        var local_palette_flag = pf2 >> 7;
+        var interlace_flag = pf2 >> 6 & 1;
+        var num_local_colors_pow2 = pf2 & 0x7;
+        var num_local_colors = 1 << num_local_colors_pow2 + 1;
+        var palette_offset = global_palette_offset;
+        var palette_size = global_palette_size;
+        var has_local_palette = false;
+        if (local_palette_flag) {
+          var has_local_palette = true;
+          palette_offset = p; // Override with local palette.
+          palette_size = num_local_colors;
+          p += num_local_colors * 3; // Seek past palette.
+        }
+
+        var data_offset = p;
+        p++; // codesize
+        while (true) {
+          var block_size = buf[p++];
+          // Bad block size (ex: undefined from an out of bounds read).
+          if (!(block_size >= 0)) throw Error("Invalid block size");
+          if (block_size === 0) break; // 0 size is terminator
+          p += block_size;
+        }
+        frames.push({
+          x: x,
+          y: y,
+          width: w,
+          height: h,
+          has_local_palette: has_local_palette,
+          palette_offset: palette_offset,
+          palette_size: palette_size,
+          data_offset: data_offset,
+          data_length: p - data_offset,
+          transparent_index: transparent_index,
+          interlaced: !!interlace_flag,
+          delay: delay,
+          disposal: disposal
+        });
+        break;
+      case 0x3b:
+        // Trailer Marker (end of file).
+        no_eof = false;
+        break;
+      default:
+        throw new Error("Unknown gif block: 0x" + buf[p - 1].toString(16));
+        break;
+    }
+  }
+  this.numFrames = function () {
+    return frames.length;
+  };
+  this.loopCount = function () {
+    return loop_count;
+  };
+  this.frameInfo = function (frame_num) {
+    if (frame_num < 0 || frame_num >= frames.length) throw new Error("Frame index out of range.");
+    return frames[frame_num];
+  };
+  this.decodeAndBlitFrameBGRA = function (frame_num, pixels) {
+    var frame = this.frameInfo(frame_num);
+    var num_pixels = frame.width * frame.height;
+    var index_stream = new Uint8Array(num_pixels); // At most 8-bit indices.
+    GifReaderLZWOutputIndexStream(buf, frame.data_offset, index_stream, num_pixels);
+    var palette_offset = frame.palette_offset;
+
+    // NOTE(deanm): It seems to be much faster to compare index to 256 than
+    // to === null.  Not sure why, but CompareStub_EQ_STRICT shows up high in
+    // the profile, not sure if it's related to using a Uint8Array.
+    var trans = frame.transparent_index;
+    if (trans === null) trans = 256;
+
+    // We are possibly just blitting to a portion of the entire frame.
+    // That is a subrect within the framerect, so the additional pixels
+    // must be skipped over after we finished a scanline.
+    var framewidth = frame.width;
+    var framestride = width - framewidth;
+    var xleft = framewidth; // Number of subrect pixels left in scanline.
+
+    // Output indicies of the top left and bottom right corners of the subrect.
+    var opbeg = (frame.y * width + frame.x) * 4;
+    var opend = ((frame.y + frame.height) * width + frame.x) * 4;
+    var op = opbeg;
+    var scanstride = framestride * 4;
+
+    // Use scanstride to skip past the rows when interlacing.  This is skipping
+    // 7 rows for the first two passes, then 3 then 1.
+    if (frame.interlaced === true) {
+      scanstride += width * 4 * 7; // Pass 1.
+    }
+
+    var interlaceskip = 8; // Tracking the row interval in the current pass.
+
+    for (var i = 0, il = index_stream.length; i < il; ++i) {
+      var index = index_stream[i];
+      if (xleft === 0) {
+        // Beginning of new scan line
+        op += scanstride;
+        xleft = framewidth;
+        if (op >= opend) {
+          // Catch the wrap to switch passes when interlacing.
+          scanstride = framestride * 4 + width * 4 * (interlaceskip - 1);
+          // interlaceskip / 2 * 4 is interlaceskip << 1.
+          op = opbeg + (framewidth + framestride) * (interlaceskip << 1);
+          interlaceskip >>= 1;
+        }
+      }
+      if (index === trans) {
+        op += 4;
+      } else {
+        var r = buf[palette_offset + index * 3];
+        var g = buf[palette_offset + index * 3 + 1];
+        var b = buf[palette_offset + index * 3 + 2];
+        pixels[op++] = b;
+        pixels[op++] = g;
+        pixels[op++] = r;
+        pixels[op++] = 255;
+      }
+      --xleft;
+    }
+  };
+
+  // I will go to copy and paste hell one day...
+  this.decodeAndBlitFrameRGBA = function (frame_num, pixels) {
+    var frame = this.frameInfo(frame_num);
+    var num_pixels = frame.width * frame.height;
+    var index_stream = new Uint8Array(num_pixels); // At most 8-bit indices.
+    GifReaderLZWOutputIndexStream(buf, frame.data_offset, index_stream, num_pixels);
+    var palette_offset = frame.palette_offset;
+
+    // NOTE(deanm): It seems to be much faster to compare index to 256 than
+    // to === null.  Not sure why, but CompareStub_EQ_STRICT shows up high in
+    // the profile, not sure if it's related to using a Uint8Array.
+    var trans = frame.transparent_index;
+    if (trans === null) trans = 256;
+
+    // We are possibly just blitting to a portion of the entire frame.
+    // That is a subrect within the framerect, so the additional pixels
+    // must be skipped over after we finished a scanline.
+    var framewidth = frame.width;
+    var framestride = width - framewidth;
+    var xleft = framewidth; // Number of subrect pixels left in scanline.
+
+    // Output indicies of the top left and bottom right corners of the subrect.
+    var opbeg = (frame.y * width + frame.x) * 4;
+    var opend = ((frame.y + frame.height) * width + frame.x) * 4;
+    var op = opbeg;
+    var scanstride = framestride * 4;
+
+    // Use scanstride to skip past the rows when interlacing.  This is skipping
+    // 7 rows for the first two passes, then 3 then 1.
+    if (frame.interlaced === true) {
+      scanstride += width * 4 * 7; // Pass 1.
+    }
+
+    var interlaceskip = 8; // Tracking the row interval in the current pass.
+
+    for (var i = 0, il = index_stream.length; i < il; ++i) {
+      var index = index_stream[i];
+      if (xleft === 0) {
+        // Beginning of new scan line
+        op += scanstride;
+        xleft = framewidth;
+        if (op >= opend) {
+          // Catch the wrap to switch passes when interlacing.
+          scanstride = framestride * 4 + width * 4 * (interlaceskip - 1);
+          // interlaceskip / 2 * 4 is interlaceskip << 1.
+          op = opbeg + (framewidth + framestride) * (interlaceskip << 1);
+          interlaceskip >>= 1;
+        }
+      }
+      if (index === trans) {
+        op += 4;
+      } else {
+        var r = buf[palette_offset + index * 3];
+        var g = buf[palette_offset + index * 3 + 1];
+        var b = buf[palette_offset + index * 3 + 2];
+        pixels[op++] = r;
+        pixels[op++] = g;
+        pixels[op++] = b;
+        pixels[op++] = 255;
+      }
+      --xleft;
+    }
+  };
+}
+function GifReaderLZWOutputIndexStream(code_stream, p, output, output_length) {
+  var min_code_size = code_stream[p++];
+  var clear_code = 1 << min_code_size;
+  var eoi_code = clear_code + 1;
+  var next_code = eoi_code + 1;
+  var cur_code_size = min_code_size + 1; // Number of bits per code.
+  // NOTE: This shares the same name as the encoder, but has a different
+  // meaning here.  Here this masks each code coming from the code stream.
+  var code_mask = (1 << cur_code_size) - 1;
+  var cur_shift = 0;
+  var cur = 0;
+  var op = 0; // Output pointer.
+
+  var subblock_size = code_stream[p++];
+
+  // TODO(deanm): Would using a TypedArray be any faster?  At least it would
+  // solve the fast mode / backing store uncertainty.
+  // var code_table = Array(4096);
+  var code_table = new Int32Array(4096); // Can be signed, we only use 20 bits.
+
+  var prev_code = null; // Track code-1.
+
+  while (true) {
+    // Read up to two bytes, making sure we always 12-bits for max sized code.
+    while (cur_shift < 16) {
+      if (subblock_size === 0) break; // No more data to be read.
+
+      cur |= code_stream[p++] << cur_shift;
+      cur_shift += 8;
+      if (subblock_size === 1) {
+        // Never let it get to 0 to hold logic above.
+        subblock_size = code_stream[p++]; // Next subblock.
+      } else {
+        --subblock_size;
+      }
+    }
+
+    // TODO(deanm): We should never really get here, we should have received
+    // and EOI.
+    if (cur_shift < cur_code_size) break;
+    var code = cur & code_mask;
+    cur >>= cur_code_size;
+    cur_shift -= cur_code_size;
+
+    // TODO(deanm): Maybe should check that the first code was a clear code,
+    // at least this is what you're supposed to do.  But actually our encoder
+    // now doesn't emit a clear code first anyway.
+    if (code === clear_code) {
+      // We don't actually have to clear the table.  This could be a good idea
+      // for greater error checking, but we don't really do any anyway.  We
+      // will just track it with next_code and overwrite old entries.
+
+      next_code = eoi_code + 1;
+      cur_code_size = min_code_size + 1;
+      code_mask = (1 << cur_code_size) - 1;
+
+      // Don't update prev_code ?
+      prev_code = null;
+      continue;
+    } else if (code === eoi_code) {
+      break;
+    }
+
+    // We have a similar situation as the decoder, where we want to store
+    // variable length entries (code table entries), but we want to do in a
+    // faster manner than an array of arrays.  The code below stores sort of a
+    // linked list within the code table, and then "chases" through it to
+    // construct the dictionary entries.  When a new entry is created, just the
+    // last byte is stored, and the rest (prefix) of the entry is only
+    // referenced by its table entry.  Then the code chases through the
+    // prefixes until it reaches a single byte code.  We have to chase twice,
+    // first to compute the length, and then to actually copy the data to the
+    // output (backwards, since we know the length).  The alternative would be
+    // storing something in an intermediate stack, but that doesn't make any
+    // more sense.  I implemented an approach where it also stored the length
+    // in the code table, although it's a bit tricky because you run out of
+    // bits (12 + 12 + 8), but I didn't measure much improvements (the table
+    // entries are generally not the long).  Even when I created benchmarks for
+    // very long table entries the complexity did not seem worth it.
+    // The code table stores the prefix entry in 12 bits and then the suffix
+    // byte in 8 bits, so each entry is 20 bits.
+
+    var chase_code = code < next_code ? code : prev_code;
+
+    // Chase what we will output, either {CODE} or {CODE-1}.
+    var chase_length = 0;
+    var chase = chase_code;
+    while (chase > clear_code) {
+      chase = code_table[chase] >> 8;
+      ++chase_length;
+    }
+    var k = chase;
+    var op_end = op + chase_length + (chase_code !== code ? 1 : 0);
+    if (op_end > output_length) {
+      console.log("Warning, gif stream longer than expected.");
+      return;
+    }
+
+    // Already have the first byte from the chase, might as well write it fast.
+    output[op++] = k;
+    op += chase_length;
+    var b = op; // Track pointer, writing backwards.
+
+    if (chase_code !== code)
+      // The case of emitting {CODE-1} + k.
+      output[op++] = k;
+    chase = chase_code;
+    while (chase_length--) {
+      chase = code_table[chase];
+      output[--b] = chase & 0xff; // Write backwards.
+      chase >>= 8; // Pull down to the prefix code.
+    }
+
+    if (prev_code !== null && next_code < 4096) {
+      code_table[next_code++] = prev_code << 8 | k;
+      // TODO(deanm): Figure out this clearing vs code growth logic better.  I
+      // have an feeling that it should just happen somewhere else, for now it
+      // is awkward between when we grow past the max and then hit a clear code.
+      // For now just check if we hit the max 12-bits (then a clear code should
+      // follow, also of course encoded in 12-bits).
+      if (next_code >= code_mask + 1 && cur_code_size < 12) {
+        ++cur_code_size;
+        code_mask = code_mask << 1 | 1;
+      }
+    }
+    prev_code = code;
+  }
+  if (op !== output_length) {
+    console.log("Warning, gif stream shorter than expected.");
+  }
+  return output;
+}
+
+// CommonJS.
+try {
+  exports.GifWriter = GifWriter;
+  exports.GifReader = GifReader;
+} catch (e) {}
 
 /***/ }),
 
@@ -20936,6 +23945,419 @@ if (false) {} else {
 
 /***/ }),
 
+/***/ "./node_modules/tslib/tslib.es6.js":
+/*!*****************************************!*\
+  !*** ./node_modules/tslib/tslib.es6.js ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "__assign": () => (/* binding */ __assign),
+/* harmony export */   "__asyncDelegator": () => (/* binding */ __asyncDelegator),
+/* harmony export */   "__asyncGenerator": () => (/* binding */ __asyncGenerator),
+/* harmony export */   "__asyncValues": () => (/* binding */ __asyncValues),
+/* harmony export */   "__await": () => (/* binding */ __await),
+/* harmony export */   "__awaiter": () => (/* binding */ __awaiter),
+/* harmony export */   "__classPrivateFieldGet": () => (/* binding */ __classPrivateFieldGet),
+/* harmony export */   "__classPrivateFieldSet": () => (/* binding */ __classPrivateFieldSet),
+/* harmony export */   "__createBinding": () => (/* binding */ __createBinding),
+/* harmony export */   "__decorate": () => (/* binding */ __decorate),
+/* harmony export */   "__exportStar": () => (/* binding */ __exportStar),
+/* harmony export */   "__extends": () => (/* binding */ __extends),
+/* harmony export */   "__generator": () => (/* binding */ __generator),
+/* harmony export */   "__importDefault": () => (/* binding */ __importDefault),
+/* harmony export */   "__importStar": () => (/* binding */ __importStar),
+/* harmony export */   "__makeTemplateObject": () => (/* binding */ __makeTemplateObject),
+/* harmony export */   "__metadata": () => (/* binding */ __metadata),
+/* harmony export */   "__param": () => (/* binding */ __param),
+/* harmony export */   "__read": () => (/* binding */ __read),
+/* harmony export */   "__rest": () => (/* binding */ __rest),
+/* harmony export */   "__spread": () => (/* binding */ __spread),
+/* harmony export */   "__spreadArray": () => (/* binding */ __spreadArray),
+/* harmony export */   "__spreadArrays": () => (/* binding */ __spreadArrays),
+/* harmony export */   "__values": () => (/* binding */ __values)
+/* harmony export */ });
+/*! *****************************************************************************
+Copyright (c) Microsoft Corporation.
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+***************************************************************************** */
+/* global Reflect, Promise */
+
+var extendStatics = function (d, b) {
+  extendStatics = Object.setPrototypeOf || {
+    __proto__: []
+  } instanceof Array && function (d, b) {
+    d.__proto__ = b;
+  } || function (d, b) {
+    for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p];
+  };
+  return extendStatics(d, b);
+};
+function __extends(d, b) {
+  if (typeof b !== "function" && b !== null) throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+  extendStatics(d, b);
+  function __() {
+    this.constructor = d;
+  }
+  d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+}
+var __assign = function () {
+  __assign = Object.assign || function __assign(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+      s = arguments[i];
+      for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+    }
+    return t;
+  };
+  return __assign.apply(this, arguments);
+};
+function __rest(s, e) {
+  var t = {};
+  for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
+  if (s != null && typeof Object.getOwnPropertySymbols === "function") for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+    if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i])) t[p[i]] = s[p[i]];
+  }
+  return t;
+}
+function __decorate(decorators, target, key, desc) {
+  var c = arguments.length,
+    r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
+    d;
+  if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+  return c > 3 && r && Object.defineProperty(target, key, r), r;
+}
+function __param(paramIndex, decorator) {
+  return function (target, key) {
+    decorator(target, key, paramIndex);
+  };
+}
+function __metadata(metadataKey, metadataValue) {
+  if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(metadataKey, metadataValue);
+}
+function __awaiter(thisArg, _arguments, P, generator) {
+  function adopt(value) {
+    return value instanceof P ? value : new P(function (resolve) {
+      resolve(value);
+    });
+  }
+  return new (P || (P = Promise))(function (resolve, reject) {
+    function fulfilled(value) {
+      try {
+        step(generator.next(value));
+      } catch (e) {
+        reject(e);
+      }
+    }
+    function rejected(value) {
+      try {
+        step(generator["throw"](value));
+      } catch (e) {
+        reject(e);
+      }
+    }
+    function step(result) {
+      result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+    }
+    step((generator = generator.apply(thisArg, _arguments || [])).next());
+  });
+}
+function __generator(thisArg, body) {
+  var _ = {
+      label: 0,
+      sent: function () {
+        if (t[0] & 1) throw t[1];
+        return t[1];
+      },
+      trys: [],
+      ops: []
+    },
+    f,
+    y,
+    t,
+    g;
+  return g = {
+    next: verb(0),
+    "throw": verb(1),
+    "return": verb(2)
+  }, typeof Symbol === "function" && (g[Symbol.iterator] = function () {
+    return this;
+  }), g;
+  function verb(n) {
+    return function (v) {
+      return step([n, v]);
+    };
+  }
+  function step(op) {
+    if (f) throw new TypeError("Generator is already executing.");
+    while (_) try {
+      if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+      if (y = 0, t) op = [op[0] & 2, t.value];
+      switch (op[0]) {
+        case 0:
+        case 1:
+          t = op;
+          break;
+        case 4:
+          _.label++;
+          return {
+            value: op[1],
+            done: false
+          };
+        case 5:
+          _.label++;
+          y = op[1];
+          op = [0];
+          continue;
+        case 7:
+          op = _.ops.pop();
+          _.trys.pop();
+          continue;
+        default:
+          if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) {
+            _ = 0;
+            continue;
+          }
+          if (op[0] === 3 && (!t || op[1] > t[0] && op[1] < t[3])) {
+            _.label = op[1];
+            break;
+          }
+          if (op[0] === 6 && _.label < t[1]) {
+            _.label = t[1];
+            t = op;
+            break;
+          }
+          if (t && _.label < t[2]) {
+            _.label = t[2];
+            _.ops.push(op);
+            break;
+          }
+          if (t[2]) _.ops.pop();
+          _.trys.pop();
+          continue;
+      }
+      op = body.call(thisArg, _);
+    } catch (e) {
+      op = [6, e];
+      y = 0;
+    } finally {
+      f = t = 0;
+    }
+    if (op[0] & 5) throw op[1];
+    return {
+      value: op[0] ? op[1] : void 0,
+      done: true
+    };
+  }
+}
+var __createBinding = Object.create ? function (o, m, k, k2) {
+  if (k2 === undefined) k2 = k;
+  Object.defineProperty(o, k2, {
+    enumerable: true,
+    get: function () {
+      return m[k];
+    }
+  });
+} : function (o, m, k, k2) {
+  if (k2 === undefined) k2 = k;
+  o[k2] = m[k];
+};
+function __exportStar(m, o) {
+  for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(o, p)) __createBinding(o, m, p);
+}
+function __values(o) {
+  var s = typeof Symbol === "function" && Symbol.iterator,
+    m = s && o[s],
+    i = 0;
+  if (m) return m.call(o);
+  if (o && typeof o.length === "number") return {
+    next: function () {
+      if (o && i >= o.length) o = void 0;
+      return {
+        value: o && o[i++],
+        done: !o
+      };
+    }
+  };
+  throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+}
+function __read(o, n) {
+  var m = typeof Symbol === "function" && o[Symbol.iterator];
+  if (!m) return o;
+  var i = m.call(o),
+    r,
+    ar = [],
+    e;
+  try {
+    while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+  } catch (error) {
+    e = {
+      error: error
+    };
+  } finally {
+    try {
+      if (r && !r.done && (m = i["return"])) m.call(i);
+    } finally {
+      if (e) throw e.error;
+    }
+  }
+  return ar;
+}
+
+/** @deprecated */
+function __spread() {
+  for (var ar = [], i = 0; i < arguments.length; i++) ar = ar.concat(__read(arguments[i]));
+  return ar;
+}
+
+/** @deprecated */
+function __spreadArrays() {
+  for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+  for (var r = Array(s), k = 0, i = 0; i < il; i++) for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++) r[k] = a[j];
+  return r;
+}
+function __spreadArray(to, from, pack) {
+  if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+    if (ar || !(i in from)) {
+      if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+      ar[i] = from[i];
+    }
+  }
+  return to.concat(ar || from);
+}
+function __await(v) {
+  return this instanceof __await ? (this.v = v, this) : new __await(v);
+}
+function __asyncGenerator(thisArg, _arguments, generator) {
+  if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+  var g = generator.apply(thisArg, _arguments || []),
+    i,
+    q = [];
+  return i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () {
+    return this;
+  }, i;
+  function verb(n) {
+    if (g[n]) i[n] = function (v) {
+      return new Promise(function (a, b) {
+        q.push([n, v, a, b]) > 1 || resume(n, v);
+      });
+    };
+  }
+  function resume(n, v) {
+    try {
+      step(g[n](v));
+    } catch (e) {
+      settle(q[0][3], e);
+    }
+  }
+  function step(r) {
+    r.value instanceof __await ? Promise.resolve(r.value.v).then(fulfill, reject) : settle(q[0][2], r);
+  }
+  function fulfill(value) {
+    resume("next", value);
+  }
+  function reject(value) {
+    resume("throw", value);
+  }
+  function settle(f, v) {
+    if (f(v), q.shift(), q.length) resume(q[0][0], q[0][1]);
+  }
+}
+function __asyncDelegator(o) {
+  var i, p;
+  return i = {}, verb("next"), verb("throw", function (e) {
+    throw e;
+  }), verb("return"), i[Symbol.iterator] = function () {
+    return this;
+  }, i;
+  function verb(n, f) {
+    i[n] = o[n] ? function (v) {
+      return (p = !p) ? {
+        value: __await(o[n](v)),
+        done: n === "return"
+      } : f ? f(v) : v;
+    } : f;
+  }
+}
+function __asyncValues(o) {
+  if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+  var m = o[Symbol.asyncIterator],
+    i;
+  return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () {
+    return this;
+  }, i);
+  function verb(n) {
+    i[n] = o[n] && function (v) {
+      return new Promise(function (resolve, reject) {
+        v = o[n](v), settle(resolve, reject, v.done, v.value);
+      });
+    };
+  }
+  function settle(resolve, reject, d, v) {
+    Promise.resolve(v).then(function (v) {
+      resolve({
+        value: v,
+        done: d
+      });
+    }, reject);
+  }
+}
+function __makeTemplateObject(cooked, raw) {
+  if (Object.defineProperty) {
+    Object.defineProperty(cooked, "raw", {
+      value: raw
+    });
+  } else {
+    cooked.raw = raw;
+  }
+  return cooked;
+}
+;
+var __setModuleDefault = Object.create ? function (o, v) {
+  Object.defineProperty(o, "default", {
+    enumerable: true,
+    value: v
+  });
+} : function (o, v) {
+  o["default"] = v;
+};
+function __importStar(mod) {
+  if (mod && mod.__esModule) return mod;
+  var result = {};
+  if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+  __setModuleDefault(result, mod);
+  return result;
+}
+function __importDefault(mod) {
+  return mod && mod.__esModule ? mod : {
+    default: mod
+  };
+}
+function __classPrivateFieldGet(receiver, state, kind, f) {
+  if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
+  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
+  return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
+}
+function __classPrivateFieldSet(receiver, state, value, kind, f) {
+  if (kind === "m") throw new TypeError("Private method is not writable");
+  if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
+  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
+  return kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value), value;
+}
+
+/***/ }),
+
 /***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./client/src/cssModules/createMode.module.css":
 /*!***********************************************************************************************************************!*\
   !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./client/src/cssModules/createMode.module.css ***!
@@ -21837,7 +25259,7 @@ function u(){return(u=Object.assign||function(e){for(var r=1;r<arguments.length;
 /******/ 		};
 /******/ 	
 /******/ 		// Execute the module function
-/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
 /******/ 	
 /******/ 		// Flag the module as loaded
 /******/ 		module.loaded = true;
@@ -21921,15 +25343,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ModeSelector_jsx__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./ModeSelector.jsx */ "./client/src/ModeSelector.jsx");
 /* harmony import */ var _CreateMode_jsx__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./CreateMode.jsx */ "./client/src/CreateMode.jsx");
 /* harmony import */ var _AVMode_jsx__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./AVMode.jsx */ "./client/src/AVMode.jsx");
-/* harmony import */ var _HomePage_jsx__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./HomePage.jsx */ "./client/src/HomePage.jsx");
-/* harmony import */ var _TopBar_jsx__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./TopBar.jsx */ "./client/src/TopBar.jsx");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _ImportMode_jsx__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./ImportMode.jsx */ "./client/src/ImportMode.jsx");
+/* harmony import */ var _HomePage_jsx__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./HomePage.jsx */ "./client/src/HomePage.jsx");
+/* harmony import */ var _TopBar_jsx__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./TopBar.jsx */ "./client/src/TopBar.jsx");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 
 
 
@@ -21999,34 +25423,38 @@ var App = function App() {
     _useState20 = _slicedToArray(_useState19, 2),
     showRainMode = _useState20[0],
     setShowRainMode = _useState20[1];
-  var _useState21 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(true),
+  var _useState21 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState22 = _slicedToArray(_useState21, 2),
-    allowBrightness = _useState22[0],
-    setAllowBrightness = _useState22[1];
-  var _useState23 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+    showImportMode = _useState22[0],
+    setShowImportMode = _useState22[1];
+  var _useState23 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(true),
     _useState24 = _slicedToArray(_useState23, 2),
-    prevFrameNames = _useState24[0],
-    setPrevFrameNames = _useState24[1];
+    allowBrightness = _useState24[0],
+    setAllowBrightness = _useState24[1];
   var _useState25 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
     _useState26 = _slicedToArray(_useState25, 2),
-    anims = _useState26[0],
-    setAnims = _useState26[1];
-  var _useState27 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    prevFrameNames = _useState26[0],
+    setPrevFrameNames = _useState26[1];
+  var _useState27 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
     _useState28 = _slicedToArray(_useState27, 2),
-    animPlaying = _useState28[0],
-    setAnimPlaying = _useState28[1];
-  var _useState29 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+    anims = _useState28[0],
+    setAnims = _useState28[1];
+  var _useState29 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState30 = _slicedToArray(_useState29, 2),
-    colorChoices = _useState30[0],
-    setColorChoices = _useState30[1];
-  var _useState31 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(color),
+    animPlaying = _useState30[0],
+    setAnimPlaying = _useState30[1];
+  var _useState31 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
     _useState32 = _slicedToArray(_useState31, 2),
-    selectedColor = _useState32[0],
-    setSelectedColor = _useState32[1];
-  var _useState33 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    colorChoices = _useState32[0],
+    setColorChoices = _useState32[1];
+  var _useState33 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(color),
     _useState34 = _slicedToArray(_useState33, 2),
-    connectError = _useState34[0],
-    setConnectError = _useState34[1];
+    selectedColor = _useState34[0],
+    setSelectedColor = _useState34[1];
+  var _useState35 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState36 = _slicedToArray(_useState35, 2),
+    connectError = _useState36[0],
+    setConnectError = _useState36[1];
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     //Mouse up handler
     var handleMouseUp = function handleMouseUp() {
@@ -22181,25 +25609,26 @@ var App = function App() {
     handleModeStartStop({});
     turnOff();
   };
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
     id: "colorApp",
     onMouseDown: function onMouseDown() {
       return setMouseDown(true);
     },
-    children: [showGallery || showCreateMode || showRainMode || showAVMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_TopBar_jsx__WEBPACK_IMPORTED_MODULE_11__["default"], {
+    children: [showGallery || showCreateMode || showRainMode || showAVMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_TopBar_jsx__WEBPACK_IMPORTED_MODULE_12__["default"], {
       allowBrightness: allowBrightness,
       sendData: _helperFunctions_handleSendGet__WEBPACK_IMPORTED_MODULE_1__.sendData,
       selectedColor: selectedColor,
       disableModes: disableModes
-    }) : null, !isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_HomePage_jsx__WEBPACK_IMPORTED_MODULE_10__["default"], {
+    }) : null, !isConnected ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_HomePage_jsx__WEBPACK_IMPORTED_MODULE_11__["default"], {
       handleConnect: handleConnect,
       connectError: connectError
-    }) : null, isConnected && !showCreateMode && !showGallery && !showRainMode && !showAVMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_ModeSelector_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    }) : null, isConnected && !showCreateMode && !showGallery && !showRainMode && !showAVMode && !showImportMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_ModeSelector_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], {
       setShowAVMode: setShowAVMode,
       setShowGallery: setShowGallery,
       setShowCreateMode: setShowCreateMode,
-      setShowRainMode: setShowRainMode
-    }) : null, showGallery ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_Gallery_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
+      setShowRainMode: setShowRainMode,
+      setShowImportMode: setShowImportMode
+    }) : null, showGallery ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_Gallery_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
       animPlaying: animPlaying,
       turnOff: turnOff,
       handleSave: callSave,
@@ -22209,20 +25638,19 @@ var App = function App() {
       frames: frames,
       handleFrameChoice: handleFrameChoice,
       handleDelete: callDelete
-    }) : null, showCreateMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_CreateMode_jsx__WEBPACK_IMPORTED_MODULE_8__["default"], {
+    }) : null, showCreateMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_CreateMode_jsx__WEBPACK_IMPORTED_MODULE_8__["default"], {
       turnOff: turnOff,
       callSave: callSave,
       animPlaying: animPlaying,
       pixelSending: pixelSending,
       mouseDown: mouseDown,
       handleFrameChoice: handleFrameChoice,
-      sendRequests: sendRequests,
       selectedColor: selectedColor,
       setSelectedColor: setSelectedColor
-    }) : null, pixelSending || modeDataSending ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("img", {
+    }) : null, showImportMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_ImportMode_jsx__WEBPACK_IMPORTED_MODULE_10__["default"], {}) : null, pixelSending || modeDataSending ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("img", {
       id: "loading",
       src: "./icons/loading.gif"
-    }) : null, showRainMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_RainMode_jsx__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    }) : null, showRainMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_RainMode_jsx__WEBPACK_IMPORTED_MODULE_6__["default"], {
       prevFrameNames: prevFrameNames,
       frames: frames,
       handleFrameChoice: handleFrameChoice,
@@ -22231,13 +25659,13 @@ var App = function App() {
       colorChoices: colorChoices,
       modeDataSending: modeDataSending,
       handleModeStartStop: handleModeStartStop
-    }) : null, showAVMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_AVMode_jsx__WEBPACK_IMPORTED_MODULE_9__["default"], {
+    }) : null, showAVMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_AVMode_jsx__WEBPACK_IMPORTED_MODULE_9__["default"], {
       modeRunning: modeRunning,
       handleModeChooseColor: handleModeChooseColor,
       modeDataSending: modeDataSending,
       colorChoices: colorChoices,
       handleModeStartStop: handleModeStartStop
-    }) : null, showCreateMode || showGallery || showRainMode || showAVMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("button", {
+    }) : null, showCreateMode || showGallery || showRainMode || showAVMode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("button", {
       id: "bottom-button",
       onClick: function onClick() {
         if (showCreateMode) {
@@ -22256,7 +25684,7 @@ var App = function App() {
 };
 var container = document.getElementById('root');
 var root = (0,react_dom_client__WEBPACK_IMPORTED_MODULE_4__.createRoot)(container);
-root.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(App, {}));
+root.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(App, {}));
 })();
 
 /******/ })()
