@@ -32,7 +32,7 @@ const CreateMode = ({callSave, animPlaying, turnOff, pixelSending, mouseDown, se
     }
 		setSelectedColor(newColor); //For visual elements
     window.color = newColor; //For color buttons
-		sendRequests['color'] = `C${newColor.slice(1)}`;
+		window.sendRequests['color'] = `C${newColor.slice(1)}`;
 	}
 
   const colorButtons = colorOptions.map ((curColor, idx) => {
@@ -140,7 +140,7 @@ const CreateMode = ({callSave, animPlaying, turnOff, pixelSending, mouseDown, se
           {colorButtons}
           <img src='./icons/color-picker.png' id={styles['color-picker']} onClick={() => setSelectColor(true)}/>
         </div>
-        <MatrixButtons mouseDown={mouseDown} sendRequests={sendRequests} selectedColor={selectedColor}/>
+        <MatrixButtons mouseDown={mouseDown} selectedColor={selectedColor}/>
       </div>
       <a href="https://www.flaticon.com/free-icons/color-picker" title="color picker icons" id={styles['credit']}>Color picker icons created by Design Circle - Flaticon</a>
 		</div>

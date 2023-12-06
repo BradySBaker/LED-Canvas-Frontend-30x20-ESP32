@@ -8,6 +8,8 @@ var names = "";
 
 var justSent;
 
+let importHexSent = 0;
+
 export const handleSendRequests = (setPixelSending, pixelSending) => { //Occurs every 20ms
 	sendingTimer++;
 	if (sendingTimer >= 550) {
@@ -26,7 +28,17 @@ export const handleSendRequests = (setPixelSending, pixelSending) => { //Occurs 
 		if (sendRequests["off"]) {
 			sendData("OFF");
 			window.sendRequests = {};
-		} else {
+		} else if (sendRequests['importName']) {
+      sendData('X' + sendRequests['importName']);
+      delete sendRequests['importName'];
+    } else if (sendRequests['import']) {
+      sendData('X' + sendRequests['import'][importHexSent] + ',' + sendRequests['import'][importHexSent+1]);
+      importHexSent += 2;
+      if (importHexSent === sendRequests['import'].length) {
+        delete sendRequests['import'];
+        importHexSent = 0;
+      }
+    } else {
 			for (var key in sendRequests) {
 				if ((key === 'color' || key === 'brightness') && positions === 0) {
 					sendData(sendRequests[key]);
