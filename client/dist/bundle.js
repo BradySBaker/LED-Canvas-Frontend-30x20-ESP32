@@ -836,7 +836,7 @@ var ImportMode = function ImportMode() {
       };
     } else {
       extractGifFrames(imageData).then(function (frames) {
-        console.log(frames);
+        window.sendRequests['import'] = frames;
       });
     }
   };
@@ -1483,6 +1483,7 @@ var sendingTimer = 0;
 var names = "";
 var justSent;
 var importHexSent = 0;
+var curImportFrame = 0;
 var handleSendRequests = function handleSendRequests(setPixelSending, pixelSending) {
   //Occurs every 20ms
   sendingTimer++;
@@ -1503,16 +1504,35 @@ var handleSendRequests = function handleSendRequests(setPixelSending, pixelSendi
       sendData("OFF");
       window.sendRequests = {};
     } else if (sendRequests['importName']) {
-      sendData('X' + sendRequests['importName']);
+      // --- Handle import request ----
+      sendData('XN' + sendRequests['importName']);
       delete sendRequests['importName'];
     } else if (sendRequests['import']) {
-      sendData('X' + sendRequests['import'][importHexSent] + ',' + sendRequests['import'][importHexSent + 1]);
-      importHexSent += 2;
-      if (importHexSent === sendRequests['import'].length) {
-        delete sendRequests['import'];
-        importHexSent = 0;
+      if (Array.isArray(sendRequests['import'][0])) {
+        sendData('XG' + sendRequests['import'][curImportFrame][importHexSent] + ',' + sendRequests['import'][curImportFrame][importHexSent + 1]);
+        if (importHexSent === sendRequests['import'][curImportFrame].length - 2) {
+          console.log(importHexSent + 1);
+          importHexSent = 0;
+          curImportFrame++;
+          if (curImportFrame === sendRequests['import'].length) {
+            curImportFrame = 0;
+            importHexSent = 0;
+            delete sendRequests['import'];
+          }
+        } else {
+          importHexSent += 2;
+        }
+      } else {
+        sendData('X' + sendRequests['import'][importHexSent] + ',' + sendRequests['import'][importHexSent + 1]);
+        if (importHexSent === sendRequests['import'].length - 2) {
+          delete sendRequests['import'];
+          importHexSent = 0;
+        } else {
+          importHexSent += 2;
+        }
       }
     } else {
+      // ------------------------------------------
       for (var key in sendRequests) {
         if ((key === 'color' || key === 'brightness') && positions === 0) {
           sendData(sendRequests[key]);
