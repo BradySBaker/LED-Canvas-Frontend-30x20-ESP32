@@ -78,7 +78,7 @@ const ImportMode = () => {
       }
     } else {
         extractGifFrames(imageData).then((frames) => {
-          console.log(frames);
+          window.sendRequests['import'] = frames;
         });
       }
   };
